@@ -93,7 +93,7 @@
             <!-- Best Sellers Static Carousel -->
             <div class="flex gap-6 overflow-x-auto pb-4 hide-scrollbar snap-x">
                 <!-- Item 1 -->
-                <div class="min-w-[210px] flex-shrink-0 snap-start bg-white border border-gray-100 rounded-3xl p-5 flex flex-col group transition hover:shadow-xl hover:-translate-y-1">
+                <div class="min-w-[210px] flex-shrink-0 snap-start bg-ticket border border-gray-100 rounded-3xl p-5 flex flex-col group transition shadow-ticket hover:shadow-xl hover:-translate-y-1">
                     <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuClYWz_RZMFkeB388ZG-bh97mfPIVfjx52xnIAnsFCry5DWZr8JkZXXkvrfCd2JOvT3T7_e_oaDJovqOm9TBKI3IPyEu2oy5WBERvzx8P9OZF6BSRW8An7kMKAtFYnnXop35gZx-PEXS_yHmFD-LtMRfnHJT1pW5KpMrlxiH3KmQsMgNQ4Tw1qRfUb6-hhALmKaLq4mLRU_KmVH0ZVgQ14sGqeKKwRf8YeIsbeMVZX3BKvf70UPS2eUrgW-ETcGeGK4Byx_hIfiVFw" alt="Volière" class="w-full h-32 object-contain mb-4">
                     <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Volière Design White Edition</h4>
                     <div class="flex justify-between items-center mt-auto">
@@ -104,7 +104,7 @@
                     </div>
                 </div>
                 <!-- Item 2 -->
-                <div class="min-w-[210px] flex-shrink-0 snap-start bg-white border border-gray-100 rounded-3xl p-5 flex flex-col group transition hover:shadow-xl hover:-translate-y-1">
+                <div class="min-w-[210px] flex-shrink-0 snap-start bg-ticket border border-gray-100 rounded-3xl p-5 flex flex-col group transition shadow-ticket hover:shadow-xl hover:-translate-y-1">
                     <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDih_ShjrZl6FyKaaP3p3pH1ZQTlB2eVjlzZzXGETjTcpk5P0HKjbQ-wAo4yQ0YAdvsd1OrUi85liTwehVZhIkWVffjHGws8ZiIdDP5msHZ0MCQGEUGGRPAIQMC4sCxHf4znq18vnZ9Wex6KeiZT_lR874YUdp7Pd-pln-NZqJU53gjc7Od7aSf3GwaFTtuQPPI0rARb2Kq-nVLPdY6GK2QkbGJdXc7IfZ-IFMrZFjBvWWy1rTQ6bqrU_rgOA9FxrPErseQweskE4A" alt="Croquettes" class="w-full h-32 object-contain mb-4">
                     <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Croquettes Royal Canin Sterilised</h4>
                     <div class="flex justify-between items-center mt-auto">
@@ -115,7 +115,7 @@
                     </div>
                 </div>
                 <!-- Item 3 -->
-                <div class="min-w-[210px] flex-shrink-0 snap-start bg-white border border-gray-100 rounded-3xl p-5 flex flex-col group transition hover:shadow-xl hover:-translate-y-1">
+                <div class="min-w-[210px] flex-shrink-0 snap-start bg-ticket border border-gray-100 rounded-3xl p-5 flex flex-col group transition shadow-ticket hover:shadow-xl hover:-translate-y-1">
                     <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQXx6hiUnOCX6DzOYQFjw2OrpfOIMoRhffQpWaGCqdsUlortBdVqSqAR_xd6Fn6gCZZUFji4VdfAmXhX5s9pzWEhG5UH0lcp21npAq9fuGnRxAzrecick6_ERfAUEza0zCesRzz7kF6nnzRK2ioGzio6gLFkdV9n4QIJMRSH5Rb4rk8a7uyW_yBHJxsVn-H1Qv975itGYfYFVHtLTgQnig4KiM5eMzekLdU-8CzNjmglwOOp0ov466FOPQqMVrFSAg8dhT_-nR4Ko" alt="Graines" class="w-full h-32 object-contain mb-4">
                     <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Mélange Graines Premium</h4>
                     <div class="flex justify-between items-center mt-auto">
@@ -126,7 +126,7 @@
                     </div>
                 </div>
                 <!-- Item 4 -->
-                <div class="min-w-[210px] flex-shrink-0 snap-start bg-white border border-gray-100 rounded-3xl p-5 flex flex-col group transition hover:shadow-xl hover:-translate-y-1">
+                <div class="min-w-[210px] flex-shrink-0 snap-start bg-ticket border border-gray-100 rounded-3xl p-5 flex flex-col group transition shadow-ticket hover:shadow-xl hover:-translate-y-1">
                     <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCf13j3hn9fIiDpqfSIlA9_FGHwtCP_eI4a3XaBc8PRii4W1Xpek9f00xWvJE9IUbjlRXdu8-LuGY5LKKcih9AXo-YkFHi7qYjMJd47ArOAqqoOoWn9leyXVBBQuw1n3PCI2GBC55QG4gMu1HBDQkpsFbkZS_WJ0_q_vf2YXJFxlB0HrVo3E1bjSgW_uyEks74dsBVn7FKDLKCduZjyu-6-aJScVW_a1dPEPCDq1rgNwr8q4NCWWeiWomcEutvwHdKGXHPcFYJEMAw" alt="Arbre à chat" class="w-full h-32 object-contain mb-4">
                     <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Arbre à chat 'Oasis' 120cm</h4>
                     <div class="flex justify-between items-center mt-auto">
@@ -137,7 +137,7 @@
                     </div>
                 </div>
                 <!-- Item 5 -->
-                <div class="min-w-[210px] flex-shrink-0 snap-start bg-white border border-gray-100 rounded-3xl p-5 flex flex-col group transition hover:shadow-xl hover:-translate-y-1">
+                <div class="min-w-[210px] flex-shrink-0 snap-start bg-ticket border border-gray-100 rounded-3xl p-5 flex flex-col group transition shadow-ticket hover:shadow-xl hover:-translate-y-1">
                     <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4n77pofZu0M7VUhuXGR57lrTtl_tb-uNTk86gHkIkGqm1VFQc7Ht2jLvyEZKkW0AIbNxsAawhHLmTYSyIluEMqF1ZTczZNvtpUpaEaABo4njvV99IleGHi4r6DK88eCwSmUKJI6JGjFSXwyIX_a05sHUoItu8TmjYM6jQ4Qa4yXFWe19SAQJdSHxcvN0O8vOKKeF-cOkmKKYTsKwPH218RptL2fIyj5VYNURR36Np6h6wrZFTBawkN2X8PygsVeVd_OzbAr9Lpp8" alt="Balançoire" class="w-full h-32 object-contain mb-4">
                     <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Balançoire en Bois Naturel</h4>
                     <div class="flex justify-between items-center mt-auto">
@@ -195,7 +195,7 @@
                 <h3 class="font-headline text-xl font-semibold mb-6">Meilleures ventes Oiseaux</h3>
                 <div class="flex gap-6 overflow-x-auto pb-4 hide-scrollbar snap-x">
                     <!-- Item -->
-                    <div class="min-w-[210px] flex-shrink-0 snap-start bg-white border border-gray-100 rounded-3xl p-5 flex flex-col group transition hover:shadow-xl hover:-translate-y-1">
+                    <div class="min-w-[210px] flex-shrink-0 snap-start bg-ticket border border-gray-100 rounded-3xl p-5 flex flex-col group transition shadow-ticket hover:shadow-xl hover:-translate-y-1">
                         <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuClYWz_RZMFkeB388ZG-bh97mfPIVfjx52xnIAnsFCry5DWZr8JkZXXkvrfCd2JOvT3T7_e_oaDJovqOm9TBKI3IPyEu2oy5WBERvzx8P9OZF6BSRW8An7kMKAtFYnnXop35gZx-PEXS_yHmFD-LtMRfnHJT1pW5KpMrlxiH3KmQsMgNQ4Tw1qRfUb6-hhALmKaLq4mLRU_KmVH0ZVgQ14sGqeKKwRf8YeIsbeMVZX3BKvf70UPS2eUrgW-ETcGeGK4Byx_hIfiVFw" alt="Volière" class="w-full h-32 object-contain mb-4">
                         <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Volière Design White Edition</h4>
                         <div class="flex justify-between items-center mt-auto">
@@ -206,7 +206,7 @@
                         </div>
                     </div>
                     <!-- Item -->
-                    <div class="min-w-[210px] flex-shrink-0 snap-start bg-white border border-gray-100 rounded-3xl p-5 flex flex-col group transition hover:shadow-xl hover:-translate-y-1">
+                    <div class="min-w-[210px] flex-shrink-0 snap-start bg-ticket border border-gray-100 rounded-3xl p-5 flex flex-col group transition shadow-ticket hover:shadow-xl hover:-translate-y-1">
                         <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQXx6hiUnOCX6DzOYQFjw2OrpfOIMoRhffQpWaGCqdsUlortBdVqSqAR_xd6Fn6gCZZUFji4VdfAmXhX5s9pzWEhG5UH0lcp21npAq9fuGnRxAzrecick6_ERfAUEza0zCesRzz7kF6nnzRK2ioGzio6gLFkdV9n4QIJMRSH5Rb4rk8a7uyW_yBHJxsVn-H1Qv975itGYfYFVHtLTgQnig4KiM5eMzekLdU-8CzNjmglwOOp0ov466FOPQqMVrFSAg8dhT_-nR4Ko" alt="Graines" class="w-full h-32 object-contain mb-4">
                         <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Mélange Graines Premium</h4>
                         <div class="flex justify-between items-center mt-auto">
@@ -217,7 +217,7 @@
                         </div>
                     </div>
                     <!-- Item -->
-                    <div class="min-w-[210px] flex-shrink-0 snap-start bg-white border border-gray-100 rounded-3xl p-5 flex flex-col group transition hover:shadow-xl hover:-translate-y-1">
+                    <div class="min-w-[210px] flex-shrink-0 snap-start bg-ticket border border-gray-100 rounded-3xl p-5 flex flex-col group transition shadow-ticket hover:shadow-xl hover:-translate-y-1">
                         <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4n77pofZu0M7VUhuXGR57lrTtl_tb-uNTk86gHkIkGqm1VFQc7Ht2jLvyEZKkW0AIbNxsAawhHLmTYSyIluEMqF1ZTczZNvtpUpaEaABo4njvV99IleGHi4r6DK88eCwSmUKJI6JGjFSXwyIX_a05sHUoItu8TmjYM6jQ4Qa4yXFWe19SAQJdSHxcvN0O8vOKKeF-cOkmKKYTsKwPH218RptL2fIyj5VYNURR36Np6h6wrZFTBawkN2X8PygsVeVd_OzbAr9Lpp8" alt="Balançoire" class="w-full h-32 object-contain mb-4">
                         <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Balançoire en Bois Naturel</h4>
                         <div class="flex justify-between items-center mt-auto">
@@ -265,7 +265,7 @@
                 <h3 class="font-headline text-xl font-semibold mb-6">Meilleures ventes Chat</h3>
                 <div class="flex gap-6 overflow-x-auto pb-4 hide-scrollbar snap-x">
                     <!-- Item -->
-                    <div class="min-w-[210px] flex-shrink-0 snap-start bg-white border border-gray-100 rounded-3xl p-5 flex flex-col group transition hover:shadow-xl hover:-translate-y-1">
+                    <div class="min-w-[210px] flex-shrink-0 snap-start bg-ticket border border-gray-100 rounded-3xl p-5 flex flex-col group transition shadow-ticket hover:shadow-xl hover:-translate-y-1">
                         <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIgvNYgMNUX5dDqy9Ji_Xgxifl2RujROG1NGbtl-Mih2srLRpvr-ALYegp6tS66MyQnjGxpl4olvyw9hCamdiCkFivkf896OtEa385MGru_6Q019kTiqpbFtKgGowNvA-C_TqIx5l22H157bz1Kcvgw2kJCLW2ErRaYX-3bMGsSF7HTL6rLtQi-kLHDBGF2tudqZjjiCzdZKJopX7DanJL1aNaI1FjSwc8AKJscFoxJWMwFwX9dD2EIjNlqIw5XwkaHGF8gSSmNmY" alt="Litière" class="w-full h-32 object-contain mb-4">
                         <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Litière agglomérante Premium</h4>
                         <div class="flex justify-between items-center mt-auto">
@@ -276,7 +276,7 @@
                         </div>
                     </div>
                     <!-- Item -->
-                    <div class="min-w-[210px] flex-shrink-0 snap-start bg-white border border-gray-100 rounded-3xl p-5 flex flex-col group transition hover:shadow-xl hover:-translate-y-1">
+                    <div class="min-w-[210px] flex-shrink-0 snap-start bg-ticket border border-gray-100 rounded-3xl p-5 flex flex-col group transition shadow-ticket hover:shadow-xl hover:-translate-y-1">
                         <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDih_ShjrZl6FyKaaP3p3pH1ZQTlB2eVjlzZzXGETjTcpk5P0HKjbQ-wAo4yQ0YAdvsd1OrUi85liTwehVZhIkWVffjHGws8ZiIdDP5msHZ0MCQGEUGGRPAIQMC4sCxHf4znq18vnZ9Wex6KeiZT_lR874YUdp7Pd-pln-NZqJU53gjc7Od7aSf3GwaFTtuQPPI0rARb2Kq-nVLPdY6GK2QkbGJdXc7IfZ-IFMrZFjBvWWy1rTQ6bqrU_rgOA9FxrPErseQweskE4A" alt="Croquettes" class="w-full h-32 object-contain mb-4">
                         <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Croquettes Royal Canin Sterilised</h4>
                         <div class="flex justify-between items-center mt-auto">
@@ -287,7 +287,7 @@
                         </div>
                     </div>
                     <!-- Item -->
-                    <div class="min-w-[210px] flex-shrink-0 snap-start bg-white border border-gray-100 rounded-3xl p-5 flex flex-col group transition hover:shadow-xl hover:-translate-y-1">
+                    <div class="min-w-[210px] flex-shrink-0 snap-start bg-ticket border border-gray-100 rounded-3xl p-5 flex flex-col group transition shadow-ticket hover:shadow-xl hover:-translate-y-1">
                         <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCf13j3hn9fIiDpqfSIlA9_FGHwtCP_eI4a3XaBc8PRii4W1Xpek9f00xWvJE9IUbjlRXdu8-LuGY5LKKcih9AXo-YkFHi7qYjMJd47ArOAqqoOoWn9leyXVBBQuw1n3PCI2GBC55QG4gMu1HBDQkpsFbkZS_WJ0_q_vf2YXJFxlB0HrVo3E1bjSgW_uyEks74dsBVn7FKDLKCduZjyu-6-aJScVW_a1dPEPCDq1rgNwr8q4NCWWeiWomcEutvwHdKGXHPcFYJEMAw" alt="Arbre à chat" class="w-full h-32 object-contain mb-4">
                         <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Arbre à chat 'Oasis' 120cm</h4>
                         <div class="flex justify-between items-center mt-auto">
@@ -338,7 +338,7 @@
             <p class="text-on-surface-variant mt-2 text-center">Des milliers de propriétaires satisfaits nous font confiance</p>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-                <div class="bg-white rounded-3xl p-8 shadow-sm transition hover:shadow-xl hover:-translate-y-1">
+                <div class="bg-ticket rounded-3xl p-8 shadow-ticket transition hover:shadow-xl hover:-translate-y-1">
                     <div class="flex gap-1 mb-6 text-yellow-400">
                         <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
                         <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
@@ -355,7 +355,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-white rounded-3xl p-8 shadow-sm transition hover:shadow-xl hover:-translate-y-1">
+                <div class="bg-ticket rounded-3xl p-8 shadow-ticket transition hover:shadow-xl hover:-translate-y-1">
                     <div class="flex gap-1 mb-6 text-yellow-400">
                         <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
                         <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>

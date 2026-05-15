@@ -23,6 +23,7 @@
     --color-outline: #737783;
     --color-outline-variant: #c2c6d4;
     --color-error: #ba1a1a;
+    --color-ticket-bg: #e2e8f0;
 
     --font-headline: 'Plus Jakarta Sans', sans-serif;
     --font-body: 'Manrope', sans-serif;
@@ -160,6 +161,43 @@ html.dark footer {
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.bg-ticket {
+    background-color: var(--color-ticket-bg);
+}
+
+html.dark .bg-ticket {
+    background-color: #1a1d2e;
+}
+
+.shadow-ticket {
+    /* More aggressive multi-layered shadow */
+    box-shadow: 
+        0 8px 12px -2px rgba(0, 62, 135, 0.15),
+        0 15px 30px -5px rgba(0, 62, 135, 0.2),
+        /* Very distinct paper stack edges */
+        6px 6px 0px 0px rgba(0, 62, 135, 0.08),
+        12px 12px 0px 0px rgba(0, 62, 135, 0.03);
+    border: 2px solid rgba(0, 62, 135, 0.12);
+}
+
+html.dark .shadow-ticket {
+    box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.3),
+        0 10px 30px -5px rgba(0, 0, 0, 0.5),
+        4px 4px 0px 0px rgba(0, 0, 0, 0.2),
+        8px 8px 0px 0px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.shadow-ticket:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 
+        0 10px 15px -3px rgba(0, 62, 135, 0.15),
+        0 20px 40px -10px rgba(0, 62, 135, 0.2),
+        6px 6px 0px 0px rgba(0, 62, 135, 0.08),
+        12px 12px 0px 0px rgba(0, 62, 135, 0.04);
 }
 
 .glass-dark {

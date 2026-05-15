@@ -43,3 +43,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
 });
+
+// Product Detail Route
+Route::get('/product/{id}', function ($id) {
+    return view('product-detail');
+})->name('product.show');
