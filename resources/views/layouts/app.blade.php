@@ -49,10 +49,10 @@
                 <button id="darkModeToggle" class="relative w-10 h-10 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-low dark:hover:bg-gray-800 transition rounded-md" aria-label="Mode sombre">
                     <span class="material-symbols-outlined" id="darkModeIcon">dark_mode</span>
                 </button>
-                <button class="relative w-10 h-10 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition rounded-md" aria-label="Panier" id="cartBtn">
+                <a href="{{ route('checkout') }}" class="relative w-10 h-10 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition rounded-md" aria-label="Panier" id="cartBtn">
                     <span class="material-symbols-outlined">shopping_cart</span>
                     <span class="absolute top-1 right-1 bg-error text-white text-[10px] font-bold min-w-[16px] h-4 rounded-full flex items-center justify-center px-1 opacity-0 scale-0 transition duration-300" id="cartBadge">0</span>
-                </button>
+                </a>
                 <a href="{{ route('login') }}" class="relative w-10 h-10 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition rounded-md" aria-label="Mon compte" id="accountBtn">
                     <span class="material-symbols-outlined">account_circle</span>
                 </a>
@@ -130,28 +130,6 @@
         </div>
     </footer>
 
-    <!-- Cart Modal -->
-    <div class="fixed inset-0 z-[200] hidden items-center justify-center" id="cartModal">
-        <div class="absolute inset-0 bg-black/50 transition-opacity" id="cartModalOverlay"></div>
-        <div class="relative bg-white w-full max-w-md mx-auto h-full sm:h-auto sm:max-h-[90vh] sm:rounded-2xl shadow-2xl flex flex-col transform scale-95 transition-transform" id="cartModalContent">
-            <div class="flex items-center justify-between p-6 border-b border-gray-100">
-                <h3 class="font-headline text-xl font-bold">Mon Panier</h3>
-                <button class="w-8 h-8 flex items-center justify-center text-on-surface-variant rounded-full hover:bg-surface-container-low transition" id="cartModalClose" aria-label="Fermer">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-            </div>
-            <div class="flex-1 overflow-y-auto p-6" id="cartModalBody">
-                <!-- Cart items will be injected here -->
-            </div>
-            <div class="p-6 border-t border-gray-100 bg-surface-container-low sm:rounded-b-2xl">
-                <div class="flex justify-between items-center mb-4 text-lg font-bold font-headline">
-                    <span>Total:</span>
-                    <span class="text-primary text-2xl" id="cartTotal">0,00€</span>
-                </div>
-                <button class="w-full bg-primary hover:bg-primary-container text-white font-bold py-4 rounded-full transition shadow-md hover:shadow-lg transform hover:-translate-y-0.5 active:translate-y-0">Commander</button>
-            </div>
-        </div>
-    </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const html    = document.getElementById('htmlRoot');

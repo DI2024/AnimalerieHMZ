@@ -95,3 +95,56 @@ Aujourd'hui, nous avons franchi une étape majeure dans l'expérience utilisateu
 ---
 > [!TIP]
 > La nouvelle page produit est accessible via la route `/product/1` pour démonstration.
+
+# Rapport de Progrès : AnimalerieHMZ - Tunnel d'Achat & Simplification du Parcours
+
+**Date :** 15 Mai 2024 (Session 2)
+**Objectif :** Implémentation de la page de commande et optimisation radicale du tunnel d'achat.
+
+---
+
+## 🚀 Résumé des Réalisations
+
+Cette session a été consacrée à la finalisation du parcours d'achat front-end avec la création d'une **page de checkout premium** et la simplification de l'expérience utilisateur pour maximiser les conversions.
+
+### 🛠️ Nouvelles Fonctionnalités Front-End
+- **Page de Commande (Checkout Page) :**
+    - Design premium en deux colonnes (Informations de livraison vs Résumé de commande).
+    - Formulaire de livraison complet avec validation visuelle.
+    - Résumé de commande haute-fidélité intégrant les produits, totaux et frais de livraison.
+    - Esthétique "Grand Ticket" pour une cohérence parfaite avec le reste du site.
+- **Simplification du Parcours Client :**
+    - **Accès Direct :** L'icône du panier dans le header redirige désormais directement vers le checkout.
+    - **Action Unique :** Sur la page produit, le bouton "Ajouter au panier" a été optimisé pour donner un feedback visuel immédiat ("Ajouté !") sans interrompre la navigation.
+    - **Suppression des Friction :** Retrait du panier latéral et des effets de flou pour une navigation plus rapide et directe.
+- **Notification de Panier :**
+    - Mise à jour dynamique du badge de notification sur l'icône panier lors de l'ajout d'un produit (purement front-end).
+
+---
+
+## 📊 Détails du Tunnel d'Achat
+
+| Composant | Statut | Améliorations Apportées |
+| :--- | :--- | :--- |
+| **Page Checkout** | ✅ Finalisé | Layout professionnel, responsive, et prêt pour l'intégration backend. |
+| **User Flow** | ✅ Optimisé | Passage direct du produit à la commande, réduction du nombre de clics. |
+| **Feedback Visuel** | ✅ Amélioré | Micro-animations sur le bouton d'ajout et mise à jour du compteur de panier. |
+| **Navigation** | ✅ Simplifiée | Header plus fonctionnel avec lien direct vers le checkout. |
+
+---
+
+## ✨ Points Forts de la Session
+- **Efficacité Redoutable :** Le retrait des éléments intermédiaires (modaux/drawers) rend le site extrêmement rapide à utiliser.
+- **Fidélité Visuelle :** La page checkout maintient le standard de design "Premium" avec des détails soignés (icônes Material, ombres portées, typographie Jakarta Sans).
+- **Prêt pour le Backend :** Toutes les routes et structures de données front-end sont en place pour accueillir les modèles de données réels.
+
+---
+
+## 📝 Prochaines Étapes
+1. **Notifications Admin :** Implémenter le système de notification (Email/Dashboard) lors de la confirmation d'une commande.
+2. **Gestion de Session :** Persister le panier en session PHP pour que les articles soient réellement transmis au checkout.
+3. **Dashboard Admin Orders :** Relier la page checkout à la vue "Gestion Commandes" de l'administration.
+
+---
+> [!IMPORTANT]
+> La nouvelle page de checkout est accessible via la route `/checkout` ou en cliquant sur le panier.

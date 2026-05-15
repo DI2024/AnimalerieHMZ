@@ -287,9 +287,9 @@
                 <p class="text-on-surface-variant/60 text-sm px-2 mb-4 dark:text-gray-500">Confort et élégance</p>
                 <div class="flex justify-between items-center px-2">
                     <span class="text-xl font-black text-primary">89,00€</span>
-                    <button class="w-10 h-10 rounded-full bg-primary/5 text-primary hover:bg-primary hover:text-white transition-colors flex items-center justify-center">
+                    <a href="{{ route('checkout') }}" class="w-10 h-10 rounded-full bg-primary/5 text-primary hover:bg-primary hover:text-white transition-colors flex items-center justify-center">
                         <span class="material-symbols-outlined">add_shopping_cart</span>
-                    </button>
+                    </a>
                 </div>
             </div>
 
@@ -302,9 +302,9 @@
                 <p class="text-on-surface-variant/60 text-sm px-2 mb-4 dark:text-gray-500">Minimalisme scandinave</p>
                 <div class="flex justify-between items-center px-2">
                     <span class="text-xl font-black text-primary">34,00€</span>
-                    <button class="w-10 h-10 rounded-full bg-primary/5 text-primary hover:bg-primary hover:text-white transition-colors flex items-center justify-center">
+                    <a href="{{ route('checkout') }}" class="w-10 h-10 rounded-full bg-primary/5 text-primary hover:bg-primary hover:text-white transition-colors flex items-center justify-center">
                         <span class="material-symbols-outlined">add_shopping_cart</span>
-                    </button>
+                    </a>
                 </div>
             </div>
             
@@ -313,74 +313,8 @@
     </div>
 </div>
 
-<!-- Floating Action Button (Mobile) -->
-<div class="fixed bottom-6 right-6 lg:hidden z-40">
-    <button onclick="toggleSideCart()" class="w-16 h-16 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center animate-bounce">
-        <span class="material-symbols-outlined text-3xl">shopping_basket</span>
-    </button>
-</div>
 
-<!-- Custom Side Cart Drawer -->
-<div id="sideCart" class="fixed inset-y-0 right-0 w-full sm:w-[450px] bg-white dark:bg-[#1a1d2e] z-[300] transform translate-x-full transition-transform duration-500 shadow-2xl flex flex-col">
-    <div class="p-6 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center bg-surface-container-low dark:bg-[#13162a]">
-        <div>
-            <h3 class="text-2xl font-black font-headline dark:text-white">Votre Panier</h3>
-            <p class="text-sm text-on-surface-variant/60 dark:text-gray-500">3 articles sélectionnés</p>
-        </div>
-        <button onclick="toggleSideCart()" class="w-10 h-10 rounded-full hover:bg-white dark:hover:bg-gray-800 flex items-center justify-center transition">
-            <span class="material-symbols-outlined">close</span>
-        </button>
-    </div>
-    
-    <div class="flex-1 overflow-y-auto p-6 space-y-6" id="sideCartItems">
-        <!-- Item -->
-        <div class="flex gap-4 group">
-            <div class="w-24 h-24 rounded-2xl overflow-hidden bg-gray-50 flex-shrink-0">
-                <img src="{{ asset('images/products/cat-tree-1.png') }}" class="w-full h-full object-cover">
-            </div>
-            <div class="flex-1">
-                <div class="flex justify-between">
-                    <h4 class="font-bold dark:text-white">Arbre à chat HMZ...</h4>
-                    <button class="text-error/40 hover:text-error transition"><span class="material-symbols-outlined text-sm">delete</span></button>
-                </div>
-                <p class="text-xs text-on-surface-variant/60 mb-2">Beige Nordique</p>
-                <div class="flex justify-between items-end">
-                    <div class="flex items-center gap-3 bg-gray-50 dark:bg-[#13162a] rounded-lg px-2 py-1">
-                        <button class="text-xs font-bold">-</button>
-                        <span class="text-xs font-bold">1</span>
-                        <button class="text-xs font-bold">+</button>
-                    </div>
-                    <span class="font-black text-primary">189,00€</span>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="p-8 border-t border-gray-100 dark:border-gray-800 space-y-6">
-        <div class="space-y-2">
-            <div class="flex justify-between text-on-surface-variant/60 dark:text-gray-500">
-                <span>Sous-total</span>
-                <span>212,00€</span>
-            </div>
-            <div class="flex justify-between text-on-surface-variant/60 dark:text-gray-500">
-                <span>Livraison</span>
-                <span class="text-green-600 font-bold">GRATUIT</span>
-            </div>
-            <div class="flex justify-between text-2xl font-black pt-4 dark:text-white">
-                <span>Total</span>
-                <span class="text-primary-container dark:text-primary-light">212,00€</span>
-            </div>
-        </div>
-        <button class="w-full bg-primary hover:bg-primary-container text-white font-bold py-5 rounded-3xl transition-all shadow-xl hover:shadow-2xl transform hover:-translate-y-1 flex items-center justify-center gap-3">
-            Passer à la caisse
-            <span class="material-symbols-outlined">arrow_forward</span>
-        </button>
-        <p class="text-center text-xs text-on-surface-variant/40">Paiement sécurisé par SSL</p>
-    </div>
-</div>
-
-<!-- Overlay for Side Cart -->
-<div id="sideCartOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[250] hidden opacity-0 transition-opacity duration-500" onclick="toggleSideCart()"></div>
 
 <style>
     .fill-1 { font-variation-settings: 'FILL' 1; }
@@ -439,32 +373,31 @@
         btn.querySelector('div').classList.add('scale-100');
     }
 
-    function toggleSideCart() {
-        const cart = document.getElementById('sideCart');
-        const overlay = document.getElementById('sideCartOverlay');
-        cart.classList.toggle('open');
-        overlay.classList.toggle('show');
-        if (cart.classList.contains('open')) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = '';
-        }
-    }
 
     document.getElementById('addToCartBtn').addEventListener('click', () => {
-        // Add animation effect
         const btn = document.getElementById('addToCartBtn');
+        const originalContent = btn.innerHTML;
+        
         btn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Ajout...';
         btn.disabled = true;
         
         setTimeout(() => {
             btn.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Ajouté !';
+            
+            // Update cart badge visually
+            const badge = document.getElementById('cartBadge');
+            if (badge) {
+                let count = parseInt(badge.textContent) || 0;
+                badge.textContent = count + 1;
+                badge.classList.remove('opacity-0', 'scale-0');
+                badge.classList.add('opacity-100', 'scale-100');
+            }
+
             setTimeout(() => {
-                btn.innerHTML = '<span class="material-symbols-outlined">shopping_cart</span> Ajouter au panier';
+                btn.innerHTML = originalContent;
                 btn.disabled = false;
-                toggleSideCart();
-            }, 1000);
-        }, 800);
+            }, 1500);
+        }, 600);
     });
 
     document.getElementById('likeBtn').addEventListener('click', function() {

@@ -98,9 +98,9 @@
                     <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Volière Design White Edition</h4>
                     <div class="flex justify-between items-center mt-auto">
                         <p class="font-headline text-lg font-bold text-primary">89,00€</p>
-                        <button class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container product-add-btn" data-product-id="3" aria-label="Ajouter au panier">
+                        <a href="{{ route('checkout') }}" class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container product-add-btn" data-product-id="3" aria-label="Commander">
                             <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'wght' 200;">shopping_cart</span>
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <!-- Item 2 -->
@@ -109,9 +109,9 @@
                     <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Croquettes Royal Canin Sterilised</h4>
                     <div class="flex justify-between items-center mt-auto">
                         <p class="font-headline text-lg font-bold text-primary">34,99€</p>
-                        <button class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container product-add-btn" data-product-id="6" aria-label="Ajouter au panier">
+                        <a href="{{ route('checkout') }}" class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container product-add-btn" data-product-id="6" aria-label="Commander">
                             <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'wght' 200;">shopping_cart</span>
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <!-- Item 3 -->
@@ -120,9 +120,9 @@
                     <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Mélange Graines Premium</h4>
                     <div class="flex justify-between items-center mt-auto">
                         <p class="font-headline text-lg font-bold text-primary">14,50€</p>
-                        <button class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container product-add-btn" data-product-id="8" aria-label="Ajouter au panier">
+                        <a href="{{ route('checkout') }}" class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container product-add-btn" data-product-id="8" aria-label="Commander">
                             <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'wght' 200;">shopping_cart</span>
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <!-- Item 4 -->
@@ -131,9 +131,9 @@
                     <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Arbre à chat 'Oasis' 120cm</h4>
                     <div class="flex justify-between items-center mt-auto">
                         <p class="font-headline text-lg font-bold text-primary">49,00€</p>
-                        <button class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container product-add-btn" data-product-id="10" aria-label="Ajouter au panier">
+                        <a href="{{ route('checkout') }}" class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container product-add-btn" data-product-id="10" aria-label="Commander">
                             <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'wght' 200;">shopping_cart</span>
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <!-- Item 5 -->
@@ -142,9 +142,9 @@
                     <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Balançoire en Bois Naturel</h4>
                     <div class="flex justify-between items-center mt-auto">
                         <p class="font-headline text-lg font-bold text-primary">7,90€</p>
-                        <button class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container product-add-btn" data-product-id="11" aria-label="Ajouter au panier">
+                        <a href="{{ route('checkout') }}" class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container product-add-btn" data-product-id="11" aria-label="Commander">
                             <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'wght' 200;">shopping_cart</span>
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <!-- Item 6 -->
@@ -153,9 +153,9 @@
                     <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Litière agglomérante Premium</h4>
                     <div class="flex justify-between items-center mt-auto">
                         <p class="font-headline text-lg font-bold text-primary">12,50€</p>
-                        <button class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container product-add-btn" data-product-id="2" aria-label="Ajouter au panier">
+                        <a href="{{ route('checkout') }}" class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container product-add-btn" data-product-id="2" aria-label="Commander">
                             <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'wght' 200;">shopping_cart</span>
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -200,9 +200,9 @@
                         <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Volière Design White Edition</h4>
                         <div class="flex justify-between items-center mt-auto">
                             <p class="font-headline text-lg font-bold text-primary">89,00€</p>
-                            <button class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container" aria-label="Ajouter au panier">
+                            <a href="{{ route('checkout') }}" class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container" aria-label="Commander">
                                 <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'wght' 200;">shopping_cart</span>
-                            </button>
+                            </a>
                         </div>
                     </div>
                     <!-- Item -->
@@ -211,9 +211,9 @@
                         <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Mélange Graines Premium</h4>
                         <div class="flex justify-between items-center mt-auto">
                             <p class="font-headline text-lg font-bold text-primary">14,50€</p>
-                            <button class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container" aria-label="Ajouter au panier">
+                            <a href="{{ route('checkout') }}" class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container" aria-label="Commander">
                                 <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'wght' 200;">shopping_cart</span>
-                            </button>
+                            </a>
                         </div>
                     </div>
                     <!-- Item -->
@@ -222,9 +222,9 @@
                         <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Balançoire en Bois Naturel</h4>
                         <div class="flex justify-between items-center mt-auto">
                             <p class="font-headline text-lg font-bold text-primary">7,90€</p>
-                            <button class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container" aria-label="Ajouter au panier">
+                            <a href="{{ route('checkout') }}" class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container" aria-label="Commander">
                                 <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'wght' 200;">shopping_cart</span>
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -270,9 +270,9 @@
                         <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Litière agglomérante Premium</h4>
                         <div class="flex justify-between items-center mt-auto">
                             <p class="font-headline text-lg font-bold text-primary">12,50€</p>
-                            <button class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container" aria-label="Ajouter au panier">
+                            <a href="{{ route('checkout') }}" class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container" aria-label="Commander">
                                 <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'wght' 200;">shopping_cart</span>
-                            </button>
+                            </a>
                         </div>
                     </div>
                     <!-- Item -->
@@ -281,9 +281,9 @@
                         <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Croquettes Royal Canin Sterilised</h4>
                         <div class="flex justify-between items-center mt-auto">
                             <p class="font-headline text-lg font-bold text-primary">34,99€</p>
-                            <button class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container" aria-label="Ajouter au panier">
+                            <a href="{{ route('checkout') }}" class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container" aria-label="Commander">
                                 <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'wght' 200;">shopping_cart</span>
-                            </button>
+                            </a>
                         </div>
                     </div>
                     <!-- Item -->
@@ -292,9 +292,9 @@
                         <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Arbre à chat 'Oasis' 120cm</h4>
                         <div class="flex justify-between items-center mt-auto">
                             <p class="font-headline text-lg font-bold text-primary">49,00€</p>
-                            <button class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container" aria-label="Ajouter au panier">
+                            <a href="{{ route('checkout') }}" class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container" aria-label="Commander">
                                 <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'wght' 200;">shopping_cart</span>
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>

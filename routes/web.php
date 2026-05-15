@@ -48,3 +48,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 Route::get('/product/{id}', function ($id) {
     return view('product-detail');
 })->name('product.show');
+
+// Checkout Route
+Route::get('/checkout', function () {
+    return view('checkout');
+})->name('checkout');
