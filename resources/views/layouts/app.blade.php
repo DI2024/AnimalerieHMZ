@@ -34,29 +34,25 @@
             </div>
             
             <nav class="hidden md:flex gap-8" id="mainNav">
-                <a href="#" class="font-headline text-base font-semibold text-on-surface-variant hover:text-primary hover:scale-105 transition-all duration-200 relative py-2 nav-link group" data-category="chiens">
-                    Chiens
-                    <span class="absolute -bottom-[24px] left-0 right-0 h-[3px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                </a>
-                <a href="#" class="font-headline text-base font-semibold text-on-surface-variant hover:text-primary hover:scale-105 transition-all duration-200 relative py-2 nav-link group" data-category="chats">
-                    Chats
-                    <span class="absolute -bottom-[24px] left-0 right-0 h-[3px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                </a>
-                <a href="#" class="font-headline text-base font-semibold text-on-surface-variant hover:text-primary hover:scale-105 transition-all duration-200 relative py-2 nav-link group" data-category="pigeons">
+                <a href="#pigeons" class="font-headline text-base font-semibold text-on-surface-variant hover:text-blue-500 hover:scale-105 transition-all duration-200 relative py-2 nav-link group" data-category="pigeons">
                     Pigeons
-                    <span class="absolute -bottom-[24px] left-0 right-0 h-[3px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                    <span class="absolute -bottom-[24px] left-0 right-0 h-[3px] bg-blue-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                 </a>
-                <a href="#" class="font-headline text-base font-semibold text-on-surface-variant hover:text-primary hover:scale-105 transition-all duration-200 relative py-2 nav-link group" data-category="oiseaux">
+                <a href="#chats" class="font-headline text-base font-semibold text-on-surface-variant hover:text-blue-500 hover:scale-105 transition-all duration-200 relative py-2 nav-link group" data-category="chats">
+                    Chats
+                    <span class="absolute -bottom-[24px] left-0 right-0 h-[3px] bg-blue-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                </a>
+                <a href="#oiseaux" class="font-headline text-base font-semibold text-on-surface-variant hover:text-blue-500 hover:scale-105 transition-all duration-200 relative py-2 nav-link group" data-category="oiseaux">
                     Oiseaux
-                    <span class="absolute -bottom-[24px] left-0 right-0 h-[3px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                    <span class="absolute -bottom-[24px] left-0 right-0 h-[3px] bg-blue-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                 </a>
-                <a href="#offres" class="font-headline text-base font-bold text-primary hover:scale-105 transition-all duration-200 relative py-2 nav-link active">
-                    🔥 Offres
-                    <span class="absolute -bottom-[24px] left-0 right-0 h-[3px] bg-primary"></span>
+                <a href="#offres" class="font-headline text-base font-semibold text-on-surface-variant hover:text-blue-500 hover:scale-105 transition-all duration-200 relative py-2 nav-link group" data-category="offres">
+                    Offres
+                    <span class="absolute -bottom-[24px] left-0 right-0 h-[3px] bg-blue-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                 </a>
-                <a href="#support" class="font-headline text-base font-semibold text-on-surface-variant hover:text-primary hover:scale-105 transition-all duration-200 relative py-2 nav-link group">
-                    Support
-                    <span class="absolute -bottom-[24px] left-0 right-0 h-[3px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                <a href="#support" class="font-headline text-base font-semibold text-on-surface-variant hover:text-blue-500 hover:scale-105 transition-all duration-200 relative py-2 nav-link group" data-category="contact">
+                    Contact
+                    <span class="absolute -bottom-[24px] left-0 right-0 h-[3px] bg-blue-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                 </a>
             </nav>
             
@@ -89,23 +85,20 @@
             </button>
         </div>
         <nav class="flex-1 overflow-y-auto py-4 px-3 flex flex-col gap-1 sidebar-nav">
-            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition font-medium sidebar-link" data-category="chiens">
-                <span class="material-symbols-outlined">pets</span> Chiens
-            </a>
-            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition font-medium sidebar-link" data-category="chats">
-                <span class="material-symbols-outlined">pets</span> Chats
-            </a>
-            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition font-medium sidebar-link" data-category="pigeons">
+            <a href="#pigeons" class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-blue-50 hover:text-blue-500 transition font-medium sidebar-link" data-category="pigeons">
                 <span class="material-symbols-outlined">flutter</span> Pigeons
             </a>
-            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition font-medium sidebar-link" data-category="oiseaux">
+            <a href="#chats" class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-blue-50 hover:text-blue-500 transition font-medium sidebar-link" data-category="chats">
+                <span class="material-symbols-outlined">pets</span> Chats
+            </a>
+            <a href="#oiseaux" class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-blue-50 hover:text-blue-500 transition font-medium sidebar-link" data-category="oiseaux">
                 <span class="material-symbols-outlined">flutter</span> Oiseaux
             </a>
-            <a href="#offres" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-surface-container-low text-primary font-bold sidebar-link active">
-                <span class="material-symbols-outlined">local_offer</span> 🔥 Offres
+            <a href="#offres" class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-blue-50 hover:text-blue-500 transition font-medium sidebar-link" data-category="offres">
+                <span class="material-symbols-outlined">local_offer</span> Offres
             </a>
-            <a href="#support" class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition font-medium sidebar-link">
-                <span class="material-symbols-outlined">support_agent</span> Support
+            <a href="#support" class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-blue-50 hover:text-blue-500 transition font-medium sidebar-link" data-category="contact">
+                <span class="material-symbols-outlined">support_agent</span> Contact
             </a>
         </nav>
     </aside>
@@ -136,10 +129,10 @@
                 <div>
                     <h4 class="font-headline font-bold text-lg mb-4 text-white">Boutique</h4>
                     <ul class="flex flex-col gap-2">
-                        <li><a href="#" class="text-white/70 hover:text-white transition">Chiens</a></li>
-                        <li><a href="#" class="text-white/70 hover:text-white transition">Chats</a></li>
-                        <li><a href="#" class="text-white/70 hover:text-white transition">Oiseaux</a></li>
-                        <li><a href="#" class="text-white/70 hover:text-white transition">Poissons</a></li>
+                        <li><a href="#pigeons" class="text-white/70 hover:text-white transition">Pigeons</a></li>
+                        <li><a href="#chats" class="text-white/70 hover:text-white transition">Chats</a></li>
+                        <li><a href="#oiseaux" class="text-white/70 hover:text-white transition">Oiseaux</a></li>
+                        <li><a href="#offres" class="text-white/70 hover:text-white transition">Offres</a></li>
                     </ul>
                 </div>
             </div>
@@ -177,6 +170,43 @@
                     applyDark(!isDark);
                 });
             }
+
+            // Navbar Active State Logic
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+
+            function setActiveLink(category) {
+                navLinks.forEach(link => {
+                    if (link.dataset.category === category) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+
+                sidebarLinks.forEach(link => {
+                    if (link.dataset.category === category) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    setActiveLink(link.dataset.category);
+                });
+            });
+
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    setActiveLink(link.dataset.category);
+                });
+            });
+
+            // Set initial active state if possible (e.g., from URL or default)
+            // For now, let's not force one unless clicked
         });
     </script>
 </body>

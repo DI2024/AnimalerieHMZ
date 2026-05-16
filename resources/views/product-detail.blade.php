@@ -51,7 +51,7 @@
             <div class="space-y-4">
 
                 
-                <h1 class="text-4xl md:text-5xl font-extrabold font-headline leading-tight dark:text-white">
+                <h1 class="text-3xl md:text-4xl font-extrabold font-headline leading-tight dark:text-white">
                     Arbre à chat <span class="text-primary-container dark:text-primary-light">Premium Luxe</span> Modern Design
                 </h1>
                 
@@ -262,7 +262,7 @@
                         <span class="material-symbols-outlined text-error">favorite</span>
                     </button>
                 </div>
-                <h3 class="font-bold text-lg px-2 dark:text-white">Lit Velours Royal</h3>
+                <h3 class="font-bold text-base px-2 dark:text-white">Lit Velours Royal</h3>
                 <p class="text-on-surface-variant/60 text-sm px-2 mb-4 dark:text-gray-500">Confort et élégance</p>
                 <div class="flex justify-between items-center px-2">
                     <span class="text-xl font-black text-primary">89,00€</span>
@@ -277,7 +277,7 @@
                 <div class="aspect-square rounded-[1.5rem] overflow-hidden mb-4 relative">
                     <img src="{{ asset('images/products/cat-bowl-1.png') }}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
                 </div>
-                <h3 class="font-bold text-lg px-2 dark:text-white">Bol Céramique Zen</h3>
+                <h3 class="font-bold text-base px-2 dark:text-white">Bol Céramique Zen</h3>
                 <p class="text-on-surface-variant/60 text-sm px-2 mb-4 dark:text-gray-500">Minimalisme scandinave</p>
                 <div class="flex justify-between items-center px-2">
                     <span class="text-xl font-black text-primary">34,00€</span>

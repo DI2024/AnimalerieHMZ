@@ -309,3 +309,22 @@ html.dark .ticket-inner {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+/* ─── Navbar Active States ────────────────────────── */
+.nav-link.active {
+    color: #3b82f6 !important; /* blue-500 */
+}
+
+.nav-link.active span {
+    transform: scaleX(1) !important;
+}
+
+.sidebar-link.active {
+    background-color: #eff6ff !important; /* blue-50 */
+    color: #3b82f6 !important; /* blue-500 */
+}
+
+html.dark .sidebar-link.active {
+    background-color: #1e293b !important;
+    color: #60a5fa !important;
+}

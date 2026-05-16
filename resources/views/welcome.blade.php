@@ -25,8 +25,8 @@
                 <!-- Offer 1 -->
                 <div class="relative flex flex-col justify-between p-10 rounded-3xl overflow-hidden min-h-[280px] bg-gradient-to-br from-primary-container to-primary text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl">
                     <div class="relative z-10">
-                        <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">🔥 Offre Spéciale</span>
-                        <h3 class="font-headline text-3xl font-bold leading-tight mb-3">Jusqu'à 25% de remise</h3>
+                        <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">Offre Spéciale</span>
+                        <h3 class="font-headline text-2xl font-bold leading-tight mb-3">Jusqu'à 25% de remise</h3>
                         <p class="text-white/90 text-base font-medium">Sur toute la gamme Chien</p>
                     </div>
                     <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAx-idpF478hzoaaBIUHLUhWNsH922i7ik4yZ4LO2wsFxOXaaH0vCZmjypSNPW30ShDtsjn1yqpnEmIm97kK9VU2iG19ZN0Q_Bc01sr9tKItR4y8LpQcFN8bjT3Gitg7YSmWhoFXxNmov5igt9yvFvKOsFHinogyokHHUyUpIb_jSnIM_foyONoR63ppruzz3Kjj8Q09IM4NcqFWBLcnyUiLmE9JLA5fHEoOWGVZ_SAE5fIRWwLEjQDLqOAa20bHz9MgNHftU0xCdA" alt="Chien" class="absolute right-4 bottom-4 w-40 h-40 object-contain transition-transform duration-500 group-hover:scale-125 group-hover:rotate-6 drop-shadow-2xl">
@@ -35,7 +35,7 @@
                 <div class="relative flex flex-col justify-between p-10 rounded-3xl overflow-hidden min-h-[280px] bg-gradient-to-br from-tertiary to-blue-600 text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl">
                     <div class="relative z-10">
                         <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">✨ Exclusivité Web</span>
-                        <h3 class="font-headline text-3xl font-bold leading-tight mb-3">-15% sur les Accessoires</h3>
+                        <h3 class="font-headline text-2xl font-bold leading-tight mb-3">-15% sur les Accessoires</h3>
                         <p class="text-white/90 text-base font-medium">Pour Chats et Rongeurs</p>
                     </div>
                     <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAD1AcP45gJpBLS8Tr-pXiMNBhB2iQJSA2af3qaDZ7Y417iW3jYCPMEXodTymh_btgwzlODtmGfx9-9WBkmqrr92jmmOl6Hza6t5TQcw34Wpzi1TDXqjiwXuSGQQifpo2cGqNLGMLJfYc4Aj2c7zH9Fns2agYHMc6JfqKBDoNvaF9nY6Bo7nEr_DfAPkZIxRgoqa0c5x6SpMwoaoUhfwM8UHOGaNy0FYVCh2S0XffBGisL1pEt11w0B4A0aiW25uQwPR5_UGGg2YU4" alt="Chat" class="absolute right-4 bottom-4 w-40 h-40 object-contain transition-transform duration-500 group-hover:scale-125 group-hover:rotate-6 drop-shadow-2xl">
@@ -44,7 +44,7 @@
                 <div class="relative flex flex-col justify-between p-10 rounded-3xl overflow-hidden min-h-[280px] bg-white border-2 border-primary/20 text-primary group transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:border-primary">
                     <div class="relative z-10">
                         <span class="inline-block bg-gradient-to-r from-primary/10 to-tertiary/10 text-primary px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-md">🎁 Nouveauté</span>
-                        <h3 class="font-headline text-3xl font-bold leading-tight mb-3">Pack Bienvenue</h3>
+                        <h3 class="font-headline text-2xl font-bold leading-tight mb-3">Pack Bienvenue</h3>
                         <p class="text-on-surface-variant text-base font-medium">Offert pour votre 1ère commande</p>
                     </div>
                     <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqASyV7URQYtB7AufDQq3zsXl7XSv9FkFZ2rS7cvCY8SjFBpNtd44dmKeXIseCB9VNUADcDBsTZFb6lITNOv2FLAuO2mwJu_CqbbtFdL1nnCHvOh3gcNgP6etzuggSPuFxOHrjFd94gobAlyjJdlEbFYg-J5N8E9XGz90YLgl0NJs0XhBpPwWcq_WERVUX8hBqXIcEE5Wjyp6mSiNEde_o2uE8CHpFJxQr9iCfpJSCMSWgZ8U6B2nbcBOlsTz53qAdUrzB7JupVkA" alt="Aquarium" class="absolute right-4 bottom-4 w-40 h-40 object-contain transition-transform duration-500 group-hover:scale-125 group-hover:rotate-6 drop-shadow-xl">
@@ -256,7 +256,7 @@
     </script>
 
     <!-- Section Pigeons -->
-    <section class="py-12 md:py-20 bg-white">
+    <section class="py-12 md:py-20 bg-white" id="pigeons">
         <div class="max-w-[1280px] mx-auto px-6">
             <!-- Banner Pigeons - IMAGE PLEINE LARGEUR -->
             <div class="relative rounded-3xl overflow-hidden mb-12 min-h-[300px] flex items-center shadow-2xl">
@@ -264,7 +264,7 @@
                 <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
                 <div class="relative z-10 max-w-md p-12 text-white">
                     <span class="block text-lg uppercase tracking-widest mb-3 opacity-90 font-semibold">Tout pour les</span>
-                    <h1 class="font-headline text-5xl font-extrabold mb-4">Pigeons</h1>
+                    <h1 class="font-headline text-4xl font-extrabold mb-4">Pigeons</h1>
                     <p class="text-gray-200 text-base">Découvrez notre gamme complète pour vos pigeons</p>
                 </div>
             </div>
@@ -288,7 +288,7 @@
     </section>
 
     <!-- Section Oiseaux -->
-    <section class="py-12 md:py-20 bg-surface-container-low">
+    <section class="py-12 md:py-20 bg-surface-container-low" id="oiseaux">
         <div class="max-w-[1280px] mx-auto px-6">
             <!-- Banner Oiseaux - IMAGE PLEINE LARGEUR -->
             <div class="relative rounded-3xl overflow-hidden mb-12 min-h-[300px] flex items-center shadow-2xl">
@@ -296,7 +296,7 @@
                 <div class="absolute inset-0 bg-gradient-to-r from-blue-900/70 via-blue-900/40 to-transparent"></div>
                 <div class="relative z-10 max-w-md p-12 text-white">
                     <span class="block text-lg uppercase tracking-widest mb-3 opacity-90 font-semibold">Tout pour les</span>
-                    <h1 class="font-headline text-5xl font-extrabold mb-4">Oiseaux</h1>
+                    <h1 class="font-headline text-4xl font-extrabold mb-4">Oiseaux</h1>
                     <p class="text-blue-50 text-base">Une sélection complète pour le bien-être de vos oiseaux</p>
                 </div>
             </div>
@@ -320,7 +320,7 @@
     </section>
 
     <!-- Section Chats -->
-    <section class="py-12 md:py-20 bg-white">
+    <section class="py-12 md:py-20 bg-white" id="chats">
         <div class="max-w-[1280px] mx-auto px-6">
             <!-- Banner Chats - IMAGE PLEINE LARGEUR -->
             <div class="relative rounded-3xl overflow-hidden mb-12 min-h-[300px] flex items-center shadow-2xl">
@@ -328,7 +328,7 @@
                 <div class="absolute inset-0 bg-gradient-to-r from-indigo-900/70 via-indigo-900/40 to-transparent"></div>
                 <div class="relative z-10 max-w-md p-12 text-white">
                     <span class="block text-lg uppercase tracking-widest mb-3 opacity-90 font-semibold">Tout pour les</span>
-                    <h1 class="font-headline text-5xl font-extrabold mb-4">Chats</h1>
+                    <h1 class="font-headline text-4xl font-extrabold mb-4">Chats</h1>
                     <p class="text-indigo-50 text-base">Tout ce dont votre félin a besoin pour être heureux</p>
                 </div>
             </div>
@@ -406,46 +406,64 @@
                 <h2 class="font-headline text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-primary mb-3">Avis Clients</h2>
                 <p class="text-on-surface-variant text-lg">Ce que nos clients disent de nous</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
                 <!-- Avis 1 -->
-                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 flex flex-col h-full border-2 border-gray-100">
-                    <div class="flex items-center gap-1 mb-4 text-amber-400 text-2xl">
-                        <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
-                    </div>
-                    <p class="text-gray-700 mb-6 flex-grow leading-relaxed">"Excellent service et produits de qualité. Mon chat adore ses nouvelles croquettes Royal Canin!"</p>
-                    <div class="border-t border-gray-200 pt-4 flex items-center gap-4">
-                        <div class="w-14 h-14 rounded-full bg-gradient-to-br from-primary to-tertiary flex items-center justify-center text-white font-bold text-xl">S</div>
-                        <div>
-                            <p class="font-bold text-gray-900">Sophie Martin</p>
-                            <p class="text-sm text-gray-500">Cliente depuis 2024</p>
+                <div class="ticket-card group">
+                    <div class="ticket-inner h-full flex flex-col">
+                        <div class="flex items-center gap-1 mb-6 text-amber-400 text-xl">
+                            <span class="material-symbols-outlined fill-1">star</span>
+                            <span class="material-symbols-outlined fill-1">star</span>
+                            <span class="material-symbols-outlined fill-1">star</span>
+                            <span class="material-symbols-outlined fill-1">star</span>
+                            <span class="material-symbols-outlined fill-1">star</span>
+                        </div>
+                        <p class="text-on-surface-variant dark:text-gray-400 mb-8 flex-grow leading-relaxed italic">"Excellent service et produits de qualité. Mon chat adore ses nouvelles croquettes Royal Canin!"</p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">S</div>
+                            <div>
+                                <p class="font-bold dark:text-white">Sophie Martin</p>
+                                <p class="text-xs text-on-surface-variant/60">Cliente depuis 2024</p>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <!-- Avis 2 -->
-                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 flex flex-col h-full border-2 border-gray-100">
-                    <div class="flex items-center gap-1 mb-4 text-amber-400 text-2xl">
-                        <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
-                    </div>
-                    <p class="text-gray-700 mb-6 flex-grow leading-relaxed">"Livraison rapide et emballage soigné. La volière est magnifique et mes oiseaux sont ravis!"</p>
-                    <div class="border-t border-gray-200 pt-4 flex items-center gap-4">
-                        <div class="w-14 h-14 rounded-full bg-gradient-to-br from-tertiary to-primary flex items-center justify-center text-white font-bold text-xl">M</div>
-                        <div>
-                            <p class="font-bold text-gray-900">Marc Dubois</p>
-                            <p class="text-sm text-gray-500">Client depuis 2023</p>
+                <div class="ticket-card group">
+                    <div class="ticket-inner h-full flex flex-col">
+                        <div class="flex items-center gap-1 mb-6 text-amber-400 text-xl">
+                            <span class="material-symbols-outlined fill-1">star</span>
+                            <span class="material-symbols-outlined fill-1">star</span>
+                            <span class="material-symbols-outlined fill-1">star</span>
+                            <span class="material-symbols-outlined fill-1">star</span>
+                            <span class="material-symbols-outlined fill-1">star</span>
+                        </div>
+                        <p class="text-on-surface-variant dark:text-gray-400 mb-8 flex-grow leading-relaxed italic">"Livraison rapide et emballage soigné. La volière est magnifique et mes oiseaux sont ravis!"</p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center font-bold text-secondary">M</div>
+                            <div>
+                                <p class="font-bold dark:text-white">Marc Dubois</p>
+                                <p class="text-xs text-on-surface-variant/60">Client depuis 2023</p>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <!-- Avis 3 -->
-                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 flex flex-col h-full border-2 border-gray-100">
-                    <div class="flex items-center gap-1 mb-4 text-amber-400 text-2xl">
-                        <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
-                    </div>
-                    <p class="text-gray-700 mb-6 flex-grow leading-relaxed">"Super boutique! Les prix sont compétitifs et le service client est très réactif. Je recommande!"</p>
-                    <div class="border-t border-gray-200 pt-4 flex items-center gap-4">
-                        <div class="w-14 h-14 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold text-xl">L</div>
-                        <div>
-                            <p class="font-bold text-gray-900">Laura Petit</p>
-                            <p class="text-sm text-gray-500">Cliente depuis 2025</p>
+                <div class="ticket-card group">
+                    <div class="ticket-inner h-full flex flex-col">
+                        <div class="flex items-center gap-1 mb-6 text-amber-400 text-xl">
+                            <span class="material-symbols-outlined fill-1">star</span>
+                            <span class="material-symbols-outlined fill-1">star</span>
+                            <span class="material-symbols-outlined fill-1">star</span>
+                            <span class="material-symbols-outlined fill-1">star</span>
+                            <span class="material-symbols-outlined fill-1">star</span>
+                        </div>
+                        <p class="text-on-surface-variant dark:text-gray-400 mb-8 flex-grow leading-relaxed italic">"Super boutique! Les prix sont compétitifs et le service client est très réactif. Je recommande!"</p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-tertiary/10 flex items-center justify-center font-bold text-tertiary">L</div>
+                            <div>
+                                <p class="font-bold dark:text-white">Laura Petit</p>
+                                <p class="text-xs text-on-surface-variant/60">Cliente depuis 2025</p>
+                            </div>
                         </div>
                     </div>
                 </div>

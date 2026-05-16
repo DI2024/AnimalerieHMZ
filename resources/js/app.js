@@ -178,7 +178,7 @@ function renderProducts(category = 'all') {
             </div>
             <div class="flex-grow flex flex-col">
                 <span class="text-xs font-bold uppercase tracking-wider text-blue-400">${product.category}</span>
-                <h3 class="font-bold mt-1 mb-2 leading-tight">${product.name}</h3>
+                <h3 class="text-sm font-bold mt-1 mb-2 leading-tight">${product.name}</h3>
                 <div class="flex gap-0.5 mb-2 text-yellow-400 text-sm">
                     ${createStarRating(product.rating)}
                 </div>
