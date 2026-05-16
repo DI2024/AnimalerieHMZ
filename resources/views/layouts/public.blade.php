@@ -119,6 +119,7 @@
                     <a href="#chats" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105">Chats</a>
                     <a href="#oiseaux" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105">Oiseaux</a>
                     <a href="#offres" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105">Offres</a>
+                    <a href="#contact" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105">Contact</a>
                 </div>
 
                 <!-- Right Side - Cart & Auth -->
@@ -192,6 +193,7 @@
                     <a href="#chats" class="px-4 py-2 text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">Chats</a>
                     <a href="#oiseaux" class="px-4 py-2 text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">Oiseaux</a>
                     <a href="#offres" class="px-4 py-2 text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">Offres</a>
+                    <a href="#contact" class="px-4 py-2 text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">Contact</a>
                 </div>
             </div>
         </div>
