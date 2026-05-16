@@ -15,7 +15,7 @@
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="font-body text-on-surface bg-white antialiased overflow-x-hidden transition-colors duration-300" id="bodyRoot">
+<body class="font-body text-on-surface bg-white antialiased overflow-x-hidden transition-colors duration-300 min-h-screen flex flex-col" id="bodyRoot">
     <!-- Dark Mode Init (run before paint to avoid flash) -->
     <script>
         (function() {
@@ -33,15 +33,31 @@
                 <span class="hidden sm:inline">Animalerie HMZ</span>
             </div>
             
-            <nav class="hidden md:flex gap-10" id="mainNav">
-                <a href="#" class="font-headline text-base font-medium text-on-surface-variant hover:text-primary transition relative py-2 nav-link" data-category="chiens">Chiens</a>
-                <a href="#" class="font-headline text-base font-medium text-on-surface-variant hover:text-primary transition relative py-2 nav-link" data-category="chats">Chats</a>
-                <a href="#" class="font-headline text-base font-medium text-on-surface-variant hover:text-primary transition relative py-2 nav-link" data-category="oiseaux">Oiseaux</a>
-                <a href="#offres" class="font-headline text-base font-bold text-primary transition relative py-2 nav-link active">
-                    Offres
+            <nav class="hidden md:flex gap-8" id="mainNav">
+                <a href="#" class="font-headline text-base font-semibold text-on-surface-variant hover:text-primary hover:scale-105 transition-all duration-200 relative py-2 nav-link group" data-category="chiens">
+                    Chiens
+                    <span class="absolute -bottom-[24px] left-0 right-0 h-[3px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                </a>
+                <a href="#" class="font-headline text-base font-semibold text-on-surface-variant hover:text-primary hover:scale-105 transition-all duration-200 relative py-2 nav-link group" data-category="chats">
+                    Chats
+                    <span class="absolute -bottom-[24px] left-0 right-0 h-[3px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                </a>
+                <a href="#" class="font-headline text-base font-semibold text-on-surface-variant hover:text-primary hover:scale-105 transition-all duration-200 relative py-2 nav-link group" data-category="pigeons">
+                    Pigeons
+                    <span class="absolute -bottom-[24px] left-0 right-0 h-[3px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                </a>
+                <a href="#" class="font-headline text-base font-semibold text-on-surface-variant hover:text-primary hover:scale-105 transition-all duration-200 relative py-2 nav-link group" data-category="oiseaux">
+                    Oiseaux
+                    <span class="absolute -bottom-[24px] left-0 right-0 h-[3px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                </a>
+                <a href="#offres" class="font-headline text-base font-bold text-primary hover:scale-105 transition-all duration-200 relative py-2 nav-link active">
+                    🔥 Offres
                     <span class="absolute -bottom-[24px] left-0 right-0 h-[3px] bg-primary"></span>
                 </a>
-                <a href="#support" class="font-headline text-base font-medium text-on-surface-variant hover:text-primary transition relative py-2 nav-link">Support</a>
+                <a href="#support" class="font-headline text-base font-semibold text-on-surface-variant hover:text-primary hover:scale-105 transition-all duration-200 relative py-2 nav-link group">
+                    Support
+                    <span class="absolute -bottom-[24px] left-0 right-0 h-[3px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                </a>
             </nav>
             
             <div class="flex items-center gap-2">
@@ -79,11 +95,14 @@
             <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition font-medium sidebar-link" data-category="chats">
                 <span class="material-symbols-outlined">pets</span> Chats
             </a>
+            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition font-medium sidebar-link" data-category="pigeons">
+                <span class="material-symbols-outlined">flutter</span> Pigeons
+            </a>
             <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition font-medium sidebar-link" data-category="oiseaux">
                 <span class="material-symbols-outlined">flutter</span> Oiseaux
             </a>
             <a href="#offres" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-surface-container-low text-primary font-bold sidebar-link active">
-                <span class="material-symbols-outlined">local_offer</span> Offres
+                <span class="material-symbols-outlined">local_offer</span> 🔥 Offres
             </a>
             <a href="#support" class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition font-medium sidebar-link">
                 <span class="material-symbols-outlined">support_agent</span> Support
@@ -91,7 +110,7 @@
         </nav>
     </aside>
 
-    <main>
+    <main class="flex-grow">
         @yield('content')
     </main>
 

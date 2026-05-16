@@ -8,7 +8,6 @@
             <div class="max-w-[42rem] pr-8 text-left">
                 <h1 class="font-headline text-[clamp(2rem,5vw,2.5rem)] font-bold leading-[1.2] tracking-tight text-primary mb-6">Tout pour le bonheur de vos compagnons</h1>
                 <p class="text-[1.125rem] leading-[1.6] text-on-surface-variant mb-12">Découvrez une sélection premium de produits pour prendre soin de vos animaux avec l'expertise et la fiabilité PetTrust.</p>
-                <!-- Mobile Image -->
                 <img src="{{ asset('images/hero.png') }}" alt="Animaux heureux" class="md:hidden w-full max-w-sm mx-auto mb-8">
                 <button class="bg-primary hover:bg-primary-container text-white font-bold py-4 px-8 rounded-full transition shadow-md hover:-translate-y-0.5 active:translate-y-0 text-sm flex items-center justify-center gap-2" id="heroBtn">Découvrir la boutique</button>
             </div>
@@ -16,35 +15,39 @@
     </section>
 
     <!-- Offers Section -->
-    <section class="py-8 md:py-16 bg-surface-container-low" id="offres">
+    <section class="py-12 md:py-20 bg-gradient-to-b from-surface-container-low to-white" id="offres">
         <div class="max-w-[1280px] mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="text-center mb-12">
+                <h2 class="font-headline text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-primary mb-3">Offres Exceptionnelles</h2>
+                <p class="text-on-surface-variant text-lg">Profitez de nos promotions exclusives</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Offer 1 -->
-                <div class="flex justify-between items-center p-8 rounded-3xl overflow-hidden relative min-h-[180px] bg-primary-container text-white group transition duration-300">
-                    <div class="z-10 flex-1">
-                        <span class="inline-block bg-white/20 px-3 py-1 rounded-full text-[0.75rem] font-bold uppercase tracking-[0.05em]">Offre Spéciale</span>
-                        <h3 class="font-headline text-[clamp(1.25rem,3vw,2rem)] font-semibold leading-[1.3] tracking-tight mt-4">Jusqu'à 25% de remise</h3>
-                        <p class="mt-2 opacity-90 text-[0.875rem]">Sur toute la gamme Chien</p>
+                <div class="relative flex flex-col justify-between p-10 rounded-3xl overflow-hidden min-h-[280px] bg-gradient-to-br from-primary-container to-primary text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+                    <div class="relative z-10">
+                        <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">🔥 Offre Spéciale</span>
+                        <h3 class="font-headline text-3xl font-bold leading-tight mb-3">Jusqu'à 25% de remise</h3>
+                        <p class="text-white/90 text-base font-medium">Sur toute la gamme Chien</p>
                     </div>
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAx-idpF478hzoaaBIUHLUhWNsH922i7ik4yZ4LO2wsFxOXaaH0vCZmjypSNPW30ShDtsjn1yqpnEmIm97kK9VU2iG19ZN0Q_Bc01sr9tKItR4y8LpQcFN8bjT3Gitg7YSmWhoFXxNmov5igt9yvFvKOsFHinogyokHHUyUpIb_jSnIM_foyONoR63ppruzz3Kjj8Q09IM4NcqFWBLcnyUiLmE9JLA5fHEoOWGVZ_SAE5fIRWwLEjQDLqOAa20bHz9MgNHftU0xCdA" alt="Chien" class="w-32 h-32 object-contain transition duration-300 group-hover:scale-110">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAx-idpF478hzoaaBIUHLUhWNsH922i7ik4yZ4LO2wsFxOXaaH0vCZmjypSNPW30ShDtsjn1yqpnEmIm97kK9VU2iG19ZN0Q_Bc01sr9tKItR4y8LpQcFN8bjT3Gitg7YSmWhoFXxNmov5igt9yvFvKOsFHinogyokHHUyUpIb_jSnIM_foyONoR63ppruzz3Kjj8Q09IM4NcqFWBLcnyUiLmE9JLA5fHEoOWGVZ_SAE5fIRWwLEjQDLqOAa20bHz9MgNHftU0xCdA" alt="Chien" class="absolute right-4 bottom-4 w-40 h-40 object-contain transition-transform duration-500 group-hover:scale-125 group-hover:rotate-6 drop-shadow-2xl">
                 </div>
                 <!-- Offer 2 -->
-                <div class="flex justify-between items-center p-8 rounded-3xl overflow-hidden relative min-h-[180px] bg-tertiary text-white group transition duration-300">
-                    <div class="z-10 flex-1">
-                        <span class="inline-block bg-white/20 px-3 py-1 rounded-full text-[0.75rem] font-bold uppercase tracking-[0.05em]">Exclusivité Web</span>
-                        <h3 class="font-headline text-[clamp(1.25rem,3vw,2rem)] font-semibold leading-[1.3] tracking-tight mt-4">-15% sur les Accessoires</h3>
-                        <p class="mt-2 opacity-90 text-[0.875rem]">Pour Chats et Rongeurs</p>
+                <div class="relative flex flex-col justify-between p-10 rounded-3xl overflow-hidden min-h-[280px] bg-gradient-to-br from-tertiary to-blue-600 text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+                    <div class="relative z-10">
+                        <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">✨ Exclusivité Web</span>
+                        <h3 class="font-headline text-3xl font-bold leading-tight mb-3">-15% sur les Accessoires</h3>
+                        <p class="text-white/90 text-base font-medium">Pour Chats et Rongeurs</p>
                     </div>
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAD1AcP45gJpBLS8Tr-pXiMNBhB2iQJSA2af3qaDZ7Y417iW3jYCPMEXodTymh_btgwzlODtmGfx9-9WBkmqrr92jmmOl6Hza6t5TQcw34Wpzi1TDXqjiwXuSGQQifpo2cGqNLGMLJfYc4Aj2c7zH9Fns2agYHMc6JfqKBDoNvaF9nY6Bo7nEr_DfAPkZIxRgoqa0c5x6SpMwoaoUhfwM8UHOGaNy0FYVCh2S0XffBGisL1pEt11w0B4A0aiW25uQwPR5_UGGg2YU4" alt="Chat" class="w-32 h-32 object-contain transition duration-300 group-hover:scale-110">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAD1AcP45gJpBLS8Tr-pXiMNBhB2iQJSA2af3qaDZ7Y417iW3jYCPMEXodTymh_btgwzlODtmGfx9-9WBkmqrr92jmmOl6Hza6t5TQcw34Wpzi1TDXqjiwXuSGQQifpo2cGqNLGMLJfYc4Aj2c7zH9Fns2agYHMc6JfqKBDoNvaF9nY6Bo7nEr_DfAPkZIxRgoqa0c5x6SpMwoaoUhfwM8UHOGaNy0FYVCh2S0XffBGisL1pEt11w0B4A0aiW25uQwPR5_UGGg2YU4" alt="Chat" class="absolute right-4 bottom-4 w-40 h-40 object-contain transition-transform duration-500 group-hover:scale-125 group-hover:rotate-6 drop-shadow-2xl">
                 </div>
                 <!-- Offer 3 -->
-                <div class="flex justify-between items-center p-8 rounded-3xl overflow-hidden relative min-h-[180px] bg-white border border-gray-200 text-primary group transition duration-300">
-                    <div class="z-10 flex-1">
-                        <span class="inline-block bg-surface-container-low text-primary px-3 py-1 rounded-full text-[0.75rem] font-bold uppercase tracking-[0.05em]">Nouveauté</span>
-                        <h3 class="font-headline text-[clamp(1.25rem,3vw,2rem)] font-semibold leading-[1.3] tracking-tight mt-4">Pack Bienvenue</h3>
-                        <p class="mt-2 text-on-surface-variant text-[0.875rem]">Offert pour votre 1ère commande</p>
+                <div class="relative flex flex-col justify-between p-10 rounded-3xl overflow-hidden min-h-[280px] bg-white border-2 border-primary/20 text-primary group transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:border-primary">
+                    <div class="relative z-10">
+                        <span class="inline-block bg-gradient-to-r from-primary/10 to-tertiary/10 text-primary px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-md">🎁 Nouveauté</span>
+                        <h3 class="font-headline text-3xl font-bold leading-tight mb-3">Pack Bienvenue</h3>
+                        <p class="text-on-surface-variant text-base font-medium">Offert pour votre 1ère commande</p>
                     </div>
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqASyV7URQYtB7AufDQq3zsXl7XSv9FkFZ2rS7cvCY8SjFBpNtd44dmKeXIseCB9VNUADcDBsTZFb6lITNOv2FLAuO2mwJu_CqbbtFdL1nnCHvOh3gcNgP6etzuggSPuFxOHrjFd94gobAlyjJdlEbFYg-J5N8E9XGz90YLgl0NJs0XhBpPwWcq_WERVUX8hBqXIcEE5Wjyp6mSiNEde_o2uE8CHpFJxQr9iCfpJSCMSWgZ8U6B2nbcBOlsTz53qAdUrzB7JupVkA" alt="Aquarium" class="w-32 h-32 object-contain transition duration-300 group-hover:scale-110">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqASyV7URQYtB7AufDQq3zsXl7XSv9FkFZ2rS7cvCY8SjFBpNtd44dmKeXIseCB9VNUADcDBsTZFb6lITNOv2FLAuO2mwJu_CqbbtFdL1nnCHvOh3gcNgP6etzuggSPuFxOHrjFd94gobAlyjJdlEbFYg-J5N8E9XGz90YLgl0NJs0XhBpPwWcq_WERVUX8hBqXIcEE5Wjyp6mSiNEde_o2uE8CHpFJxQr9iCfpJSCMSWgZ8U6B2nbcBOlsTz53qAdUrzB7JupVkA" alt="Aquarium" class="absolute right-4 bottom-4 w-40 h-40 object-contain transition-transform duration-500 group-hover:scale-125 group-hover:rotate-6 drop-shadow-xl">
                 </div>
             </div>
         </div>
@@ -78,7 +81,7 @@
         </div>
     </section>
 
-    <!-- Best Sellers Section -->
+    <!-- Best Sellers Section - CAROUSEL HORIZONTAL -->
     <section class="py-8 md:py-16 bg-surface-container-low">
         <div class="max-w-[1280px] mx-auto px-6">
             <div class="flex justify-between items-end mb-8">
@@ -86,306 +89,363 @@
                     <h2 class="font-headline text-[clamp(1.5rem,4vw,2rem)] font-semibold leading-[1.3] tracking-tight text-primary">Nos Best Sellers</h2>
                     <p class="text-on-surface-variant mt-2">Les produits préférés de notre communauté</p>
                 </div>
-                <button class="inline-flex items-center gap-2 text-primary font-bold text-[0.875rem] transition hover:underline">
-                    Tout voir <span class="material-symbols-outlined text-[24px]">arrow_forward</span>
-                </button>
+                <div class="flex items-center gap-3">
+                    <button id="scrollLeft" class="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all">
+                        <span class="material-symbols-outlined">chevron_left</span>
+                    </button>
+                    <button id="scrollRight" class="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all">
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </button>
+                </div>
             </div>
-            <!-- Best Sellers Static Carousel -->
-            <div class="flex gap-6 overflow-x-auto pb-4 hide-scrollbar snap-x">
-                <!-- Item 1 -->
-                <div class="min-w-[210px] flex-shrink-0 snap-start bg-ticket border border-gray-100 rounded-3xl p-5 flex flex-col group transition shadow-ticket hover:shadow-xl hover:-translate-y-1">
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuClYWz_RZMFkeB388ZG-bh97mfPIVfjx52xnIAnsFCry5DWZr8JkZXXkvrfCd2JOvT3T7_e_oaDJovqOm9TBKI3IPyEu2oy5WBERvzx8P9OZF6BSRW8An7kMKAtFYnnXop35gZx-PEXS_yHmFD-LtMRfnHJT1pW5KpMrlxiH3KmQsMgNQ4Tw1qRfUb6-hhALmKaLq4mLRU_KmVH0ZVgQ14sGqeKKwRf8YeIsbeMVZX3BKvf70UPS2eUrgW-ETcGeGK4Byx_hIfiVFw" alt="Volière" class="w-full h-32 object-contain mb-4">
-                    <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Volière Design White Edition</h4>
-                    <div class="flex justify-between items-center mt-auto">
-                        <p class="font-headline text-lg font-bold text-primary">89,00€</p>
-                        <a href="{{ route('checkout') }}" class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container product-add-btn" data-product-id="3" aria-label="Commander">
-                            <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'wght' 200;">shopping_cart</span>
-                        </a>
+            <!-- Carousel horizontal avec 5 produits visibles -->
+            <div class="relative">
+                <div class="overflow-x-auto hide-scrollbar scroll-smooth" id="productsCarousel">
+                    <div class="flex gap-6 pb-4">
+                <!-- Carte 1 - Design Innovant -->
+                <div class="min-w-[230px] w-[230px] bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col group border border-gray-200 flex-shrink-0">
+                    <div class="relative w-full h-48 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4 overflow-hidden">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuClYWz_RZMFkeB388ZG-bh97mfPIVfjx52xnIAnsFCry5DWZr8JkZXXkvrfCd2JOvT3T7_e_oaDJovqOm9TBKI3IPyEu2oy5WBERvzx8P9OZF6BSRW8An7kMKAtFYnnXop35gZx-PEXS_yHmFD-LtMRfnHJT1pW5KpMrlxiH3KmQsMgNQ4Tw1qRfUb6-hhALmKaLq4mLRU_KmVH0ZVgQ14sGqeKKwRf8YeIsbeMVZX3BKvf70UPS2eUrgW-ETcGeGK4Byx_hIfiVFw" alt="Volière" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded-full">⭐ 5.0</div>
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h4 class="font-bold text-sm text-gray-900 mb-2 line-clamp-2 min-h-[40px]">Volière Design White Edition</h4>
+                        <div class="flex items-center justify-between mt-auto">
+                            <p class="font-headline text-xl font-bold text-primary">89€</p>
+                            <button class="bg-primary text-white p-2 rounded-lg hover:bg-primary-container transition-colors">
+                                <span class="material-symbols-outlined text-[18px]">shopping_cart</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <!-- Item 2 -->
-                <div class="min-w-[210px] flex-shrink-0 snap-start bg-ticket border border-gray-100 rounded-3xl p-5 flex flex-col group transition shadow-ticket hover:shadow-xl hover:-translate-y-1">
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDih_ShjrZl6FyKaaP3p3pH1ZQTlB2eVjlzZzXGETjTcpk5P0HKjbQ-wAo4yQ0YAdvsd1OrUi85liTwehVZhIkWVffjHGws8ZiIdDP5msHZ0MCQGEUGGRPAIQMC4sCxHf4znq18vnZ9Wex6KeiZT_lR874YUdp7Pd-pln-NZqJU53gjc7Od7aSf3GwaFTtuQPPI0rARb2Kq-nVLPdY6GK2QkbGJdXc7IfZ-IFMrZFjBvWWy1rTQ6bqrU_rgOA9FxrPErseQweskE4A" alt="Croquettes" class="w-full h-32 object-contain mb-4">
-                    <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Croquettes Royal Canin Sterilised</h4>
-                    <div class="flex justify-between items-center mt-auto">
-                        <p class="font-headline text-lg font-bold text-primary">34,99€</p>
-                        <a href="{{ route('checkout') }}" class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container product-add-btn" data-product-id="6" aria-label="Commander">
-                            <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'wght' 200;">shopping_cart</span>
-                        </a>
+                <!-- Carte 2 -->
+                <div class="min-w-[230px] w-[230px] bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col group border border-gray-200 flex-shrink-0">
+                    <div class="relative w-full h-48 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4 overflow-hidden">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDih_ShjrZl6FyKaaP3p3pH1ZQTlB2eVjlzZzXGETjTcpk5P0HKjbQ-wAo4yQ0YAdvsd1OrUi85liTwehVZhIkWVffjHGws8ZiIdDP5msHZ0MCQGEUGGRPAIQMC4sCxHf4znq18vnZ9Wex6KeiZT_lR874YUdp7Pd-pln-NZqJU53gjc7Od7aSf3GwaFTtuQPPI0rARb2Kq-nVLPdY6GK2QkbGJdXc7IfZ-IFMrZFjBvWWy1rTQ6bqrU_rgOA9FxrPErseQweskE4A" alt="Croquettes" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded-full">⭐ 5.0</div>
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h4 class="font-bold text-sm text-gray-900 mb-2 line-clamp-2 min-h-[40px]">Croquettes Royal Canin Sterilised</h4>
+                        <div class="flex items-center justify-between mt-auto">
+                            <p class="font-headline text-xl font-bold text-primary">35€</p>
+                            <button class="bg-primary text-white p-2 rounded-lg hover:bg-primary-container transition-colors">
+                                <span class="material-symbols-outlined text-[18px]">shopping_cart</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <!-- Item 3 -->
-                <div class="min-w-[210px] flex-shrink-0 snap-start bg-ticket border border-gray-100 rounded-3xl p-5 flex flex-col group transition shadow-ticket hover:shadow-xl hover:-translate-y-1">
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQXx6hiUnOCX6DzOYQFjw2OrpfOIMoRhffQpWaGCqdsUlortBdVqSqAR_xd6Fn6gCZZUFji4VdfAmXhX5s9pzWEhG5UH0lcp21npAq9fuGnRxAzrecick6_ERfAUEza0zCesRzz7kF6nnzRK2ioGzio6gLFkdV9n4QIJMRSH5Rb4rk8a7uyW_yBHJxsVn-H1Qv975itGYfYFVHtLTgQnig4KiM5eMzekLdU-8CzNjmglwOOp0ov466FOPQqMVrFSAg8dhT_-nR4Ko" alt="Graines" class="w-full h-32 object-contain mb-4">
-                    <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Mélange Graines Premium</h4>
-                    <div class="flex justify-between items-center mt-auto">
-                        <p class="font-headline text-lg font-bold text-primary">14,50€</p>
-                        <a href="{{ route('checkout') }}" class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container product-add-btn" data-product-id="8" aria-label="Commander">
-                            <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'wght' 200;">shopping_cart</span>
-                        </a>
+                <!-- Carte 3 -->
+                <div class="min-w-[230px] w-[230px] bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col group border border-gray-200 flex-shrink-0">
+                    <div class="relative w-full h-48 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4 overflow-hidden">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQXx6hiUnOCX6DzOYQFjw2OrpfOIMoRhffQpWaGCqdsUlortBdVqSqAR_xd6Fn6gCZZUFji4VdfAmXhX5s9pzWEhG5UH0lcp21npAq9fuGnRxAzrecick6_ERfAUEza0zCesRzz7kF6nnzRK2ioGzio6gLFkdV9n4QIJMRSH5Rb4rk8a7uyW_yBHJxsVn-H1Qv975itGYfYFVHtLTgQnig4KiM5eMzekLdU-8CzNjmglwOOp0ov466FOPQqMVrFSAg8dhT_-nR4Ko" alt="Graines" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded-full">⭐ 5.0</div>
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h4 class="font-bold text-sm text-gray-900 mb-2 line-clamp-2 min-h-[40px]">Mélange Graines Premium</h4>
+                        <div class="flex items-center justify-between mt-auto">
+                            <p class="font-headline text-xl font-bold text-primary">15€</p>
+                            <button class="bg-primary text-white p-2 rounded-lg hover:bg-primary-container transition-colors">
+                                <span class="material-symbols-outlined text-[18px]">shopping_cart</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <!-- Item 4 -->
-                <div class="min-w-[210px] flex-shrink-0 snap-start bg-ticket border border-gray-100 rounded-3xl p-5 flex flex-col group transition shadow-ticket hover:shadow-xl hover:-translate-y-1">
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCf13j3hn9fIiDpqfSIlA9_FGHwtCP_eI4a3XaBc8PRii4W1Xpek9f00xWvJE9IUbjlRXdu8-LuGY5LKKcih9AXo-YkFHi7qYjMJd47ArOAqqoOoWn9leyXVBBQuw1n3PCI2GBC55QG4gMu1HBDQkpsFbkZS_WJ0_q_vf2YXJFxlB0HrVo3E1bjSgW_uyEks74dsBVn7FKDLKCduZjyu-6-aJScVW_a1dPEPCDq1rgNwr8q4NCWWeiWomcEutvwHdKGXHPcFYJEMAw" alt="Arbre à chat" class="w-full h-32 object-contain mb-4">
-                    <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Arbre à chat 'Oasis' 120cm</h4>
-                    <div class="flex justify-between items-center mt-auto">
-                        <p class="font-headline text-lg font-bold text-primary">49,00€</p>
-                        <a href="{{ route('checkout') }}" class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container product-add-btn" data-product-id="10" aria-label="Commander">
-                            <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'wght' 200;">shopping_cart</span>
-                        </a>
+                <!-- Carte 4 -->
+                <div class="min-w-[230px] w-[230px] bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col group border border-gray-200 flex-shrink-0">
+                    <div class="relative w-full h-48 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4 overflow-hidden">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCf13j3hn9fIiDpqfSIlA9_FGHwtCP_eI4a3XaBc8PRii4W1Xpek9f00xWvJE9IUbjlRXdu8-LuGY5LKKcih9AXo-YkFHi7qYjMJd47ArOAqqoOoWn9leyXVBBQuw1n3PCI2GBC55QG4gMu1HBDQkpsFbkZS_WJ0_q_vf2YXJFxlB0HrVo3E1bjSgW_uyEks74dsBVn7FKDLKCduZjyu-6-aJScVW_a1dPEPCDq1rgNwr8q4NCWWeiWomcEutvwHdKGXHPcFYJEMAw" alt="Arbre" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded-full">⭐ 5.0</div>
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h4 class="font-bold text-sm text-gray-900 mb-2 line-clamp-2 min-h-[40px]">Arbre à chat 'Oasis' 120cm</h4>
+                        <div class="flex items-center justify-between mt-auto">
+                            <p class="font-headline text-xl font-bold text-primary">49€</p>
+                            <button class="bg-primary text-white p-2 rounded-lg hover:bg-primary-container transition-colors">
+                                <span class="material-symbols-outlined text-[18px]">shopping_cart</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <!-- Item 5 -->
-                <div class="min-w-[210px] flex-shrink-0 snap-start bg-ticket border border-gray-100 rounded-3xl p-5 flex flex-col group transition shadow-ticket hover:shadow-xl hover:-translate-y-1">
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4n77pofZu0M7VUhuXGR57lrTtl_tb-uNTk86gHkIkGqm1VFQc7Ht2jLvyEZKkW0AIbNxsAawhHLmTYSyIluEMqF1ZTczZNvtpUpaEaABo4njvV99IleGHi4r6DK88eCwSmUKJI6JGjFSXwyIX_a05sHUoItu8TmjYM6jQ4Qa4yXFWe19SAQJdSHxcvN0O8vOKKeF-cOkmKKYTsKwPH218RptL2fIyj5VYNURR36Np6h6wrZFTBawkN2X8PygsVeVd_OzbAr9Lpp8" alt="Balançoire" class="w-full h-32 object-contain mb-4">
-                    <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Balançoire en Bois Naturel</h4>
-                    <div class="flex justify-between items-center mt-auto">
-                        <p class="font-headline text-lg font-bold text-primary">7,90€</p>
-                        <a href="{{ route('checkout') }}" class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container product-add-btn" data-product-id="11" aria-label="Commander">
-                            <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'wght' 200;">shopping_cart</span>
-                        </a>
+                <!-- Carte 5 -->
+                <div class="min-w-[230px] w-[230px] bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col group border border-gray-200 flex-shrink-0">
+                    <div class="relative w-full h-48 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4 overflow-hidden">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4n77pofZu0M7VUhuXGR57lrTtl_tb-uNTk86gHkIkGqm1VFQc7Ht2jLvyEZKkW0AIbNxsAawhHLmTYSyIluEMqF1ZTczZNvtpUpaEaABo4njvV99IleGHi4r6DK88eCwSmUKJI6JGjFSXwyIX_a05sHUoItu8TmjYM6jQ4Qa4yXFWe19SAQJdSHxcvN0O8vOKKeF-cOkmKKYTsKwPH218RptL2fIyj5VYNURR36Np6h6wrZFTBawkN2X8PygsVeVd_OzbAr9Lpp8" alt="Balançoire" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded-full">⭐ 4.0</div>
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h4 class="font-bold text-sm text-gray-900 mb-2 line-clamp-2 min-h-[40px]">Balançoire en Bois Naturel</h4>
+                        <div class="flex items-center justify-between mt-auto">
+                            <p class="font-headline text-xl font-bold text-primary">8€</p>
+                            <button class="bg-primary text-white p-2 rounded-lg hover:bg-primary-container transition-colors">
+                                <span class="material-symbols-outlined text-[18px]">shopping_cart</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <!-- Item 6 -->
-                <div class="min-w-[210px] flex-shrink-0 snap-start bg-white border border-gray-100 rounded-3xl p-5 flex flex-col group transition hover:shadow-xl hover:-translate-y-1">
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIgvNYgMNUX5dDqy9Ji_Xgxifl2RujROG1NGbtl-Mih2srLRpvr-ALYegp6tS66MyQnjGxpl4olvyw9hCamdiCkFivkf896OtEa385MGru_6Q019kTiqpbFtKgGowNvA-C_TqIx5l22H157bz1Kcvgw2kJCLW2ErRaYX-3bMGsSF7HTL6rLtQi-kLHDBGF2tudqZjjiCzdZKJopX7DanJL1aNaI1FjSwc8AKJscFoxJWMwFwX9dD2EIjNlqIw5XwkaHGF8gSSmNmY" alt="Litière" class="w-full h-32 object-contain mb-4">
-                    <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Litière agglomérante Premium</h4>
-                    <div class="flex justify-between items-center mt-auto">
-                        <p class="font-headline text-lg font-bold text-primary">12,50€</p>
-                        <a href="{{ route('checkout') }}" class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container product-add-btn" data-product-id="2" aria-label="Commander">
-                            <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'wght' 200;">shopping_cart</span>
-                        </a>
+                <!-- Carte 6 -->
+                <div class="min-w-[230px] w-[230px] bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col group border border-gray-200 flex-shrink-0">
+                    <div class="relative w-full h-48 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4 overflow-hidden">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIgvNYgMNUX5dDqy9Ji_Xgxifl2RujROG1NGbtl-Mih2srLRpvr-ALYegp6tS66MyQnjGxpl4olvyw9hCamdiCkFivkf896OtEa385MGru_6Q019kTiqpbFtKgGowNvA-C_TqIx5l22H157bz1Kcvgw2kJCLW2ErRaYX-3bMGsSF7HTL6rLtQi-kLHDBGF2tudqZjjiCzdZKJopX7DanJL1aNaI1FjSwc8AKJscFoxJWMwFwX9dD2EIjNlqIw5XwkaHGF8gSSmNmY" alt="Litière" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded-full">⭐ 4.0</div>
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h4 class="font-bold text-sm text-gray-900 mb-2 line-clamp-2 min-h-[40px]">Litière agglomérante Premium</h4>
+                        <div class="flex items-center justify-between mt-auto">
+                            <p class="font-headline text-xl font-bold text-primary">13€</p>
+                            <button class="bg-primary text-white p-2 rounded-lg hover:bg-primary-container transition-colors">
+                                <span class="material-symbols-outlined text-[18px]">shopping_cart</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Script pour le carousel de produits
+        document.addEventListener('DOMContentLoaded', function() {
+            const carousel = document.getElementById('productsCarousel');
+            const scrollLeftBtn = document.getElementById('scrollLeft');
+            const scrollRightBtn = document.getElementById('scrollRight');
+
+            if (carousel && scrollLeftBtn && scrollRightBtn) {
+                // Scroll vers la gauche
+                scrollLeftBtn.addEventListener('click', function() {
+                    carousel.scrollBy({
+                        left: -250,
+                        behavior: 'smooth'
+                    });
+                });
+
+                // Scroll vers la droite
+                scrollRightBtn.addEventListener('click', function() {
+                    carousel.scrollBy({
+                        left: 250,
+                        behavior: 'smooth'
+                    });
+                });
+
+                // Optionnel: Cacher les boutons si on est au début/fin
+                carousel.addEventListener('scroll', function() {
+                    const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+                    
+                    if (carousel.scrollLeft <= 0) {
+                        scrollLeftBtn.style.opacity = '0.5';
+                        scrollLeftBtn.style.cursor = 'not-allowed';
+                    } else {
+                        scrollLeftBtn.style.opacity = '1';
+                        scrollLeftBtn.style.cursor = 'pointer';
+                    }
+
+                    if (carousel.scrollLeft >= maxScroll - 5) {
+                        scrollRightBtn.style.opacity = '0.5';
+                        scrollRightBtn.style.cursor = 'not-allowed';
+                    } else {
+                        scrollRightBtn.style.opacity = '1';
+                        scrollRightBtn.style.cursor = 'pointer';
+                    }
+                });
+
+                // Initialiser l'état des boutons
+                carousel.dispatchEvent(new Event('scroll'));
+            }
+        });
+    </script>
+
+    <!-- Section Pigeons -->
+    <section class="py-12 md:py-20 bg-white">
+        <div class="max-w-[1280px] mx-auto px-6">
+            <!-- Banner Pigeons - IMAGE PLEINE LARGEUR -->
+            <div class="relative rounded-3xl overflow-hidden mb-12 min-h-[300px] flex items-center shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1520763185298-1b434c919102?w=1200&q=80" alt="Pigeon" class="absolute inset-0 w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
+                <div class="relative z-10 max-w-md p-12 text-white">
+                    <span class="block text-lg uppercase tracking-widest mb-3 opacity-90 font-semibold">Tout pour les</span>
+                    <h1 class="font-headline text-5xl font-extrabold mb-4">Pigeons</h1>
+                    <p class="text-gray-200 text-base">Découvrez notre gamme complète pour vos pigeons</p>
+                </div>
+            </div>
+            
+            <!-- Category Cards Pigeons -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-16">
+                <a href="#" class="bg-gradient-to-br from-slate-100 to-slate-200 hover:from-slate-200 hover:to-slate-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
+                    <span class="font-bold text-gray-900 text-lg">Cages & Volières</span>
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuClYWz_RZMFkeB388ZG-bh97mfPIVfjx52xnIAnsFCry5DWZr8JkZXXkvrfCd2JOvT3T7_e_oaDJovqOm9TBKI3IPyEu2oy5WBERvzx8P9OZF6BSRW8An7kMKAtFYnnXop35gZx-PEXS_yHmFD-LtMRfnHJT1pW5KpMrlxiH3KmQsMgNQ4Tw1qRfUb6-hhALmKaLq4mLRU_KmVH0ZVgQ14sGqeKKwRf8YeIsbeMVZX3BKvf70UPS2eUrgW-ETcGeGK4Byx_hIfiVFw" alt="Cage" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                </a>
+                <a href="#" class="bg-gradient-to-br from-emerald-100 to-emerald-200 hover:from-emerald-200 hover:to-emerald-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
+                    <span class="font-bold text-gray-900 text-lg">Graines & Nutrition</span>
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQXx6hiUnOCX6DzOYQFjw2OrpfOIMoRhffQpWaGCqdsUlortBdVqSqAR_xd6Fn6gCZZUFji4VdfAmXhX5s9pzWEhG5UH0lcp21npAq9fuGnRxAzrecick6_ERfAUEza0zCesRzz7kF6nnzRK2ioGzio6gLFkdV9n4QIJMRSH5Rb4rk8a7uyW_yBHJxsVn-H1Qv975itGYfYFVHtLTgQnig4KiM5eMzekLdU-8CzNjmglwOOp0ov466FOPQqMVrFSAg8dhT_-nR4Ko" alt="Graines" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                </a>
+                <a href="#" class="bg-gradient-to-br from-amber-100 to-amber-200 hover:from-amber-200 hover:to-amber-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
+                    <span class="font-bold text-gray-900 text-lg">Accessoires</span>
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4n77pofZu0M7VUhuXGR57lrTtl_tb-uNTk86gHkIkGqm1VFQc7Ht2jLvyEZKkW0AIbNxsAawhHLmTYSyIluEMqF1ZTczZNvtpUpaEaABo4njvV99IleGHi4r6DK88eCwSmUKJI6JGjFSXwyIX_a05sHUoItu8TmjYM6jQ4Qa4yXFWe19SAQJdSHxcvN0O8vOKKeF-cOkmKKYTsKwPH218RptL2fIyj5VYNURR36Np6h6wrZFTBawkN2X8PygsVeVd_OzbAr9Lpp8" alt="Accessoires" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                </a>
             </div>
         </div>
     </section>
 
     <!-- Section Oiseaux -->
-    <section class="py-8 md:py-16 bg-white">
+    <section class="py-12 md:py-20 bg-surface-container-low">
         <div class="max-w-[1280px] mx-auto px-6">
-            <!-- Banner -->
-            <div class="relative bg-tertiary text-white p-10 rounded-3xl overflow-hidden mb-12 min-h-[250px] flex items-center">
-                <div class="relative z-10">
-                    <span class="block text-base uppercase tracking-wider mb-2 opacity-90">Tout pour les</span>
-                    <h1 class="font-headline text-3xl font-bold text-blue-500">Oiseaux</h1>
+            <!-- Banner Oiseaux - IMAGE PLEINE LARGEUR -->
+            <div class="relative rounded-3xl overflow-hidden mb-12 min-h-[300px] flex items-center shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=1200&q=80" alt="Oiseau" class="absolute inset-0 w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-r from-blue-900/70 via-blue-900/40 to-transparent"></div>
+                <div class="relative z-10 max-w-md p-12 text-white">
+                    <span class="block text-lg uppercase tracking-widest mb-3 opacity-90 font-semibold">Tout pour les</span>
+                    <h1 class="font-headline text-5xl font-extrabold mb-4">Oiseaux</h1>
+                    <p class="text-blue-50 text-base">Une sélection complète pour le bien-être de vos oiseaux</p>
                 </div>
-                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQXx6hiUnOCX6DzOYQFjw2OrpfOIMoRhffQpWaGCqdsUlortBdVqSqAR_xd6Fn6gCZZUFji4VdfAmXhX5s9pzWEhG5UH0lcp21npAq9fuGnRxAzrecick6_ERfAUEza0zCesRzz7kF6nnzRK2ioGzio6gLFkdV9n4QIJMRSH5Rb4rk8a7uyW_yBHJxsVn-H1Qv975itGYfYFVHtLTgQnig4KiM5eMzekLdU-8CzNjmglwOOp0ov466FOPQqMVrFSAg8dhT_-nR4Ko" alt="Oiseau" class="absolute right-0 bottom-0 h-full object-contain max-w-[50%]">
             </div>
             
-            <!-- Category Cards -->
+            <!-- Category Cards Oiseaux -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-16">
-                <a href="#" class="bg-blue-100 hover:bg-blue-200 transition p-6 rounded-2xl flex justify-between items-center group">
+                <a href="#" class="bg-gradient-to-br from-blue-100 to-blue-200 hover:from-blue-200 hover:to-blue-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
                     <span class="font-bold text-gray-900 text-lg">Cages & Volières</span>
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuClYWz_RZMFkeB388ZG-bh97mfPIVfjx52xnIAnsFCry5DWZr8JkZXXkvrfCd2JOvT3T7_e_oaDJovqOm9TBKI3IPyEu2oy5WBERvzx8P9OZF6BSRW8An7kMKAtFYnnXop35gZx-PEXS_yHmFD-LtMRfnHJT1pW5KpMrlxiH3KmQsMgNQ4Tw1qRfUb6-hhALmKaLq4mLRU_KmVH0ZVgQ14sGqeKKwRf8YeIsbeMVZX3BKvf70UPS2eUrgW-ETcGeGK4Byx_hIfiVFw" alt="Cage" class="w-16 h-16 object-cover rounded-full group-hover:scale-110 transition">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuClYWz_RZMFkeB388ZG-bh97mfPIVfjx52xnIAnsFCry5DWZr8JkZXXkvrfCd2JOvT3T7_e_oaDJovqOm9TBKI3IPyEu2oy5WBERvzx8P9OZF6BSRW8An7kMKAtFYnnXop35gZx-PEXS_yHmFD-LtMRfnHJT1pW5KpMrlxiH3KmQsMgNQ4Tw1qRfUb6-hhALmKaLq4mLRU_KmVH0ZVgQ14sGqeKKwRf8YeIsbeMVZX3BKvf70UPS2eUrgW-ETcGeGK4Byx_hIfiVFw" alt="Cage" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 </a>
-                <a href="#" class="bg-green-100 hover:bg-green-200 transition p-6 rounded-2xl flex justify-between items-center group">
+                <a href="#" class="bg-gradient-to-br from-green-100 to-green-200 hover:from-green-200 hover:to-green-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
                     <span class="font-bold text-gray-900 text-lg">Graines & Nutrition</span>
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQXx6hiUnOCX6DzOYQFjw2OrpfOIMoRhffQpWaGCqdsUlortBdVqSqAR_xd6Fn6gCZZUFji4VdfAmXhX5s9pzWEhG5UH0lcp21npAq9fuGnRxAzrecick6_ERfAUEza0zCesRzz7kF6nnzRK2ioGzio6gLFkdV9n4QIJMRSH5Rb4rk8a7uyW_yBHJxsVn-H1Qv975itGYfYFVHtLTgQnig4KiM5eMzekLdU-8CzNjmglwOOp0ov466FOPQqMVrFSAg8dhT_-nR4Ko" alt="Graines" class="w-16 h-16 object-cover rounded-full group-hover:scale-110 transition">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQXx6hiUnOCX6DzOYQFjw2OrpfOIMoRhffQpWaGCqdsUlortBdVqSqAR_xd6Fn6gCZZUFji4VdfAmXhX5s9pzWEhG5UH0lcp21npAq9fuGnRxAzrecick6_ERfAUEza0zCesRzz7kF6nnzRK2ioGzio6gLFkdV9n4QIJMRSH5Rb4rk8a7uyW_yBHJxsVn-H1Qv975itGYfYFVHtLTgQnig4KiM5eMzekLdU-8CzNjmglwOOp0ov466FOPQqMVrFSAg8dhT_-nR4Ko" alt="Graines" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 </a>
-                <a href="#" class="bg-purple-100 hover:bg-purple-200 transition p-6 rounded-2xl flex justify-between items-center group">
+                <a href="#" class="bg-gradient-to-br from-purple-100 to-purple-200 hover:from-purple-200 hover:to-purple-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
                     <span class="font-bold text-gray-900 text-lg">Jouets & Balançoires</span>
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4n77pofZu0M7VUhuXGR57lrTtl_tb-uNTk86gHkIkGqm1VFQc7Ht2jLvyEZKkW0AIbNxsAawhHLmTYSyIluEMqF1ZTczZNvtpUpaEaABo4njvV99IleGHi4r6DK88eCwSmUKJI6JGjFSXwyIX_a05sHUoItu8TmjYM6jQ4Qa4yXFWe19SAQJdSHxcvN0O8vOKKeF-cOkmKKYTsKwPH218RptL2fIyj5VYNURR36Np6h6wrZFTBawkN2X8PygsVeVd_OzbAr9Lpp8" alt="Jouets" class="w-16 h-16 object-cover rounded-full group-hover:scale-110 transition">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4n77pofZu0M7VUhuXGR57lrTtl_tb-uNTk86gHkIkGqm1VFQc7Ht2jLvyEZKkW0AIbNxsAawhHLmTYSyIluEMqF1ZTczZNvtpUpaEaABo4njvV99IleGHi4r6DK88eCwSmUKJI6JGjFSXwyIX_a05sHUoItu8TmjYM6jQ4Qa4yXFWe19SAQJdSHxcvN0O8vOKKeF-cOkmKKYTsKwPH218RptL2fIyj5VYNURR36Np6h6wrZFTBawkN2X8PygsVeVd_OzbAr9Lpp8" alt="Jouets" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 </a>
-            </div>
-            
-            <!-- Best Sellers Carousel Oiseaux -->
-            <div>
-                <h3 class="font-headline text-xl font-semibold mb-6">Meilleures ventes Oiseaux</h3>
-                <div class="flex gap-6 overflow-x-auto pb-4 hide-scrollbar snap-x">
-                    <!-- Item -->
-                    <div class="min-w-[210px] flex-shrink-0 snap-start bg-ticket border border-gray-100 rounded-3xl p-5 flex flex-col group transition shadow-ticket hover:shadow-xl hover:-translate-y-1">
-                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuClYWz_RZMFkeB388ZG-bh97mfPIVfjx52xnIAnsFCry5DWZr8JkZXXkvrfCd2JOvT3T7_e_oaDJovqOm9TBKI3IPyEu2oy5WBERvzx8P9OZF6BSRW8An7kMKAtFYnnXop35gZx-PEXS_yHmFD-LtMRfnHJT1pW5KpMrlxiH3KmQsMgNQ4Tw1qRfUb6-hhALmKaLq4mLRU_KmVH0ZVgQ14sGqeKKwRf8YeIsbeMVZX3BKvf70UPS2eUrgW-ETcGeGK4Byx_hIfiVFw" alt="Volière" class="w-full h-32 object-contain mb-4">
-                        <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Volière Design White Edition</h4>
-                        <div class="flex justify-between items-center mt-auto">
-                            <p class="font-headline text-lg font-bold text-primary">89,00€</p>
-                            <a href="{{ route('checkout') }}" class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container" aria-label="Commander">
-                                <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'wght' 200;">shopping_cart</span>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- Item -->
-                    <div class="min-w-[210px] flex-shrink-0 snap-start bg-ticket border border-gray-100 rounded-3xl p-5 flex flex-col group transition shadow-ticket hover:shadow-xl hover:-translate-y-1">
-                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQXx6hiUnOCX6DzOYQFjw2OrpfOIMoRhffQpWaGCqdsUlortBdVqSqAR_xd6Fn6gCZZUFji4VdfAmXhX5s9pzWEhG5UH0lcp21npAq9fuGnRxAzrecick6_ERfAUEza0zCesRzz7kF6nnzRK2ioGzio6gLFkdV9n4QIJMRSH5Rb4rk8a7uyW_yBHJxsVn-H1Qv975itGYfYFVHtLTgQnig4KiM5eMzekLdU-8CzNjmglwOOp0ov466FOPQqMVrFSAg8dhT_-nR4Ko" alt="Graines" class="w-full h-32 object-contain mb-4">
-                        <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Mélange Graines Premium</h4>
-                        <div class="flex justify-between items-center mt-auto">
-                            <p class="font-headline text-lg font-bold text-primary">14,50€</p>
-                            <a href="{{ route('checkout') }}" class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container" aria-label="Commander">
-                                <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'wght' 200;">shopping_cart</span>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- Item -->
-                    <div class="min-w-[210px] flex-shrink-0 snap-start bg-ticket border border-gray-100 rounded-3xl p-5 flex flex-col group transition shadow-ticket hover:shadow-xl hover:-translate-y-1">
-                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4n77pofZu0M7VUhuXGR57lrTtl_tb-uNTk86gHkIkGqm1VFQc7Ht2jLvyEZKkW0AIbNxsAawhHLmTYSyIluEMqF1ZTczZNvtpUpaEaABo4njvV99IleGHi4r6DK88eCwSmUKJI6JGjFSXwyIX_a05sHUoItu8TmjYM6jQ4Qa4yXFWe19SAQJdSHxcvN0O8vOKKeF-cOkmKKYTsKwPH218RptL2fIyj5VYNURR36Np6h6wrZFTBawkN2X8PygsVeVd_OzbAr9Lpp8" alt="Balançoire" class="w-full h-32 object-contain mb-4">
-                        <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Balançoire en Bois Naturel</h4>
-                        <div class="flex justify-between items-center mt-auto">
-                            <p class="font-headline text-lg font-bold text-primary">7,90€</p>
-                            <a href="{{ route('checkout') }}" class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container" aria-label="Commander">
-                                <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'wght' 200;">shopping_cart</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
 
     <!-- Section Chats -->
-    <section class="py-8 md:py-16 bg-surface-container-low">
+    <section class="py-12 md:py-20 bg-white">
         <div class="max-w-[1280px] mx-auto px-6">
-            <!-- Banner -->
-            <div class="relative bg-secondary text-white p-10 rounded-3xl overflow-hidden mb-12 min-h-[250px] flex items-center">
-                <div class="relative z-10">
-                    <span class="block text-base uppercase tracking-wider mb-2 opacity-90">Tout pour les</span>
-                    <h1 class="font-headline text-3xl font-bold text-blue-500">Chats</h1>
+            <!-- Banner Chats - IMAGE PLEINE LARGEUR -->
+            <div class="relative rounded-3xl overflow-hidden mb-12 min-h-[300px] flex items-center shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=1200&q=80" alt="Chat" class="absolute inset-0 w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-r from-indigo-900/70 via-indigo-900/40 to-transparent"></div>
+                <div class="relative z-10 max-w-md p-12 text-white">
+                    <span class="block text-lg uppercase tracking-widest mb-3 opacity-90 font-semibold">Tout pour les</span>
+                    <h1 class="font-headline text-5xl font-extrabold mb-4">Chats</h1>
+                    <p class="text-indigo-50 text-base">Tout ce dont votre félin a besoin pour être heureux</p>
                 </div>
-                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA34Rd-HA7Iz17ItWdCZ5pbIF4djnrLkEITzLCPY4A8JPutqk7SwAaJBEhZzwZFtU_9f0xxJxgsuij7ur29Fq2YRhay2NmMwl06VdmiEeYy9h8YH_3HdoyymZcJCrhw8hAl3kyhL1kRjygegf8b7MplNd4304nNSTtNUFiEla9x1QXtWMyhiQeaI81g8Y1-_Maki1z3JC-hf4oV4ybLg_LDfCUtxzu303ZK_-Gi4JSMdvFckHYVulg9zdhP25cUSR9WtEu3g-5lqpc" alt="Chat" class="absolute right-0 bottom-0 h-full object-contain max-w-[50%]">
             </div>
             
-            <!-- Category Cards -->
+            <!-- Category Cards Chats -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-16">
-                <a href="#" class="bg-blue-100 hover:bg-blue-200 transition p-6 rounded-2xl flex justify-between items-center group">
+                <a href="#" class="bg-gradient-to-br from-blue-100 to-blue-200 hover:from-blue-200 hover:to-blue-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
                     <span class="font-bold text-gray-900 text-lg">Croquettes pour chat</span>
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDT4uP4tjFYK2FyqRUBsgeX_3U1Sa0cnbKyWDNkkOIJ2qiF_tZzDvPMGr8qy-CJN0FYgWdskAw7NgJXfBKXvkBg4qCXvtdGBmGnFGFQ7Cl6ILs9iRxZROeBNnJ2Xbz6aSDyNjwv1U3ScEX2ApndJiQL7YxbpeV8_6sl0Zbo1DBMpmaVDHdsRAJXLUFCxqAN71D1h41oWGvXOhQOYWuN5u2bYKehj_7IV0ipdrG4TfMOEnhmA7iCCfOBb_h_SvgahbCPaN9BSaNpX9k" alt="Croquettes" class="w-16 h-16 object-cover rounded-full group-hover:scale-110 transition">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDT4uP4tjFYK2FyqRUBsgeX_3U1Sa0cnbKyWDNkkOIJ2qiF_tZzDvPMGr8qy-CJN0FYgWdskAw7NgJXfBKXvkBg4qCXvtdGBmGnFGFQ7Cl6ILs9iRxZROeBNnJ2Xbz6aSDyNjwv1U3ScEX2ApndJiQL7YxbpeV8_6sl0Zbo1DBMpmaVDHdsRAJXLUFCxqAN71D1h41oWGvXOhQOYWuN5u2bYKehj_7IV0ipdrG4TfMOEnhmA7iCCfOBb_h_SvgahbCPaN9BSaNpX9k" alt="Croquettes" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 </a>
-                <a href="#" class="bg-green-100 hover:bg-green-200 transition p-6 rounded-2xl flex justify-between items-center group">
+                <a href="#" class="bg-gradient-to-br from-green-100 to-green-200 hover:from-green-200 hover:to-green-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
                     <span class="font-bold text-gray-900 text-lg">Arbre à chat</span>
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCf13j3hn9fIiDpqfSIlA9_FGHwtCP_eI4a3XaBc8PRii4W1Xpek9f00xWvJE9IUbjlRXdu8-LuGY5LKKcih9AXo-YkFHi7qYjMJd47ArOAqqoOoWn9leyXVBBQuw1n3PCI2GBC55QG4gMu1HBDQkpsFbkZS_WJ0_q_vf2YXJFxlB0HrVo3E1bjSgW_uyEks74dsBVn7FKDLKCduZjyu-6-aJScVW_a1dPEPCDq1rgNwr8q4NCWWeiWomcEutvwHdKGXHPcFYJEMAw" alt="Arbre à chat" class="w-16 h-16 object-cover rounded-full group-hover:scale-110 transition">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCf13j3hn9fIiDpqfSIlA9_FGHwtCP_eI4a3XaBc8PRii4W1Xpek9f00xWvJE9IUbjlRXdu8-LuGY5LKKcih9AXo-YkFHi7qYjMJd47ArOAqqoOoWn9leyXVBBQuw1n3PCI2GBC55QG4gMu1HBDQkpsFbkZS_WJ0_q_vf2YXJFxlB0HrVo3E1bjSgW_uyEks74dsBVn7FKDLKCduZjyu-6-aJScVW_a1dPEPCDq1rgNwr8q4NCWWeiWomcEutvwHdKGXHPcFYJEMAw" alt="Arbre à chat" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 </a>
-                <a href="#" class="bg-purple-100 hover:bg-purple-200 transition p-6 rounded-2xl flex justify-between items-center group">
+                <a href="#" class="bg-gradient-to-br from-purple-100 to-purple-200 hover:from-purple-200 hover:to-purple-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
                     <span class="font-bold text-gray-900 text-lg">Cage de transport</span>
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIgvNYgMNUX5dDqy9Ji_Xgxifl2RujROG1NGbtl-Mih2srLRpvr-ALYegp6tS66MyQnjGxpl4olvyw9hCamdiCkFivkf896OtEa385MGru_6Q019kTiqpbFtKgGowNvA-C_TqIx5l22H157bz1Kcvgw2kJCLW2ErRaYX-3bMGsSF7HTL6rLtQi-kLHDBGF2tudqZjjiCzdZKJopX7DanJL1aNaI1FjSwc8AKJscFoxJWMwFwX9dD2EIjNlqIw5XwkaHGF8gSSmNmY" alt="Cage" class="w-16 h-16 object-cover rounded-full group-hover:scale-110 transition">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIgvNYgMNUX5dDqy9Ji_Xgxifl2RujROG1NGbtl-Mih2srLRpvr-ALYegp6tS66MyQnjGxpl4olvyw9hCamdiCkFivkf896OtEa385MGru_6Q019kTiqpbFtKgGowNvA-C_TqIx5l22H157bz1Kcvgw2kJCLW2ErRaYX-3bMGsSF7HTL6rLtQi-kLHDBGF2tudqZjjiCzdZKJopX7DanJL1aNaI1FjSwc8AKJscFoxJWMwFwX9dD2EIjNlqIw5XwkaHGF8gSSmNmY" alt="Cage" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 </a>
-            </div>
-            
-            <!-- Best Sellers Carousel Chats -->
-            <div>
-                <h3 class="font-headline text-xl font-semibold mb-6">Meilleures ventes Chat</h3>
-                <div class="flex gap-6 overflow-x-auto pb-4 hide-scrollbar snap-x">
-                    <!-- Item -->
-                    <div class="min-w-[210px] flex-shrink-0 snap-start bg-ticket border border-gray-100 rounded-3xl p-5 flex flex-col group transition shadow-ticket hover:shadow-xl hover:-translate-y-1">
-                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIgvNYgMNUX5dDqy9Ji_Xgxifl2RujROG1NGbtl-Mih2srLRpvr-ALYegp6tS66MyQnjGxpl4olvyw9hCamdiCkFivkf896OtEa385MGru_6Q019kTiqpbFtKgGowNvA-C_TqIx5l22H157bz1Kcvgw2kJCLW2ErRaYX-3bMGsSF7HTL6rLtQi-kLHDBGF2tudqZjjiCzdZKJopX7DanJL1aNaI1FjSwc8AKJscFoxJWMwFwX9dD2EIjNlqIw5XwkaHGF8gSSmNmY" alt="Litière" class="w-full h-32 object-contain mb-4">
-                        <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Litière agglomérante Premium</h4>
-                        <div class="flex justify-between items-center mt-auto">
-                            <p class="font-headline text-lg font-bold text-primary">12,50€</p>
-                            <a href="{{ route('checkout') }}" class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container" aria-label="Commander">
-                                <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'wght' 200;">shopping_cart</span>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- Item -->
-                    <div class="min-w-[210px] flex-shrink-0 snap-start bg-ticket border border-gray-100 rounded-3xl p-5 flex flex-col group transition shadow-ticket hover:shadow-xl hover:-translate-y-1">
-                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDih_ShjrZl6FyKaaP3p3pH1ZQTlB2eVjlzZzXGETjTcpk5P0HKjbQ-wAo4yQ0YAdvsd1OrUi85liTwehVZhIkWVffjHGws8ZiIdDP5msHZ0MCQGEUGGRPAIQMC4sCxHf4znq18vnZ9Wex6KeiZT_lR874YUdp7Pd-pln-NZqJU53gjc7Od7aSf3GwaFTtuQPPI0rARb2Kq-nVLPdY6GK2QkbGJdXc7IfZ-IFMrZFjBvWWy1rTQ6bqrU_rgOA9FxrPErseQweskE4A" alt="Croquettes" class="w-full h-32 object-contain mb-4">
-                        <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Croquettes Royal Canin Sterilised</h4>
-                        <div class="flex justify-between items-center mt-auto">
-                            <p class="font-headline text-lg font-bold text-primary">34,99€</p>
-                            <a href="{{ route('checkout') }}" class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container" aria-label="Commander">
-                                <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'wght' 200;">shopping_cart</span>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- Item -->
-                    <div class="min-w-[210px] flex-shrink-0 snap-start bg-ticket border border-gray-100 rounded-3xl p-5 flex flex-col group transition shadow-ticket hover:shadow-xl hover:-translate-y-1">
-                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCf13j3hn9fIiDpqfSIlA9_FGHwtCP_eI4a3XaBc8PRii4W1Xpek9f00xWvJE9IUbjlRXdu8-LuGY5LKKcih9AXo-YkFHi7qYjMJd47ArOAqqoOoWn9leyXVBBQuw1n3PCI2GBC55QG4gMu1HBDQkpsFbkZS_WJ0_q_vf2YXJFxlB0HrVo3E1bjSgW_uyEks74dsBVn7FKDLKCduZjyu-6-aJScVW_a1dPEPCDq1rgNwr8q4NCWWeiWomcEutvwHdKGXHPcFYJEMAw" alt="Arbre à chat" class="w-full h-32 object-contain mb-4">
-                        <h4 class="font-bold text-sm leading-tight flex-grow mb-4">Arbre à chat 'Oasis' 120cm</h4>
-                        <div class="flex justify-between items-center mt-auto">
-                            <p class="font-headline text-lg font-bold text-primary">49,00€</p>
-                            <a href="{{ route('checkout') }}" class="bg-primary text-white w-8 h-8 rounded-md flex items-center justify-center transition hover:bg-primary-container" aria-label="Commander">
-                                <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'wght' 200;">shopping_cart</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
 
     <!-- Gallery Section -->
-    <section class="py-8 md:py-16 bg-white">
+    <section class="py-12 md:py-16 bg-surface-container-low">
         <div class="max-w-[1280px] mx-auto px-6">
-            <h2 class="font-headline text-[clamp(1.5rem,4vw,2rem)] font-semibold text-center text-primary">Nos Moments Heureux</h2>
-            <p class="text-on-surface-variant mt-2 text-center">Découvrez les plus beaux moments avec nos compagnons</p>
-            
-            <div class="flex gap-4 mt-8 overflow-x-auto pb-4 hide-scrollbar justify-center">
-                <div class="relative overflow-hidden rounded-2xl flex-shrink-0 w-[192px] h-[200px] cursor-pointer transition transform hover:-translate-y-1 hover:shadow-xl group">
-                    <img src="https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Chien Golden Retriever" class="w-full h-full object-cover transition duration-300 group-hover:scale-110" loading="lazy">
+            <div class="text-center mb-10">
+                <h2 class="font-headline text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-primary mb-3">Galerie Photos</h2>
+                <p class="text-on-surface-variant text-lg">Nos clients et leurs compagnons heureux</p>
+            </div>
+            <!-- Grid 3 colonnes avec layout asymétrique - Taille réduite -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <!-- Colonne 1 (Gauche) -->
+                <div class="flex flex-col gap-3">
+                    <!-- Image horizontale - Pigeon 1 -->
+                    <div class="relative overflow-hidden rounded-xl h-[180px] group">
+                        <img src="https://images.unsplash.com/photo-1520763185298-1b434c919102?w=600&q=80" alt="Pigeon" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    </div>
+                    <!-- Image verticale - Chat -->
+                    <div class="relative overflow-hidden rounded-xl h-[280px] group">
+                        <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=600&q=80" alt="Chat" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    </div>
                 </div>
-                <div class="relative overflow-hidden rounded-2xl flex-shrink-0 w-[192px] h-[200px] cursor-pointer transition transform hover:-translate-y-1 hover:shadow-xl group">
-                    <img src="https://images.pexels.com/photos/349758/hummingbird-bird-birds-349758.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Pigeon" class="w-full h-full object-cover transition duration-300 group-hover:scale-110" loading="lazy">
+
+                <!-- Colonne 2 (Centre) -->
+                <div class="flex flex-col gap-3">
+                    <!-- Image verticale grande - Chien -->
+                    <div class="relative overflow-hidden rounded-xl h-[280px] group">
+                        <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&q=80" alt="Chien" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    </div>
+                    <!-- Image horizontale - Oiseau -->
+                    <div class="relative overflow-hidden rounded-xl h-[180px] group">
+                        <img src="https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=600&q=80" alt="Oiseau" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    </div>
                 </div>
-                <div class="relative overflow-hidden rounded-2xl flex-shrink-0 w-[192px] h-[200px] cursor-pointer transition transform hover:-translate-y-1 hover:shadow-xl group">
-                    <img src="https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Chat tigré" class="w-full h-full object-cover transition duration-300 group-hover:scale-110" loading="lazy">
-                </div>
-                <div class="relative overflow-hidden rounded-2xl flex-shrink-0 w-[192px] h-[200px] cursor-pointer transition transform hover:-translate-y-1 hover:shadow-xl group">
-                    <img src="https://images.pexels.com/photos/1661179/pexels-photo-1661179.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Oiseau coloré" class="w-full h-full object-cover transition duration-300 group-hover:scale-110" loading="lazy">
-                </div>
-                <div class="relative overflow-hidden rounded-2xl flex-shrink-0 w-[192px] h-[200px] cursor-pointer transition transform hover:-translate-y-1 hover:shadow-xl group">
-                    <img src="https://images.pexels.com/photos/158471/ibis-bird-red-animals-158471.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Pigeon roux" class="w-full h-full object-cover transition duration-300 group-hover:scale-110" loading="lazy">
-                </div>
-                <div class="relative overflow-hidden rounded-2xl flex-shrink-0 w-[192px] h-[200px] cursor-pointer transition transform hover:-translate-y-1 hover:shadow-xl group">
-                    <img src="https://images.pexels.com/photos/1618606/pexels-photo-1618606.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Poisson tropical" class="w-full h-full object-cover transition duration-300 group-hover:scale-110" loading="lazy">
+
+                <!-- Colonne 3 (Droite) -->
+                <div class="flex flex-col gap-3">
+                    <!-- Image horizontale - Poisson -->
+                    <div class="relative overflow-hidden rounded-xl h-[180px] group">
+                        <img src="https://images.unsplash.com/photo-1524704654690-b56c05c78a00?w=600&q=80" alt="Poisson" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    </div>
+                    <!-- Image verticale grande - Pigeon 2 -->
+                    <div class="relative overflow-hidden rounded-xl h-[280px] group">
+                        <img src="https://images.unsplash.com/photo-1605460375648-278bcbd579a6?w=600&q=80" alt="Pigeon" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Testimonials Section -->
-    <section class="py-8 md:py-16 bg-surface-container-low">
+    <section class="py-12 md:py-20 bg-white">
         <div class="max-w-[1280px] mx-auto px-6">
-            <h2 class="font-headline text-[clamp(1.5rem,4vw,2rem)] font-semibold text-center text-primary">Ce que disent nos clients</h2>
-            <p class="text-on-surface-variant mt-2 text-center">Des milliers de propriétaires satisfaits nous font confiance</p>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-                <div class="bg-ticket rounded-3xl p-8 shadow-ticket transition hover:shadow-xl hover:-translate-y-1">
-                    <div class="flex gap-1 mb-6 text-yellow-400">
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+            <div class="text-center mb-12">
+                <h2 class="font-headline text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-primary mb-3">Avis Clients</h2>
+                <p class="text-on-surface-variant text-lg">Ce que nos clients disent de nous</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Avis 1 -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 flex flex-col h-full border-2 border-gray-100">
+                    <div class="flex items-center gap-1 mb-4 text-amber-400 text-2xl">
+                        <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
                     </div>
-                    <p class="italic mb-6">"Excellente qualité de produits ! Mon chat adore ses nouvelles croquettes et l'arbre à chat est magnifique. Livraison rapide et service client au top."</p>
-                    <div class="flex items-center gap-4">
-                        <img src="https://i.pravatar.cc/150?img=1" alt="Sophie Martin" class="w-12 h-12 rounded-full">
+                    <p class="text-gray-700 mb-6 flex-grow leading-relaxed">"Excellent service et produits de qualité. Mon chat adore ses nouvelles croquettes Royal Canin!"</p>
+                    <div class="border-t border-gray-200 pt-4 flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-full bg-gradient-to-br from-primary to-tertiary flex items-center justify-center text-white font-bold text-xl">S</div>
                         <div>
-                            <h4 class="font-bold text-on-surface">Sophie Martin</h4>
-                            <p class="text-sm text-on-surface-variant">Propriétaire de 2 chats</p>
+                            <p class="font-bold text-gray-900">Sophie Martin</p>
+                            <p class="text-sm text-gray-500">Cliente depuis 2024</p>
                         </div>
                     </div>
                 </div>
-                <div class="bg-ticket rounded-3xl p-8 shadow-ticket transition hover:shadow-xl hover:-translate-y-1">
-                    <div class="flex gap-1 mb-6 text-yellow-400">
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <!-- Avis 2 -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 flex flex-col h-full border-2 border-gray-100">
+                    <div class="flex items-center gap-1 mb-4 text-amber-400 text-2xl">
+                        <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
                     </div>
-                    <p class="italic mb-6">"Je recommande vivement PetTrust ! Les prix sont compétitifs et la sélection de produits pour chiens est impressionnante. Mon golden retriever est ravi !"</p>
-                    <div class="flex items-center gap-4">
-                        <img src="https://i.pravatar.cc/150?img=12" alt="Thomas Dubois" class="w-12 h-12 rounded-full">
+                    <p class="text-gray-700 mb-6 flex-grow leading-relaxed">"Livraison rapide et emballage soigné. La volière est magnifique et mes oiseaux sont ravis!"</p>
+                    <div class="border-t border-gray-200 pt-4 flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-full bg-gradient-to-br from-tertiary to-primary flex items-center justify-center text-white font-bold text-xl">M</div>
                         <div>
-                            <h4 class="font-bold text-on-surface">Thomas Dubois</h4>
-                            <p class="text-sm text-on-surface-variant">Propriétaire d'un chien</p>
+                            <p class="font-bold text-gray-900">Marc Dubois</p>
+                            <p class="text-sm text-gray-500">Client depuis 2023</p>
                         </div>
                     </div>
                 </div>
-                <div class="bg-white rounded-3xl p-8 shadow-sm transition hover:shadow-xl hover:-translate-y-1">
-                    <div class="flex gap-1 mb-6 text-yellow-400">
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <!-- Avis 3 -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 flex flex-col h-full border-2 border-gray-100">
+                    <div class="flex items-center gap-1 mb-4 text-amber-400 text-2xl">
+                        <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
                     </div>
-                    <p class="italic mb-6">"Site très professionnel avec des conseils utiles. J'ai trouvé tout ce dont j'avais besoin pour mes oiseaux. Les graines sont de qualité premium !"</p>
-                    <div class="flex items-center gap-4">
-                        <img src="https://i.pravatar.cc/150?img=5" alt="Marie Lefebvre" class="w-12 h-12 rounded-full">
+                    <p class="text-gray-700 mb-6 flex-grow leading-relaxed">"Super boutique! Les prix sont compétitifs et le service client est très réactif. Je recommande!"</p>
+                    <div class="border-t border-gray-200 pt-4 flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold text-xl">L</div>
                         <div>
-                            <h4 class="font-bold text-on-surface">Marie Lefebvre</h4>
-                            <p class="text-sm text-on-surface-variant">Propriétaire d'oiseaux</p>
+                            <p class="font-bold text-gray-900">Laura Petit</p>
+                            <p class="text-sm text-gray-500">Cliente depuis 2025</p>
                         </div>
                     </div>
                 </div>
