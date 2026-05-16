@@ -58,23 +58,23 @@
         <div class="max-w-[1280px] mx-auto px-6">
             <div class="flex justify-center items-center gap-6 overflow-x-visible pb-8" id="categoriesGrid">
                 <button class="flex flex-col items-center gap-3 transition min-w-[180px] shrink-0 group active" data-category="oiseaux">
-                    <img src="{{ asset('images/cat_oiseaux.png') }}" alt="Oiseaux" class="w-[180px] h-[120px] rounded-3xl object-cover transition transform group-hover:-translate-y-1">
+                    <img src="{{ asset('images/img_category/cat_oiseau.png') }}" alt="Oiseaux" class="w-[180px] h-[120px] rounded-3xl object-cover transition transform group-hover:-translate-y-1">
                     <span class="font-semibold text-[0.875rem] text-on-surface transition group-[.active]:text-primary group-[.active]:font-bold group-hover:text-primary group-hover:font-bold">Oiseaux</span>
                 </button>
                 <button class="flex flex-col items-center gap-3 transition min-w-[180px] shrink-0 group" data-category="pigeons">
-                    <img src="{{ asset('images/cat_pigeons.png.png') }}" alt="Pigeons" class="w-[180px] h-[120px] rounded-3xl object-cover transition transform group-hover:-translate-y-1">
+                    <img src="{{ asset('images/img_category/cat_pigeon.png') }}" alt="Pigeons" class="w-[180px] h-[120px] rounded-3xl object-cover transition transform group-hover:-translate-y-1">
                     <span class="font-semibold text-[0.875rem] text-on-surface transition group-[.active]:text-primary group-[.active]:font-bold group-hover:text-primary group-hover:font-bold">Pigeons</span>
                 </button>
                 <button class="flex flex-col items-center gap-3 transition min-w-[180px] shrink-0 group" data-category="chats">
-                    <img src="{{ asset('images/cat_chat.png') }}" alt="Chat" class="w-[180px] h-[120px] rounded-3xl object-cover transition transform group-hover:-translate-y-1">
+                    <img src="{{ asset('images/img_category/cat_chat.png') }}" alt="Chat" class="w-[180px] h-[120px] rounded-3xl object-cover transition transform group-hover:-translate-y-1">
                     <span class="font-semibold text-[0.875rem] text-on-surface transition group-[.active]:text-primary group-[.active]:font-bold group-hover:text-primary group-hover:font-bold">Chat</span>
                 </button>
                 <button class="flex flex-col items-center gap-3 transition min-w-[180px] shrink-0 group" data-category="chiens">
-                    <img src="{{ asset('images/cat_chien.jpg') }}" alt="Chien" class="w-[180px] h-[120px] rounded-3xl object-cover transition transform group-hover:-translate-y-1">
+                    <img src="{{ asset('images/img_category/cat_chien.png') }}" alt="Chien" class="w-[180px] h-[120px] rounded-3xl object-cover transition transform group-hover:-translate-y-1">
                     <span class="font-semibold text-[0.875rem] text-on-surface transition group-[.active]:text-primary group-[.active]:font-bold group-hover:text-primary group-hover:font-bold">Chien</span>
                 </button>
                 <button class="flex flex-col items-center gap-3 transition min-w-[180px] shrink-0 group" data-category="poissons">
-                    <img src="{{ asset('images/cat_poissons.png') }}" alt="Poissons" class="w-[180px] h-[120px] rounded-3xl object-cover transition transform group-hover:-translate-y-1">
+                    <img src="{{ asset('images/img_category/cat_poisson.png') }}" alt="Poissons" class="w-[180px] h-[120px] rounded-3xl object-cover transition transform group-hover:-translate-y-1">
                     <span class="font-semibold text-[0.875rem] text-on-surface transition group-[.active]:text-primary group-[.active]:font-bold group-hover:text-primary group-hover:font-bold">Poissons</span>
                 </button>
             </div>
