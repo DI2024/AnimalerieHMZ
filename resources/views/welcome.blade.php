@@ -287,7 +287,40 @@
         </div>
     </section>
 
-    <!-- Section Oiseaux -->
+
+    <!-- Section Chats -->
+    <section class="py-12 md:py-20 bg-white" id="chats">
+        <div class="max-w-[1280px] mx-auto px-6">
+            <!-- Banner Chats - IMAGE PLEINE LARGEUR -->
+            <div class="relative rounded-3xl overflow-hidden mb-12 min-h-[300px] flex items-center shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=1200&q=80" alt="Chat" class="absolute inset-0 w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-r from-indigo-900/70 via-indigo-900/40 to-transparent"></div>
+                <div class="relative z-10 max-w-md p-12 text-white">
+                    <span class="block text-lg uppercase tracking-widest mb-3 opacity-90 font-semibold">Tout pour les</span>
+                    <h1 class="font-headline text-4xl font-extrabold mb-4">Chats</h1>
+                    <p class="text-indigo-50 text-base">Tout ce dont votre félin a besoin pour être heureux</p>
+                </div>
+            </div>
+            
+            <!-- Category Cards Chats -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-16">
+                <a href="#" class="bg-gradient-to-br from-purple-100 to-purple-200 hover:from-purple-200 hover:to-purple-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
+                    <span class="font-bold text-gray-900 text-lg">Cage de transport</span>
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIgvNYgMNUX5dDqy9Ji_Xgxifl2RujROG1NGbtl-Mih2srLRpvr-ALYegp6tS66MyQnjGxpl4olvyw9hCamdiCkFivkf896OtEa385MGru_6Q019kTiqpbFtKgGowNvA-C_TqIx5l22H157bz1Kcvgw2kJCLW2ErRaYX-3bMGsSF7HTL6rLtQi-kLHDBGF2tudqZjjiCzdZKJopX7DanJL1aNaI1FjSwc8AKJscFoxJWMwFwX9dD2EIjNlqIw5XwkaHGF8gSSmNmY" alt="Cage" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                </a>
+                <a href="#" class="bg-gradient-to-br from-blue-100 to-blue-200 hover:from-blue-200 hover:to-blue-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
+                    <span class="font-bold text-gray-900 text-lg">Croquettes pour chat</span>
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDT4uP4tjFYK2FyqRUBsgeX_3U1Sa0cnbKyWDNkkOIJ2qiF_tZzDvPMGr8qy-CJN0FYgWdskAw7NgJXfBKXvkBg4qCXvtdGBmGnFGFQ7Cl6ILs9iRxZROeBNnJ2Xbz6aSDyNjwv1U3ScEX2ApndJiQL7YxbpeV8_6sl0Zbo1DBMpmaVDHdsRAJXLUFCxqAN71D1h41oWGvXOhQOYWuN5u2bYKehj_7IV0ipdrG4TfMOEnhmA7iCCfOBb_h_SvgahbCPaN9BSaNpX9k" alt="Croquettes" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                </a>
+                <a href="#" class="bg-gradient-to-br from-green-100 to-green-200 hover:from-green-200 hover:to-green-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
+                    <span class="font-bold text-gray-900 text-lg">Accessoires</span>
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCf13j3hn9fIiDpqfSIlA9_FGHwtCP_eI4a3XaBc8PRii4W1Xpek9f00xWvJE9IUbjlRXdu8-LuGY5LKKcih9AXo-YkFHi7qYjMJd47ArOAqqoOoWn9leyXVBBQuw1n3PCI2GBC55QG4gMu1HBDQkpsFbkZS_WJ0_q_vf2YXJFxlB0HrVo3E1bjSgW_uyEks74dsBVn7FKDLKCduZjyu-6-aJScVW_a1dPEPCDq1rgNwr8q4NCWWeiWomcEutvwHdKGXHPcFYJEMAw" alt="Arbre à chat" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                </a>
+            </div>
+        </div>
+    </section>
+
+        <!-- Section Oiseaux -->
     <section class="py-12 md:py-20 bg-surface-container-low" id="oiseaux">
         <div class="max-w-[1280px] mx-auto px-6">
             <!-- Banner Oiseaux - IMAGE PLEINE LARGEUR -->
@@ -312,40 +345,8 @@
                     <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQXx6hiUnOCX6DzOYQFjw2OrpfOIMoRhffQpWaGCqdsUlortBdVqSqAR_xd6Fn6gCZZUFji4VdfAmXhX5s9pzWEhG5UH0lcp21npAq9fuGnRxAzrecick6_ERfAUEza0zCesRzz7kF6nnzRK2ioGzio6gLFkdV9n4QIJMRSH5Rb4rk8a7uyW_yBHJxsVn-H1Qv975itGYfYFVHtLTgQnig4KiM5eMzekLdU-8CzNjmglwOOp0ov466FOPQqMVrFSAg8dhT_-nR4Ko" alt="Graines" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 </a>
                 <a href="#" class="bg-gradient-to-br from-purple-100 to-purple-200 hover:from-purple-200 hover:to-purple-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
-                    <span class="font-bold text-gray-900 text-lg">Jouets & Balançoires</span>
+                    <span class="font-bold text-gray-900 text-lg">Accessoires</span>
                     <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4n77pofZu0M7VUhuXGR57lrTtl_tb-uNTk86gHkIkGqm1VFQc7Ht2jLvyEZKkW0AIbNxsAawhHLmTYSyIluEMqF1ZTczZNvtpUpaEaABo4njvV99IleGHi4r6DK88eCwSmUKJI6JGjFSXwyIX_a05sHUoItu8TmjYM6jQ4Qa4yXFWe19SAQJdSHxcvN0O8vOKKeF-cOkmKKYTsKwPH218RptL2fIyj5VYNURR36Np6h6wrZFTBawkN2X8PygsVeVd_OzbAr9Lpp8" alt="Jouets" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Section Chats -->
-    <section class="py-12 md:py-20 bg-white" id="chats">
-        <div class="max-w-[1280px] mx-auto px-6">
-            <!-- Banner Chats - IMAGE PLEINE LARGEUR -->
-            <div class="relative rounded-3xl overflow-hidden mb-12 min-h-[300px] flex items-center shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=1200&q=80" alt="Chat" class="absolute inset-0 w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-r from-indigo-900/70 via-indigo-900/40 to-transparent"></div>
-                <div class="relative z-10 max-w-md p-12 text-white">
-                    <span class="block text-lg uppercase tracking-widest mb-3 opacity-90 font-semibold">Tout pour les</span>
-                    <h1 class="font-headline text-4xl font-extrabold mb-4">Chats</h1>
-                    <p class="text-indigo-50 text-base">Tout ce dont votre félin a besoin pour être heureux</p>
-                </div>
-            </div>
-            
-            <!-- Category Cards Chats -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-16">
-                <a href="#" class="bg-gradient-to-br from-blue-100 to-blue-200 hover:from-blue-200 hover:to-blue-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
-                    <span class="font-bold text-gray-900 text-lg">Croquettes pour chat</span>
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDT4uP4tjFYK2FyqRUBsgeX_3U1Sa0cnbKyWDNkkOIJ2qiF_tZzDvPMGr8qy-CJN0FYgWdskAw7NgJXfBKXvkBg4qCXvtdGBmGnFGFQ7Cl6ILs9iRxZROeBNnJ2Xbz6aSDyNjwv1U3ScEX2ApndJiQL7YxbpeV8_6sl0Zbo1DBMpmaVDHdsRAJXLUFCxqAN71D1h41oWGvXOhQOYWuN5u2bYKehj_7IV0ipdrG4TfMOEnhmA7iCCfOBb_h_SvgahbCPaN9BSaNpX9k" alt="Croquettes" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                </a>
-                <a href="#" class="bg-gradient-to-br from-green-100 to-green-200 hover:from-green-200 hover:to-green-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
-                    <span class="font-bold text-gray-900 text-lg">Arbre à chat</span>
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCf13j3hn9fIiDpqfSIlA9_FGHwtCP_eI4a3XaBc8PRii4W1Xpek9f00xWvJE9IUbjlRXdu8-LuGY5LKKcih9AXo-YkFHi7qYjMJd47ArOAqqoOoWn9leyXVBBQuw1n3PCI2GBC55QG4gMu1HBDQkpsFbkZS_WJ0_q_vf2YXJFxlB0HrVo3E1bjSgW_uyEks74dsBVn7FKDLKCduZjyu-6-aJScVW_a1dPEPCDq1rgNwr8q4NCWWeiWomcEutvwHdKGXHPcFYJEMAw" alt="Arbre à chat" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                </a>
-                <a href="#" class="bg-gradient-to-br from-purple-100 to-purple-200 hover:from-purple-200 hover:to-purple-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
-                    <span class="font-bold text-gray-900 text-lg">Cage de transport</span>
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIgvNYgMNUX5dDqy9Ji_Xgxifl2RujROG1NGbtl-Mih2srLRpvr-ALYegp6tS66MyQnjGxpl4olvyw9hCamdiCkFivkf896OtEa385MGru_6Q019kTiqpbFtKgGowNvA-C_TqIx5l22H157bz1Kcvgw2kJCLW2ErRaYX-3bMGsSF7HTL6rLtQi-kLHDBGF2tudqZjjiCzdZKJopX7DanJL1aNaI1FjSwc8AKJscFoxJWMwFwX9dD2EIjNlqIw5XwkaHGF8gSSmNmY" alt="Cage" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 </a>
             </div>
         </div>
