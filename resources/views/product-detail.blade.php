@@ -18,7 +18,7 @@
         
         <!-- Left: Gallery -->
         <div class="lg:col-span-7 space-y-4">
-            <div class="relative aspect-[4/5] rounded-[2.5rem] overflow-hidden bg-white dark:bg-[#1a1d2e] shadow-xl group">
+            <div class="relative aspect-[3/2] rounded-[2.5rem] overflow-hidden bg-white dark:bg-[#1a1d2e] shadow-xl group">
                 <img id="mainImage" src="{{ asset('images/products/cat-tree-1.png') }}" alt="Arbre à chat HMZ Premium Luxe" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 
                 <!-- Floating Badge -->
@@ -49,24 +49,13 @@
         <!-- Right: Info -->
         <div class="lg:col-span-5 flex flex-col gap-8">
             <div class="space-y-4">
-                <div class="flex items-center gap-2">
-                    <div class="flex text-amber-400">
-                        <span class="material-symbols-outlined fill-1">star</span>
-                        <span class="material-symbols-outlined fill-1">star</span>
-                        <span class="material-symbols-outlined fill-1">star</span>
-                        <span class="material-symbols-outlined fill-1">star</span>
-                        <span class="material-symbols-outlined">star_half</span>
-                    </div>
-                    <span class="text-sm font-bold text-on-surface-variant/60">(128 avis)</span>
-                </div>
+
                 
                 <h1 class="text-4xl md:text-5xl font-extrabold font-headline leading-tight dark:text-white">
                     Arbre à chat <span class="text-primary-container dark:text-primary-light">Premium Luxe</span> Modern Design
                 </h1>
                 
-                <p class="text-lg text-on-surface-variant dark:text-gray-400 leading-relaxed">
-                    Offrez à votre compagnon le summum du confort avec cet arbre à chat sculptural. Alliant matériaux durables et esthétique minimaliste, il s'intègre parfaitement dans votre intérieur moderne.
-                </p>
+
             </div>
 
             <div class="flex items-center gap-6">
@@ -126,10 +115,7 @@
                 Description
                 <div class="absolute bottom-0 left-0 right-0 h-1 bg-primary rounded-full scale-100 transition"></div>
             </button>
-            <button class="tab-btn pb-4 text-lg font-bold text-on-surface-variant dark:text-gray-500 border-b-2 border-transparent hover:text-primary transition relative group" onclick="switchTab('specs', this)">
-                Spécifications
-                <div class="absolute bottom-0 left-0 right-0 h-1 bg-primary rounded-full scale-0 group-hover:scale-50 transition"></div>
-            </button>
+
             <button class="tab-btn pb-4 text-lg font-bold text-on-surface-variant dark:text-gray-500 border-b-2 border-transparent hover:text-primary transition relative group" onclick="switchTab('reviews', this)">
                 Avis Clients
                 <div class="absolute bottom-0 left-0 right-0 h-1 bg-primary rounded-full scale-0 group-hover:scale-50 transition"></div>
@@ -138,10 +124,9 @@
 
         <div id="tabContent" class="min-h-[300px]">
             <div id="description" class="tab-pane animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
                     <div class="space-y-6">
-                        <h2 class="text-3xl font-extrabold font-headline dark:text-white">Plus qu'un accessoire, un élément de design.</h2>
-                        <p class="text-on-surface-variant dark:text-gray-400 leading-relaxed text-lg">
+                        <p class="text-on-surface-variant dark:text-gray-400 leading-relaxed text-lg line-clamp-2">
                             L'arbre à chat HMZ Premium a été conçu pour satisfaire les instincts naturels de votre chat tout en respectant l'esthétique de votre foyer. Chaque niveau est recouvert d'un tissu ultra-doux, et les poteaux sont entourés de sisal naturel pour le griffage.
                         </p>
                         <ul class="space-y-3">
@@ -153,39 +138,33 @@
                                 <span class="material-symbols-outlined text-primary">done_all</span>
                                 <span class="dark:text-gray-300">Matériaux éco-responsables et non toxiques.</span>
                             </li>
-                            <li class="flex items-start gap-3">
-                                <span class="material-symbols-outlined text-primary">done_all</span>
-                                <span class="dark:text-gray-300">Montage facile en moins de 15 minutes.</span>
-                            </li>
                         </ul>
                     </div>
-                    <div class="relative group">
-                         <div class="absolute inset-0 bg-primary/20 blur-3xl rounded-full scale-75 group-hover:scale-100 transition duration-1000"></div>
-                         <img src="{{ asset('images/products/cat-tree-1.png') }}" class="relative rounded-3xl shadow-2xl transform -rotate-2 group-hover:rotate-0 transition duration-500">
+                    <div class="bg-surface-container-low dark:bg-[#13162a] p-8 rounded-3xl border border-gray-100 dark:border-gray-800">
+                        <h3 class="text-xl font-bold mb-6 dark:text-white">Spécifications</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between py-3 border-b border-gray-100 dark:border-gray-800">
+                                <span class="font-bold text-on-surface-variant text-sm">Hauteur</span>
+                                <span class="dark:text-white text-sm">165 cm</span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-gray-100 dark:border-gray-800">
+                                <span class="font-bold text-on-surface-variant text-sm">Matériaux</span>
+                                <span class="dark:text-white text-sm">Bois, Sisal, Velours</span>
+                            </div>
+                            <div class="flex justify-between py-3 border-b border-gray-100 dark:border-gray-800">
+                                <span class="font-bold text-on-surface-variant text-sm">Poids</span>
+                                <span class="dark:text-white text-sm">18 kg</span>
+                            </div>
+                            <div class="flex justify-between py-3">
+                                <span class="font-bold text-on-surface-variant text-sm">Assemblage</span>
+                                <span class="dark:text-white text-sm">Inclus</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <div id="specs" class="tab-pane hidden">
-                <div class="max-w-2xl mx-auto space-y-4">
-                    <div class="flex justify-between py-4 border-b border-gray-100 dark:border-gray-800">
-                        <span class="font-bold text-on-surface-variant">Hauteur</span>
-                        <span class="dark:text-white">165 cm</span>
-                    </div>
-                    <div class="flex justify-between py-4 border-b border-gray-100 dark:border-gray-800">
-                        <span class="font-bold text-on-surface-variant">Matériaux</span>
-                        <span class="dark:text-white">Bois de hêtre, Sisal, Velours</span>
-                    </div>
-                    <div class="flex justify-between py-4 border-b border-gray-100 dark:border-gray-800">
-                        <span class="font-bold text-on-surface-variant">Poids</span>
-                        <span class="dark:text-white">18 kg</span>
-                    </div>
-                    <div class="flex justify-between py-4 border-b border-gray-100 dark:border-gray-800">
-                        <span class="font-bold text-on-surface-variant">Assemblage</span>
-                        <span class="dark:text-white">Nécessaire (outils fournis)</span>
-                    </div>
-                </div>
-            </div>
+
 
             <div id="reviews" class="tab-pane hidden">
                 <div class="flex flex-col gap-8">
