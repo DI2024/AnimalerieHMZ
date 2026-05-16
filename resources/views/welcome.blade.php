@@ -1,15 +1,49 @@
 @extends('layouts.public')
 
 @section('content')
-    <!-- Hero Section -->
-    <section class="relative h-[600px] flex items-center overflow-hidden bg-white">
-        <div class="absolute right-0 top-0 w-1/2 h-full bg-contain bg-right bg-no-repeat z-0 hidden md:block" style="background-image: url('{{ asset('images/hero.png') }}');"></div>
-        <div class="max-w-[1280px] mx-auto px-6 relative z-10 w-full flex justify-start">
-            <div class="max-w-[42rem] pr-8 text-left">
-                <h1 class="font-headline text-[clamp(2rem,5vw,2.5rem)] font-bold leading-[1.2] tracking-tight text-primary mb-6">Tout pour le bonheur de vos compagnons</h1>
-                <p class="text-[1.125rem] leading-[1.6] text-on-surface-variant mb-12">Découvrez une sélection premium de produits pour prendre soin de vos animaux avec l'expertise et la fiabilité PetTrust.</p>
-                <img src="{{ asset('images/hero.png') }}" alt="Animaux heureux" class="md:hidden w-full max-w-sm mx-auto mb-8">
-                <button class="bg-primary hover:bg-primary-container text-white font-bold py-4 px-8 rounded-full transition shadow-md hover:-translate-y-0.5 active:translate-y-0 text-sm flex items-center justify-center gap-2" id="heroBtn">Découvrir la boutique</button>
+    <!-- Hero Section avec Grid - Largeur limitée et centrée -->
+    <section class="bg-white py-8">
+        <div class="max-w-[1280px] mx-auto px-6">
+            <div class="grid grid-rows-[92px_1fr] gap-4">
+                <!-- Bande du haut - Marques de produits -->
+                <div class="relative flex items-center rounded-2xl overflow-hidden">
+                    <img src="{{ asset('images/img brand product.png') }}" alt="Marques de produits" class="w-full h-full object-cover">
+                </div>
+
+                <!-- Grid 2 colonnes en bas - 65% gauche / 35% droite -->
+                <div class="grid grid-cols-1 md:grid-cols-[65%_35%] gap-4">
+                    <!-- Colonne gauche - Texte principal (Rouge) - HAUTEUR 460px -->
+                    <div class="bg-red-50 flex items-center justify-center p-6 rounded-2xl h-[460px] overflow-hidden">
+                        <div class="max-w-[42rem]">
+                            <h1 class="font-headline text-[clamp(1.5rem,5vw,2.5rem)] font-bold leading-[1.2] tracking-tight text-primary mb-4 md:mb-6">Tout pour le bonheur de vos compagnons</h1>
+                            <p class="text-[1rem] md:text-[1.125rem] leading-[1.6] text-on-surface-variant mb-6 md:mb-12">Découvrez une sélection premium de produits pour prendre soin de vos animaux avec l'expertise et la fiabilité PetTrust.</p>
+                            <button class="bg-primary hover:bg-primary-container text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-full transition shadow-md hover:-translate-y-0.5 active:translate-y-0 text-sm flex items-center justify-center gap-2" id="heroBtn">Découvrir la boutique</button>
+                        </div>
+                    </div>
+
+                    <!-- Colonne droite - 2 images d'offres empilées -->
+                    <div class="hidden md:grid grid-rows-2 gap-4">
+                        <!-- Image offre 1 (Jaune) - HAUTEUR 222px -->
+                        <div class="bg-yellow-100 overflow-hidden relative group rounded-2xl h-[222px]">
+                            <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&q=80" alt="Offre Chien" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                            <div class="absolute bottom-6 left-6 text-white">
+                                <span class="bg-primary px-4 py-2 rounded-full text-sm font-bold mb-2 inline-block">-25%</span>
+                                <h3 class="font-headline text-2xl font-bold">Gamme Chien</h3>
+                            </div>
+                        </div>
+
+                        <!-- Image offre 2 (Bleu) - HAUTEUR 222px -->
+                        <div class="bg-blue-100 overflow-hidden relative group rounded-2xl h-[222px]">
+                            <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=800&q=80" alt="Offre Chat" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                            <div class="absolute bottom-6 left-6 text-white">
+                                <span class="bg-tertiary px-4 py-2 rounded-full text-sm font-bold mb-2 inline-block">-15%</span>
+                                <h3 class="font-headline text-2xl font-bold">Accessoires Chat</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -23,31 +57,37 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Offer 1 -->
-                <div class="relative flex flex-col justify-between p-10 rounded-3xl overflow-hidden min-h-[280px] bg-gradient-to-br from-primary-container to-primary text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl">
-                    <div class="relative z-10">
-                        <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">Offre Spéciale</span>
-                        <h3 class="font-headline text-2xl font-bold leading-tight mb-3">Jusqu'à 25% de remise</h3>
-                        <p class="text-white/90 text-base font-medium">Sur toute la gamme Chien</p>
+                <div class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-gradient-to-br from-primary-container to-primary text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+                    <div class="flex-1 pr-4">
+                        <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">🔥 Offre Spéciale</span>
+                        <h3 class="font-headline text-lg font-bold leading-tight mb-2">Jusqu'à 25% de remise</h3>
+                        <p class="text-white/90 text-sm font-medium">Sur toute la gamme Chien</p>
                     </div>
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAx-idpF478hzoaaBIUHLUhWNsH922i7ik4yZ4LO2wsFxOXaaH0vCZmjypSNPW30ShDtsjn1yqpnEmIm97kK9VU2iG19ZN0Q_Bc01sr9tKItR4y8LpQcFN8bjT3Gitg7YSmWhoFXxNmov5igt9yvFvKOsFHinogyokHHUyUpIb_jSnIM_foyONoR63ppruzz3Kjj8Q09IM4NcqFWBLcnyUiLmE9JLA5fHEoOWGVZ_SAE5fIRWwLEjQDLqOAa20bHz9MgNHftU0xCdA" alt="Chien" class="absolute right-4 bottom-4 w-40 h-40 object-contain transition-transform duration-500 group-hover:scale-125 group-hover:rotate-6 drop-shadow-2xl">
+                    <div class="flex-shrink-0 w-24 h-24">
+                        <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=400&fit=crop&q=80" alt="Chien" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
+                    </div>
                 </div>
                 <!-- Offer 2 -->
-                <div class="relative flex flex-col justify-between p-10 rounded-3xl overflow-hidden min-h-[280px] bg-gradient-to-br from-tertiary to-blue-600 text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl">
-                    <div class="relative z-10">
+                <div class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-gradient-to-br from-tertiary to-blue-600 text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+                    <div class="flex-1 pr-4">
                         <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">✨ Exclusivité Web</span>
-                        <h3 class="font-headline text-2xl font-bold leading-tight mb-3">-15% sur les Accessoires</h3>
-                        <p class="text-white/90 text-base font-medium">Pour Chats et Rongeurs</p>
+                        <h3 class="font-headline text-lg font-bold leading-tight mb-2">-15% Accessoires</h3>
+                        <p class="text-white/90 text-sm font-medium">Pour Chats et Rongeurs</p>
                     </div>
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAD1AcP45gJpBLS8Tr-pXiMNBhB2iQJSA2af3qaDZ7Y417iW3jYCPMEXodTymh_btgwzlODtmGfx9-9WBkmqrr92jmmOl6Hza6t5TQcw34Wpzi1TDXqjiwXuSGQQifpo2cGqNLGMLJfYc4Aj2c7zH9Fns2agYHMc6JfqKBDoNvaF9nY6Bo7nEr_DfAPkZIxRgoqa0c5x6SpMwoaoUhfwM8UHOGaNy0FYVCh2S0XffBGisL1pEt11w0B4A0aiW25uQwPR5_UGGg2YU4" alt="Chat" class="absolute right-4 bottom-4 w-40 h-40 object-contain transition-transform duration-500 group-hover:scale-125 group-hover:rotate-6 drop-shadow-2xl">
+                    <div class="flex-shrink-0 w-24 h-24">
+                        <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=400&h=400&fit=crop&q=80" alt="Chat" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
+                    </div>
                 </div>
                 <!-- Offer 3 -->
-                <div class="relative flex flex-col justify-between p-10 rounded-3xl overflow-hidden min-h-[280px] bg-white border-2 border-primary/20 text-primary group transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:border-primary">
-                    <div class="relative z-10">
+                <div class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-white border-2 border-primary/20 text-primary group transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:border-primary">
+                    <div class="flex-1 pr-4">
                         <span class="inline-block bg-gradient-to-r from-primary/10 to-tertiary/10 text-primary px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-md">🎁 Nouveauté</span>
-                        <h3 class="font-headline text-2xl font-bold leading-tight mb-3">Pack Bienvenue</h3>
-                        <p class="text-on-surface-variant text-base font-medium">Offert pour votre 1ère commande</p>
+                        <h3 class="font-headline text-lg font-bold leading-tight mb-2">Pack Bienvenue</h3>
+                        <p class="text-on-surface-variant text-sm font-medium">Offert pour votre 1ère commande</p>
                     </div>
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqASyV7URQYtB7AufDQq3zsXl7XSv9FkFZ2rS7cvCY8SjFBpNtd44dmKeXIseCB9VNUADcDBsTZFb6lITNOv2FLAuO2mwJu_CqbbtFdL1nnCHvOh3gcNgP6etzuggSPuFxOHrjFd94gobAlyjJdlEbFYg-J5N8E9XGz90YLgl0NJs0XhBpPwWcq_WERVUX8hBqXIcEE5Wjyp6mSiNEde_o2uE8CHpFJxQr9iCfpJSCMSWgZ8U6B2nbcBOlsTz53qAdUrzB7JupVkA" alt="Aquarium" class="absolute right-4 bottom-4 w-40 h-40 object-contain transition-transform duration-500 group-hover:scale-125 group-hover:rotate-6 drop-shadow-xl">
+                    <div class="flex-shrink-0 w-24 h-24">
+                        <img src="https://images.unsplash.com/photo-1520763185298-1b434c919102?w=400&h=400&fit=crop&q=80" alt="Oiseau" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-xl">
+                    </div>
                 </div>
             </div>
         </div>
