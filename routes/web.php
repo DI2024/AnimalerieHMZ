@@ -111,6 +111,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     
     // Settings
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::post('/settings/contact', [SettingController::class, 'updateContact'])->name('settings.update-contact');
+    Route::post('/settings/footer', [SettingController::class, 'updateFooter'])->name('settings.update-footer');
+    Route::post('/settings/password', [SettingController::class, 'updatePassword'])->name('settings.update-password');
 });
 
 // Authentication Routes (Breeze)

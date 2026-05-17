@@ -1,9 +1,7 @@
-@extends('layouts.admin')
+<?php $__env->startSection('title', 'Paramètres'); ?>
+<?php $__env->startSection('page-title', 'Paramètres Système'); ?>
 
-@section('title', 'Paramètres')
-@section('page-title', 'Paramètres Système')
-
-@push('styles')
+<?php $__env->startPush('styles'); ?>
 <style>
     .settings-grid {
         display: grid;
@@ -91,9 +89,9 @@
         }
     }
 </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="space-y-6">
     
     <!-- Contact Information -->
@@ -103,8 +101,8 @@
             <span>Informations de Contact</span>
         </div>
         <div class="section-body">
-            <form action="{{ route('admin.settings.update-contact') }}" method="POST">
-                @csrf
+            <form action="<?php echo e(route('admin.settings.update-contact')); ?>" method="POST">
+                <?php echo csrf_field(); ?>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="form-group">
@@ -115,12 +113,19 @@
                         <input type="email" 
                                name="contact_email" 
                                class="form-input" 
-                               value="{{ old('contact_email', 'contact@animaleriehmz.ma') }}"
+                               value="<?php echo e(old('contact_email', 'contact@animaleriehmz.ma')); ?>"
                                required>
                         <p class="help-text">Email principal pour les clients</p>
-                        @error('contact_email')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                        <?php $__errorArgs = ['contact_email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <p class="text-red-500 text-xs mt-1"><?php echo e($message); ?></p>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
                     
                     <div class="form-group">
@@ -131,12 +136,19 @@
                         <input type="text" 
                                name="contact_phone" 
                                class="form-input" 
-                               value="{{ old('contact_phone', '+212 626-911209') }}"
+                               value="<?php echo e(old('contact_phone', '+212 626-911209')); ?>"
                                required>
                         <p class="help-text">Numéro affiché sur le site</p>
-                        @error('contact_phone')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                        <?php $__errorArgs = ['contact_phone'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <p class="text-red-500 text-xs mt-1"><?php echo e($message); ?></p>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
 
@@ -158,8 +170,8 @@
                 <span>Texte du Footer</span>
             </div>
             <div class="section-body">
-                <form action="{{ route('admin.settings.update-footer') }}" method="POST">
-                    @csrf
+                <form action="<?php echo e(route('admin.settings.update-footer')); ?>" method="POST">
+                    <?php echo csrf_field(); ?>
                     
                     <div class="form-group">
                         <label class="form-label">
@@ -168,11 +180,18 @@
                         <textarea name="footer_description" 
                                   class="form-input" 
                                   rows="3"
-                                  required>{{ old('footer_description', 'Animalerie HMZ - Votre boutique en ligne pour tous vos animaux de compagnie au Maroc.') }}</textarea>
+                                  required><?php echo e(old('footer_description', 'Animalerie HMZ - Votre boutique en ligne pour tous vos animaux de compagnie au Maroc.')); ?></textarea>
                         <p class="help-text">Texte affiché dans le footer du site</p>
-                        @error('footer_description')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                        <?php $__errorArgs = ['footer_description'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <p class="text-red-500 text-xs mt-1"><?php echo e($message); ?></p>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group">
@@ -182,12 +201,19 @@
                         <input type="text" 
                                name="footer_copyright" 
                                class="form-input" 
-                               value="{{ old('footer_copyright', '© 2024 Animalerie HMZ. Tous droits réservés.') }}"
+                               value="<?php echo e(old('footer_copyright', '© 2024 Animalerie HMZ. Tous droits réservés.')); ?>"
                                required>
                         <p class="help-text">Texte de copyright</p>
-                        @error('footer_copyright')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                        <?php $__errorArgs = ['footer_copyright'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <p class="text-red-500 text-xs mt-1"><?php echo e($message); ?></p>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="flex justify-end mt-6">
@@ -207,8 +233,8 @@
                 <span>Sécurité</span>
             </div>
             <div class="section-body">
-                <form action="{{ route('admin.settings.update-password') }}" method="POST">
-                    @csrf
+                <form action="<?php echo e(route('admin.settings.update-password')); ?>" method="POST">
+                    <?php echo csrf_field(); ?>
                     
                     <div class="form-group">
                         <label class="form-label">
@@ -219,9 +245,16 @@
                                name="current_password" 
                                class="form-input" 
                                required>
-                        @error('current_password')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                        <?php $__errorArgs = ['current_password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <p class="text-red-500 text-xs mt-1"><?php echo e($message); ?></p>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
                     
                     <div class="form-group">
@@ -234,9 +267,16 @@
                                class="form-input" 
                                required>
                         <p class="help-text">Minimum 8 caractères</p>
-                        @error('new_password')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                        <?php $__errorArgs = ['new_password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <p class="text-red-500 text-xs mt-1"><?php echo e($message); ?></p>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
                     
                     <div class="form-group">
@@ -248,9 +288,16 @@
                                name="new_password_confirmation" 
                                class="form-input" 
                                required>
-                        @error('new_password_confirmation')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                        <?php $__errorArgs = ['new_password_confirmation'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <p class="text-red-500 text-xs mt-1"><?php echo e($message); ?></p>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
                     
                     <div class="flex justify-end mt-6">
@@ -264,19 +311,19 @@
         </div>
     </div>
 
-    @if(session('success'))
+    <?php if(session('success')): ?>
         <div class="fixed bottom-6 right-6 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg flex items-center gap-3 animate-slide-up">
             <i class="fas fa-check-circle text-xl"></i>
-            <span>{{ session('success') }}</span>
+            <span><?php echo e(session('success')); ?></span>
         </div>
-    @endif
+    <?php endif; ?>
 
-    @if(session('error'))
+    <?php if(session('error')): ?>
         <div class="fixed bottom-6 right-6 bg-red-500 text-white px-6 py-4 rounded-lg shadow-lg flex items-center gap-3 animate-slide-up">
             <i class="fas fa-exclamation-circle text-xl"></i>
-            <span>{{ session('error') }}</span>
+            <span><?php echo e(session('error')); ?></span>
         </div>
-    @endif
+    <?php endif; ?>
 </div>
 
 <style>
@@ -308,4 +355,6 @@
         });
     }, 5000);
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\temp-laravel\AnimalerieHMZ\resources\views/admin/settings/index.blade.php ENDPATH**/ ?>

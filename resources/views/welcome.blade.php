@@ -61,39 +61,79 @@
                 <p class="text-on-surface-variant text-lg">Profitez de nos promotions exclusives</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Offer 1 -->
-                <a href="{{ route('products.index', ['category' => 'chiens']) }}" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-gradient-to-br from-primary-container to-primary text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
-                    <div class="flex-1 pr-4">
-                        <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">🔥 Offre Spéciale</span>
-                        <h3 class="font-headline text-lg font-bold leading-tight mb-2">Jusqu'à 25% de remise</h3>
-                        <p class="text-white/90 text-sm font-medium">Sur toute la gamme Chien</p>
+                @forelse($offers as $index => $offer)
+                    @php
+                        // Define gradient colors for each offer
+                        $gradients = [
+                            'from-primary-container to-primary',
+                            'from-tertiary to-blue-600',
+                            'from-purple-500 to-pink-500',
+                        ];
+                        $gradient = $gradients[$index % 3];
+                        
+                        // Use white background for third offer if it exists
+                        $isWhiteBg = ($index % 3 == 2);
+                    @endphp
+                    
+                    <div class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] group transition-all duration-500 hover:scale-105 hover:shadow-2xl
+                              @if($isWhiteBg) bg-white border-2 border-primary/20 text-primary hover:border-primary @else bg-gradient-to-br {{ $gradient }} text-white @endif">
+                        <div class="flex-1 pr-4">
+                            @if($offer->badge)
+                                <span class="inline-block px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg
+                                             @if($isWhiteBg) bg-gradient-to-r from-primary/10 to-tertiary/10 text-primary @else bg-white/30 backdrop-blur-sm @endif">
+                                    {{ $offer->badge }}
+                                </span>
+                            @endif
+                            <h3 class="font-headline text-lg font-bold leading-tight mb-2">{{ $offer->title }}</h3>
+                            @if($offer->subtitle)
+                                <p class="text-sm font-medium @if($isWhiteBg) text-on-surface-variant @else text-white/90 @endif">
+                                    {{ $offer->subtitle }}
+                                </p>
+                            @endif
+                        </div>
+                        @if($offer->image)
+                            <div class="flex-shrink-0 w-24 h-24">
+                                @if(filter_var($offer->image, FILTER_VALIDATE_URL))
+                                    <img src="{{ $offer->image }}" alt="{{ $offer->title }}" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
+                                @else
+                                    <img src="{{ asset('storage/' . $offer->image) }}" alt="{{ $offer->title }}" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
+                                @endif
+                            </div>
+                        @endif
                     </div>
-                    <div class="flex-shrink-0 w-24 h-24">
-                        <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=400&fit=crop&q=80" alt="Chien" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
-                    </div>
-                </a>
-                <!-- Offer 2 -->
-                <a href="{{ route('products.index', ['category' => 'chats']) }}" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-gradient-to-br from-tertiary to-blue-600 text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
-                    <div class="flex-1 pr-4">
-                        <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">✨ Exclusivité Web</span>
-                        <h3 class="font-headline text-lg font-bold leading-tight mb-2">-15% Accessoires</h3>
-                        <p class="text-white/90 text-sm font-medium">Pour Chats et Rongeurs</p>
-                    </div>
-                    <div class="flex-shrink-0 w-24 h-24">
-                        <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=400&h=400&fit=crop&q=80" alt="Chat" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
-                    </div>
-                </a>
-                <!-- Offer 3 -->
-                <a href="{{ route('products.index') }}" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-white border-2 border-primary/20 text-primary group transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:border-primary cursor-pointer">
-                    <div class="flex-1 pr-4">
-                        <span class="inline-block bg-gradient-to-r from-primary/10 to-tertiary/10 text-primary px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-md">🎁 Nouveauté</span>
-                        <h3 class="font-headline text-lg font-bold leading-tight mb-2">Pack Bienvenue</h3>
-                        <p class="text-on-surface-variant text-sm font-medium">Offert pour votre 1ère commande</p>
-                    </div>
-                    <div class="flex-shrink-0 w-24 h-24">
-                        <img src="https://images.unsplash.com/photo-1520763185298-1b434c919102?w=400&h=400&fit=crop&q=80" alt="Oiseau" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-xl">
-                    </div>
-                </a>
+                @empty
+                    <!-- Fallback: Show default offers if no database offers exist -->
+                    <a href="{{ route('products.index', ['category' => 'chiens']) }}" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-gradient-to-br from-primary-container to-primary text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
+                        <div class="flex-1 pr-4">
+                            <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">🔥 Offre Spéciale</span>
+                            <h3 class="font-headline text-lg font-bold leading-tight mb-2">Jusqu'à 25% de remise</h3>
+                            <p class="text-white/90 text-sm font-medium">Sur toute la gamme Chien</p>
+                        </div>
+                        <div class="flex-shrink-0 w-24 h-24">
+                            <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=400&fit=crop&q=80" alt="Chien" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
+                        </div>
+                    </a>
+                    <a href="{{ route('products.index', ['category' => 'chats']) }}" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-gradient-to-br from-tertiary to-blue-600 text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
+                        <div class="flex-1 pr-4">
+                            <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">✨ Exclusivité Web</span>
+                            <h3 class="font-headline text-lg font-bold leading-tight mb-2">-15% Accessoires</h3>
+                            <p class="text-white/90 text-sm font-medium">Pour Chats et Rongeurs</p>
+                        </div>
+                        <div class="flex-shrink-0 w-24 h-24">
+                            <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=400&h=400&fit=crop&q=80" alt="Chat" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
+                        </div>
+                    </a>
+                    <a href="{{ route('products.index') }}" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-white border-2 border-primary/20 text-primary group transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:border-primary cursor-pointer">
+                        <div class="flex-1 pr-4">
+                            <span class="inline-block bg-gradient-to-r from-primary/10 to-tertiary/10 text-primary px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-md">🎁 Nouveauté</span>
+                            <h3 class="font-headline text-lg font-bold leading-tight mb-2">Pack Bienvenue</h3>
+                            <p class="text-on-surface-variant text-sm font-medium">Offert pour votre 1ère commande</p>
+                        </div>
+                        <div class="flex-shrink-0 w-24 h-24">
+                            <img src="https://images.unsplash.com/photo-1520763185298-1b434c919102?w=400&h=400&fit=crop&q=80" alt="Oiseau" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-xl">
+                        </div>
+                    </a>
+                @endforelse
             </div>
         </div>
     </section>

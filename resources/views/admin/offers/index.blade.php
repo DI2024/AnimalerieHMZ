@@ -623,15 +623,15 @@
 <div class="space-y-6">
     
     <!-- Statistics Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="stat-card">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm text-gray-600 mb-1">Total Offres</p>
-                    <p class="text-3xl font-bold text-gray-900">12</p>
+                    <p class="text-3xl font-bold text-gray-900">{{ $stats['total'] }}</p>
                 </div>
-                <div class="stat-icon bg-blue-100 text-blue-600">
-                    <i class="fas fa-tags"></i>
+                <div class="stat-icon" style="background: linear-gradient(135deg, #003e87 0%, #0855b1 100%);">
+                    <i class="fas fa-tags text-white"></i>
                 </div>
             </div>
         </div>
@@ -640,7 +640,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm text-gray-600 mb-1">Offres Actives</p>
-                    <p class="text-3xl font-bold text-green-600">8</p>
+                    <p class="text-3xl font-bold text-green-600">{{ $stats['active'] }}</p>
                 </div>
                 <div class="stat-icon bg-green-100 text-green-600">
                     <i class="fas fa-check-circle"></i>
@@ -651,25 +651,11 @@
         <div class="stat-card">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm text-gray-600 mb-1">Expire Bientôt</p>
-                    <p class="text-3xl font-bold text-yellow-600">3</p>
-                    <p class="text-xs text-gray-500 mt-1">< 7 jours</p>
+                    <p class="text-sm text-gray-600 mb-1">Offres Inactives</p>
+                    <p class="text-3xl font-bold text-gray-600">{{ $stats['total'] - $stats['active'] }}</p>
                 </div>
-                <div class="stat-icon bg-yellow-100 text-yellow-600">
-                    <i class="fas fa-clock"></i>
-                </div>
-            </div>
-        </div>
-        
-        <div class="stat-card">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm text-gray-600 mb-1">Revenu des Packs</p>
-                    <p class="text-3xl font-bold text-green-600">15,400.00</p>
-                    <p class="text-xs text-gray-500 mt-1">Commandes confirmées</p>
-                </div>
-                <div class="stat-icon bg-green-100 text-green-600">
-                    <i class="fas fa-box-open"></i>
+                <div class="stat-icon bg-gray-100 text-gray-600">
+                    <i class="fas fa-pause-circle"></i>
                 </div>
             </div>
         </div>
@@ -678,115 +664,47 @@
     <!-- Search & Actions Bar -->
     <div class="bg-white rounded-lg shadow p-4">
         <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
-            <div class="flex items-center gap-3 flex-1 flex-wrap">
-                <!-- Search -->
-                <div class="relative flex-1 max-w-md">
-                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                    <input type="text" 
-                           id="searchInput" 
-                           class="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" 
-                           placeholder="Rechercher par nom..."
-                           value="{{ request('search') }}">
-                </div>
-                
-                <!-- Type Filter -->
-                <div class="type-filter">
-                    <button onclick="filterByType('all')" id="filterAll" class="active">
-                        <i class="fas fa-th-large"></i>
-                        <span>Tout</span>
-                        <span class="count-badge" id="countAll">{{ $stats['total'] }}</span>
-                    </button>
-                    <button onclick="filterByType('pack')" id="filterPack">
-                        <i class="fas fa-box-open"></i>
-                        <span>Packs</span>
-                        <span class="count-badge" id="countPack">0</span>
-                    </button>
-                    <button onclick="filterByType('offer')" id="filterOffer">
-                        <i class="fas fa-percent"></i>
-                        <span>Offres</span>
-                        <span class="count-badge" id="countOffer">0</span>
-                    </button>
-                </div>
-                
-                <!-- View Toggle -->
-                <div class="view-toggle">
-                    <button onclick="switchView('table')" id="tableViewBtn" class="active">
-                        <i class="fas fa-list"></i>
-                    </button>
-                    <button onclick="switchView('grid')" id="gridViewBtn">
-                        <i class="fas fa-th"></i>
-                    </button>
-                </div>
+            <!-- Search -->
+            <div class="relative flex-1 max-w-md">
+                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                <input type="text" 
+                       id="searchInput" 
+                       class="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2" 
+                       style="border-color: #e5e7eb; focus:ring-color: #003e87;"
+                       placeholder="Rechercher une offre..."
+                       value="{{ request('search') }}">
             </div>
             
             <!-- New Offer Button -->
             <a href="{{ route('admin.offers.create') }}" 
-               class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-yellow-600 transition-colors flex items-center gap-2">
+               class="px-6 py-2 text-white rounded-lg transition-colors flex items-center gap-2" 
+               style="background: #003e87;" 
+               onmouseover="this.style.background='#0855b1'" 
+               onmouseout="this.style.background='#003e87'">
                 <i class="fas fa-plus"></i>
                 <span>Nouvelle Offre</span>
             </a>
         </div>
     </div>
     
-    <!-- Content with Sidebar -->
-    <div class="content-with-sidebar">
-        <!-- Filter Sidebar -->
-        <div>
-            @include('admin.offers.partials.filter-sidebar')
-        </div>
-        
-        <!-- Main Content -->
-        <div class="space-y-4">
-            <!-- Active Filter Chips -->
-            @if(request()->hasAny(['status_filter', 'type_filter', 'target_filter', 'start_date_from', 'end_date_to', 'value_min', 'value_max']))
-                <div class="filter-chips">
-                    @foreach(request('status_filter', []) as $status)
-                        <span class="filter-chip">
-                            {{ ucfirst($status) }}
-                            <button onclick="removeFilter('status_filter', '{{ $status }}')">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </span>
-                    @endforeach
-                    @foreach(request('type_filter', []) as $type)
-                        <span class="filter-chip">
-                            Type: {{ ucfirst($type) }}
-                            <button onclick="removeFilter('type_filter', '{{ $type }}')">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </span>
-                    @endforeach
-                    @foreach(request('target_filter', []) as $target)
-                        <span class="filter-chip">
-                            Cible: {{ ucfirst($target) }}
-                            <button onclick="removeFilter('target_filter', '{{ $target }}')">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </span>
-                    @endforeach
-                </div>
-            @endif
-            
+    <!-- Main Content -->
+    <div class="space-y-4">
             <!-- Table View -->
             <div id="tableView" class="bg-white rounded-lg shadow overflow-hidden">
                 <table class="w-full">
                     <thead class="bg-gray-50 border-b border-gray-200">
                         <tr>
-                            <th class="px-6 py-4 text-left">
-                                <input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)" 
-                                       class="rounded text-primary focus:ring-primary">
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Image
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Offre
+                                Titre
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Type & Valeur
+                                Badge
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Cible
-                            </th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Période
+                                Date Création
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 Statut
@@ -797,226 +715,95 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
-                        <!-- Static Offer Row 1 -->
-                        <tr class="hover:bg-gray-50 transition-colors" data-offer-type="percentage">
-                            <td class="px-6 py-4"><input type="checkbox" class="rounded text-primary"></td>
+                        @forelse($offers as $offer)
+                        <tr class="hover:bg-gray-50 transition-colors">
                             <td class="px-6 py-4">
-                                <div class="flex items-start gap-3">
-                                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-yellow-600 flex items-center justify-center text-white font-bold text-sm">-20%</div>
-                                    <div>
-                                        <p class="font-semibold text-gray-900">Promo Été</p>
-                                        <p class="text-sm text-gray-500 font-mono mt-1"><i class="fas fa-ticket-alt mr-1"></i>SUMMER20</p>
+                                @if($offer->image)
+                                    @if(filter_var($offer->image, FILTER_VALIDATE_URL))
+                                        <img src="{{ $offer->image }}" class="w-16 h-16 rounded-lg object-cover" alt="{{ $offer->title }}">
+                                    @else
+                                        <img src="{{ asset('storage/' . $offer->image) }}" class="w-16 h-16 rounded-lg object-cover" alt="{{ $offer->title }}">
+                                    @endif
+                                @else
+                                    <div class="w-16 h-16 rounded-lg flex items-center justify-center text-white" style="background: linear-gradient(135deg, #003e87 0%, #0855b1 100%);">
+                                        <i class="fas fa-tag text-xl"></i>
                                     </div>
+                                @endif
+                            </td>
+                            <td class="px-6 py-4">
+                                <div>
+                                    <p class="font-semibold text-gray-900">{{ $offer->title }}</p>
+                                    @if($offer->subtitle)
+                                        <p class="text-sm text-gray-500 mt-1">{{ $offer->subtitle }}</p>
+                                    @endif
                                 </div>
                             </td>
                             <td class="px-6 py-4">
-                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">Pourcentage</span>
-                                <p class="text-lg font-bold text-gray-900 mt-1">-20%</p>
+                                @if($offer->badge)
+                                    <span class="inline-block px-3 py-1 text-xs font-medium rounded-full" style="background: #dbeafe; color: #1e40af;">
+                                        {{ $offer->badge }}
+                                    </span>
+                                @else
+                                    <span class="text-sm text-gray-400">-</span>
+                                @endif
                             </td>
-                            <td class="px-6 py-4"><span class="px-2 py-1 bg-gray-100 text-gray-800 rounded text-xs font-medium">Tous</span></td>
                             <td class="px-6 py-4">
-                                <div class="text-sm">
-                                    <p class="text-gray-600">01/06/2026 - 31/08/2026</p>
-                                    <span class="countdown">15 jours restants</span>
+                                <div class="text-sm text-gray-600">
+                                    {{ $offer->created_at->format('d/m/Y') }}
                                 </div>
                             </td>
-                            <td class="px-6 py-4"><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></td>
-                            <td class="px-6 py-4 text-center">
-                                <button class="text-gray-400 hover:text-gray-600"><i class="fas fa-ellipsis-v"></i></button>
+                            <td class="px-6 py-4">
+                                <form action="{{ route('admin.offers.toggle-status', $offer) }}" method="POST" class="inline">
+                                    @csrf
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" 
+                                               class="sr-only peer" 
+                                               {{ $offer->is_active ? 'checked' : '' }}
+                                               onchange="this.form.submit()">
+                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                                    </label>
+                                </form>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-2">
+                                    <a href="{{ route('admin.offers.edit', $offer) }}" 
+                                       class="px-3 py-1.5 text-white rounded-lg text-sm transition-opacity" 
+                                       style="background: #003e87;"
+                                       onmouseover="this.style.opacity='0.9'" 
+                                       onmouseout="this.style.opacity='1'">
+                                        <i class="fas fa-edit mr-1"></i>Modifier
+                                    </a>
+                                    <button type="button" 
+                                            onclick="openDeleteModal({{ $offer->id }}, '{{ addslashes($offer->title) }}')"
+                                            class="px-3 py-1.5 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700 transition-colors">
+                                        <i class="fas fa-trash mr-1"></i>Supprimer
+                                    </button>
+                                    <form id="deleteForm{{ $offer->id }}" action="{{ route('admin.offers.destroy', $offer) }}" method="POST" class="hidden">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                </div>
                             </td>
                         </tr>
+                        @empty
+                        <tr>
+                            <td colspan="6" class="px-6 py-12 text-center text-gray-500">
+                                <i class="fas fa-inbox text-4xl mb-2"></i>
+                                <p>Aucune offre trouvée</p>
+                                <a href="{{ route('admin.offers.create') }}" class="inline-block mt-4 px-6 py-2 text-white rounded-lg" style="background: #003e87;">
+                                    <i class="fas fa-plus mr-2"></i>Créer une offre
+                                </a>
+                            </td>
+                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
-            
-            <!-- Grid View (Hidden by default) -->
-            <div id="gridView" class="offers-grid hidden">
-                @foreach($offers as $offer)
-                    @php
-                        $isExpired = $offer->end_date < now();
-                        $isExpiringSoon = !$isExpired && $offer->end_date <= now()->addDays(7);
-                        $isActive = $offer->is_active && !$isExpired && $offer->start_date <= now();
-                        $daysRemaining = $offer->days_remaining;
-                    @endphp
-                    <div class="offer-card" 
-                         data-offer-id="{{ $offer->id }}"
-                         data-offer-type="{{ $offer->type === 'pack' ? 'pack' : 'offer' }}">
-                        <!-- Card Header -->
-                        <div class="flex items-start justify-between mb-4">
-                            <!-- Checkbox -->
-                            <input type="checkbox" 
-                                   class="offer-checkbox rounded text-primary focus:ring-primary mt-1" 
-                                   value="{{ $offer->id }}" 
-                                   onchange="updateBulkBar()">
-                            
-                            <!-- Status Badge -->
-                            <span class="status-badge
-                                @if($isActive) status-active
-                                @elseif($isExpiringSoon && $offer->is_active) status-expiring
-                                @elseif($isExpired) status-expired
-                                @else status-inactive
-                                @endif">
-                                @if($isActive) 
-                                    <i class="fas fa-check-circle mr-1"></i>Actif
-                                @elseif($isExpiringSoon && $offer->is_active) 
-                                    <i class="fas fa-exclamation-triangle mr-1"></i>Expire Bientôt
-                                @elseif($isExpired) 
-                                    <i class="fas fa-times-circle mr-1"></i>Expiré
-                                @else 
-                                    <i class="fas fa-pause-circle mr-1"></i>Inactif
-                                @endif
-                            </span>
-                        </div>
-
-                        <!-- Icon/Badge -->
-                        <div class="flex justify-center mb-4">
-                            <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-yellow-600 flex items-center justify-center text-white shadow-lg">
-                                @if($offer->type === 'percentage')
-                                    <div class="text-center">
-                                        <div class="text-2xl font-bold">{{ $offer->value }}%</div>
-                                        <div class="text-xs opacity-90">OFF</div>
-                                    </div>
-                                @elseif($offer->type === 'pack')
-                                    <i class="fas fa-box-open text-4xl"></i>
-                                @else
-                                    <i class="fas fa-tag text-4xl"></i>
-                                @endif
-                            </div>
-                        </div>
-
-                        <!-- Offer Name -->
-                        <h3 class="font-bold text-lg text-gray-900 mb-2 text-center px-2 line-clamp-2" title="{{ $offer->name }}">
-                            {{ $offer->name }}
-                        </h3>
-
-                        <!-- Type Badge -->
-                        <div class="flex justify-center mb-3">
-                            <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium
-                                @if($offer->type === 'percentage') bg-blue-100 text-blue-800
-                                @elseif($offer->type === 'pack') bg-purple-100 text-purple-800
-                                @else bg-green-100 text-green-800
-                                @endif">
-                                @if($offer->type === 'percentage')
-                                    <i class="fas fa-percent"></i> Réduction
-                                @elseif($offer->type === 'pack')
-                                    <i class="fas fa-box-open"></i> Pack
-                                @else
-                                    <i class="fas fa-tag"></i> Offre
-                                @endif
-                            </span>
-                        </div>
-
-                        <!-- Divider -->
-                        <div class="border-t border-gray-200 my-3"></div>
-
-                        <!-- Dates -->
-                        <div class="space-y-2 mb-3">
-                            <div class="flex items-center justify-between text-sm">
-                                <span class="text-gray-500">
-                                    <i class="fas fa-calendar-alt mr-1"></i>Début
-                                </span>
-                                <span class="font-medium text-gray-700">{{ $offer->start_date->format('d/m/Y') }}</span>
-                            </div>
-                            <div class="flex items-center justify-between text-sm">
-                                <span class="text-gray-500">
-                                    <i class="fas fa-calendar-check mr-1"></i>Fin
-                                </span>
-                                <span class="font-medium text-gray-700">{{ $offer->end_date->format('d/m/Y') }}</span>
-                            </div>
-                        </div>
-
-                        <!-- Countdown -->
-                        @if($isActive && $daysRemaining <= 7)
-                            <div class="mb-3">
-                                <span class="countdown {{ $daysRemaining <= 1 ? 'danger' : 'warning' }} w-full justify-center">
-                                    <i class="fas fa-clock"></i>
-                                    @if($daysRemaining <= 0)
-                                        Expire aujourd'hui
-                                    @elseif($daysRemaining == 1)
-                                        Expire demain
-                                    @else
-                                        {{ $daysRemaining }} jours restants
-                                    @endif
-                                </span>
-                            </div>
-                        @endif
-
-                        <!-- Divider -->
-                        <div class="border-t border-gray-200 my-3"></div>
-
-                        <!-- Actions -->
-                        <div class="flex items-center justify-between">
-                            <!-- Quick View Button -->
-                            <button onclick="quickView({{ $offer->id }}, '{{ $offer->type === 'pack' ? 'pack' : 'offer' }}')" 
-                                    class="flex-1 px-4 py-2.5 bg-primary text-white rounded-lg hover:bg-yellow-600 transition-colors text-sm font-medium flex items-center justify-center gap-2">
-                                <i class="fas fa-eye"></i>
-                                <span>Voir Détails</span>
-                            </button>
-
-                            <!-- Dropdown Menu -->
-                            <div class="dropdown ml-2">
-                                <button onclick="toggleDropdown(this)" 
-                                        class="px-3 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
-                                    <i class="fas fa-ellipsis-v"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    @if($offer->type === 'pack')
-                                        <a href="#" onclick="alert('Édition de pack à venir'); return false;" class="dropdown-item">
-                                            <i class="fas fa-edit text-green-600"></i>
-                                            <span>Modifier</span>
-                                        </a>
-                                    @else
-                                        <a href="{{ route('admin.offers.edit', $offer->id) }}" class="dropdown-item">
-                                            <i class="fas fa-edit text-green-600"></i>
-                                            <span>Modifier</span>
-                                        </a>
-                                    @endif
-                                    <a href="#" onclick="extendOffer({{ $offer->id }}); return false;" class="dropdown-item">
-                                        <i class="fas fa-calendar-plus text-orange-600"></i>
-                                        <span>Prolonger</span>
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                    <a href="#" onclick="deleteOffer({{ $offer->id }}); return false;" class="dropdown-item text-red-600">
-                                        <i class="fas fa-trash"></i>
-                                        <span>Supprimer</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        </div>
     </div>
     
 </div>
 
-<!-- Bulk Action Bar -->
-<div id="bulkActionBar" class="bulk-action-bar">
-    <span id="selectedCount" class="font-semibold text-gray-700">0 sélectionné(s)</span>
-    <div class="flex gap-2">
-        <button onclick="bulkAction('activate')" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-            <i class="fas fa-check mr-2"></i>Activer
-        </button>
-        <button onclick="bulkAction('deactivate')" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
-            <i class="fas fa-ban mr-2"></i>Désactiver
-        </button>
-        <button onclick="bulkAction('extend')" class="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors">
-            <i class="fas fa-calendar-plus mr-2"></i>Prolonger
-        </button>
-        <button onclick="bulkAction('export')" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-            <i class="fas fa-download mr-2"></i>Exporter
-        </button>
-        <button onclick="bulkAction('delete')" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
-            <i class="fas fa-trash mr-2"></i>Supprimer
-        </button>
-    </div>
-    <button onclick="clearSelection()" class="text-gray-600 hover:text-gray-800">
-        <i class="fas fa-times"></i>
-    </button>
-</div>
-
-<!-- Details Modal -->
+<!-- Details Modal (if needed in future) -->
 <div id="detailsModal" class="modal-overlay hidden">
     <div class="modal-container">
         <div class="modal-header">
@@ -1050,6 +837,42 @@
                     <div id="modalInfoSection"></div>
                     <div id="modalActionsSection"></div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal-overlay hidden">
+    <div class="modal-container" style="max-width: 500px;">
+        <div class="modal-header" style="background: #fee2e2; border-bottom-color: #fecaca;">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
+                    <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                </div>
+                <h2 class="text-xl font-bold text-gray-900">Confirmer la suppression</h2>
+            </div>
+            <button onclick="closeDeleteModal()" class="close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="modal-body">
+            <div class="text-center py-6">
+                <p class="text-gray-700 text-lg mb-2">Êtes-vous sûr de vouloir supprimer cette offre ?</p>
+                <p class="text-gray-900 font-semibold text-xl mb-4" id="deleteOfferTitle"></p>
+                <p class="text-sm text-gray-500">Cette action est irréversible.</p>
+            </div>
+            
+            <div class="flex gap-3 justify-end">
+                <button onclick="closeDeleteModal()" 
+                        class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-colors">
+                    <i class="fas fa-times mr-2"></i>Annuler
+                </button>
+                <button onclick="confirmDelete()" 
+                        class="px-6 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors">
+                    <i class="fas fa-trash mr-2"></i>Supprimer
+                </button>
             </div>
         </div>
     </div>
@@ -1250,90 +1073,6 @@
                 const emptyStateGrid = document.querySelector('.empty-state-grid');
                 if (emptyStateGrid) emptyStateGrid.remove();
             }
-        }
-    }
-    
-    // Bulk Selection
-    function toggleSelectAll(checkbox) {
-        const checkboxes = document.querySelectorAll('.offer-checkbox');
-        checkboxes.forEach(cb => cb.checked = checkbox.checked);
-        updateBulkBar();
-    }
-    
-    function updateBulkBar() {
-        const checkboxes = document.querySelectorAll('.offer-checkbox:checked');
-        const bulkBar = document.getElementById('bulkActionBar');
-        const selectedCount = document.getElementById('selectedCount');
-        
-        if (checkboxes.length > 0) {
-            bulkBar.classList.add('active');
-            selectedCount.textContent = checkboxes.length + ' sélectionné(s)';
-        } else {
-            bulkBar.classList.remove('active');
-        }
-    }
-    
-    function clearSelection() {
-        document.querySelectorAll('.offer-checkbox').forEach(cb => cb.checked = false);
-        document.getElementById('selectAll').checked = false;
-        updateBulkBar();
-    }
-    
-    function getSelectedIds() {
-        return Array.from(document.querySelectorAll('.offer-checkbox:checked')).map(cb => cb.value);
-    }
-    
-    // Bulk Actions
-    async function bulkAction(action) {
-        const ids = getSelectedIds();
-        if (ids.length === 0) return;
-        
-        if (action === 'delete' && !confirm(`Supprimer ${ids.length} offre(s) ?`)) {
-            return;
-        }
-        
-        let extendDays = null;
-        if (action === 'extend') {
-            extendDays = prompt('Prolonger de combien de jours ?', '7');
-            if (!extendDays) return;
-        }
-        
-        try {
-            const response = await fetch('{{ route("admin.offers.bulk-action") }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({
-                    action: action,
-                    offers: ids,
-                    extend_days: extendDays
-                })
-            });
-            
-            const data = await response.json();
-            
-            if (data.success) {
-                if (action === 'export') {
-                    // Download CSV
-                    const blob = new Blob([data.csv], { type: 'text/csv' });
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = data.filename;
-                    a.click();
-                    alert(data.message || 'Export réussi');
-                } else {
-                    alert(data.message);
-                    window.location.reload();
-                }
-            } else {
-                alert(data.message || 'Une erreur est survenue');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Une erreur est survenue');
         }
     }
     
@@ -1544,9 +1283,6 @@
                     <button class="modal-action-btn secondary" onclick="alert('Édition de pack à venir')">
                         <i class="fas fa-edit"></i> Modifier
                     </button>
-                    <button class="modal-action-btn secondary" onclick="closeDetailsModal(); extendOffer(${pack.id})">
-                        <i class="fas fa-calendar-plus"></i> Prolonger
-                    </button>
                     <button class="modal-action-btn danger full-width" onclick="closeDetailsModal(); deleteOffer(${pack.id})">
                         <i class="fas fa-trash"></i> Supprimer
                     </button>
@@ -1724,9 +1460,6 @@
                     <button class="modal-action-btn primary" onclick="window.location.href='/admin/offers/${offer.id}/edit'">
                         <i class="fas fa-edit"></i> Modifier
                     </button>
-                    <button class="modal-action-btn secondary" onclick="closeDetailsModal(); extendOffer(${offer.id})">
-                        <i class="fas fa-calendar-plus"></i> Prolonger
-                    </button>
                     <button class="modal-action-btn danger full-width" onclick="closeDetailsModal(); deleteOffer(${offer.id})">
                         <i class="fas fa-trash"></i> Supprimer
                     </button>
@@ -1770,35 +1503,6 @@
         
         document.body.appendChild(form);
         form.submit();
-    }
-    
-    // Extend Offer
-    async function extendOffer(offerId) {
-        const days = prompt('Prolonger de combien de jours ?', '7');
-        if (!days) return;
-        
-        try {
-            const response = await fetch('{{ route("admin.offers.bulk-action") }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({
-                    action: 'extend',
-                    offers: [offerId],
-                    extend_days: days
-                })
-            });
-            
-            const data = await response.json();
-            if (data.success) {
-                alert(data.message);
-                window.location.reload();
-            }
-        } catch (error) {
-            alert('Erreur lors de la prolongation');
-        }
     }
     
     // Delete Offer
@@ -1922,5 +1626,35 @@
         
         window.location.href = url.toString();
     }
+    
+    // Delete Modal Functions
+    let deleteOfferId = null;
+    let deleteOfferTitle = '';
+    
+    function openDeleteModal(offerId, offerTitle) {
+        deleteOfferId = offerId;
+        deleteOfferTitle = offerTitle;
+        document.getElementById('deleteOfferTitle').textContent = offerTitle;
+        document.getElementById('deleteModal').classList.remove('hidden');
+    }
+    
+    function closeDeleteModal() {
+        document.getElementById('deleteModal').classList.add('hidden');
+        deleteOfferId = null;
+        deleteOfferTitle = '';
+    }
+    
+    function confirmDelete() {
+        if (deleteOfferId) {
+            document.getElementById('deleteForm' + deleteOfferId).submit();
+        }
+    }
+    
+    // Close modal on ESC key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeDeleteModal();
+        }
+    });
 </script>
 @endpush
