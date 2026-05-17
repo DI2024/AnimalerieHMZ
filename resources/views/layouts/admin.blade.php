@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - @yield('title', 'Dashboard') | Animalerie HMZ</title>
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('images/logo animalerie.png') }}">
+    
+    <!-- Material Symbols -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,18 +25,20 @@
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #F3F4F6;
+            background-color: #F9FAFB;
         }
         
         .sidebar {
             width: 280px;
             height: 100vh;
-            background: #111827;
-            color: white;
+            background: #FFFFFF;
+            color: #1F2937;
             position: fixed;
             left: 0;
             top: 0;
             z-index: 50;
+            border-right: 1px solid #E5E7EB;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
         }
         
         .main-content {
@@ -44,21 +52,21 @@
             align-items: center;
             gap: 12px;
             padding: 12px 24px;
-            color: #9CA3AF;
+            color: #6B7280;
             text-decoration: none;
             transition: all 0.2s;
             border-left: 4px solid transparent;
         }
         
         .nav-link:hover {
-            background: #1F2937;
-            color: white;
+            background: #F3F4F6;
+            color: #111827;
         }
         
         .nav-link.active {
-            background: #1F2937;
-            color: white;
-            border-left-color: #d4af37;
+            background: #EEF2FF;
+            color: #003e87;
+            border-left-color: #003e87;
         }
         
         .logo-container {
@@ -66,7 +74,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            border-bottom: 1px solid #1F2937;
+            border-bottom: 1px solid #E5E7EB;
             margin-bottom: 24px;
         }
         
@@ -83,12 +91,12 @@
 </head>
 <body>
     <!-- Sidebar -->
-    <aside class="sidebar shadow-2xl">
+    <aside class="sidebar">
         <div class="logo-container">
-            <div class="w-10 h-10 bg-gradient-to-br from-[#d4af37] to-[#f59e0b] rounded-xl flex items-center justify-center text-white text-xl shadow-lg">
+            <div class="w-10 h-10 bg-gradient-to-br from-[#003e87] to-[#0855b1] rounded-xl flex items-center justify-center text-white text-xl shadow-lg">
                 <i class="fas fa-paw"></i>
             </div>
-            <span class="text-xl font-extrabold tracking-tight">Admin <span class="text-[#d4af37]">HMZ</span></span>
+            <span class="text-xl font-extrabold tracking-tight text-gray-900">Admin <span class="text-[#003e87]">HMZ</span></span>
         </div>
         
         <nav class="flex flex-col gap-1">
@@ -97,7 +105,7 @@
                 <span class="font-semibold">Dashboard</span>
             </a>
             
-            <div class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest mt-4">Boutique</div>
+            <div class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest mt-4">Boutique</div>
             
             <a href="{{ route('admin.products.index') }}" class="nav-link {{ request()->is('admin/products*') ? 'active' : '' }}">
                 <i class="fas fa-box"></i>
@@ -112,14 +120,14 @@
                 <span class="font-semibold">Commandes</span>
             </a>
             
-            <div class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest mt-4">Marketing</div>
+            <div class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest mt-4">Marketing</div>
             
             <a href="{{ route('admin.offers.index') }}" class="nav-link {{ request()->is('admin/offers*') ? 'active' : '' }}">
                 <i class="fas fa-percentage"></i>
                 <span class="font-semibold">Offres & Packs</span>
             </a>
             
-            <div class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest mt-4">Système</div>
+            <div class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest mt-4">Système</div>
             
             <a href="{{ route('admin.sections.index') }}" class="nav-link {{ request()->is('admin/sections*') ? 'active' : '' }}">
                 <i class="fas fa-layer-group"></i>
@@ -131,8 +139,8 @@
             </a>
         </nav>
         
-        <div class="absolute bottom-0 w-full p-6 border-t border-1F2937">
-            <a href="/" class="flex items-center gap-3 text-gray-400 hover:text-white transition text-sm font-bold">
+        <div class="absolute bottom-0 w-full p-6 border-t border-gray-200">
+            <a href="/" class="flex items-center gap-3 text-gray-500 hover:text-[#003e87] transition text-sm font-bold">
                 <i class="fas fa-external-link-alt"></i>
                 Voir le site
             </a>

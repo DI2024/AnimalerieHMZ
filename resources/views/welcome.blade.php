@@ -12,36 +12,41 @@
 
                 <!-- Grid 2 colonnes en bas - 65% gauche / 35% droite -->
                 <div class="grid grid-cols-1 md:grid-cols-[65%_35%] gap-4">
-                    <!-- Colonne gauche - Texte principal (Rouge) - HAUTEUR 460px -->
-                    <div class="bg-red-50 flex items-center justify-center p-6 rounded-2xl h-[460px] overflow-hidden">
-                        <div class="max-w-[42rem]">
-                            <h1 class="font-headline text-[clamp(1.5rem,5vw,2.5rem)] font-bold leading-[1.2] tracking-tight text-primary mb-4 md:mb-6">Tout pour le bonheur de vos compagnons</h1>
-                            <p class="text-[1rem] md:text-[1.125rem] leading-[1.6] text-on-surface-variant mb-6 md:mb-12">Découvrez une sélection premium de produits pour prendre soin de vos animaux avec l'expertise et la fiabilité PetTrust.</p>
-                            <button class="bg-primary hover:bg-primary-container text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-full transition shadow-md hover:-translate-y-0.5 active:translate-y-0 text-sm flex items-center justify-center gap-2" id="heroBtn">Découvrir la boutique</button>
+                    <!-- Colonne gauche - Image Hero avec bouton en bas à droite - HAUTEUR 460px -->
+                    <div class="relative rounded-2xl h-[460px] overflow-hidden">
+                        <!-- Image de fond -->
+                        <img src="{{ asset('images/sec her.png') }}" alt="Hero" class="w-full h-full object-cover">
+                        
+                        <!-- Bouton positionné en bas à droite -->
+                        <div class="absolute bottom-6 right-6">
+                            <a href="{{ route('products.index') }}" class="bg-primary hover:bg-primary-container text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-full transition shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 text-sm flex items-center justify-center gap-2 w-fit">
+                                Découvrir la boutique
+                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                            </a>
                         </div>
                     </div>
 
                     <!-- Colonne droite - 2 images d'offres empilées -->
                     <div class="hidden md:grid grid-rows-2 gap-4">
                         <!-- Image offre 1 (Jaune) - HAUTEUR 222px -->
-                        <div class="bg-yellow-100 overflow-hidden relative group rounded-2xl h-[222px]">
+                        <a href="{{ route('products.index', ['category' => 'chiens']) }}" class="bg-yellow-100 overflow-hidden relative group rounded-2xl h-[222px] cursor-pointer">
                             <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&q=80" alt="Offre Chien" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                             <div class="absolute bottom-6 left-6 text-white">
                                 <span class="bg-primary px-4 py-2 rounded-full text-sm font-bold mb-2 inline-block">-25%</span>
                                 <h3 class="font-headline text-2xl font-bold">Gamme Chien</h3>
                             </div>
-                        </div>
+                        </a>
 
                         <!-- Image offre 2 (Bleu) - HAUTEUR 222px -->
-                        <div class="bg-blue-100 overflow-hidden relative group rounded-2xl h-[222px]">
+                        <a href="{{ route('products.index', ['category' => 'chats']) }}" class="bg-blue-100 overflow-hidden relative group rounded-2xl h-[222px] cursor-pointer">
                             <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=800&q=80" alt="Offre Chat" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                             <div class="absolute bottom-6 left-6 text-white">
                                 <span class="bg-tertiary px-4 py-2 rounded-full text-sm font-bold mb-2 inline-block">-15%</span>
                                 <h3 class="font-headline text-2xl font-bold">Accessoires Chat</h3>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -57,7 +62,7 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Offer 1 -->
-                <div class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-gradient-to-br from-primary-container to-primary text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+                <a href="{{ route('products.index', ['category' => 'chiens']) }}" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-gradient-to-br from-primary-container to-primary text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
                     <div class="flex-1 pr-4">
                         <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">🔥 Offre Spéciale</span>
                         <h3 class="font-headline text-lg font-bold leading-tight mb-2">Jusqu'à 25% de remise</h3>
@@ -66,9 +71,9 @@
                     <div class="flex-shrink-0 w-24 h-24">
                         <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=400&fit=crop&q=80" alt="Chien" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
                     </div>
-                </div>
+                </a>
                 <!-- Offer 2 -->
-                <div class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-gradient-to-br from-tertiary to-blue-600 text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+                <a href="{{ route('products.index', ['category' => 'chats']) }}" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-gradient-to-br from-tertiary to-blue-600 text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
                     <div class="flex-1 pr-4">
                         <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">✨ Exclusivité Web</span>
                         <h3 class="font-headline text-lg font-bold leading-tight mb-2">-15% Accessoires</h3>
@@ -77,9 +82,9 @@
                     <div class="flex-shrink-0 w-24 h-24">
                         <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=400&h=400&fit=crop&q=80" alt="Chat" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
                     </div>
-                </div>
+                </a>
                 <!-- Offer 3 -->
-                <div class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-white border-2 border-primary/20 text-primary group transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:border-primary">
+                <a href="{{ route('products.index') }}" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-white border-2 border-primary/20 text-primary group transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:border-primary cursor-pointer">
                     <div class="flex-1 pr-4">
                         <span class="inline-block bg-gradient-to-r from-primary/10 to-tertiary/10 text-primary px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-md">🎁 Nouveauté</span>
                         <h3 class="font-headline text-lg font-bold leading-tight mb-2">Pack Bienvenue</h3>
@@ -88,7 +93,7 @@
                     <div class="flex-shrink-0 w-24 h-24">
                         <img src="https://images.unsplash.com/photo-1520763185298-1b434c919102?w=400&h=400&fit=crop&q=80" alt="Oiseau" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-xl">
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </section>
@@ -96,27 +101,27 @@
     <!-- Categories Section -->
     <section class="py-12 md:py-20 bg-white">
         <div class="max-w-[1280px] mx-auto px-6">
-            <div class="flex justify-center items-center gap-6 overflow-x-visible pb-8" id="categoriesGrid">
-                <button class="flex flex-col items-center gap-3 transition min-w-[180px] shrink-0 group active" data-category="oiseaux">
-                    <img src="{{ asset('images/img_category/cat_oiseau.png') }}" alt="Oiseaux" class="w-[180px] h-[180px] rounded-3xl object-contain transition transform group-hover:-translate-y-1">
-                    <span class="font-semibold text-[0.875rem] text-on-surface transition group-[.active]:text-primary group-[.active]:font-bold group-hover:text-primary group-hover:font-bold">Oiseaux</span>
-                </button>
-                <button class="flex flex-col items-center gap-3 transition min-w-[180px] shrink-0 group" data-category="pigeons">
-                    <img src="{{ asset('images/img_category/cat_pigeon.png') }}" alt="Pigeons" class="w-[180px] h-[180px] rounded-3xl object-contain transition transform group-hover:-translate-y-1">
-                    <span class="font-semibold text-[0.875rem] text-on-surface transition group-[.active]:text-primary group-[.active]:font-bold group-hover:text-primary group-hover:font-bold">Pigeons</span>
-                </button>
-                <button class="flex flex-col items-center gap-3 transition min-w-[180px] shrink-0 group" data-category="chats">
-                    <img src="{{ asset('images/img_category/cat_chat.png') }}" alt="Chat" class="w-[180px] h-[180px] rounded-3xl object-contain transition transform group-hover:-translate-y-1">
-                    <span class="font-semibold text-[0.875rem] text-on-surface transition group-[.active]:text-primary group-[.active]:font-bold group-hover:text-primary group-hover:font-bold">Chat</span>
-                </button>
-                <button class="flex flex-col items-center gap-3 transition min-w-[180px] shrink-0 group" data-category="chiens">
-                    <img src="{{ asset('images/img_category/cat_chien.png') }}" alt="Chien" class="w-[180px] h-[180px] rounded-3xl object-contain transition transform group-hover:-translate-y-1">
-                    <span class="font-semibold text-[0.875rem] text-on-surface transition group-[.active]:text-primary group-[.active]:font-bold group-hover:text-primary group-hover:font-bold">Chien</span>
-                </button>
-                <button class="flex flex-col items-center gap-3 transition min-w-[180px] shrink-0 group" data-category="poissons">
-                    <img src="{{ asset('images/img_category/cat_poisson.png') }}" alt="Poissons" class="w-[180px] h-[180px] rounded-3xl object-contain transition transform group-hover:-translate-y-1">
-                    <span class="font-semibold text-[0.875rem] text-on-surface transition group-[.active]:text-primary group-[.active]:font-bold group-hover:text-primary group-hover:font-bold">Poissons</span>
-                </button>
+            <div class="flex justify-center items-center gap-6 overflow-x-visible pb-2" id="categoriesGrid">
+                <a href="{{ route('products.index', ['category' => 'oiseaux']) }}" class="flex flex-col items-center gap-3 transition min-w-[220px] shrink-0 group">
+                    <img src="{{ asset('images/img_category/cat_oiseau.png') }}" alt="Oiseaux" class="w-[220px] h-[220px] rounded-3xl object-contain transition transform group-hover:-translate-y-1 group-hover:shadow-lg">
+                    <span class="font-semibold text-[0.875rem] text-on-surface transition group-hover:text-primary group-hover:font-bold">Oiseaux</span>
+                </a>
+                <a href="{{ route('products.index', ['category' => 'pigeons']) }}" class="flex flex-col items-center gap-3 transition min-w-[220px] shrink-0 group">
+                    <img src="{{ asset('images/img_category/cat_pigeon.png') }}" alt="Pigeons" class="w-[220px] h-[220px] rounded-3xl object-contain transition transform group-hover:-translate-y-1 group-hover:shadow-lg">
+                    <span class="font-semibold text-[0.875rem] text-on-surface transition group-hover:text-primary group-hover:font-bold">Pigeons</span>
+                </a>
+                <a href="{{ route('products.index', ['category' => 'chats']) }}" class="flex flex-col items-center gap-3 transition min-w-[220px] shrink-0 group">
+                    <img src="{{ asset('images/img_category/cat_chat.png') }}" alt="Chat" class="w-[220px] h-[220px] rounded-3xl object-contain transition transform group-hover:-translate-y-1 group-hover:shadow-lg">
+                    <span class="font-semibold text-[0.875rem] text-on-surface transition group-hover:text-primary group-hover:font-bold">Chat</span>
+                </a>
+                <a href="{{ route('products.index', ['category' => 'chiens']) }}" class="flex flex-col items-center gap-3 transition min-w-[220px] shrink-0 group">
+                    <img src="{{ asset('images/img_category/cat_chien.png') }}" alt="Chien" class="w-[220px] h-[220px] rounded-3xl object-contain transition transform group-hover:-translate-y-1 group-hover:shadow-lg">
+                    <span class="font-semibold text-[0.875rem] text-on-surface transition group-hover:text-primary group-hover:font-bold">Chien</span>
+                </a>
+                <a href="{{ route('products.index', ['category' => 'poissons']) }}" class="flex flex-col items-center gap-3 transition min-w-[220px] shrink-0 group">
+                    <img src="{{ asset('images/img_category/cat_poisson.png') }}" alt="Poissons" class="w-[220px] h-[220px] rounded-3xl object-contain transition transform group-hover:-translate-y-1 group-hover:shadow-lg">
+                    <span class="font-semibold text-[0.875rem] text-on-surface transition group-hover:text-primary group-hover:font-bold">Poissons</span>
+                </a>
             </div>
         </div>
     </section>
