@@ -98,7 +98,7 @@ class ProductController extends Controller
             ->where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->with('category')
-            ->take(4)
+            ->take(8)
             ->get();
 
         // Build breadcrumbs
