@@ -139,7 +139,7 @@
                         @if($product)
                             <div class="flex items-center space-x-3 p-3 bg-green-50 border border-green-200 rounded-lg">
                                 @if($product->image)
-                                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-12 h-12 object-cover rounded">
+                                    <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" class="w-12 h-12 object-cover rounded">
                                 @else
                                     <div class="w-12 h-12 bg-gray-200 rounded flex items-center justify-center">
                                         <i class="fas fa-image text-gray-400"></i>
@@ -252,7 +252,7 @@ async function loadProductsByCategory(selectorNumber, categoryId) {
 function showProductPreview(selectorNumber, product) {
     const preview = document.getElementById(`product-preview-${selectorNumber}`);
     const imageHtml = product.image 
-        ? `<img src="https://lotusdiamant.ma/api_admin/public/storage/${product.image}" alt="${product.name}" class="w-12 h-12 object-cover rounded">`
+        ? `<img src="/${product.image}" alt="${product.name}" class="w-12 h-12 object-cover rounded">`
         : `<div class="w-12 h-12 bg-gray-200 rounded flex items-center justify-center"><i class="fas fa-image text-gray-400"></i></div>`;
     
     preview.innerHTML = `

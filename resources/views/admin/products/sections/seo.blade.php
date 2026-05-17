@@ -95,7 +95,7 @@
             <div class="flex items-start space-x-3">
                 <div class="w-24 h-24 bg-gray-200 rounded flex-shrink-0 overflow-hidden">
                     @if($product->image)
-                        <img src="{{ asset('storage/' . $product->image) }}" alt="" class="w-full h-full object-cover">
+                        <img src="{{ asset($product->image) }}" alt="" class="w-full h-full object-cover">
                     @else
                         <div class="w-full h-full flex items-center justify-center">
                             <i class="fas fa-image text-gray-400 text-2xl"></i>
@@ -125,7 +125,7 @@
   "@context": "https://schema.org/",
   "@type": "Product",
   "name": "{{ $product->name }}",
-  "image": "{{ asset('storage/' . $product->image) }}",
+  "image": "{{ asset($product->image) }}",
   "description": "{{ $product->short_description }}",
   "sku": "PRD-{{ $product->id }}",
   "brand": {

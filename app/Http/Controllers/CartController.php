@@ -8,6 +8,14 @@ use Illuminate\Http\Request;
 class CartController extends Controller
 {
     /**
+     * Show cart page
+     */
+    public function show()
+    {
+        return view('cart');
+    }
+
+    /**
      * Get cart items from session
      */
     public function index()

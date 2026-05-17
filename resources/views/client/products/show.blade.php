@@ -4,7 +4,7 @@
 @php
     $imageUrl = $product->image && str_starts_with($product->image, 'http') 
         ? $product->image 
-        : asset('storage/' . $product->image);
+        : asset($product->image);
     $discount = $product->discount_percentage ?? 0;
 @endphp
 
@@ -35,21 +35,8 @@
                      class="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105 p-8"
                      onerror="this.src='https://via.placeholder.com/800x800?text=No+Image'">
                 
-                <!-- Floating Badges -->
-                @if($product->is_featured)
-                    <div class="absolute top-6 left-6 bg-primary/90 text-white px-4 py-2 rounded-full text-sm font-bold backdrop-blur-md shadow-lg animate-float-slow">
-                        HMZ EXCLUSIVE
-                    </div>
-                @endif
-
-                @if($product->is_new)
-                    <div class="absolute top-6 right-6 bg-green-500/90 text-white px-4 py-2 rounded-full text-sm font-bold backdrop-blur-md shadow-lg">
-                        NOUVEAU
-                    </div>
-                @endif
-
-                <!-- Like Button -->
-                <button id="likeBtn" class="absolute bottom-6 right-6 w-12 h-12 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition group/like">
+                <!-- Wishlist Button - Top Right -->
+                <button id="likeBtn" class="absolute top-6 right-6 w-12 h-12 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition group/like">
                     <span class="material-symbols-outlined text-error transition duration-300" style="font-variation-settings: 'FILL' 0;">favorite</span>
                 </button>
             </div>
@@ -82,10 +69,10 @@
 
             <div class="flex items-center gap-6">
                 <div class="space-y-1">
-                    <span class="text-4xl font-black text-primary">{{ number_format($product->price, 2, ',', ' ') }}€</span>
+                    <span class="text-4xl font-black text-primary">{{ number_format($product->price, 2, ',', ' ') }} MAD</span>
                     @if($product->old_price && $product->old_price > $product->price)
                         <div class="flex items-center gap-2">
-                            <span class="text-lg text-on-surface-variant/50 line-through">{{ number_format($product->old_price, 2, ',', ' ') }}€</span>
+                            <span class="text-lg text-on-surface-variant/50 line-through">{{ number_format($product->old_price, 2, ',', ' ') }} MAD</span>
                             <span class="bg-error/10 text-error px-2 py-0.5 rounded-md text-xs font-bold">-{{ $discount }}%</span>
                         </div>
                     @endif
@@ -199,11 +186,11 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                @foreach($relatedProducts as $related)
+                @foreach($relatedProducts->take(4) as $related)
                     @php
                         $relatedImageUrl = $related->image && str_starts_with($related->image, 'http') 
                             ? $related->image 
-                            : asset('storage/' . $related->image);
+                            : asset($related->image);
                     @endphp
                     
                     <div class="group relative bg-white rounded-[2rem] p-4 shadow-md hover:shadow-2xl transition duration-500 border border-gray-200">
@@ -216,7 +203,7 @@
                             <h3 class="font-bold text-base px-2 line-clamp-2">{{ $related->name }}</h3>
                             <p class="text-on-surface-variant/60 text-sm px-2 mb-4">{{ $related->category->name }}</p>
                             <div class="flex justify-between items-center px-2">
-                                <span class="text-xl font-black text-primary">{{ number_format($related->price, 2, ',', ' ') }}€</span>
+                                <span class="text-xl font-black text-primary">{{ number_format($related->price, 2, ',', ' ') }} MAD</span>
                                 <button class="w-10 h-10 rounded-full bg-primary/5 text-primary hover:bg-primary hover:text-white transition-colors flex items-center justify-center product-add-btn" data-product-id="{{ $related->id }}">
                                     <span class="material-symbols-outlined">add_shopping_cart</span>
                                 </button>

@@ -217,7 +217,7 @@
             @foreach($bestSellers as $product)
                 <div class="border border-gray-200 rounded-lg p-3 hover:shadow-md transition-shadow">
                     @if($product->image)
-                        <img src="{{ asset('storage/' . $product->image) }}" 
+                        <img src="{{ asset($product->image) }}" 
                              alt="{{ $product->name }}"
                              class="w-full h-32 object-cover rounded-lg mb-2">
                     @else

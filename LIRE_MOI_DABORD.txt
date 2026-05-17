@@ -1,0 +1,130 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                                                                            ║
+║                   📦 MISE À JOUR DES PRODUITS                              ║
+║                        AnimalerieHMZ                                       ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+
+🎯 OBJECTIF
+═══════════════════════════════════════════════════════════════════════════
+
+Remplacer les 12 anciens produits (avec URLs Google) par 59 nouveaux 
+produits utilisant les images locales disponibles dans votre projet.
+
+
+📊 RÉSULTAT
+═══════════════════════════════════════════════════════════════════════════
+
+AVANT:  12 produits avec images Google
+APRÈS:  59 produits avec images locales
+
+Répartition:
+  🐕 Chiens    : 12 produits
+  🐱 Chats     : 16 produits
+  🦜 Oiseaux   : 9 produits
+  🐠 Poissons  : 9 produits
+  🕊️ Pigeons   : 13 produits
+
+
+🚀 DÉMARRAGE RAPIDE (3 ÉTAPES)
+═══════════════════════════════════════════════════════════════════════════
+
+1️⃣  DOUBLE-CLIQUEZ SUR:
+    → EXECUTER_MISE_A_JOUR.bat
+
+2️⃣  SUIVEZ LES INSTRUCTIONS À L'ÉCRAN
+    → Le script fait tout automatiquement
+
+3️⃣  TESTEZ VOTRE SITE:
+    → http://localhost
+
+
+📚 FICHIERS IMPORTANTS
+═══════════════════════════════════════════════════════════════════════════
+
+⭐ DÉMARRER ICI:
+   → INDEX_MISE_A_JOUR.md (Guide de navigation)
+
+📖 LIRE EN PREMIER:
+   → RESUME_MISE_A_JOUR.txt (5 minutes de lecture)
+
+🚀 EXÉCUTER:
+   → EXECUTER_MISE_A_JOUR.bat (Script automatique)
+
+📋 VOIR LES PRODUITS:
+   → LISTE_PRODUITS_CREES.md (Tous les 59 produits)
+
+📖 GUIDE COMPLET:
+   → GUIDE_MISE_A_JOUR_PRODUITS.md (Pas à pas)
+
+
+⚠️  IMPORTANT
+═══════════════════════════════════════════════════════════════════════════
+
+✓ FAITES UNE SAUVEGARDE de votre base de données AVANT !
+✓ Tous les produits actuels seront SUPPRIMÉS
+✓ Les commandes existantes ne seront PAS affectées
+
+
+⏱️  TEMPS ESTIMÉ
+═══════════════════════════════════════════════════════════════════════════
+
+Lecture:        10 minutes
+Sauvegarde:     2 minutes
+Exécution:      3 minutes
+Vérification:   5 minutes
+─────────────────────────────────
+TOTAL:          20 minutes
+
+
+✅ CHECKLIST RAPIDE
+═══════════════════════════════════════════════════════════════════════════
+
+Avant de commencer:
+  [ ] J'ai lu ce fichier
+  [ ] J'ai fait une sauvegarde
+  [ ] MySQL est accessible
+  [ ] Les images existent dans public/images/products/
+
+Après la mise à jour:
+  [ ] 59 produits dans la base
+  [ ] 15 sous-catégories créées
+  [ ] Images s'affichent sur le site
+  [ ] Catégories fonctionnent
+
+
+🎯 PROCHAINE ÉTAPE
+═══════════════════════════════════════════════════════════════════════════
+
+→ Ouvrez: INDEX_MISE_A_JOUR.md
+
+   Ce fichier vous guidera vers la bonne documentation selon votre profil:
+   • Débutant
+   • Développeur
+   • Juste voir les produits
+
+
+📞 BESOIN D'AIDE ?
+═══════════════════════════════════════════════════════════════════════════
+
+Consultez:
+  • GUIDE_MISE_A_JOUR_PRODUITS.md → Section "Problèmes Courants"
+  • README_UPDATE_PRODUCTS.md → Section "Dépannage"
+
+
+═══════════════════════════════════════════════════════════════════════════
+
+Date: 17 Mai 2026
+Version: 1.0
+Auteur: Kiro AI Assistant
+
+═══════════════════════════════════════════════════════════════════════════
+
+
+                    🚀 PRÊT ? COMMENCEZ MAINTENANT !
+
+              Double-cliquez sur: EXECUTER_MISE_A_JOUR.bat
+
+
+═══════════════════════════════════════════════════════════════════════════

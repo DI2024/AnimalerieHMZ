@@ -1,0 +1,69 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                                                                            ║
+║              ✅ INSTRUCTIONS FINALES - 2 FICHIERS À EXÉCUTER               ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+
+Tu as déjà 11 produits, mais il en manque 48 !
+
+Je t'ai créé 2 fichiers plus petits à exécuter un par un.
+
+
+═══════════════════════════════════════════════════════════════════════════
+ÉTAPE 1: Exécuter ETAPE_3_Produits_Partie1.sql
+═══════════════════════════════════════════════════════════════════════════
+
+1. Ouvre phpMyAdmin
+2. Sélectionne "animaleriehmz"
+3. Onglet "SQL"
+4. Ouvre "ETAPE_3_Produits_Partie1.sql" avec Notepad
+5. Copie TOUT le contenu (Ctrl+A puis Ctrl+C)
+6. Colle dans phpMyAdmin (Ctrl+V)
+7. Clique "Exécuter"
+8. Attends le message de succès
+
+✅ Cela va ajouter 28 produits (Chiens + Chats)
+
+
+═══════════════════════════════════════════════════════════════════════════
+ÉTAPE 2: Exécuter ETAPE_3_Produits_Partie2.sql
+═══════════════════════════════════════════════════════════════════════════
+
+1. Reste dans phpMyAdmin, onglet "SQL"
+2. Ouvre "ETAPE_3_Produits_Partie2.sql" avec Notepad
+3. Copie TOUT le contenu (Ctrl+A puis Ctrl+C)
+4. Colle dans phpMyAdmin (Ctrl+V)
+5. Clique "Exécuter"
+6. Attends le message de succès
+
+✅ Cela va ajouter 31 produits (Oiseaux + Poissons + Pigeons)
+
+
+═══════════════════════════════════════════════════════════════════════════
+ÉTAPE 3: VÉRIFIER
+═══════════════════════════════════════════════════════════════════════════
+
+1. Rafraîchis ton site: http://localhost
+2. Tu devrais voir 59 produits au total !
+
+Ou vérifie dans phpMyAdmin:
+   SELECT COUNT(*) FROM products;
+   → Résultat attendu: 59
+
+
+═══════════════════════════════════════════════════════════════════════════
+RÉSUMÉ
+═══════════════════════════════════════════════════════════════════════════
+
+Actuellement: 11 produits
+Après Partie 1: 11 + 28 = 39 produits
+Après Partie 2: 39 + 31 = 70 produits (mais certains IDs existent déjà)
+TOTAL FINAL: 59 produits uniques
+
+
+═══════════════════════════════════════════════════════════════════════════
+
+Dis-moi quand c'est fait ! 🚀
+
+═══════════════════════════════════════════════════════════════════════════

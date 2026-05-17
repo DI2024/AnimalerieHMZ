@@ -1,21 +1,19 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <!-- Left: Images -->
     <div>
-        @if($product->image)
-            @if(filter_var($product->image, FILTER_VALIDATE_URL))
-                <img src="{{ $product->image }}" 
-                     alt="{{ $product->name }}" 
-                     class="w-full rounded-lg mb-4 object-cover"
-                     onerror="this.src='{{ asset('images/placeholder-product.svg') }}'; this.onerror=null;">
-            @else
-                <img src="{{ asset('storage/' . $product->image) }}" 
-                     alt="{{ $product->name }}" 
-                     class="w-full rounded-lg mb-4 object-cover"
-                     onerror="this.src='{{ asset('images/placeholder-product.svg') }}'; this.onerror=null;">
-            @endif
-        @else
-            <div class="w-full h-64 bg-gray-100 rounded-lg mb-4 flex items-center justify-center">
-                <i class="fas fa-image text-6xl text-gray-300"></i>
+        <img src="{{ asset('storage/' . $product->image) }}" 
+             alt="{{ $product->name }}" 
+             class="w-full rounded-lg mb-4"
+             onerror="this.src='{{ asset('images/placeholder-product.svg') }}'; this.onerror=null;">
+        
+        @if($product->images->count() > 0)
+            <div class="grid grid-cols-4 gap-2">
+                @foreach($product->images as $image)
+                    <img src="{{ asset('storage/' . $image->image) }}" 
+                         alt="{{ $product->name }}" 
+                         class="w-full h-20 object-cover rounded"
+                         onerror="this.src='{{ asset('images/placeholder-product.svg') }}'; this.onerror=null;">
+                @endforeach
             </div>
         @endif
     </div>

@@ -46,7 +46,7 @@
                             @php
                                 $imageUrl = $item->product_image && str_starts_with($item->product_image, 'http') 
                                     ? $item->product_image 
-                                    : asset('storage/' . $item->product_image);
+                                    : asset($item->product_image);
                             @endphp
                             <div class="flex items-center gap-4 p-4 bg-surface dark:bg-[#13162a] rounded-xl">
                                 <img src="{{ $imageUrl }}" 
@@ -59,10 +59,10 @@
                                         <p class="text-xs text-on-surface-variant dark:text-gray-400">SKU: {{ $item->product_sku }}</p>
                                     @endif
                                     <p class="text-sm text-on-surface-variant dark:text-gray-400 mt-1">
-                                        {{ number_format($item->price, 2, ',', ' ') }}€ × {{ $item->quantity }}
+                                        {{ number_format($item->price, 2, ',', ' ') }} MAD × {{ $item->quantity }}
                                     </p>
                                 </div>
-                                <p class="text-xl font-bold text-primary">{{ number_format($item->subtotal, 2, ',', ' ') }}€</p>
+                                <p class="text-xl font-bold text-primary">{{ number_format($item->subtotal, 2, ',', ' ') }} MAD</p>
                             </div>
                         @endforeach
                     </div>
@@ -90,24 +90,24 @@
                     <div class="space-y-3 mb-6">
                         <div class="flex justify-between text-on-surface-variant dark:text-gray-400">
                             <span>Sous-total</span>
-                            <span>{{ number_format($order->subtotal, 2, ',', ' ') }}€</span>
+                            <span>{{ number_format($order->subtotal, 2, ',', ' ') }} MAD</span>
                         </div>
                         <div class="flex justify-between text-on-surface-variant dark:text-gray-400">
                             <span>Livraison</span>
                             @if($order->shipping_cost == 0)
                                 <span class="text-green-500 font-bold">Gratuit</span>
                             @else
-                                <span>{{ number_format($order->shipping_cost, 2, ',', ' ') }}€</span>
+                                <span>{{ number_format($order->shipping_cost, 2, ',', ' ') }} MAD</span>
                             @endif
                         </div>
                         <div class="flex justify-between text-on-surface-variant dark:text-gray-400">
                             <span>TVA</span>
-                            <span>{{ number_format($order->tax, 2, ',', ' ') }}€</span>
+                            <span>{{ number_format($order->tax, 2, ',', ' ') }} MAD</span>
                         </div>
                         @if($order->discount > 0)
                             <div class="flex justify-between text-green-500">
                                 <span>Réduction</span>
-                                <span>-{{ number_format($order->discount, 2, ',', ' ') }}€</span>
+                                <span>-{{ number_format($order->discount, 2, ',', ' ') }} MAD</span>
                             </div>
                         @endif
                     </div>
@@ -115,7 +115,7 @@
                     <div class="pt-6 border-t border-gray-100 dark:border-gray-800">
                         <div class="flex justify-between items-center">
                             <span class="text-xl font-bold dark:text-white">Total</span>
-                            <span class="text-3xl font-black text-primary">{{ number_format($order->total, 2, ',', ' ') }}€</span>
+                            <span class="text-3xl font-black text-primary">{{ number_format($order->total, 2, ',', ' ') }} MAD</span>
                         </div>
                     </div>
                 </div>
