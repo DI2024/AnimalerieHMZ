@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.public')
 
 @section('content')
 <div class="h-screen bg-gradient-to-br from-primary/5 via-surface to-secondary/5 flex items-center justify-center py-4 px-4 sm:px-6 lg:px-8 overflow-hidden">

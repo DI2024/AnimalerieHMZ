@@ -36,9 +36,9 @@ class CheckoutController extends Controller
             }
         }
 
-        $shippingCost = $subtotal >= 100 ? 0 : 15; // Free shipping over 100€
-        $tax = $subtotal * 0.20; // 20% TVA
-        $total = $subtotal + $shippingCost + $tax;
+        $shippingCost = 0; // No shipping cost
+        $tax = 0; // No tax
+        $total = $subtotal;
 
         return view('checkout', compact('cartItems', 'subtotal', 'shippingCost', 'tax', 'total'));
     }
@@ -107,9 +107,9 @@ class CheckoutController extends Controller
                 ];
             }
 
-            $shippingCost = $subtotal >= 100 ? 0 : 15;
-            $tax = $subtotal * 0.20;
-            $total = $subtotal + $shippingCost + $tax;
+            $shippingCost = 0; // No shipping cost
+            $tax = 0; // No tax
+            $total = $subtotal;
 
             // Create order
             $orderData = [

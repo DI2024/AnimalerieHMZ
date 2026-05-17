@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Admin - @yield('title', 'Dashboard') | Animalerie HMZ</title>
     
     <!-- Favicon -->
@@ -156,7 +157,7 @@
             </div>
             
             <div class="flex items-center gap-4">
-                <button class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-gray-500 hover:text-[#d4af37] transition">
+                <button class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-gray-500 hover:text-[#003e87] transition">
                     <i class="fas fa-bell"></i>
                 </button>
                 <div class="flex items-center gap-3 pl-4 border-l border-gray-200">
@@ -164,7 +165,7 @@
                         <div class="text-sm font-bold text-gray-900">Administrateur</div>
                         <div class="text-xs font-medium text-green-500">En ligne</div>
                     </div>
-                    <div class="w-12 h-12 rounded-xl bg-[#d4af37] flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                    <div class="w-12 h-12 rounded-xl bg-[#003e87] flex items-center justify-center text-white font-bold text-lg shadow-lg">
                         A
                     </div>
                 </div>

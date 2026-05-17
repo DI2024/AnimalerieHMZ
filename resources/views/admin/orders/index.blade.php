@@ -63,7 +63,7 @@
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #d4af37 0%, #f59e0b 100%);
+        background: linear-gradient(135deg, #003e87 0%, #0855b1 100%);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -136,12 +136,12 @@
         border-color: #D1D5DB;
     }
     .filter-toggle-btn.has-filters {
-        background: #FEF3C7;
-        border-color: #FDE68A;
-        color: #92400E;
+        background: #DBEAFE;
+        border-color: #93C5FD;
+        color: #1E40AF;
     }
     .filter-toggle-btn.has-filters:hover {
-        background: #FDE68A;
+        background: #BFDBFE;
     }
     .filter-count-badge {
         display: inline-flex;
@@ -150,7 +150,7 @@
         min-width: 20px;
         height: 20px;
         padding: 0 6px;
-        background: #D97706;
+        background: #003e87;
         color: white;
         border-radius: 10px;
         font-size: 11px;
@@ -210,7 +210,7 @@
                     <h3 class="text-3xl font-bold text-green-600">{{ number_format($stats['revenue'], 2) }}</h3>
                     <p class="text-xs text-gray-500 mt-2">
                         <i class="fas fa-coins mr-1"></i>
-                        DH (confirmées)
+                        DH (livrées + expédiées)
                     </p>
                 </div>
                 <div class="stat-icon" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
@@ -259,23 +259,37 @@
             
             <!-- Search -->
             <div class="flex-1 min-w-[300px]">
-                <div class="relative">
+                <form method="GET" action="{{ route('admin.orders.index') }}" class="relative">
+                    <!-- Preserve existing filters -->
+                    @foreach(request()->except(['search', 'page']) as $key => $value)
+                        @if(is_array($value))
+                            @foreach($value as $item)
+                                <input type="hidden" name="{{ $key }}[]" value="{{ $item }}">
+                            @endforeach
+                        @else
+                            <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                        @endif
+                    @endforeach
+                    
                     <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                    <input type="text" id="searchInput" placeholder="Rechercher par N° commande, nom, email, téléphone..." 
+                    <input type="text" name="search" placeholder="Rechercher par N° commande, nom, email, téléphone..." 
                            value="{{ request('search') }}"
-                           class="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                </div>
+                           class="w-full pl-11 pr-24 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#003e87] focus:border-transparent">
+                    <button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2 px-4 py-1.5 bg-[#003e87] text-white rounded-md hover:bg-[#0855b1] text-sm font-medium transition-colors">
+                        <i class="fas fa-search mr-1"></i>Rechercher
+                    </button>
+                </form>
             </div>
             
             <!-- Quick Filter Buttons -->
             <div class="flex gap-2">
                 <a href="{{ route('admin.orders.index', ['date_from' => date('Y-m-d'), 'date_to' => date('Y-m-d')]) }}" 
-                   class="px-4 py-2 text-sm bg-gray-100 hover:bg-primary hover:text-white rounded-lg transition-colors">
+                   class="px-4 py-2 text-sm bg-gray-100 hover:bg-[#003e87] hover:text-white rounded-lg transition-colors">
                     <i class="fas fa-calendar-day mr-1"></i>
                     Aujourd'hui
                 </a>
                 <a href="{{ route('admin.orders.index', ['date_from' => date('Y-m-d', strtotime('-7 days')), 'date_to' => date('Y-m-d')]) }}" 
-                   class="px-4 py-2 text-sm bg-gray-100 hover:bg-primary hover:text-white rounded-lg transition-colors">
+                   class="px-4 py-2 text-sm bg-gray-100 hover:bg-[#003e87] hover:text-white rounded-lg transition-colors">
                     <i class="fas fa-calendar-week mr-1"></i>
                     Cette semaine
                 </a>
@@ -378,6 +392,9 @@
                         N° Commande
                     </th>
                     <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Client
+                    </th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                         Date
                     </th>
                     <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -392,80 +409,105 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
-                <!-- Static Order Row 1 -->
-                <tr class="hover:bg-gray-50 cursor-pointer">
+                @forelse($orders as $order)
+                <tr class="hover:bg-gray-50 cursor-pointer" onclick="window.location='{{ route('admin.orders.show', $order->id) }}'">
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex items-center gap-2">
                             <i class="fas fa-hashtag text-gray-400 text-xs"></i>
-                            <span class="text-primary font-semibold">ORD-1024</span>
+                            <span class="text-[#003e87] font-semibold">{{ $order->order_number }}</span>
                         </div>
-                        <p class="text-xs text-gray-500 mt-1"><i class="far fa-clock mr-1"></i> Il y a 15 min</p>
+                        <p class="text-xs text-gray-500 mt-1">
+                            <i class="far fa-clock mr-1"></i> 
+                            {{ $order->created_at->diffForHumans() }}
+                        </p>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="customer-avatar">
+                                {{ strtoupper(substr($order->shipping_first_name ?? 'U', 0, 1)) }}{{ strtoupper(substr($order->shipping_last_name ?? 'N', 0, 1)) }}
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-900">
+                                    {{ $order->shipping_first_name }} {{ $order->shipping_last_name }}
+                                </p>
+                                <p class="text-xs text-gray-500">
+                                    <i class="far fa-envelope mr-1"></i>{{ $order->shipping_email }}
+                                </p>
+                                @if($order->shipping_phone)
+                                <p class="text-xs text-gray-500">
+                                    <i class="fas fa-phone mr-1"></i>{{ $order->shipping_phone }}
+                                </p>
+                                @endif
+                            </div>
+                        </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm">
-                            <p class="font-medium text-gray-900">14/05/2026</p>
-                            <p class="text-gray-500">13:20</p>
+                            <p class="font-medium text-gray-900">{{ $order->created_at->format('d/m/Y') }}</p>
+                            <p class="text-gray-500">{{ $order->created_at->format('H:i') }}</p>
                         </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex items-center gap-2">
                             <i class="fas fa-box text-gray-400"></i>
-                            <span class="font-medium text-gray-900">3</span>
+                            <span class="font-medium text-gray-900">{{ $order->items->count() }}</span>
                             <span class="text-xs text-gray-500">article(s)</span>
                         </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <p class="text-lg font-bold text-gray-900">450.00 DH</p>
+                        <p class="text-lg font-bold text-gray-900">{{ number_format($order->total, 2) }} DH</p>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="status-badge status-pending">
-                            <i class="fas fa-clock"></i> <span>En attente</span>
+                        @php
+                            $statusClasses = [
+                                'pending' => 'status-pending',
+                                'confirmed' => 'status-confirmed',
+                                'processing' => 'status-confirmed',
+                                'shipped' => 'status-confirmed',
+                                'delivered' => 'status-delivered',
+                                'cancelled' => 'status-cancelled',
+                            ];
+                            $statusIcons = [
+                                'pending' => 'fa-clock',
+                                'confirmed' => 'fa-check-circle',
+                                'processing' => 'fa-cog',
+                                'shipped' => 'fa-truck',
+                                'delivered' => 'fa-check-double',
+                                'cancelled' => 'fa-times-circle',
+                            ];
+                            $statusLabels = [
+                                'pending' => 'En attente',
+                                'confirmed' => 'Confirmée',
+                                'processing' => 'En traitement',
+                                'shipped' => 'Expédiée',
+                                'delivered' => 'Livrée',
+                                'cancelled' => 'Annulée',
+                            ];
+                        @endphp
+                        <span class="status-badge {{ $statusClasses[$order->status] ?? 'status-pending' }}">
+                            <i class="fas {{ $statusIcons[$order->status] ?? 'fa-clock' }}"></i>
+                            <span>{{ $statusLabels[$order->status] ?? ucfirst($order->status) }}</span>
                         </span>
                     </td>
                 </tr>
-                <!-- Static Order Row 2 -->
-                <tr class="hover:bg-gray-50 cursor-pointer">
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center gap-2">
-                            <i class="fas fa-hashtag text-gray-400 text-xs"></i>
-                            <span class="text-primary font-semibold">ORD-1023</span>
-                        </div>
-                        <p class="text-xs text-gray-500 mt-1"><i class="far fa-clock mr-1"></i> Il y a 2h</p>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm">
-                            <p class="font-medium text-gray-900">14/05/2026</p>
-                            <p class="text-gray-500">11:45</p>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center gap-2">
-                            <i class="fas fa-box text-gray-400"></i>
-                            <span class="font-medium text-gray-900">1</span>
-                            <span class="text-xs text-gray-500">article(s)</span>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <p class="text-lg font-bold text-gray-900">890.50 DH</p>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="status-badge status-confirmed">
-                            <i class="fas fa-check-circle"></i> <span>Confirmée</span>
-                        </span>
+                @empty
+                <tr>
+                    <td colspan="6" class="px-6 py-12 text-center text-gray-500">
+                        <i class="fas fa-inbox text-4xl mb-2"></i>
+                        <p>Aucune commande trouvée</p>
                     </td>
                 </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
     
-    <!-- Pagination Placeholder -->
+    <!-- Pagination -->
+    @if($orders->hasPages())
     <div class="mt-6 flex justify-center">
-        <nav class="inline-flex rounded-md shadow">
-            <a href="#" class="px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">Précédent</a>
-            <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-primary text-white text-sm font-medium">1</a>
-            <a href="#" class="px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">Suivant</a>
-        </nav>
+        {{ $orders->links() }}
     </div>
+    @endif
     
 </div>
 @endsection
@@ -512,26 +554,5 @@
             btnText.textContent = 'Afficher les filtres';
         }
     });
-    
-    // Search with debounce (500ms)
-    let searchTimeout;
-    const searchInput = document.getElementById('searchInput');
-    
-    if (searchInput) {
-        searchInput.addEventListener('input', function() {
-            clearTimeout(searchTimeout);
-            const searchValue = this.value;
-            
-            searchTimeout = setTimeout(function() {
-                const url = new URL(window.location.href);
-                if (searchValue) {
-                    url.searchParams.set('search', searchValue);
-                } else {
-                    url.searchParams.delete('search');
-                }
-                window.location.href = url.toString();
-            }, 500);
-        });
-    }
 </script>
 @endpush

@@ -72,15 +72,18 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
     Route::get('/products/subcategories/{categoryId}', [ProductController::class, 'getSubcategories'])->name('products.subcategories');
-    Route::post('/products/bulk-action', function() { 
-        return response()->json(['success' => true]); 
-    })->name('products.bulk-action');
+    Route::post('/products/bulk-action', [ProductController::class, 'bulkAction'])->name('products.bulk-action');
+    Route::post('/products/{id}/update-stock', [ProductController::class, 'updateStock'])->name('products.update-stock');
+    Route::get('/products/{id}/quick-view', [ProductController::class, 'quickView'])->name('products.quick-view');
+    Route::post('/products/{id}/toggle-status', [ProductController::class, 'toggleStatus'])->name('products.toggle-status');
     
     // Categories
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
     Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
     Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
     Route::get('/categories/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+    Route::get('/categories/{id}/quick-view', [CategoryController::class, 'quickView'])->name('categories.quick-view');
+    Route::post('/categories/reorder', [CategoryController::class, 'reorder'])->name('categories.reorder');
     Route::put('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
     Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
     

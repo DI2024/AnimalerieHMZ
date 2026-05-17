@@ -14,10 +14,19 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::withCount(['products', 'subcategories'])
+            ->orderBy('order')
             ->orderBy('name')
             ->get();
+        
+        // Calculate stats
+        $stats = [
+            'total' => $categories->count(),
+            'active' => $categories->where('is_active', 1)->count(),
+            'inactive' => $categories->where('is_active', 0)->count(),
+            'total_products' => $categories->sum('products_count'),
+        ];
             
-        return view('admin.categories.index', compact('categories'));
+        return view('admin.categories.index', compact('categories', 'stats'));
     }
 
     public function create()
@@ -70,8 +79,10 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255',
             'icon' => 'nullable|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'is_active' => 'boolean',
         ]);
+
+        // Handle checkbox - convert to boolean
+        $validated['is_active'] = $request->has('is_active') && $request->is_active == '1' ? 1 : 0;
 
         // Update slug if name changed
         if ($validated['name'] !== $category->name) {
@@ -85,8 +96,15 @@ class CategoryController extends Controller
             }
         }
 
+        // Handle image removal
+        if ($request->input('remove_image') == '1') {
+            if ($category->image && Storage::disk('public')->exists($category->image)) {
+                Storage::disk('public')->delete($category->image);
+            }
+            $validated['image'] = null;
+        }
         // Handle image upload
-        if ($request->hasFile('image')) {
+        elseif ($request->hasFile('image')) {
             if ($category->image && Storage::disk('public')->exists($category->image)) {
                 Storage::disk('public')->delete($category->image);
             }
@@ -107,6 +125,12 @@ class CategoryController extends Controller
         
         // Check if category has products
         if ($category->products()->count() > 0) {
+            if (request()->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Impossible de supprimer une catégorie contenant des produits!'
+                ], 400);
+            }
             return redirect()->route('admin.categories.index')
                 ->with('error', 'Impossible de supprimer une catégorie contenant des produits!');
         }
@@ -118,8 +142,53 @@ class CategoryController extends Controller
         
         $category->delete();
 
+        if (request()->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Catégorie supprimée avec succès!'
+            ]);
+        }
+        
         return redirect()->route('admin.categories.index')
             ->with('success', 'Catégorie supprimée avec succès!');
+    }
+
+    public function quickView($id)
+    {
+        $category = Category::withCount('products')->findOrFail($id);
+        
+        // Format image URL
+        if ($category->image) {
+            if (!filter_var($category->image, FILTER_VALIDATE_URL)) {
+                $category->image = asset('storage/' . $category->image);
+            }
+        }
+        
+        // Set order to display value (1-based index instead of 0-based)
+        // If order field doesn't exist, use id as fallback
+        if (!isset($category->order)) {
+            $category->order = $category->id;
+        }
+        
+        return response()->json([
+            'success' => true,
+            'category' => $category
+        ]);
+    }
+
+    public function reorder(Request $request)
+    {
+        $categories = $request->input('categories');
+        
+        foreach ($categories as $categoryData) {
+            Category::where('id', $categoryData['id'])
+                ->update(['order' => $categoryData['order']]);
+        }
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Ordre enregistré avec succès!'
+        ]);
     }
 
     // Subcategory methods

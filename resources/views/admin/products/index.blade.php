@@ -17,7 +17,7 @@
         border-right: none;
     }
     .view-toggle button.active {
-        background: #d4af37;
+        background: #003e87;
         color: white;
     }
     .view-toggle button:hover:not(.active) {
@@ -259,21 +259,23 @@
         <div class="bg-white rounded-lg shadow p-4 sticky top-0 z-30 before:content-[''] before:absolute before:left-0 before:right-0 before:bottom-full before:h-16 before:bg-gradient-to-b before:from-transparent before:via-white/60 before:to-white before:backdrop-blur-lg before:pointer-events-none">
             <!-- Primary Actions Row -->
             <div class="flex items-center gap-3 mb-3">
-                <!-- Large Search Input -->
-                <div class="relative flex-1 min-w-[200px] max-w-[600px]">
-                    <input type="text" id="quick-search" placeholder="Rechercher des produits..." 
-                           class="w-full pl-10 pr-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm">
-                    <i class="fas fa-search absolute left-3 top-3.5 text-gray-400"></i>
-                </div>
+                <form method="GET" action="{{ route('admin.products.index') }}" class="flex items-center gap-3 flex-1">
+                    <!-- Large Search Input -->
+                    <div class="relative flex-1 min-w-[200px] max-w-[600px]">
+                        <input type="text" id="quick-search" name="search" value="{{ request('search') }}" placeholder="Rechercher des produits..." 
+                               class="w-full pl-10 pr-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm">
+                        <i class="fas fa-search absolute left-3 top-3.5 text-gray-400"></i>
+                    </div>
 
-                <!-- Primary Action Buttons -->
-                <button onclick="window.location.reload()" 
-                        class="px-4 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm font-medium whitespace-nowrap transition-colors">
-                    <i class="fas fa-sync-alt mr-2"></i>Actualiser
-                </button>
+                    <!-- Primary Action Buttons -->
+                    <button type="submit" 
+                            class="px-4 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm font-medium whitespace-nowrap transition-colors">
+                        <i class="fas fa-sync-alt mr-2"></i>Actualiser
+                    </button>
+                </form>
 
                 <a href="{{ route('admin.products.create') }}" 
-                   class="px-4 py-2.5 bg-primary text-white rounded-lg hover:bg-yellow-600 text-sm font-medium whitespace-nowrap transition-colors">
+                   class="px-4 py-2.5 bg-[#003e87] text-white border-2 border-[#003e87] rounded-lg hover:bg-white hover:text-[#003e87] text-sm font-bold whitespace-nowrap transition-all shadow-md hover:shadow-lg">
                     <i class="fas fa-plus mr-2"></i>Nouveau Produit
                 </a>
             </div>
@@ -314,7 +316,7 @@
                         </select>
                         
                         <button onclick="applyBulkAction()" 
-                                class="px-3 py-1.5 bg-primary text-white rounded text-sm hover:bg-yellow-600 transition-colors">
+                                class="px-3 py-1.5 bg-primary text-white rounded text-sm hover:bg-primary-container transition-colors">
                             Appliquer
                         </button>
                     </div>
@@ -339,32 +341,71 @@
         <div id="products-container">
             <!-- Card View (Default) -->
             <div id="card-view" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                @include('admin.products.partials.card')
-                @include('admin.products.partials.card')
-                @include('admin.products.partials.card')
-                @include('admin.products.partials.card')
+                @forelse($products as $product)
+                    @include('admin.products.partials.card', ['product' => $product])
+                @empty
+                    <div class="col-span-full text-center py-12">
+                        <i class="fas fa-box-open text-6xl text-gray-300 mb-4"></i>
+                        <p class="text-gray-500 text-lg">Aucun produit trouvé</p>
+                    </div>
+                @endforelse
             </div>
 
             <!-- Table View (Hidden) -->
             <div id="table-view" class="hidden bg-white rounded-lg shadow overflow-hidden">
-                @include('admin.products.partials.table')
+                @include('admin.products.partials.table', ['products' => $products])
             </div>
 
             <!-- List View (Hidden) -->
             <div id="list-view" class="hidden bg-white rounded-lg shadow">
-                @include('admin.products.partials.list')
-                @include('admin.products.partials.list')
+                @forelse($products as $product)
+                    @include('admin.products.partials.list', ['product' => $product])
+                @empty
+                    <div class="text-center py-12">
+                        <i class="fas fa-box-open text-6xl text-gray-300 mb-4"></i>
+                        <p class="text-gray-500 text-lg">Aucun produit trouvé</p>
+                    </div>
+                @endforelse
             </div>
         </div>
 
-        <!-- Pagination Placeholder -->
+        <!-- Pagination -->
+        @if($products->hasPages())
         <div class="mt-6 flex justify-center">
-            <nav class="inline-flex rounded-md shadow">
-                <a href="#" class="px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">Précédent</a>
-                <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-primary text-white text-sm font-medium">1</a>
-                <a href="#" class="px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">Suivant</a>
+            <nav class="inline-flex items-center gap-1 rounded-lg shadow-sm">
+                <!-- Previous Arrow -->
+                @if($products->onFirstPage())
+                    <span class="px-3 py-2 border border-gray-300 bg-gray-100 text-gray-400 rounded-l-lg cursor-not-allowed">
+                        <i class="fas fa-chevron-left"></i>
+                    </span>
+                @else
+                    <a href="{{ $products->previousPageUrl() }}" class="px-3 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-l-lg transition-colors">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                @endif
+                
+                <!-- Page Numbers -->
+                @foreach(range(1, $products->lastPage()) as $page)
+                    @if($page == $products->currentPage())
+                        <span class="px-4 py-2 border-t border-b border-gray-300 bg-[#003e87] text-white text-sm font-medium">{{ $page }}</span>
+                    @else
+                        <a href="{{ $products->url($page) }}" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">{{ $page }}</a>
+                    @endif
+                @endforeach
+                
+                <!-- Next Arrow -->
+                @if($products->hasMorePages())
+                    <a href="{{ $products->nextPageUrl() }}" class="px-3 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-r-lg transition-colors">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                @else
+                    <span class="px-3 py-2 border border-gray-300 bg-gray-100 text-gray-400 rounded-r-lg cursor-not-allowed">
+                        <i class="fas fa-chevron-right"></i>
+                    </span>
+                @endif
             </nav>
         </div>
+        @endif
     </div>
 </div>
 
@@ -643,17 +684,6 @@
         });
     }
 
-    // Quick Search
-    let searchTimeout;
-    document.getElementById('quick-search').addEventListener('input', function(e) {
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => {
-            const url = new URL(window.location.href);
-            url.searchParams.set('search', e.target.value);
-            window.location.href = url.toString();
-        }, 500);
-    });
-
     // Close modal on outside click
     document.getElementById('quick-view-modal').addEventListener('click', function(e) {
         if (e.target === this) {
@@ -688,7 +718,7 @@
         } else {
             iconContainer.className = 'flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-blue-100';
             icon.className = 'fas fa-info-circle text-3xl text-blue-600';
-            confirmBtn.className = 'flex-1 px-4 py-2.5 bg-primary text-white rounded-lg hover:bg-yellow-600 font-medium transition-colors';
+            confirmBtn.className = 'flex-1 px-4 py-2.5 bg-primary text-white rounded-lg hover:bg-primary-container font-medium transition-colors';
             confirmBtn.textContent = 'Confirmer';
         }
         
@@ -721,5 +751,51 @@
             closeConfirmation();
         }
     });
+
+    // Delete Product
+    function deleteProduct(productId) {
+        showConfirmation(
+            'Supprimer le produit',
+            'Êtes-vous sûr de vouloir supprimer ce produit ? Cette action est irréversible.',
+            () => {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/admin/products/${productId}`;
+                form.innerHTML = `
+                    @csrf
+                    @method('DELETE')
+                `;
+                document.body.appendChild(form);
+                form.submit();
+            },
+            'danger'
+        );
+    }
+
+    // Toggle Product Status
+    function toggleProductStatus(productId, isActive) {
+        fetch(`/admin/products/${productId}/toggle-status`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({ is_active: isActive })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (!data.success) {
+                alert('Erreur lors de la mise à jour du statut');
+                // Revert checkbox
+                event.target.checked = !isActive;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Une erreur est survenue');
+            // Revert checkbox
+            event.target.checked = !isActive;
+        });
+    }
 </script>
 @endpush

@@ -34,12 +34,12 @@
         transition: all 0.3s;
     }
     .image-upload-zone:hover {
-        border-color: #d4af37;
-        background: #fffbeb;
+        border-color: #003e87;
+        background: #eff6ff;
     }
     .image-upload-zone.dragover {
-        border-color: #d4af37;
-        background: #fef3c7;
+        border-color: #003e87;
+        background: #dbeafe;
         transform: scale(1.02);
     }
     .image-upload-zone img {
@@ -145,9 +145,9 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">
                         Nom de la catégorie *
                     </label>
-                    <input type="text" name="name" id="categoryName" value="Chiens" required
+                    <input type="text" name="name" id="categoryName" value="{{ old('name', $category->name) }}" required
                            oninput="updateSlug(); updatePreview(); countChars('categoryName', 100)"
-                           class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-lg">
+                           class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#003e87] text-lg">
                     <div class="char-counter" id="nameCounter">0/100</div>
                     @error('name')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -164,9 +164,9 @@
                         <span class="px-3 py-3 bg-gray-100 border border-r-0 rounded-l-lg text-sm text-gray-600">
                             /categories/
                         </span>
-                        <input type="text" name="slug" id="categorySlug" value="chiens"
+                        <input type="text" name="slug" id="categorySlug" value="{{ old('slug', $category->slug) }}"
                                oninput="updateSlugPreview()"
-                               class="flex-1 px-4 py-3 border rounded-r-lg focus:outline-none focus:ring-2 focus:ring-primary font-mono text-sm">
+                               class="flex-1 px-4 py-3 border rounded-r-lg focus:outline-none focus:ring-2 focus:ring-[#003e87] font-mono text-sm">
                     </div>
                     <p class="text-xs text-gray-500 mt-1">
                         <i class="fas fa-info-circle mr-1"></i>
@@ -185,7 +185,7 @@
                     </label>
                     <textarea name="description" id="categoryDescription" rows="4"
                               oninput="updatePreview(); countChars('categoryDescription', 500)"
-                              class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">Tout pour vos compagnons canins : croquettes, jouets, et accessoires.</textarea>
+                              class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#003e87]">{{ old('description', $category->description) }}</textarea>
                     <div class="char-counter" id="descriptionCounter">0/500</div>
                     @error('description')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -202,20 +202,29 @@
                 
                 <!-- Image Upload Zone -->
                 <div class="image-upload-zone" id="imageUploadZone" onclick="document.getElementById('imageInput').click()">
-                        <img id="imagePreview" src="https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&q=80&w=800" alt="Chiens">
-                        <div class="image-upload-placeholder hidden" id="imagePlaceholder">
-                            <i class="fas fa-cloud-upload-alt text-6xl mb-3 text-gray-300"></i>
-                            <p class="text-base font-medium mb-1">Cliquez ou glissez-déposez une image</p>
-                            <p class="text-sm text-gray-400">JPG, PNG, WEBP (Max 2MB)</p>
-                            <p class="text-xs text-gray-400 mt-2">Recommandé: 1200x675px (16:9)</p>
-                        </div>
-                    <button type="button" id="removeImageBtn" class="remove-image-btn" onclick="event.stopPropagation(); removeImage()">
+                    @if($category->image)
+                        @if(filter_var($category->image, FILTER_VALIDATE_URL))
+                            <img id="imagePreview" src="{{ $category->image }}" alt="{{ $category->name }}">
+                        @else
+                            <img id="imagePreview" src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}">
+                        @endif
+                    @else
+                        <img id="imagePreview" src="" alt="" class="hidden">
+                    @endif
+                    <div class="image-upload-placeholder {{ $category->image ? 'hidden' : '' }}" id="imagePlaceholder">
+                        <i class="fas fa-cloud-upload-alt text-6xl mb-3 text-gray-300"></i>
+                        <p class="text-base font-medium mb-1">Cliquez ou glissez-déposez une image</p>
+                        <p class="text-sm text-gray-400">JPG, PNG, WEBP (Max 2MB)</p>
+                        <p class="text-xs text-gray-400 mt-2">Recommandé: 1200x675px (16:9)</p>
+                    </div>
+                    <button type="button" id="removeImageBtn" class="remove-image-btn {{ $category->image ? '' : 'hidden' }}" onclick="event.stopPropagation(); removeImage()">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
                 
                 <input type="file" name="image" id="imageInput" accept="image/jpeg,image/jpg,image/png,image/webp"
                        onchange="previewImage(this)" class="hidden">
+                <input type="hidden" name="remove_image" id="removeImageFlag" value="0">
                 
                 <div id="imageInfo" class="hidden mt-3 text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
                     <div class="flex items-center justify-between">
@@ -239,21 +248,12 @@
                 <div class="space-y-3">
                     <!-- Status -->
                     <label class="flex items-center space-x-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                        <input type="checkbox" name="is_active" value="1" checked
+                        <input type="hidden" name="is_active" value="0">
+                        <input type="checkbox" name="is_active" value="1" {{ old('is_active', $category->is_active) ? 'checked' : '' }}
                                class="rounded text-primary focus:ring-primary w-5 h-5">
                         <div class="flex-1">
                             <span class="text-sm font-medium text-gray-900">Catégorie active</span>
                             <p class="text-xs text-gray-500">Visible sur le site</p>
-                        </div>
-                    </label>
-                    
-                    <!-- Important -->
-                    <label class="flex items-center space-x-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                        <input type="checkbox" name="is_important" value="1" checked
-                               class="rounded text-primary focus:ring-primary w-5 h-5">
-                        <div class="flex-1">
-                            <span class="text-sm font-medium text-gray-900">Catégorie importante</span>
-                            <p class="text-xs text-gray-500">Mise en avant sur la page d'accueil</p>
                         </div>
                     </label>
                 </div>
@@ -267,7 +267,7 @@
                 </a>
                 <div class="flex gap-3">
                     <button type="submit"
-                            class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-yellow-600 transition-colors">
+                            class="px-6 py-3 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] transition-colors">
                         <i class="fas fa-save mr-2"></i>Mettre à jour
                     </button>
                 </div>
@@ -284,21 +284,32 @@
                 </div>
                 
                 <div class="preview-card-image" id="previewImage">
-                        <img src="https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&q=80&w=800" alt="Chiens">
+                    @if($category->image)
+                        @if(filter_var($category->image, FILTER_VALIDATE_URL))
+                            <img src="{{ $category->image }}" alt="{{ $category->name }}">
+                        @else
+                            <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}">
+                        @endif
+                    @else
+                        <div class="text-center">
+                            <i class="fas fa-image text-6xl mb-2"></i>
+                            <p class="text-sm">Aucune image</p>
+                        </div>
+                    @endif
                 </div>
                 
                 <div class="p-6">
-                    <h4 class="text-xl font-bold text-gray-900 mb-2" id="previewName">Chiens</h4>
-                    <p class="text-sm text-gray-600 mb-4" id="previewDescription">Tout pour vos compagnons canins : croquettes, jouets, et accessoires.</p>
+                    <h4 class="text-xl font-bold text-gray-900 mb-2" id="previewName">{{ $category->name }}</h4>
+                    <p class="text-sm text-gray-600 mb-4" id="previewDescription">{{ $category->description ?? 'Aucune description' }}</p>
                     
                     <div class="flex items-center justify-between pt-4 border-t">
                         <div class="text-sm text-gray-500">
                             <i class="fas fa-box mr-1"></i>
-                            <span>15 produits</span>
+                            <span>{{ $category->products_count ?? 0 }} produits</span>
                         </div>
                         <div class="text-sm">
-                            <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
-                                Actif
+                            <span class="px-3 py-1 {{ $category->is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }} rounded-full text-xs font-medium">
+                                {{ $category->is_active ? 'Actif' : 'Inactif' }}
                             </span>
                         </div>
                     </div>
@@ -408,6 +419,7 @@
         const removeBtn = document.getElementById('removeImageBtn');
         const previewImage = document.getElementById('previewImage');
         const imageInfo = document.getElementById('imageInfo');
+        const removeFlag = document.getElementById('removeImageFlag');
         
         if (input.files && input.files[0]) {
             const file = input.files[0];
@@ -426,6 +438,9 @@
                 input.value = '';
                 return;
             }
+            
+            // Reset remove flag when new image is selected
+            removeFlag.value = '0';
             
             const reader = new FileReader();
             
@@ -455,6 +470,7 @@
         const removeBtn = document.getElementById('removeImageBtn');
         const previewImage = document.getElementById('previewImage');
         const imageInfo = document.getElementById('imageInfo');
+        const removeFlag = document.getElementById('removeImageFlag');
         
         input.value = '';
         preview.src = '';
@@ -462,6 +478,9 @@
         placeholder.classList.remove('hidden');
         removeBtn.classList.add('hidden');
         imageInfo.classList.add('hidden');
+        
+        // Set flag to remove image on server
+        removeFlag.value = '1';
         
         // Reset preview card
         previewImage.innerHTML = `

@@ -28,7 +28,6 @@
             <div class="relative">
                 <input type="text" name="search" value="{{ request('search') }}" 
                        placeholder="Recherche rapide..."
-                       oninput="updateFilterChips()"
                        class="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm">
                 <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
             </div>
@@ -50,7 +49,6 @@
                         <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded transition-colors">
                             <input type="checkbox" name="categories[]" value="{{ $category->id }}"
                                    {{ in_array($category->id, request('categories', [])) ? 'checked' : '' }}
-                                   onchange="updateFilterChips()"
                                    class="rounded text-primary focus:ring-primary">
                             <span class="text-sm text-gray-700 flex-1">{{ $category->name }}</span>
                             <span class="text-xs text-gray-400">({{ $category->products_count ?? 0 }})</span>
@@ -77,14 +75,12 @@
                             <label class="text-xs text-gray-600 mb-1 block">Min (DH)</label>
                             <input type="number" name="price_min" value="{{ request('price_min', 0) }}" 
                                    min="0" step="10"
-                                   oninput="updateFilterChips()"
                                    class="w-full px-3 py-1.5 border rounded text-sm focus:ring-2 focus:ring-primary">
                         </div>
                         <div>
                             <label class="text-xs text-gray-600 mb-1 block">Max (DH)</label>
                             <input type="number" name="price_max" value="{{ request('price_max', 5000) }}" 
                                    min="0" step="10"
-                                   oninput="updateFilterChips()"
                                    class="w-full px-3 py-1.5 border rounded text-sm focus:ring-2 focus:ring-primary">
                         </div>
                     </div>
@@ -115,21 +111,18 @@
                     <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded transition-colors">
                         <input type="checkbox" name="stock[]" value="in_stock"
                                {{ in_array('in_stock', request('stock', [])) ? 'checked' : '' }}
-                               onchange="updateFilterChips()"
                                class="rounded text-primary focus:ring-primary">
                         <span class="text-sm text-gray-700">En stock</span>
                     </label>
                     <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded transition-colors">
                         <input type="checkbox" name="stock[]" value="low_stock"
                                {{ in_array('low_stock', request('stock', [])) ? 'checked' : '' }}
-                               onchange="updateFilterChips()"
                                class="rounded text-primary focus:ring-primary">
                         <span class="text-sm text-gray-700">Stock faible</span>
                     </label>
                     <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded transition-colors">
                         <input type="checkbox" name="stock[]" value="out_of_stock"
                                {{ in_array('out_of_stock', request('stock', [])) ? 'checked' : '' }}
-                               onchange="updateFilterChips()"
                                class="rounded text-primary focus:ring-primary">
                         <span class="text-sm text-gray-700">Rupture</span>
                     </label>
@@ -152,21 +145,18 @@
                     <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded transition-colors">
                         <input type="checkbox" name="badges[]" value="new"
                                {{ in_array('new', request('badges', [])) ? 'checked' : '' }}
-                               onchange="updateFilterChips()"
                                class="rounded text-primary focus:ring-primary">
                         <span class="text-sm text-gray-700">Nouveau</span>
                     </label>
                     <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded transition-colors">
                         <input type="checkbox" name="badges[]" value="bestseller"
                                {{ in_array('bestseller', request('badges', [])) ? 'checked' : '' }}
-                               onchange="updateFilterChips()"
                                class="rounded text-primary focus:ring-primary">
                         <span class="text-sm text-gray-700">Bestseller</span>
                     </label>
                     <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded transition-colors">
                         <input type="checkbox" name="badges[]" value="featured"
                                {{ in_array('featured', request('badges', [])) ? 'checked' : '' }}
-                               onchange="updateFilterChips()"
                                class="rounded text-primary focus:ring-primary">
                         <span class="text-sm text-gray-700">Featured</span>
                     </label>
@@ -188,21 +178,18 @@
                     <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded transition-colors">
                         <input type="radio" name="status" value=""
                                {{ request('status') == '' ? 'checked' : '' }}
-                               onchange="updateFilterChips()"
                                class="text-primary focus:ring-primary">
                         <span class="text-sm text-gray-700">Tous</span>
                     </label>
                     <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded transition-colors">
                         <input type="radio" name="status" value="active"
                                {{ request('status') == 'active' ? 'checked' : '' }}
-                               onchange="updateFilterChips()"
                                class="text-primary focus:ring-primary">
                         <span class="text-sm text-gray-700">Actif</span>
                     </label>
                     <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded transition-colors">
                         <input type="radio" name="status" value="inactive"
                                {{ request('status') == 'inactive' ? 'checked' : '' }}
-                               onchange="updateFilterChips()"
                                class="text-primary focus:ring-primary">
                         <span class="text-sm text-gray-700">Inactif</span>
                     </label>
@@ -217,7 +204,7 @@
                 Réinitialiser
             </button>
             <button type="submit" 
-                    class="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-yellow-600 text-sm font-medium transition-colors">
+                    class="flex-1 px-4 py-2 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] text-sm font-medium transition-colors">
                 Appliquer
             </button>
         </div>

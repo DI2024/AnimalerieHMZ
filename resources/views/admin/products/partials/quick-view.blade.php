@@ -1,7 +1,7 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <!-- Left: Images -->
     <div>
-        <img src="{{ asset($product->image) }}" 
+        <img src="{{ asset('storage/' . $product->image) }}" 
              alt="{{ $product->name }}" 
              class="w-full rounded-lg mb-4"
              onerror="this.src='{{ asset('images/placeholder-product.svg') }}'; this.onerror=null;">
@@ -9,7 +9,7 @@
         @if($product->images->count() > 0)
             <div class="grid grid-cols-4 gap-2">
                 @foreach($product->images as $image)
-                    <img src="{{ asset($image->image) }}" 
+                    <img src="{{ asset('storage/' . $image->image) }}" 
                          alt="{{ $product->name }}" 
                          class="w-full h-20 object-cover rounded"
                          onerror="this.src='{{ asset('images/placeholder-product.svg') }}'; this.onerror=null;">
@@ -21,8 +21,11 @@
     <!-- Right: Info -->
     <div class="space-y-4">
         <div>
-            <span class="text-sm text-gray-500">{{ $product->category->name }}</span>
+            <span class="text-sm text-gray-500">{{ $product->category->name ?? 'N/A' }}</span>
             <h2 class="text-2xl font-bold text-gray-900 mt-1">{{ $product->name }}</h2>
+            @if($product->sku)
+                <p class="text-sm text-gray-500 mt-1">SKU: {{ $product->sku }}</p>
+            @endif
         </div>
 
         <!-- Badges -->
@@ -32,7 +35,7 @@
                     <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">Nouveau</span>
                 @endif
                 @if($product->is_bestseller)
-                    <span class="px-3 py-1 bg-primary text-white rounded-full text-sm font-medium">Bestseller</span>
+                    <span class="px-3 py-1 bg-[#003e87] text-white rounded-full text-sm font-medium">Bestseller</span>
                 @endif
                 @if($product->is_featured)
                     <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">Featured</span>
@@ -43,7 +46,7 @@
         <!-- Price -->
         <div>
             <div class="flex items-baseline space-x-3">
-                <span class="text-3xl font-bold text-primary">{{ number_format($product->price, 2) }} DH</span>
+                <span class="text-3xl font-bold text-[#003e87]">{{ number_format($product->price, 2) }} DH</span>
                 @if($product->price_old && $product->price_old > $product->price)
                     <span class="text-xl text-gray-400 line-through">{{ number_format($product->price_old, 2) }} DH</span>
                     <span class="px-2 py-1 bg-red-100 text-red-800 rounded text-sm font-medium">
@@ -54,10 +57,12 @@
         </div>
 
         <!-- Description -->
-        <div>
-            <h3 class="font-semibold text-gray-900 mb-2">Description</h3>
-            <p class="text-gray-600 text-sm">{{ $product->short_description ?? Str::limit($product->description, 200) }}</p>
-        </div>
+        @if($product->short_description || $product->description)
+            <div>
+                <h3 class="font-semibold text-gray-900 mb-2">Description</h3>
+                <p class="text-gray-600 text-sm">{{ $product->short_description ?? Str::limit($product->description, 200) }}</p>
+            </div>
+        @endif
 
         <!-- Stock -->
         <div>
@@ -80,31 +85,24 @@
         </div>
 
         <!-- Stats -->
-        <div class="grid grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
-            <div class="text-center">
-                <div class="text-2xl font-bold text-gray-900">{{ $product->orderItems->sum('quantity') ?? 0 }}</div>
-                <div class="text-xs text-gray-600">Ventes</div>
-            </div>
-            <div class="text-center">
-                <div class="text-2xl font-bold text-gray-900">{{ number_format($product->rating, 1) }}</div>
-                <div class="text-xs text-gray-600">Note moyenne</div>
-            </div>
-            <div class="text-center">
-                <div class="text-2xl font-bold text-gray-900">{{ $product->review_count }}</div>
-                <div class="text-xs text-gray-600">Avis</div>
-            </div>
-        </div>
-
-        <!-- Revenue -->
         @php
-            $revenue = $product->orderItems->sum(function($item) {
-                return $item->quantity * $item->price;
-            });
+            $totalSales = $product->orderItems()->sum('quantity') ?? 0;
         @endphp
-        @if($revenue > 0)
-            <div class="p-4 bg-green-50 rounded-lg">
-                <div class="text-sm text-gray-600">Revenu généré</div>
-                <div class="text-2xl font-bold text-green-600">{{ number_format($revenue, 2) }} DH</div>
+        @if($totalSales > 0)
+            <div class="grid grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg">
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-gray-900">{{ $totalSales }}</div>
+                    <div class="text-xs text-gray-600">Ventes totales</div>
+                </div>
+                <div class="text-center">
+                    @php
+                        $revenue = $product->orderItems()->get()->sum(function($item) {
+                            return $item->quantity * $item->price;
+                        });
+                    @endphp
+                    <div class="text-2xl font-bold text-green-600">{{ number_format($revenue, 0) }} DH</div>
+                    <div class="text-xs text-gray-600">Revenu généré</div>
+                </div>
             </div>
         @endif
 
@@ -119,7 +117,7 @@
         <!-- Actions -->
         <div class="flex space-x-3 pt-4 border-t">
             <a href="{{ route('admin.products.edit', $product->id) }}" 
-               class="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-yellow-600 text-center">
+               class="flex-1 px-4 py-2 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] text-center transition-colors">
                 <i class="fas fa-edit mr-2"></i>Modifier le produit
             </a>
         </div>

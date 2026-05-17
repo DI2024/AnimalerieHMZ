@@ -15,6 +15,7 @@ class Category extends Model
         'icon',
         'image',
         'is_active',
+        'order',
     ];
 
     public function subcategories()
