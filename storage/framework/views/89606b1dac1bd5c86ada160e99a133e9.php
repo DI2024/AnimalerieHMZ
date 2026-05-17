@@ -38,7 +38,7 @@
 
                         <!-- Image offre 2 (Bleu) - HAUTEUR 222px -->
                         <a href="<?php echo e(route('products.index', ['category' => 'chats'])); ?>" class="bg-blue-100 overflow-hidden relative group rounded-2xl h-[222px] cursor-pointer">
-                            <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=800&q=80" alt="Offre Chat" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            <img src="https://images.unsplash.com/photo-1574158622682-e40e69881006?w=800&q=80" alt="Offre Chat" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                             <div class="absolute bottom-6 left-6 text-white">
                                 <span class="bg-tertiary px-4 py-2 rounded-full text-sm font-bold mb-2 inline-block">-15%</span>
@@ -78,7 +78,7 @@
                         <p class="text-white/90 text-sm font-medium">Pour Chats et Rongeurs</p>
                     </div>
                     <div class="flex-shrink-0 w-24 h-24">
-                        <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=400&h=400&fit=crop&q=80" alt="Chat" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1574158622682-e40e69881006?w=400&h=400&fit=crop&q=80" alt="Chat" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
                     </div>
                 </a>
                 <!-- Offer 3 -->
@@ -303,7 +303,7 @@
         <div class="max-w-[1280px] mx-auto px-6">
             <!-- Banner Pigeons - IMAGE PLEINE LARGEUR -->
             <div class="relative rounded-3xl overflow-hidden mb-12 min-h-[300px] flex items-center shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1520763185298-1b434c919102?w=1200&q=80" alt="Pigeon" class="absolute inset-0 w-full h-full object-cover">
+                <img src="<?php echo e(asset('images/sec peigon.png')); ?>" alt="Pigeon" class="absolute inset-0 w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
                 <div class="relative z-10 max-w-md p-12 text-white">
                     <span class="block text-lg uppercase tracking-widest mb-3 opacity-90 font-semibold">Tout pour les</span>
@@ -336,12 +336,12 @@
         <div class="max-w-[1280px] mx-auto px-6">
             <!-- Banner Chats - IMAGE PLEINE LARGEUR -->
             <div class="relative rounded-3xl overflow-hidden mb-12 min-h-[300px] flex items-center shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=1200&q=80" alt="Chat" class="absolute inset-0 w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-r from-indigo-900/70 via-indigo-900/40 to-transparent"></div>
+                <img src="<?php echo e(asset('images/sec chat.png')); ?>" alt="Chat" class="absolute inset-0 w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
                 <div class="relative z-10 max-w-md p-12 text-white">
                     <span class="block text-lg uppercase tracking-widest mb-3 opacity-90 font-semibold">Tout pour les</span>
                     <h1 class="font-headline text-4xl font-extrabold mb-4">Chats</h1>
-                    <p class="text-indigo-50 text-base">Tout ce dont votre félin a besoin pour être heureux</p>
+                    <p class="text-gray-200 text-base">Tout ce dont votre félin a besoin pour être heureux</p>
                 </div>
             </div>
             
@@ -368,12 +368,12 @@
         <div class="max-w-[1280px] mx-auto px-6">
             <!-- Banner Oiseaux - IMAGE PLEINE LARGEUR -->
             <div class="relative rounded-3xl overflow-hidden mb-12 min-h-[300px] flex items-center shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=1200&q=80" alt="Oiseau" class="absolute inset-0 w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-r from-blue-900/70 via-blue-900/40 to-transparent"></div>
+                <img src="<?php echo e(asset('images/sec oiseau.png')); ?>" alt="Oiseau" class="absolute inset-0 w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
                 <div class="relative z-10 max-w-md p-12 text-white">
                     <span class="block text-lg uppercase tracking-widest mb-3 opacity-90 font-semibold">Tout pour les</span>
                     <h1 class="font-headline text-4xl font-extrabold mb-4">Oiseaux</h1>
-                    <p class="text-blue-50 text-base">Une sélection complète pour le bien-être de vos oiseaux</p>
+                    <p class="text-gray-200 text-base">Une sélection complète pour le bien-être de vos oiseaux</p>
                 </div>
             </div>
             
@@ -408,11 +408,11 @@
                 <div class="flex flex-col gap-3">
                     <!-- Image horizontale - Pigeon 1 -->
                     <div class="relative overflow-hidden rounded-xl h-[180px] group">
-                        <img src="https://images.unsplash.com/photo-1520763185298-1b434c919102?w=600&q=80" alt="Pigeon" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <img src="<?php echo e(asset('images/gal peg1.jpg')); ?>" alt="Pigeon" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                     </div>
                     <!-- Image verticale - Chat -->
                     <div class="relative overflow-hidden rounded-xl h-[280px] group">
-                        <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=600&q=80" alt="Chat" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <img src="<?php echo e(asset('images/gal cat.jpg')); ?>" alt="Chat" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                     </div>
                 </div>
 
@@ -420,11 +420,11 @@
                 <div class="flex flex-col gap-3">
                     <!-- Image verticale grande - Chien -->
                     <div class="relative overflow-hidden rounded-xl h-[280px] group">
-                        <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&q=80" alt="Chien" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <img src="<?php echo e(asset('images/gal peg2.jpg')); ?>" alt="Chien" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                     </div>
                     <!-- Image horizontale - Oiseau -->
                     <div class="relative overflow-hidden rounded-xl h-[180px] group">
-                        <img src="https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=600&q=80" alt="Oiseau" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <img src="<?php echo e(asset('images/gal dog.jpg')); ?>" alt="Oiseau" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                     </div>
                 </div>
 
@@ -432,11 +432,11 @@
                 <div class="flex flex-col gap-3">
                     <!-- Image horizontale - Poisson -->
                     <div class="relative overflow-hidden rounded-xl h-[180px] group">
-                        <img src="https://images.unsplash.com/photo-1524704654690-b56c05c78a00?w=600&q=80" alt="Poisson" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <img src="<?php echo e(asset('images/gal fish.jpg')); ?>" alt="Poisson" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                     </div>
                     <!-- Image verticale grande - Pigeon 2 -->
                     <div class="relative overflow-hidden rounded-xl h-[280px] group">
-                        <img src="https://images.unsplash.com/photo-1605460375648-278bcbd579a6?w=600&q=80" alt="Pigeon" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <img src="<?php echo e(asset('images/gal oiseau.jpg')); ?>" alt="Pigeon" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                     </div>
                 </div>
             </div>
@@ -444,70 +444,98 @@
     </section>
 
     <!-- Testimonials Section -->
-    <section class="py-12 md:py-20 bg-white">
-        <div class="max-w-[1280px] mx-auto px-6">
-            <div class="text-center mb-12">
-                <h2 class="font-headline text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-primary mb-3">Avis Clients</h2>
-                <p class="text-on-surface-variant text-lg">Ce que nos clients disent de nous</p>
+    <section class="py-20 md:py-32 bg-white relative overflow-hidden">
+        <!-- Background decoration -->
+        <div class="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-secondary/5 rounded-full blur-3xl"></div>
+        
+        <div class="max-w-[1280px] mx-auto px-6 relative z-10">
+            <div class="text-center mb-20">
+                <h2 class="font-headline text-4xl md:text-5xl font-bold text-on-surface mb-4">Ils nous font confiance</h2>
+                <p class="text-on-surface-variant text-lg">Découvrez les retours de nos clients satisfaits</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Avis 1 -->
-                <div class="ticket-card group">
-                    <div class="ticket-inner h-full flex flex-col">
-                        <div class="flex items-center gap-1 mb-6 text-amber-400 text-xl">
-                            <span class="material-symbols-outlined fill-1">star</span>
-                            <span class="material-symbols-outlined fill-1">star</span>
-                            <span class="material-symbols-outlined fill-1">star</span>
-                            <span class="material-symbols-outlined fill-1">star</span>
-                            <span class="material-symbols-outlined fill-1">star</span>
-                        </div>
-                        <p class="text-on-surface-variant dark:text-gray-400 mb-8 flex-grow leading-relaxed italic">"Excellent service et produits de qualité. Mon chat adore ses nouvelles croquettes Royal Canin!"</p>
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">S</div>
-                            <div>
-                                <p class="font-bold dark:text-white">Sophie Martin</p>
-                                <p class="text-xs text-on-surface-variant/60">Cliente depuis 2024</p>
-                            </div>
+                <div class="bg-white rounded-2xl p-8 border border-gray-100 hover:border-primary/30 transition-all duration-300 hover:shadow-xl group">
+                    <!-- Stars -->
+                    <div class="flex gap-1 mb-6">
+                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                    </div>
+                    
+                    <!-- Review -->
+                    <p class="text-gray-700 text-base leading-relaxed mb-8 min-h-[100px]">
+                        Excellent service et produits de qualité. Mon chat adore ses nouvelles croquettes Royal Canin!
+                    </p>
+                    
+                    <!-- Author -->
+                    <div class="flex items-center gap-4">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=faces" 
+                             alt="Sophie Martin" 
+                             class="w-16 h-16 rounded-full flex-shrink-0 shadow-md object-cover">
+                        <div>
+                            <p class="font-semibold text-gray-900">Sophie Martin</p>
+                            <p class="text-sm text-gray-500">Cliente vérifiée</p>
                         </div>
                     </div>
                 </div>
+                
                 <!-- Avis 2 -->
-                <div class="ticket-card group">
-                    <div class="ticket-inner h-full flex flex-col">
-                        <div class="flex items-center gap-1 mb-6 text-amber-400 text-xl">
-                            <span class="material-symbols-outlined fill-1">star</span>
-                            <span class="material-symbols-outlined fill-1">star</span>
-                            <span class="material-symbols-outlined fill-1">star</span>
-                            <span class="material-symbols-outlined fill-1">star</span>
-                            <span class="material-symbols-outlined fill-1">star</span>
-                        </div>
-                        <p class="text-on-surface-variant dark:text-gray-400 mb-8 flex-grow leading-relaxed italic">"Livraison rapide et emballage soigné. La volière est magnifique et mes oiseaux sont ravis!"</p>
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center font-bold text-secondary">M</div>
-                            <div>
-                                <p class="font-bold dark:text-white">Marc Dubois</p>
-                                <p class="text-xs text-on-surface-variant/60">Client depuis 2023</p>
-                            </div>
+                <div class="bg-white rounded-2xl p-8 border border-gray-100 hover:border-primary/30 transition-all duration-300 hover:shadow-xl group">
+                    <!-- Stars -->
+                    <div class="flex gap-1 mb-6">
+                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                    </div>
+                    
+                    <!-- Review -->
+                    <p class="text-gray-700 text-base leading-relaxed mb-8 min-h-[100px]">
+                        Livraison rapide et emballage soigné. La volière est magnifique et mes oiseaux sont ravis!
+                    </p>
+                    
+                    <!-- Author -->
+                    <div class="flex items-center gap-4">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=faces" 
+                             alt="Marc Dubois" 
+                             class="w-16 h-16 rounded-full flex-shrink-0 shadow-md object-cover">
+                        <div>
+                            <p class="font-semibold text-gray-900">Marc Dubois</p>
+                            <p class="text-sm text-gray-500">Client vérifié</p>
                         </div>
                     </div>
                 </div>
+                
                 <!-- Avis 3 -->
-                <div class="ticket-card group">
-                    <div class="ticket-inner h-full flex flex-col">
-                        <div class="flex items-center gap-1 mb-6 text-amber-400 text-xl">
-                            <span class="material-symbols-outlined fill-1">star</span>
-                            <span class="material-symbols-outlined fill-1">star</span>
-                            <span class="material-symbols-outlined fill-1">star</span>
-                            <span class="material-symbols-outlined fill-1">star</span>
-                            <span class="material-symbols-outlined fill-1">star</span>
-                        </div>
-                        <p class="text-on-surface-variant dark:text-gray-400 mb-8 flex-grow leading-relaxed italic">"Super boutique! Les prix sont compétitifs et le service client est très réactif. Je recommande!"</p>
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-full bg-tertiary/10 flex items-center justify-center font-bold text-tertiary">L</div>
-                            <div>
-                                <p class="font-bold dark:text-white">Laura Petit</p>
-                                <p class="text-xs text-on-surface-variant/60">Cliente depuis 2025</p>
-                            </div>
+                <div class="bg-white rounded-2xl p-8 border border-gray-100 hover:border-primary/30 transition-all duration-300 hover:shadow-xl group">
+                    <!-- Stars -->
+                    <div class="flex gap-1 mb-6">
+                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                    </div>
+                    
+                    <!-- Review -->
+                    <p class="text-gray-700 text-base leading-relaxed mb-8 min-h-[100px]">
+                        Super boutique! Les prix sont compétitifs et le service client est très réactif. Je recommande!
+                    </p>
+                    
+                    <!-- Author -->
+                    <div class="flex items-center gap-4">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=faces" 
+                             alt="Laura Petit" 
+                             class="w-16 h-16 rounded-full flex-shrink-0 shadow-md object-cover">
+                        <div>
+                            <p class="font-semibold text-gray-900">Laura Petit</p>
+                            <p class="text-sm text-gray-500">Cliente vérifiée</p>
                         </div>
                     </div>
                 </div>

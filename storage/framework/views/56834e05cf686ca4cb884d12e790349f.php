@@ -151,9 +151,9 @@
                                 </a>
                                 <div class="flex justify-between items-center mt-auto pt-2 border-t border-gray-100">
                                     <div>
-                                        <span class="font-headline text-lg font-bold text-primary"><?php echo e(number_format($product->price, 2, ',', ' ')); ?>€</span>
+                                        <span class="font-headline text-lg font-bold text-primary"><?php echo e(number_format($product->price, 2, ',', ' ')); ?> MAD</span>
                                         <?php if($product->old_price && $product->old_price > $product->price): ?>
-                                            <span class="text-xs text-gray-400 line-through ml-1"><?php echo e(number_format($product->old_price, 2, ',', ' ')); ?>€</span>
+                                            <span class="text-xs text-gray-400 line-through ml-1"><?php echo e(number_format($product->old_price, 2, ',', ' ')); ?> MAD</span>
                                         <?php endif; ?>
                                     </div>
                                     <button class="bg-primary text-white p-2 rounded-lg flex items-center justify-center transition hover:bg-primary-container hover:scale-110 shadow-md product-add-btn" 
