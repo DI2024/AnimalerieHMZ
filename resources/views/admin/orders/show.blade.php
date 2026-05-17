@@ -1,7 +1,10 @@
 @extends('layouts.admin')
 
 @section('title', 'Commande')
-@section('page-title', 'Détails Commande #ORD-2024-001')
+
+@section('page-title')
+Détails Commande #{{ $order->order_number }}
+@endsection
 
 @push('styles')
 <style>
@@ -57,6 +60,14 @@
 @section('content')
 <div class="space-y-6">
     
+    <!-- Success Message -->
+    @if(session('success'))
+    <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg flex items-center gap-3">
+        <i class="fas fa-check-circle text-green-600"></i>
+        <span class="font-medium">{{ session('success') }}</span>
+    </div>
+    @endif
+    
     <!-- Order Info -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
@@ -66,14 +77,16 @@
             
             <form id="status-form" action="{{ route('admin.orders.update-status', $order) }}" method="POST" class="space-y-4" onsubmit="return false;">
                 @csrf
-                <select name="status" id="status-select" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-                    <option value="pending" selected>En attente</option>
-                    <option value="confirmed">Confirmée</option>
-                    <option value="delivered">Livrée</option>
-                    <option value="cancelled">Annulée</option>
+                <select name="status" id="status-select" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#003e87]">
+                    <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>En attente</option>
+                    <option value="processing" {{ $order->status == 'processing' ? 'selected' : '' }}>En traitement</option>
+                    <option value="confirmed" {{ $order->status == 'confirmed' ? 'selected' : '' }}>Confirmée</option>
+                    <option value="shipped" {{ $order->status == 'shipped' ? 'selected' : '' }}>Expédiée</option>
+                    <option value="delivered" {{ $order->status == 'delivered' ? 'selected' : '' }}>Livrée</option>
+                    <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Annulée</option>
                 </select>
                 
-                <button type="button" onclick="handleStatusUpdate()" class="w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-yellow-600">
+                <button type="button" onclick="handleStatusUpdate()" class="w-full px-4 py-2 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1]">
                     Mettre à jour
                 </button>
             </form>
@@ -93,28 +106,30 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <p class="text-sm text-gray-600">Nom</p>
-                    <p class="font-medium">Jean Dupont</p>
+                    <p class="font-medium">{{ $order->shipping_first_name }} {{ $order->shipping_last_name }}</p>
                 </div>
                 <div>
                     <p class="text-sm text-gray-600">Email</p>
-                    <p class="font-medium">jean.dupont@example.com</p>
+                    <p class="font-medium">{{ $order->shipping_email }}</p>
                 </div>
                 <div>
                     <p class="text-sm text-gray-600">Téléphone</p>
-                    <p class="font-medium">06 12 34 56 78</p>
+                    <p class="font-medium">{{ $order->shipping_phone ?? 'Non fourni' }}</p>
                 </div>
                 <div>
                     <p class="text-sm text-gray-600">Date</p>
-                    <p class="font-medium">14/05/2024 10:30</p>
+                    <p class="font-medium">{{ $order->created_at->format('d/m/Y H:i') }}</p>
                 </div>
                 <div class="md:col-span-2">
                     <p class="text-sm text-gray-600">Adresse de livraison</p>
-                    <p class="font-medium">123 Rue de la Paix, 75001 Paris, France</p>
+                    <p class="font-medium">{{ $order->shipping_address }}</p>
                 </div>
+                @if($order->customer_notes)
                 <div class="md:col-span-2">
                     <p class="text-sm text-gray-600">Notes client</p>
-                    <p class="font-medium">Merci de livrer après 18h si possible.</p>
+                    <p class="font-medium">{{ $order->customer_notes }}</p>
                 </div>
+                @endif
             </div>
         </div>
     </div>
@@ -134,50 +149,55 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
-                <!-- Static Order Item 1 -->
+                @forelse($order->items as $item)
                 <tr>
                     <td class="px-6 py-4">
                         <div class="flex items-center">
-                            <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&q=80&w=100" 
-                                 class="w-12 h-12 object-cover rounded mr-3">
+                            @if($item->product_image)
+                                @if(filter_var($item->product_image, FILTER_VALIDATE_URL))
+                                    <img src="{{ $item->product_image }}" class="w-12 h-12 object-cover rounded mr-3" alt="{{ $item->product_name }}">
+                                @else
+                                    <img src="{{ asset('storage/' . $item->product_image) }}" class="w-12 h-12 object-cover rounded mr-3" alt="{{ $item->product_name }}">
+                                @endif
+                            @else
+                                <div class="w-12 h-12 bg-gray-200 rounded mr-3 flex items-center justify-center">
+                                    <i class="fas fa-image text-gray-400"></i>
+                                </div>
+                            @endif
                             <div>
-                                <p class="font-medium">Croquettes Premium Chien</p>
-                                <p class="text-sm text-gray-500">Sac 12kg</p>
+                                <p class="font-medium">{{ $item->product_name }}</p>
+                                @if($item->product_sku)
+                                    <p class="text-sm text-gray-500">SKU: {{ $item->product_sku }}</p>
+                                @endif
                             </div>
                         </div>
                     </td>
-                    <td class="px-6 py-4 text-sm">150.00 DH</td>
-                    <td class="px-6 py-4 text-sm">2</td>
-                    <td class="px-6 py-4 text-sm font-medium">300.00 DH</td>
+                    <td class="px-6 py-4 text-sm">{{ number_format($item->price, 2) }} DH</td>
+                    <td class="px-6 py-4 text-sm">{{ $item->quantity }}</td>
+                    <td class="px-6 py-4 text-sm font-medium">{{ number_format($item->price * $item->quantity, 2) }} DH</td>
                 </tr>
-                <!-- Static Order Item 2 -->
+                @empty
                 <tr>
-                    <td class="px-6 py-4">
-                        <div class="flex items-center">
-                            <img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&q=80&w=100" 
-                                 class="w-12 h-12 object-cover rounded mr-3">
-                            <div>
-                                <p class="font-medium">Jouet Corde pour Chien</p>
-                            </div>
-                        </div>
+                    <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                        Aucun article dans cette commande
                     </td>
-                    <td class="px-6 py-4 text-sm">45.00 DH</td>
-                    <td class="px-6 py-4 text-sm">1</td>
-                    <td class="px-6 py-4 text-sm font-medium">45.00 DH</td>
                 </tr>
+                @endforelse
             </tbody>
             <tfoot class="bg-gray-50">
                 <tr>
                     <td colspan="3" class="px-6 py-4 text-right font-medium">Sous-total</td>
-                    <td class="px-6 py-4 font-medium">345.00 DH</td>
+                    <td class="px-6 py-4 font-medium">{{ number_format($order->subtotal, 2) }} DH</td>
                 </tr>
-                    <tr>
-                        <td colspan="3" class="px-6 py-4 text-right font-medium">Réduction</td>
-                        <td class="px-6 py-4 font-medium text-red-600">-10.00 DH</td>
-                    </tr>
+                @if($order->discount > 0)
+                <tr>
+                    <td colspan="3" class="px-6 py-4 text-right font-medium">Réduction</td>
+                    <td class="px-6 py-4 font-medium text-red-600">-{{ number_format($order->discount, 2) }} DH</td>
+                </tr>
+                @endif
                 <tr class="text-lg">
                     <td colspan="3" class="px-6 py-4 text-right font-bold">Total</td>
-                    <td class="px-6 py-4 font-bold text-primary">335.00 DH</td>
+                    <td class="px-6 py-4 font-bold text-[#003e87]">{{ number_format($order->total, 2) }} DH</td>
                 </tr>
             </tfoot>
         </table>
@@ -186,11 +206,19 @@
     <!-- Admin Notes -->
     <div class="bg-white rounded-lg shadow p-6">
         <h3 class="font-semibold text-gray-900 mb-4">Notes Admin</h3>
+        
+        @if($errors->has('admin_notes'))
+        <div class="mb-4 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg">
+            <i class="fas fa-exclamation-circle"></i>
+            {{ $errors->first('admin_notes') }}
+        </div>
+        @endif
+        
         <form action="{{ route('admin.orders.add-notes', $order) }}" method="POST">
             @csrf
             <textarea name="admin_notes" rows="3" placeholder="Ajouter des notes privées..."
-                      class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary mb-2">Le client a demandé une livraison express.</textarea>
-            <button type="submit" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700">
+                      class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#003e87] mb-2">{{ old('admin_notes', $order->admin_notes) }}</textarea>
+            <button type="submit" class="px-4 py-2 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1]">
                 Enregistrer notes
             </button>
         </form>
@@ -298,7 +326,7 @@
         } else {
             iconContainer.className = 'flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-blue-100';
             icon.className = 'fas fa-info-circle text-3xl text-blue-600';
-            confirmBtn.className = 'flex-1 px-4 py-2.5 bg-primary text-white rounded-lg hover:bg-yellow-600 font-medium transition-colors';
+            confirmBtn.className = 'flex-1 px-4 py-2.5 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] font-medium transition-colors';
         }
         
         confirmCallback = onConfirm;
@@ -322,7 +350,7 @@
         const form = document.getElementById('status-form');
         const select = document.getElementById('status-select');
         const newStatus = select.value;
-        const currentStatus = 'pending';
+        const currentStatus = '{{ $order->status }}';
         
         // Don't show confirmation if status hasn't changed
         if (newStatus === currentStatus) {
@@ -355,6 +383,20 @@
                 buttonText = 'Confirmer';
                 break;
                 
+            case 'processing':
+                title = 'Mettre en traitement ?';
+                message = 'Êtes-vous sûr de vouloir mettre cette commande en traitement ?';
+                type = 'info';
+                buttonText = 'Confirmer';
+                break;
+                
+            case 'shipped':
+                title = 'Marquer comme expédiée ?';
+                message = 'Confirmez que cette commande a été expédiée. Le client sera notifié.';
+                type = 'info';
+                buttonText = 'Confirmer expédition';
+                break;
+                
             case 'pending':
                 title = 'Remettre en attente ?';
                 message = 'Êtes-vous sûr de vouloir remettre cette commande en attente ?';
@@ -368,8 +410,39 @@
         
         // Show confirmation
         showConfirmation(title, message, function() {
-            form.submit();
+            updateOrderStatus(newStatus);
         }, type);
+    }
+    
+    // Update order status via AJAX
+    function updateOrderStatus(newStatus) {
+        const orderId = {{ $order->id }};
+        
+        fetch(`/admin/orders/${orderId}/status`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ status: newStatus })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showToast('Statut mis à jour avec succès!', 'success');
+                // Reload page after 1 second to show updated status
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            } else {
+                showToast(data.message || 'Erreur lors de la mise à jour', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showToast('Erreur de connexion', 'error');
+        });
     }
 
     // Close modal on ESC key

@@ -195,23 +195,11 @@
                     <div class="mt-12 space-y-3 pt-6 border-t border-white/20 relative z-10">
                         <div class="flex justify-between text-white/80">
                             <span>Sous-total</span>
-                            <span>{{ number_format($subtotal, 2, ',', ' ') }}€</span>
-                        </div>
-                        <div class="flex justify-between text-white/80">
-                            <span>Frais de livraison</span>
-                            @if($shippingCost == 0)
-                                <span class="text-green-400 font-bold uppercase text-xs">Gratuit</span>
-                            @else
-                                <span>{{ number_format($shippingCost, 2, ',', ' ') }}€</span>
-                            @endif
-                        </div>
-                        <div class="flex justify-between text-white/80">
-                            <span>TVA (20%)</span>
-                            <span>{{ number_format($tax, 2, ',', ' ') }}€</span>
+                            <span>{{ number_format($subtotal, 2, ',', ' ') }} DH</span>
                         </div>
                         <div class="flex justify-between items-end pt-4">
-                            <span class="text-xl font-headline font-bold">Total TTC</span>
-                            <span class="text-3xl font-headline font-extrabold tracking-tight">{{ number_format($total, 2, ',', ' ') }}€</span>
+                            <span class="text-xl font-headline font-bold">Total</span>
+                            <span class="text-3xl font-headline font-extrabold tracking-tight">{{ number_format($total, 2, ',', ' ') }} DH</span>
                         </div>
                     </div>
 

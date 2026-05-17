@@ -26,45 +26,93 @@ class ProductController extends Controller
             });
         }
 
-        // Filter by category
-        if ($request->filled('category')) {
-            $query->where('category_id', $request->category);
+        // Filter by categories (multiple)
+        if ($request->filled('categories')) {
+            $query->whereIn('category_id', $request->categories);
         }
 
-        // Filter by subcategory
-        if ($request->filled('subcategory')) {
-            $query->where('subcategory_id', $request->subcategory);
+        // Filter by price range
+        if ($request->filled('price_min')) {
+            $query->where('price', '>=', $request->price_min);
+        }
+        if ($request->filled('price_max')) {
+            $query->where('price', '<=', $request->price_max);
+        }
+
+        // Filter by stock status (multiple)
+        if ($request->filled('stock')) {
+            $stockFilters = $request->stock;
+            $query->where(function($q) use ($stockFilters) {
+                foreach ($stockFilters as $stockFilter) {
+                    if ($stockFilter === 'in_stock') {
+                        $q->orWhere('stock', '>', 10);
+                    } elseif ($stockFilter === 'low_stock') {
+                        $q->orWhere(function($subQ) {
+                            $subQ->where('stock', '>', 0)->where('stock', '<=', 10);
+                        });
+                    } elseif ($stockFilter === 'out_of_stock') {
+                        $q->orWhere('stock', 0);
+                    }
+                }
+            });
+        }
+
+        // Filter by badges (multiple)
+        if ($request->filled('badges')) {
+            $badges = $request->badges;
+            $query->where(function($q) use ($badges) {
+                foreach ($badges as $badge) {
+                    if ($badge === 'new') {
+                        $q->orWhere('is_new', 1);
+                    } elseif ($badge === 'bestseller') {
+                        $q->orWhere('is_bestseller', 1);
+                    } elseif ($badge === 'featured') {
+                        $q->orWhere('is_featured', 1);
+                    }
+                }
+            });
         }
 
         // Filter by status
         if ($request->filled('status')) {
-            $query->where('is_active', $request->status === 'active');
-        }
-
-        // Filter by stock
-        if ($request->filled('stock_status')) {
-            if ($request->stock_status === 'out') {
-                $query->where('stock', 0);
-            } elseif ($request->stock_status === 'low') {
-                $query->where('stock', '>', 0)->where('stock', '<=', 10);
+            if ($request->status === 'active') {
+                $query->where('is_active', 1);
+            } elseif ($request->status === 'inactive') {
+                $query->where('is_active', 0);
             }
         }
 
-        // Filter by flags
-        if ($request->filled('is_new')) {
-            $query->where('is_new', true);
-        }
-        if ($request->filled('is_bestseller')) {
-            $query->where('is_bestseller', true);
-        }
-        if ($request->filled('is_featured')) {
-            $query->where('is_featured', true);
-        }
-
         // Sorting
-        $sortBy = $request->get('sort_by', 'created_at');
-        $sortOrder = $request->get('sort_order', 'desc');
-        $query->orderBy($sortBy, $sortOrder);
+        if ($request->filled('sort')) {
+            $sort = $request->sort;
+            switch ($sort) {
+                case 'name_asc':
+                    $query->orderBy('name', 'asc');
+                    break;
+                case 'name_desc':
+                    $query->orderBy('name', 'desc');
+                    break;
+                case 'price_asc':
+                    $query->orderBy('price', 'asc');
+                    break;
+                case 'price_desc':
+                    $query->orderBy('price', 'desc');
+                    break;
+                case 'stock_asc':
+                    $query->orderBy('stock', 'asc');
+                    break;
+                case 'stock_desc':
+                    $query->orderBy('stock', 'desc');
+                    break;
+                case 'created_desc':
+                    $query->orderBy('created_at', 'desc');
+                    break;
+                default:
+                    $query->orderBy('created_at', 'desc');
+            }
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
 
         // Pagination
         $products = $query->paginate(12)->withQueryString();
@@ -155,12 +203,14 @@ class ProductController extends Controller
             'stock' => 'required|integer|min:0',
             'sku' => 'nullable|string|unique:products,sku,' . $id,
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'is_active' => 'boolean',
-            'is_new' => 'boolean',
-            'is_bestseller' => 'boolean',
-            'is_featured' => 'boolean',
             'discount_percentage' => 'nullable|integer|min:0|max:100',
         ]);
+
+        // Handle checkboxes - convert to boolean
+        $validated['is_active'] = $request->has('is_active') && $request->is_active == '1' ? 1 : 0;
+        $validated['is_new'] = $request->has('is_new') && $request->is_new == '1' ? 1 : 0;
+        $validated['is_bestseller'] = $request->has('is_bestseller') && $request->is_bestseller == '1' ? 1 : 0;
+        $validated['is_featured'] = $request->has('is_featured') && $request->is_featured == '1' ? 1 : 0;
 
         // Update slug if name changed
         if ($validated['name'] !== $product->name) {
@@ -220,5 +270,89 @@ class ProductController extends Controller
             ->get();
         
         return response()->json($subcategories);
+    }
+
+    // Bulk actions
+    public function bulkAction(Request $request)
+    {
+        $validated = $request->validate([
+            'action' => 'required|in:activate,deactivate,delete',
+            'products' => 'required|array',
+            'products.*' => 'exists:products,id'
+        ]);
+
+        $productIds = $validated['products'];
+        $action = $validated['action'];
+
+        switch ($action) {
+            case 'activate':
+                Product::whereIn('id', $productIds)->update(['is_active' => true]);
+                $message = count($productIds) . ' produit(s) activé(s) avec succès!';
+                break;
+            
+            case 'deactivate':
+                Product::whereIn('id', $productIds)->update(['is_active' => false]);
+                $message = count($productIds) . ' produit(s) désactivé(s) avec succès!';
+                break;
+            
+            case 'delete':
+                $products = Product::whereIn('id', $productIds)->get();
+                foreach ($products as $product) {
+                    // Delete image if exists
+                    if ($product->image && Storage::disk('public')->exists($product->image)) {
+                        Storage::disk('public')->delete($product->image);
+                    }
+                    $product->delete();
+                }
+                $message = count($productIds) . ' produit(s) supprimé(s) avec succès!';
+                break;
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => $message
+        ]);
+    }
+
+    // Update stock inline
+    public function updateStock(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'stock' => 'required|integer|min:0'
+        ]);
+
+        $product = Product::findOrFail($id);
+        $product->update(['stock' => $validated['stock']]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Stock mis à jour avec succès!',
+            'stock' => $product->stock
+        ]);
+    }
+
+    // Quick view
+    public function quickView($id)
+    {
+        $product = Product::with(['category', 'subcategory', 'orderItems'])->findOrFail($id);
+        
+        return view('admin.products.partials.quick-view', compact('product'));
+    }
+
+    // Toggle product status
+    public function toggleStatus(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'is_active' => 'required|boolean'
+        ]);
+
+        $product = Product::findOrFail($id);
+        $product->update(['is_active' => $validated['is_active']]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Statut mis à jour avec succès!',
+            'is_active' => $product->is_active
+        ]);
     }
 }

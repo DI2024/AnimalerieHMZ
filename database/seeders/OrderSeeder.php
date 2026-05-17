@@ -54,9 +54,9 @@ class OrderSeeder extends Seeder
                 $subtotal += $itemSubtotal;
             }
 
-            $shippingCost = $subtotal >= 100 ? 0 : 15;
-            $tax = $subtotal * 0.20;
-            $total = $subtotal + $shippingCost + $tax;
+            $shippingCost = 0; // No shipping cost
+            $tax = 0; // No tax
+            $total = $subtotal; // Total = Subtotal only
 
             // Create order
             $order = Order::create([

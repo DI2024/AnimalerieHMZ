@@ -34,12 +34,12 @@
         transition: all 0.3s;
     }
     .image-upload-zone:hover {
-        border-color: #d4af37;
-        background: #fffbeb;
+        border-color: #003e87;
+        background: #eff6ff;
     }
     .image-upload-zone.dragover {
-        border-color: #d4af37;
-        background: #fef3c7;
+        border-color: #0855b1;
+        background: #dbeafe;
         transform: scale(1.02);
     }
     .image-upload-zone img {
@@ -256,16 +256,6 @@
                             <p class="text-xs text-gray-500">Visible sur le site</p>
                         </div>
                     </label>
-                    
-                    <!-- Important -->
-                    <label class="flex items-center space-x-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                        <input type="checkbox" name="is_important" value="1" {{ old('is_important', false) ? 'checked' : '' }}
-                               class="rounded text-primary focus:ring-primary w-5 h-5">
-                        <div class="flex-1">
-                            <span class="text-sm font-medium text-gray-900">Catégorie importante</span>
-                            <p class="text-xs text-gray-500">Mise en avant sur la page d'accueil</p>
-                        </div>
-                    </label>
                 </div>
             </div>
             
@@ -277,7 +267,7 @@
                 </a>
                 <div class="flex gap-3">
                     <button type="submit" name="action" value="save"
-                            class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-yellow-600 transition-colors">
+                            class="px-6 py-3 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] transition-colors">
                         <i class="fas fa-save mr-2"></i>Créer la catégorie
                     </button>
                 </div>

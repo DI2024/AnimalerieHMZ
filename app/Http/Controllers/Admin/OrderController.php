@@ -15,14 +15,14 @@ class OrderController extends Controller
     {
         $query = Order::with(['user', 'items']);
 
-        // Filter by status
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
+        // Filter by status (from filter sidebar)
+        if ($request->filled('status_filter')) {
+            $query->whereIn('status', $request->status_filter);
         }
 
-        // Filter by payment status
-        if ($request->filled('payment_status')) {
-            $query->where('payment_status', $request->payment_status);
+        // Filter by payment status (from filter sidebar)
+        if ($request->filled('payment_filter')) {
+            $query->whereIn('payment_status', $request->payment_filter);
         }
 
         // Search by order number or customer name
@@ -32,7 +32,8 @@ class OrderController extends Controller
                 $q->where('order_number', 'like', "%{$search}%")
                   ->orWhere('shipping_first_name', 'like', "%{$search}%")
                   ->orWhere('shipping_last_name', 'like', "%{$search}%")
-                  ->orWhere('shipping_email', 'like', "%{$search}%");
+                  ->orWhere('shipping_email', 'like', "%{$search}%")
+                  ->orWhere('shipping_phone', 'like', "%{$search}%");
             });
         }
 
@@ -44,14 +45,22 @@ class OrderController extends Controller
             $query->whereDate('created_at', '<=', $request->date_to);
         }
 
+        // Amount range filter
+        if ($request->filled('amount_min')) {
+            $query->where('total', '>=', $request->amount_min);
+        }
+        if ($request->filled('amount_max')) {
+            $query->where('total', '<=', $request->amount_max);
+        }
+
         $orders = $query->orderBy('created_at', 'desc')->paginate(15);
 
         // Calculate statistics
         $stats = [
             'total' => Order::count(),
             'pending' => Order::where('status', 'pending')->count(),
-            'revenue' => Order::where('payment_status', 'paid')->sum('total'),
-            'average' => Order::where('payment_status', 'paid')->avg('total') ?? 0,
+            'revenue' => Order::whereIn('status', ['delivered', 'shipped'])->sum('total'),
+            'average' => Order::whereIn('status', ['delivered', 'shipped'])->avg('total') ?? 0,
         ];
 
         return view('admin.orders.index', compact('orders', 'stats'));
@@ -119,17 +128,15 @@ class OrderController extends Controller
     public function addNotes(Request $request, $id)
     {
         $request->validate([
-            'admin_notes' => 'required|string|max:1000',
+            'admin_notes' => 'nullable|string|max:1000',
         ]);
 
         $order = Order::findOrFail($id);
         $order->admin_notes = $request->admin_notes;
         $order->save();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Notes ajoutées avec succès',
-        ]);
+        return redirect()->route('admin.orders.show', $order)
+            ->with('success', 'Notes enregistrées avec succès');
     }
 
     /**

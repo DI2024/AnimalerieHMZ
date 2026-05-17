@@ -63,6 +63,10 @@
     input:checked + .toggle-slider:before {
         transform: translateX(24px);
     }
+    input:disabled + .toggle-slider {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
     
     /* Sortable ghost */
     .sortable-ghost {
@@ -292,12 +296,6 @@
 </div>
 
 <div class="flex gap-6 relative">
-    
-    <!-- Filter Sidebar Wrapper (for mobile overlay) -->
-    <div id="filter-sidebar-wrapper" class="filter-sidebar-wrapper hidden lg:contents">
-        <!-- Filter Sidebar -->
-        @include('admin.categories.partials.filter-sidebar')
-    </div>
 
     <!-- Main Content -->
     <div class="flex-1 min-w-0 space-y-6">
@@ -324,7 +322,7 @@
 
             <!-- New Category Button -->
             <a href="{{ route('admin.categories.create') }}" 
-               class="px-4 py-2.5 bg-primary text-white rounded-lg hover:bg-yellow-600 text-sm font-medium whitespace-nowrap transition-colors">
+               class="px-4 py-2.5 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] text-sm font-medium whitespace-nowrap transition-colors">
                 <i class="fas fa-plus mr-2"></i>Nouvelle Catégorie
             </a>
         </div>
@@ -332,19 +330,6 @@
         <!-- Secondary Controls Row -->
         <div class="flex items-center justify-between gap-3">
             <div class="flex items-center gap-3">
-                <!-- Filter Toggle -->
-                <button onclick="toggleFilterSidebar()" id="filter-toggle-btn"
-                        class="px-4 py-2 border rounded-lg hover:bg-gray-50 text-sm font-medium transition-colors">
-                    <i class="fas fa-filter mr-2"></i>Filtres
-                    @if(request()->hasAny(['status', 'products']))
-                        <span class="ml-1 px-1.5 py-0.5 bg-primary text-white text-xs rounded-full">
-                            {{ collect([request('status'), request('products')])->filter()->count() }}
-                        </span>
-                    @endif
-                </button>
-
-
-
                 <!-- Reorder Mode Toggle -->
                 <button onclick="toggleReorderMode()" id="reorder-btn"
                         class="px-4 py-2 border rounded-lg hover:bg-gray-50 text-sm font-medium transition-colors">
@@ -362,29 +347,6 @@
                         class="hidden px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm font-medium transition-colors">
                     <i class="fas fa-times mr-2"></i>Annuler
                 </button>
-                
-                <!-- Inline Bulk Actions (hidden by default) -->
-                <div id="inline-bulk-actions" class="hidden flex items-center gap-2 ml-4 pl-4 border-l border-gray-300">
-                    <span class="text-sm text-gray-700 flex items-center">
-                        <i class="fas fa-check-circle text-primary mr-2"></i>
-                        <span id="inline-selected-count" class="font-medium">0 sélectionné(s)</span>
-                    </span>
-                    <select id="inline-bulk-action-select" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-primary">
-                        <option value="">Actions...</option>
-                        <option value="activate">Activer tout</option>
-                        <option value="deactivate">Désactiver tout</option>
-                        <option value="delete">Supprimer</option>
-                        <option value="export">Exporter sélection</option>
-                    </select>
-                    <button onclick="applyInlineBulkAction()" 
-                            class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-yellow-600 text-sm font-medium transition-colors">
-                        Appliquer
-                    </button>
-                    <button onclick="clearSelection()" 
-                            class="px-3 py-2 text-gray-600 hover:text-gray-900 text-sm transition-colors">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
             </div>
 
             <div class="text-sm text-gray-600">
@@ -399,10 +361,6 @@
         <table class="w-full" id="categories-table">
             <thead class="bg-gray-50">
                 <tr>
-                    <th class="px-6 py-3 text-left w-12">
-                        <input type="checkbox" id="select-all" onchange="toggleSelectAll(this)"
-                               class="rounded text-primary focus:ring-primary cursor-pointer">
-                    </th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase w-12">
                         <span id="drag-header" class="hidden">
                             <i class="fas fa-grip-vertical text-gray-400"></i>
@@ -416,58 +374,91 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200" id="sortable-categories">
-                <!-- Static Category Row 1 -->
-                <tr class="category-row hover:bg-gray-50">
-                    <td class="px-6 py-4"><input type="checkbox" class="rounded text-primary cursor-pointer"></td>
-                    <td class="px-6 py-4"><div class="text-gray-400"><i class="fas fa-grip-vertical"></i></div></td>
+                @forelse($categories as $category)
+                <tr class="category-row hover:bg-gray-50" data-id="{{ $category->id }}">
+                    <td class="px-6 py-4">
+                        <div class="drag-handle hidden text-gray-400 cursor-move">
+                            <i class="fas fa-grip-vertical"></i>
+                        </div>
+                    </td>
                     <td class="px-6 py-4">
                         <div class="flex items-center">
-                            <div class="w-12 h-12 bg-gray-200 rounded mr-4 flex items-center justify-center">
-                                <i class="fas fa-image text-gray-400"></i>
+                            <div class="w-12 h-12 bg-gray-200 rounded mr-4 flex items-center justify-center overflow-hidden flex-shrink-0">
+                                @if($category->image)
+                                    @if(filter_var($category->image, FILTER_VALIDATE_URL))
+                                        <img src="{{ $category->image }}" alt="{{ $category->name }}" 
+                                             class="w-full h-full object-cover"
+                                             onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\'fas fa-image text-gray-400\'></i>';">
+                                    @else
+                                        <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" 
+                                             class="w-full h-full object-cover"
+                                             onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\'fas fa-image text-gray-400\'></i>';">
+                                    @endif
+                                @else
+                                    <i class="fas fa-image text-gray-400 text-xl"></i>
+                                @endif
                             </div>
                             <div>
-                                <p class="font-medium text-gray-900">Chiens</p>
-                                <p class="text-sm text-gray-500">chiens</p>
+                                <p class="font-medium text-gray-900">{{ $category->name }}</p>
+                                <p class="text-sm text-gray-500">{{ $category->slug }}</p>
                             </div>
                         </div>
                     </td>
                     <td class="px-6 py-4 text-sm">
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">45 produit(s)</span>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
+                            {{ $category->products_count }} produit{{ $category->products_count > 1 ? 's' : '' }}
+                        </span>
                     </td>
-                    <td class="px-6 py-4 text-sm text-gray-600">1</td>
+                    <td class="px-6 py-4 text-sm text-gray-600">
+                        <span class="order-value">{{ $loop->iteration }}</span>
+                    </td>
                     <td class="px-6 py-4">
-                        <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" 
+                                   {{ $category->is_active ? 'checked' : '' }}
+                                   disabled
+                                   class="status-toggle">
+                            <span class="toggle-slider"></span>
+                        </label>
                     </td>
                     <td class="px-6 py-4 text-sm">
-                        <button class="px-3 py-1.5 text-gray-600 hover:bg-gray-100 rounded"><i class="fas fa-ellipsis-v"></i></button>
-                    </td>
-                </tr>
-                <!-- Static Category Row 2 -->
-                <tr class="category-row hover:bg-gray-50">
-                    <td class="px-6 py-4"><input type="checkbox" class="rounded text-primary cursor-pointer"></td>
-                    <td class="px-6 py-4"><div class="text-gray-400"><i class="fas fa-grip-vertical"></i></div></td>
-                    <td class="px-6 py-4">
-                        <div class="flex items-center">
-                            <div class="w-12 h-12 bg-gray-200 rounded mr-4 flex items-center justify-center">
-                                <i class="fas fa-image text-gray-400"></i>
-                            </div>
-                            <div>
-                                <p class="font-medium text-gray-900">Chats</p>
-                                <p class="text-sm text-gray-500">chats</p>
+                        <div class="dropdown">
+                            <button onclick="toggleDropdown(this)" 
+                                    class="px-3 py-1.5 text-gray-600 hover:bg-gray-100 rounded">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                <div class="dropdown-item" onclick="quickView({{ $category->id }})">
+                                    <i class="fas fa-eye"></i>
+                                    Aperçu rapide
+                                </div>
+                                <a href="{{ route('admin.categories.edit', $category->id) }}" 
+                                   class="dropdown-item">
+                                    <i class="fas fa-edit"></i>
+                                    Modifier
+                                </a>
+                                <a href="{{ route('admin.products.index') }}?categories[]={{ $category->id }}" 
+                                   class="dropdown-item">
+                                    <i class="fas fa-box"></i>
+                                    Voir les produits
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <div class="dropdown-item text-red-600" onclick="deleteCategory({{ $category->id }})">
+                                    <i class="fas fa-trash"></i>
+                                    Supprimer
+                                </div>
                             </div>
                         </div>
                     </td>
-                    <td class="px-6 py-4 text-sm">
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">32 produit(s)</span>
-                    </td>
-                    <td class="px-6 py-4 text-sm text-gray-600">2</td>
-                    <td class="px-6 py-4">
-                        <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
-                    </td>
-                    <td class="px-6 py-4 text-sm">
-                        <button class="px-3 py-1.5 text-gray-600 hover:bg-gray-100 rounded"><i class="fas fa-ellipsis-v"></i></button>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="6" class="px-6 py-12 text-center text-gray-500">
+                        <i class="fas fa-folder-open text-4xl mb-2"></i>
+                        <p>Aucune catégorie trouvée</p>
                     </td>
                 </tr>
+                @endforelse
             </tbody>
         </table>
         </div>
@@ -483,16 +474,18 @@
                         <i class="fas fa-grip-vertical text-lg"></i>
                     </div>
                     
-                    <!-- Checkbox -->
-                    <input type="checkbox" class="category-checkbox rounded text-primary focus:ring-primary cursor-pointer"
-                           value="{{ $category->id }}" onchange="toggleCategorySelection(this)">
-                    
                     <!-- Category Image -->
                     <div class="flex-shrink-0">
                         @if($category->image)
-                            <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" 
-                                 class="w-16 h-16 object-cover rounded"
-                                 onerror="this.src='{{ asset('images/placeholder-category.svg') }}'; this.onerror=null;">
+                            @if(filter_var($category->image, FILTER_VALIDATE_URL))
+                                <img src="{{ $category->image }}" alt="{{ $category->name }}" 
+                                     class="w-16 h-16 object-cover rounded"
+                                     onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-16 h-16 bg-gray-200 rounded flex items-center justify-center\'><i class=\'fas fa-image text-gray-400 text-2xl\'></i></div>';">
+                            @else
+                                <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" 
+                                     class="w-16 h-16 object-cover rounded"
+                                     onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-16 h-16 bg-gray-200 rounded flex items-center justify-center\'><i class=\'fas fa-image text-gray-400 text-2xl\'></i></div>';">
+                            @endif
                         @else
                             <div class="w-16 h-16 bg-gray-200 rounded flex items-center justify-center">
                                 <i class="fas fa-image text-gray-400 text-2xl"></i>
@@ -527,7 +520,7 @@
                     <label class="toggle-switch flex-shrink-0">
                         <input type="checkbox" 
                                {{ $category->is_active ? 'checked' : '' }}
-                               onchange="toggleStatus({{ $category->id }}, this)"
+                               disabled
                                class="status-toggle">
                         <span class="toggle-slider"></span>
                     </label>
@@ -590,7 +583,7 @@
                             Organisez vos produits en créant des catégories. Les catégories aident vos clients à naviguer facilement dans votre boutique.
                         </p>
                         <a href="{{ route('admin.categories.create') }}" 
-                           class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-yellow-600 transition-colors shadow-lg">
+                           class="px-6 py-3 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] transition-colors shadow-lg">
                             <i class="fas fa-plus mr-2"></i>Créer votre première catégorie
                         </a>
                     </div>
@@ -1439,26 +1432,19 @@
                                     <p class="text-2xl font-bold text-gray-900">${category.products_count}</p>
                                 </div>
                                 <div class="bg-gray-50 p-4 rounded-lg">
-                                    <p class="text-sm text-gray-500 mb-1">Statut</p>
-                                    <p class="text-lg font-semibold ${category.is_active ? 'text-green-600' : 'text-gray-600'}">${category.is_active ? 'Actif' : 'Inactif'}</p>
-                                </div>
-                                <div class="bg-gray-50 p-4 rounded-lg">
                                     <p class="text-sm text-gray-500 mb-1">Ordre</p>
                                     <p class="text-2xl font-bold text-gray-900">${category.order}</p>
                                 </div>
-                                <div class="bg-gray-50 p-4 rounded-lg">
+                                <div class="bg-gray-50 p-4 rounded-lg col-span-2">
                                     <p class="text-sm text-gray-500 mb-1">Créée le</p>
                                     <p class="text-sm text-gray-900">${new Date(category.created_at).toLocaleDateString('fr-FR')}</p>
                                 </div>
                             </div>
                             
                             <div class="flex gap-3 pt-4 border-t">
-                                <a href="/admin/categories/${category.id}/edit" class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-center transition-colors">
+                                <a href="/admin/categories/${category.id}/edit" class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-center transition-colors">
                                     <i class="fas fa-edit mr-2"></i>Modifier
                                 </a>
-                                <button onclick="toggleStatus(${category.id}, this); closeQuickView();" class="flex-1 px-4 py-2 ${category.is_active ? 'bg-gray-600' : 'bg-green-600'} text-white rounded-lg hover:opacity-90 transition-colors">
-                                    <i class="fas fa-toggle-${category.is_active ? 'off' : 'on'} mr-2"></i>${category.is_active ? 'Désactiver' : 'Activer'}
-                                </button>
                             </div>
                         </div>
                     `;

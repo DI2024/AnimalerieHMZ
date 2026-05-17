@@ -1,10 +1,10 @@
 <div class="filter-sidebar bg-white rounded-lg shadow-sm p-6">
     <div class="flex items-center justify-between mb-6">
         <h3 class="text-lg font-semibold text-gray-900">
-            <i class="fas fa-filter mr-2 text-primary"></i>
+            <i class="fas fa-filter mr-2 text-[#003e87]"></i>
             Filtres
         </h3>
-        <button type="button" onclick="clearAllFilters()" class="text-sm text-gray-500 hover:text-primary">
+        <button type="button" onclick="clearAllFilters()" class="text-sm text-gray-500 hover:text-[#003e87]">
             Réinitialiser
         </button>
     </div>
@@ -72,19 +72,19 @@
                     <!-- Quick Date Presets -->
                     <div class="grid grid-cols-2 gap-2">
                         <button type="button" onclick="setDateRange('today')" 
-                                class="px-3 py-2 text-xs bg-gray-100 hover:bg-primary hover:text-white rounded transition-colors">
+                                class="px-3 py-2 text-xs bg-gray-100 hover:bg-[#003e87] hover:text-white rounded transition-colors">
                             Aujourd'hui
                         </button>
                         <button type="button" onclick="setDateRange('week')" 
-                                class="px-3 py-2 text-xs bg-gray-100 hover:bg-primary hover:text-white rounded transition-colors">
+                                class="px-3 py-2 text-xs bg-gray-100 hover:bg-[#003e87] hover:text-white rounded transition-colors">
                             Cette semaine
                         </button>
                         <button type="button" onclick="setDateRange('month')" 
-                                class="px-3 py-2 text-xs bg-gray-100 hover:bg-primary hover:text-white rounded transition-colors">
+                                class="px-3 py-2 text-xs bg-gray-100 hover:bg-[#003e87] hover:text-white rounded transition-colors">
                             Ce mois
                         </button>
                         <button type="button" onclick="setDateRange('last30')" 
-                                class="px-3 py-2 text-xs bg-gray-100 hover:bg-primary hover:text-white rounded transition-colors">
+                                class="px-3 py-2 text-xs bg-gray-100 hover:bg-[#003e87] hover:text-white rounded transition-colors">
                             30 derniers jours
                         </button>
                     </div>
@@ -93,12 +93,12 @@
                     <div class="pt-3 border-t">
                         <label class="block text-xs font-medium text-gray-700 mb-2">Date de début</label>
                         <input type="date" name="date_from" id="dateFrom" value="{{ request('date_from') }}"
-                               class="w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                               class="w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#003e87]">
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-gray-700 mb-2">Date de fin</label>
                         <input type="date" name="date_to" id="dateTo" value="{{ request('date_to') }}"
-                               class="w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                               class="w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#003e87]">
                     </div>
                 </div>
             </div>
@@ -117,20 +117,20 @@
                         <label class="block text-xs font-medium text-gray-700 mb-2">Montant minimum (DH)</label>
                         <input type="number" name="amount_min" value="{{ request('amount_min') }}" 
                                min="0" step="0.01" placeholder="0.00"
-                               class="w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                               class="w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#003e87]">
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-gray-700 mb-2">Montant maximum (DH)</label>
                         <input type="number" name="amount_max" value="{{ request('amount_max') }}" 
                                min="0" step="0.01" placeholder="10000.00"
-                               class="w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                               class="w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#003e87]">
                     </div>
                 </div>
             </div>
         </div>
         
         <!-- Apply Filters Button -->
-        <button type="submit" class="w-full px-4 py-3 bg-primary text-white rounded-lg hover:bg-yellow-600 transition-colors font-medium">
+        <button type="submit" class="w-full px-4 py-3 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] transition-colors font-medium">
             <i class="fas fa-check mr-2"></i>
             Appliquer les filtres
         </button>
@@ -159,7 +159,7 @@
     }
     
     .filter-section-header:hover {
-        color: #d4af37;
+        color: #003e87;
     }
     
     .filter-section-content {

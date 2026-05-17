@@ -85,7 +85,7 @@
                    class="px-4 py-2 border rounded-lg hover:bg-gray-50">
                     <i class="fas fa-times mr-2"></i>Annuler
                 </a>
-                <button type="submit" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-yellow-600">
+                <button type="submit" class="px-6 py-2 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1]">
                     <i class="fas fa-check mr-2"></i>Créer le produit
                 </button>
             </div>

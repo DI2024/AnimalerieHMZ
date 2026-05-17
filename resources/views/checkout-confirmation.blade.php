@@ -57,23 +57,17 @@
             <div class="space-y-2 pt-6 border-t border-gray-100 dark:border-gray-800">
                 <div class="flex justify-between text-on-surface-variant dark:text-gray-400">
                     <span>Sous-total</span>
-                    <span>{{ number_format($order->subtotal, 2, ',', ' ') }}€</span>
+                    <span>{{ number_format($order->subtotal, 2, ',', ' ') }} DH</span>
                 </div>
+                @if($order->discount > 0)
                 <div class="flex justify-between text-on-surface-variant dark:text-gray-400">
-                    <span>Frais de livraison</span>
-                    @if($order->shipping_cost == 0)
-                        <span class="text-green-500 font-bold">Gratuit</span>
-                    @else
-                        <span>{{ number_format($order->shipping_cost, 2, ',', ' ') }}€</span>
-                    @endif
+                    <span>Réduction</span>
+                    <span class="text-red-500 font-bold">-{{ number_format($order->discount, 2, ',', ' ') }} DH</span>
                 </div>
-                <div class="flex justify-between text-on-surface-variant dark:text-gray-400">
-                    <span>TVA</span>
-                    <span>{{ number_format($order->tax, 2, ',', ' ') }}€</span>
-                </div>
+                @endif
                 <div class="flex justify-between items-center pt-4 text-xl font-bold">
                     <span class="dark:text-white">Total</span>
-                    <span class="text-primary">{{ number_format($order->total, 2, ',', ' ') }}€</span>
+                    <span class="text-primary">{{ number_format($order->total, 2, ',', ' ') }} DH</span>
                 </div>
             </div>
         </div>
