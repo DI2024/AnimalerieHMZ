@@ -1,7 +1,7 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <!-- Left: Images -->
     <div>
-        <img src="{{ asset('storage/' . $product->image) }}" 
+        <img src="{{ asset($product->image) }}" 
              alt="{{ $product->name }}" 
              class="w-full rounded-lg mb-4"
              onerror="this.src='{{ asset('images/placeholder-product.svg') }}'; this.onerror=null;">
@@ -9,7 +9,7 @@
         @if($product->images->count() > 0)
             <div class="grid grid-cols-4 gap-2">
                 @foreach($product->images as $image)
-                    <img src="{{ asset('storage/' . $image->image) }}" 
+                    <img src="{{ asset($image->image) }}" 
                          alt="{{ $product->name }}" 
                          class="w-full h-20 object-cover rounded"
                          onerror="this.src='{{ asset('images/placeholder-product.svg') }}'; this.onerror=null;">

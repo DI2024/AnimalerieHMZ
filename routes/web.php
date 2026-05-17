@@ -17,6 +17,9 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 Route::get('/products', [App\Http\Controllers\Client\ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{slug}', [App\Http\Controllers\Client\ProductController::class, 'show'])->name('products.show');
 
+// Cart Page (Public)
+Route::get('/cart', [App\Http\Controllers\CartController::class, 'show'])->name('cart.show');
+
 // API Routes for AJAX (Public)
 Route::prefix('api')->name('api.')->group(function () {
     Route::get('/products', [App\Http\Controllers\Client\ProductController::class, 'apiIndex'])->name('products.index');

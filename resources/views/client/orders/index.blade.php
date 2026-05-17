@@ -38,7 +38,7 @@
                                 <span class="inline-block px-4 py-2 rounded-full text-sm font-bold bg-{{ $order->status_color }}/10 text-{{ $order->status_color }}">
                                     {{ $order->status_label }}
                                 </span>
-                                <span class="text-2xl font-black text-primary">{{ number_format($order->total, 2, ',', ' ') }}€</span>
+                                <span class="text-2xl font-black text-primary">{{ number_format($order->total, 2, ',', ' ') }} MAD</span>
                             </div>
                         </div>
 
@@ -48,7 +48,7 @@
                                 @php
                                     $imageUrl = $item->product_image && str_starts_with($item->product_image, 'http') 
                                         ? $item->product_image 
-                                        : asset('storage/' . $item->product_image);
+                                        : asset($item->product_image);
                                 @endphp
                                 <div class="flex items-center gap-4 p-3 bg-surface dark:bg-[#13162a] rounded-xl">
                                     <img src="{{ $imageUrl }}" 
@@ -59,7 +59,7 @@
                                         <h4 class="font-bold text-sm dark:text-white line-clamp-1">{{ $item->product_name }}</h4>
                                         <p class="text-xs text-on-surface-variant dark:text-gray-400">Qté: {{ $item->quantity }}</p>
                                     </div>
-                                    <p class="font-bold text-primary text-sm">{{ number_format($item->subtotal, 2, ',', ' ') }}€</p>
+                                    <p class="font-bold text-primary text-sm">{{ number_format($item->subtotal, 2, ',', ' ') }} MAD</p>
                                 </div>
                             @endforeach
                         </div>

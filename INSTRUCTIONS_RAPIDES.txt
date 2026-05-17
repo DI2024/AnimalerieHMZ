@@ -1,0 +1,128 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                                                                            ║
+║              🚀 COMMENT VOIR LES NOUVEAUX PRODUITS                         ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+
+⚠️  IMPORTANT: Les nouveaux produits ne sont PAS ENCORE dans ta base de données !
+
+Les fichiers que j'ai créés sont des SCRIPTS à EXÉCUTER.
+
+
+═══════════════════════════════════════════════════════════════════════════
+MÉTHODE 1: VIA phpMyAdmin (RECOMMANDÉ)
+═══════════════════════════════════════════════════════════════════════════
+
+ÉTAPE 1: SAUVEGARDE (OBLIGATOIRE)
+──────────────────────────────────────────────────────────────────────────
+
+1. Ouvre phpMyAdmin dans ton navigateur
+   → http://localhost/phpmyadmin
+
+2. Clique sur "animaleriehmz" dans la liste à gauche
+
+3. Clique sur l'onglet "Exporter" en haut
+
+4. Clique sur le bouton "Exécuter"
+
+5. Un fichier .sql sera téléchargé (c'est ta sauvegarde)
+
+
+ÉTAPE 2: EXÉCUTER LE SCRIPT
+──────────────────────────────────────────────────────────────────────────
+
+1. Dans phpMyAdmin, assure-toi que "animaleriehmz" est sélectionné
+
+2. Clique sur l'onglet "SQL" en haut
+
+3. Ouvre le fichier "update_products.sql" avec Notepad
+
+4. Sélectionne TOUT le contenu (Ctrl+A)
+
+5. Copie (Ctrl+C)
+
+6. Retourne dans phpMyAdmin, onglet SQL
+
+7. Colle le contenu dans la grande zone de texte (Ctrl+V)
+
+8. Clique sur le bouton "Exécuter" en bas à droite
+
+9. Attends quelques secondes...
+
+10. Tu devrais voir un message de succès !
+
+
+ÉTAPE 3: VÉRIFIER
+──────────────────────────────────────────────────────────────────────────
+
+1. Rafraîchis ton site: http://localhost
+
+2. Tu devrais voir les nouveaux produits !
+
+
+═══════════════════════════════════════════════════════════════════════════
+MÉTHODE 2: VIA LIGNE DE COMMANDE
+═══════════════════════════════════════════════════════════════════════════
+
+Si tu es à l'aise avec la ligne de commande:
+
+1. Ouvre CMD (Invite de commandes)
+
+2. Va dans le dossier du projet:
+   cd C:\Users\User\Desktop\animx\AnimalerieHMZ
+
+3. Sauvegarde:
+   mysqldump -u root -p animaleriehmz > backup.sql
+
+4. Exécute le script:
+   mysql -u root -p animaleriehmz < update_products.sql
+
+5. Vérifie:
+   mysql -u root -p animaleriehmz < verify_products.sql
+
+
+═══════════════════════════════════════════════════════════════════════════
+VÉRIFICATION RAPIDE
+═══════════════════════════════════════════════════════════════════════════
+
+Après avoir exécuté le script, vérifie dans phpMyAdmin:
+
+1. Clique sur "animaleriehmz" → "products"
+
+2. Tu devrais voir 59 produits au lieu de 12
+
+3. Les images devraient commencer par "images/products/..."
+
+
+═══════════════════════════════════════════════════════════════════════════
+❌ PROBLÈMES COURANTS
+═══════════════════════════════════════════════════════════════════════════
+
+PROBLÈME: "MySQL said: #1046 - No database selected"
+SOLUTION: Assure-toi que "animaleriehmz" est sélectionné dans phpMyAdmin
+
+PROBLÈME: "Access denied for user 'root'"
+SOLUTION: Vérifie ton mot de passe MySQL
+
+PROBLÈME: Le script prend trop de temps
+SOLUTION: C'est normal, attends 30 secondes à 1 minute
+
+
+═══════════════════════════════════════════════════════════════════════════
+✅ APRÈS L'EXÉCUTION
+═══════════════════════════════════════════════════════════════════════════
+
+Tu devrais voir:
+
+✓ 59 produits dans ta base de données
+✓ 15 sous-catégories
+✓ Les nouveaux produits sur ton site
+✓ Les images locales qui s'affichent
+
+
+═══════════════════════════════════════════════════════════════════════════
+
+Besoin d'aide ? Dis-moi où tu bloques !
+
+═══════════════════════════════════════════════════════════════════════════

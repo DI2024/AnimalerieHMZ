@@ -18,7 +18,7 @@ class CheckoutController extends Controller
         $cart = session()->get('cart', []);
         
         if (empty($cart)) {
-            return redirect()->route('home')->with('error', 'Votre panier est vide');
+            return redirect()->route('cart.show')->with('error', 'Votre panier est vide');
         }
 
         $cartItems = [];

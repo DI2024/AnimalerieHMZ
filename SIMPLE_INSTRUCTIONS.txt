@@ -1,0 +1,57 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                                                                            ║
+║              🚀 INSTRUCTIONS SIMPLES - 3 ÉTAPES                            ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+
+Tu as eu une erreur parce que phpMyAdmin n'a pas pu supprimer les produits.
+
+Je vais te donner une solution SIMPLE en 3 fichiers à exécuter un par un.
+
+
+═══════════════════════════════════════════════════════════════════════════
+ÉTAPE 1: PRÉPARATION
+═══════════════════════════════════════════════════════════════════════════
+
+1. Ouvre phpMyAdmin
+2. Sélectionne "animaleriehmz"
+3. Onglet "SQL"
+4. Copie le contenu de: ETAPE_1_Preparation.sql
+5. Colle et Exécute
+6. Tu devrais voir: "✅ ÉTAPE 1 TERMINÉE"
+
+
+═══════════════════════════════════════════════════════════════════════════
+ÉTAPE 2: SOUS-CATÉGORIES
+═══════════════════════════════════════════════════════════════════════════
+
+1. Reste dans phpMyAdmin, onglet "SQL"
+2. Copie le contenu de: ETAPE_2_Sous_Categories.sql
+3. Colle et Exécute
+4. Tu devrais voir: "✅ ÉTAPE 2 TERMINÉE"
+
+
+═══════════════════════════════════════════════════════════════════════════
+ÉTAPE 3: PRODUITS
+═══════════════════════════════════════════════════════════════════════════
+
+1. Reste dans phpMyAdmin, onglet "SQL"
+2. Copie le contenu de: ETAPE_3_Produits.sql
+3. Colle et Exécute
+4. Tu devrais voir: "✅ ÉTAPE 3 TERMINÉE"
+
+
+═══════════════════════════════════════════════════════════════════════════
+VÉRIFICATION
+═══════════════════════════════════════════════════════════════════════════
+
+1. Rafraîchis ton site: http://localhost
+2. Tu devrais voir les nouveaux produits !
+
+
+═══════════════════════════════════════════════════════════════════════════
+
+Si tu as encore une erreur, dis-moi EXACTEMENT le message d'erreur que tu vois.
+
+═══════════════════════════════════════════════════════════════════════════

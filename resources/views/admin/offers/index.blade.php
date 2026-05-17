@@ -1457,7 +1457,7 @@
         // Set products
         const productsHTML = pack.products.map(p => `
             <div class="product-card-modal">
-                <img src="/storage/${p.image}" alt="${p.name}" onerror="this.src='/storage/products/default.jpg'">
+                <img src="/${p.image}" alt="${p.name}" onerror="this.src='/images/products/default.jpg'">
                 <h4 title="${p.name}">${p.name}</h4>
                 <p class="price">${formatPrice(p.price)} DH</p>
                 <span class="category-badge-modal">${p.category}</span>
@@ -1598,7 +1598,7 @@
         if (offer.target_type === 'products' && offer.products.length > 0) {
             const productsHTML = offer.products.map(p => `
                 <div class="product-card-modal">
-                    <img src="/storage/${p.image}" alt="${p.name}" onerror="this.src='/storage/products/default.jpg'">
+                    <img src="/${p.image}" alt="${p.name}" onerror="this.src='/images/products/default.jpg'">
                     <h4 title="${p.name}">${p.name}</h4>
                     <p class="original-price">${formatPrice(p.price)} DH</p>
                     <p class="discounted-price">${formatPrice(p.discounted_price)} DH</p>

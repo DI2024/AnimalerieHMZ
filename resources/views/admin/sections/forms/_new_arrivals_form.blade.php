@@ -56,7 +56,7 @@
                             <div class="selected-product-item bg-white border-2 border-gray-200 rounded-lg p-3 flex items-center space-x-3 cursor-move hover:shadow-md transition-all" data-product-id="{{ $product->id }}">
                                 <i class="fas fa-grip-vertical text-gray-400"></i>
                                 @if($product->image)
-                                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-12 h-12 object-cover rounded">
+                                    <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" class="w-12 h-12 object-cover rounded">
                                 @else
                                     <div class="w-12 h-12 bg-gray-200 rounded flex items-center justify-center">
                                         <i class="fas fa-image text-gray-400"></i>
@@ -86,9 +86,9 @@
                 @foreach($recentProducts as $product)
                     <div class="available-product border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:border-primary hover:shadow-md transition-all {{ in_array($product->id, $selectedProducts) ? 'opacity-50 pointer-events-none' : '' }}" 
                          data-product-id="{{ $product->id }}"
-                         onclick="addProduct({{ $product->id }}, '{{ addslashes($product->name) }}', '{{ $product->category->name ?? 'N/A' }}', {{ $product->price }}, '{{ $product->image ? asset('storage/' . $product->image) : '' }}')">
+                         onclick="addProduct({{ $product->id }}, '{{ addslashes($product->name) }}', '{{ $product->category->name ?? 'N/A' }}', {{ $product->price }}, '{{ $product->image ? asset($product->image) : '' }}')">
                         @if($product->image)
-                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-24 object-cover rounded mb-2">
+                            <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" class="w-full h-24 object-cover rounded mb-2">
                         @else
                             <div class="w-full h-24 bg-gray-100 rounded mb-2 flex items-center justify-center">
                                 <i class="fas fa-image text-gray-400 text-xl"></i>

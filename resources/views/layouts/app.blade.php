@@ -128,7 +128,7 @@
                 <!-- Right Side - Cart & Auth -->
                 <div class="flex items-center gap-4">
                     <!-- Cart Icon -->
-                    <a href="{{ route('api.cart.index') }}" class="relative p-2 hover:bg-surface-container-low rounded-lg transition-colors">
+                    <a href="{{ route('checkout') }}" class="relative p-2 hover:bg-surface-container-low rounded-lg transition-colors">
                         <span class="material-symbols-outlined text-on-surface">shopping_cart</span>
                         <span class="absolute -top-1 -right-1 bg-primary text-on-primary text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center" id="cartCount">0</span>
                     </a>
@@ -310,5 +310,11 @@
             // For now, it will show 0
         });
     </script>
+
+    <!-- Toast Notifications -->
+    @include('components.toast-notification')
+
+    <!-- Cart Management Script -->
+    <script src="{{ asset('js/cart.js') }}"></script>
 </body>
 </html>

@@ -37,7 +37,7 @@
                     @php
                         $imageUrl = $item->product_image && str_starts_with($item->product_image, 'http') 
                             ? $item->product_image 
-                            : asset('storage/' . $item->product_image);
+                            : asset($item->product_image);
                     @endphp
                     <div class="flex items-center gap-4 p-4 bg-surface dark:bg-[#13162a] rounded-xl">
                         <img src="{{ $imageUrl }}" 
@@ -48,7 +48,7 @@
                             <h4 class="font-bold dark:text-white">{{ $item->product_name }}</h4>
                             <p class="text-sm text-on-surface-variant dark:text-gray-400">Quantité: {{ $item->quantity }}</p>
                         </div>
-                        <p class="font-bold text-primary">{{ number_format($item->subtotal, 2, ',', ' ') }}€</p>
+                        <p class="font-bold text-primary">{{ number_format($item->subtotal, 2, ',', ' ') }} MAD</p>
                     </div>
                 @endforeach
             </div>
@@ -57,23 +57,23 @@
             <div class="space-y-2 pt-6 border-t border-gray-100 dark:border-gray-800">
                 <div class="flex justify-between text-on-surface-variant dark:text-gray-400">
                     <span>Sous-total</span>
-                    <span>{{ number_format($order->subtotal, 2, ',', ' ') }}€</span>
+                    <span>{{ number_format($order->subtotal, 2, ',', ' ') }} MAD</span>
                 </div>
                 <div class="flex justify-between text-on-surface-variant dark:text-gray-400">
                     <span>Frais de livraison</span>
                     @if($order->shipping_cost == 0)
                         <span class="text-green-500 font-bold">Gratuit</span>
                     @else
-                        <span>{{ number_format($order->shipping_cost, 2, ',', ' ') }}€</span>
+                        <span>{{ number_format($order->shipping_cost, 2, ',', ' ') }} MAD</span>
                     @endif
                 </div>
                 <div class="flex justify-between text-on-surface-variant dark:text-gray-400">
                     <span>TVA</span>
-                    <span>{{ number_format($order->tax, 2, ',', ' ') }}€</span>
+                    <span>{{ number_format($order->tax, 2, ',', ' ') }} MAD</span>
                 </div>
                 <div class="flex justify-between items-center pt-4 text-xl font-bold">
                     <span class="dark:text-white">Total</span>
-                    <span class="text-primary">{{ number_format($order->total, 2, ',', ' ') }}€</span>
+                    <span class="text-primary">{{ number_format($order->total, 2, ',', ' ') }} MAD</span>
                 </div>
             </div>
         </div>

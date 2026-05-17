@@ -1,0 +1,70 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                                                                            ║
+║              ✅ SOLUTION SIMPLE - COPIER/COLLER                            ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+
+L'erreur que tu as eue vient de TRUNCATE TABLE qui ne peut pas supprimer
+les produits à cause des relations avec order_items.
+
+Voici la SOLUTION LA PLUS SIMPLE:
+
+
+═══════════════════════════════════════════════════════════════════════════
+ÉTAPE 1: Ouvrir le fichier update_products.sql
+═══════════════════════════════════════════════════════════════════════════
+
+1. Clique droit sur "update_products.sql"
+2. Ouvrir avec → Notepad (ou Notepad++)
+
+
+═══════════════════════════════════════════════════════════════════════════
+ÉTAPE 2: Remplacer TRUNCATE par DELETE
+═══════════════════════════════════════════════════════════════════════════
+
+Dans Notepad, cherche (Ctrl+F):
+   TRUNCATE TABLE `products`;
+
+Remplace par:
+   DELETE FROM `products`;
+
+Puis cherche:
+   TRUNCATE TABLE `sub_categories`;
+
+Remplace par:
+   DELETE FROM `sub_categories`;
+
+Sauvegarde le fichier (Ctrl+S)
+
+
+═══════════════════════════════════════════════════════════════════════════
+ÉTAPE 3: Exécuter dans phpMyAdmin
+═══════════════════════════════════════════════════════════════════════════
+
+1. Ouvre phpMyAdmin
+2. Sélectionne "animaleriehmz"
+3. Onglet "SQL"
+4. Sélectionne TOUT le contenu du fichier (Ctrl+A)
+5. Copie (Ctrl+C)
+6. Colle dans phpMyAdmin (Ctrl+V)
+7. Clique "Exécuter"
+8. Attends 30 secondes...
+9. ✅ Succès !
+
+
+═══════════════════════════════════════════════════════════════════════════
+ÉTAPE 4: Vérifier
+═══════════════════════════════════════════════════════════════════════════
+
+1. Rafraîchis ton site: http://localhost
+2. Tu devrais voir les 59 nouveaux produits !
+
+
+═══════════════════════════════════════════════════════════════════════════
+SI ÇA NE MARCHE TOUJOURS PAS
+═══════════════════════════════════════════════════════════════════════════
+
+Dis-moi EXACTEMENT le message d'erreur que tu vois.
+
+═══════════════════════════════════════════════════════════════════════════
