@@ -40,19 +40,25 @@
                             </div>
                         </div>
 
-                        <!-- Price Range -->
-                        <div>
-                            <h4 class="font-bold text-sm mb-3 text-gray-900">Prix</h4>
-                            <div class="space-y-2">
+                        <!-- Price Range - Accordion -->
+                        <div class="border-b border-gray-200">
+                            <button type="button" onclick="toggleAccordion('priceAccordion')" class="w-full flex items-center justify-between py-3 text-left">
+                                <h4 class="font-bold text-sm text-gray-900">Prix</h4>
+                                <span class="material-symbols-outlined text-gray-500 transition-transform duration-300" id="priceAccordionIcon">expand_more</span>
+                            </button>
+                            <div id="priceAccordion" class="space-y-2 pb-4 overflow-hidden transition-all duration-300">
                                 <input type="number" name="min_price" placeholder="Prix minimum" value="{{ request('min_price') }}" class="w-full px-3 py-2 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-primary focus:border-primary">
                                 <input type="number" name="max_price" placeholder="Prix maximum" value="{{ request('max_price') }}" class="w-full px-3 py-2 rounded-lg border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-primary focus:border-primary">
                             </div>
                         </div>
 
-                        <!-- Flags -->
-                        <div>
-                            <h4 class="font-bold text-sm mb-3 text-gray-900">Options</h4>
-                            <div class="space-y-2">
+                        <!-- Flags - Accordion -->
+                        <div class="border-b border-gray-200">
+                            <button type="button" onclick="toggleAccordion('optionsAccordion')" class="w-full flex items-center justify-between py-3 text-left">
+                                <h4 class="font-bold text-sm text-gray-900">Options</h4>
+                                <span class="material-symbols-outlined text-gray-500 transition-transform duration-300" id="optionsAccordionIcon">expand_more</span>
+                            </button>
+                            <div id="optionsAccordion" class="space-y-2 pb-4 overflow-hidden transition-all duration-300">
                                 <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition">
                                     <input type="checkbox" name="is_new" value="1" {{ request('is_new') ? 'checked' : '' }} class="rounded border-gray-300 text-primary focus:ring-primary">
                                     <span class="ml-2 text-sm text-gray-700">Nouveautés</span>
@@ -102,7 +108,7 @@
 
                 <!-- Products -->
                 @if($products->count() > 0)
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
                         @foreach($products as $product)
                             @php
                                 $imageUrl = $product->image && str_starts_with($product->image, 'http') 
@@ -111,18 +117,18 @@
                                 $discount = $product->discount_percentage ?? 0;
                             @endphp
                             
-                            <article class="bg-white border border-gray-200 rounded-2xl p-4 flex flex-col h-full transition duration-300 hover:shadow-xl hover:-translate-y-1 group">
+                            <article class="bg-white border border-gray-200 rounded-xl p-3 flex flex-col h-full transition duration-300 hover:shadow-xl group">
                                 <a href="{{ route('products.show', $product->slug) }}" class="block">
-                                    <div class="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl overflow-hidden aspect-square flex items-center justify-center p-4 mb-4">
+                                    <div class="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg overflow-hidden aspect-square flex items-center justify-center p-3 mb-3">
                                         @if($discount > 0)
-                                            <span class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">-{{ $discount }}%</span>
+                                            <span class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg">-{{ $discount }}%</span>
                                         @endif
                                         @if($product->is_new)
-                                            <span class="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">Nouveau</span>
+                                            <span class="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg">Nouveau</span>
                                         @endif
                                         <img src="{{ $imageUrl }}" 
                                              alt="{{ $product->name }}" 
-                                             class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110" 
+                                             class="w-full h-full object-contain" 
                                              loading="lazy"
                                              onerror="this.src='https://via.placeholder.com/300x300?text=No+Image'">
                                     </div>
@@ -130,7 +136,7 @@
                                         <span class="text-xs font-bold uppercase tracking-wider text-primary mb-1">
                                             {{ $product->category->name ?? 'Produit' }}
                                         </span>
-                                        <h3 class="text-sm font-bold mb-2 leading-tight text-gray-900 line-clamp-2 min-h-[40px]">
+                                        <h3 class="text-sm font-bold mb-2 leading-tight text-gray-900 line-clamp-2 min-h-[38px]">
                                             {{ $product->name }}
                                         </h3>
                                         @if($product->rating)
@@ -144,7 +150,7 @@
                                 </a>
                                 <div class="flex justify-between items-center mt-auto pt-2 border-t border-gray-100">
                                     <div>
-                                        <span class="font-headline text-xl font-bold text-primary">{{ number_format($product->price, 2, ',', ' ') }}€</span>
+                                        <span class="font-headline text-lg font-bold text-primary">{{ number_format($product->price, 2, ',', ' ') }}€</span>
                                         @if($product->old_price && $product->old_price > $product->price)
                                             <span class="text-xs text-gray-400 line-through ml-1">{{ number_format($product->old_price, 2, ',', ' ') }}€</span>
                                         @endif
@@ -152,7 +158,7 @@
                                     <button class="bg-primary text-white p-2 rounded-lg flex items-center justify-center transition hover:bg-primary-container hover:scale-110 shadow-md product-add-btn" 
                                             data-product-id="{{ $product->id }}" 
                                             aria-label="Ajouter au panier">
-                                        <span class="material-symbols-outlined text-[18px]">shopping_cart</span>
+                                        <span class="material-symbols-outlined text-[16px]">shopping_cart</span>
                                     </button>
                                 </div>
                             </article>
@@ -175,4 +181,31 @@
         </div>
     </div>
 </div>
+
+<script>
+function toggleAccordion(id) {
+    const accordion = document.getElementById(id);
+    const icon = document.getElementById(id + 'Icon');
+    
+    if (accordion.style.maxHeight && accordion.style.maxHeight !== '0px') {
+        accordion.style.maxHeight = '0px';
+        accordion.style.paddingBottom = '0px';
+        icon.style.transform = 'rotate(0deg)';
+    } else {
+        accordion.style.maxHeight = accordion.scrollHeight + 'px';
+        accordion.style.paddingBottom = '1rem';
+        icon.style.transform = 'rotate(180deg)';
+    }
+}
+
+// Initialize accordions as open by default
+document.addEventListener('DOMContentLoaded', function() {
+    ['priceAccordion', 'optionsAccordion'].forEach(id => {
+        const accordion = document.getElementById(id);
+        const icon = document.getElementById(id + 'Icon');
+        accordion.style.maxHeight = accordion.scrollHeight + 'px';
+        icon.style.transform = 'rotate(180deg)';
+    });
+});
+</script>
 @endsection

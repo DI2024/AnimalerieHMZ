@@ -206,11 +206,11 @@
                             : asset('storage/' . $related->image);
                     @endphp
                     
-                    <div class="group relative bg-white rounded-[2rem] p-4 shadow-md hover:shadow-2xl transition duration-500 hover:-translate-y-2 border border-gray-200">
+                    <div class="group relative bg-white rounded-[2rem] p-4 shadow-md hover:shadow-2xl transition duration-500 border border-gray-200">
                         <a href="{{ route('products.show', $related->slug) }}">
                             <div class="aspect-square rounded-[1.5rem] overflow-hidden mb-4 relative bg-gradient-to-br from-gray-50 to-gray-100">
                                 <img src="{{ $relatedImageUrl }}" 
-                                     class="w-full h-full object-contain transition duration-700 group-hover:scale-110 p-4"
+                                     class="w-full h-full object-contain p-4"
                                      onerror="this.src='https://via.placeholder.com/300x300?text=No+Image'">
                             </div>
                             <h3 class="font-bold text-base px-2 line-clamp-2">{{ $related->name }}</h3>
