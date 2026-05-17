@@ -1,12 +1,12 @@
-@extends('layouts.admin')
 
-@section('title', 'Modifier Offre')
-@section('page-title', 'Modifier l\'Offre')
 
-@section('content')
+<?php $__env->startSection('title', 'Nouvelle Offre'); ?>
+<?php $__env->startSection('page-title', 'Créer une Offre'); ?>
+
+<?php $__env->startSection('content'); ?>
 <!-- Back Button -->
 <div class="mb-6">
-    <a href="{{ route('admin.offers.index') }}" 
+    <a href="<?php echo e(route('admin.offers.index')); ?>" 
        class="inline-flex items-center text-gray-600 transition-colors" 
        style="color: #6b7280;"
        onmouseover="this.style.color='#003e87'" 
@@ -18,9 +18,8 @@
 
 <!-- Form Container -->
 <div class="bg-white rounded-lg shadow p-8">
-    <form action="{{ route('admin.offers.update', $offer) }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
+    <form action="<?php echo e(route('admin.offers.store')); ?>" method="POST" enctype="multipart/form-data">
+        <?php echo csrf_field(); ?>
         
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <!-- Left Column -->
@@ -33,16 +32,23 @@
                     <input type="text" 
                            name="title" 
                            id="title" 
-                           value="{{ old('title', $offer->title) }}"
+                           value="<?php echo e(old('title')); ?>"
                            required
                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2" 
                            style="border-color: #e5e7eb;"
                            onfocus="this.style.borderColor='#003e87'; this.style.boxShadow='0 0 0 3px rgba(0,62,135,0.1)'"
                            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"
                            placeholder="Ex: Jusqu'à 25% de remise">
-                    @error('title')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <?php $__errorArgs = ['title'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <p class="mt-1 text-sm text-red-600"><?php echo e($message); ?></p>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <!-- Subtitle -->
@@ -53,15 +59,22 @@
                     <input type="text" 
                            name="subtitle" 
                            id="subtitle" 
-                           value="{{ old('subtitle', $offer->subtitle) }}"
+                           value="<?php echo e(old('subtitle')); ?>"
                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2" 
                            style="border-color: #e5e7eb;"
                            onfocus="this.style.borderColor='#003e87'; this.style.boxShadow='0 0 0 3px rgba(0,62,135,0.1)'"
                            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"
                            placeholder="Ex: Sur toute la gamme Chien">
-                    @error('subtitle')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <?php $__errorArgs = ['subtitle'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <p class="mt-1 text-sm text-red-600"><?php echo e($message); ?></p>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <!-- Badge -->
@@ -72,38 +85,31 @@
                     <input type="text" 
                            name="badge" 
                            id="badge" 
-                           value="{{ old('badge', $offer->badge) }}"
+                           value="<?php echo e(old('badge')); ?>"
                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2" 
                            style="border-color: #e5e7eb;"
                            onfocus="this.style.borderColor='#003e87'; this.style.boxShadow='0 0 0 3px rgba(0,62,135,0.1)'"
                            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"
                            placeholder="Ex: 🔥 Offre Spéciale">
-                    @error('badge')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <?php $__errorArgs = ['badge'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <p class="mt-1 text-sm text-red-600"><?php echo e($message); ?></p>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
             </div>
 
             <!-- Right Column -->
             <div class="space-y-6">
-                <!-- Current Image Display -->
-                @if($offer->image)
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">
-                        Image actuelle
-                    </label>
-                    <div class="border rounded-lg p-4 mb-4">
-                        <img src="{{ filter_var($offer->image, FILTER_VALIDATE_URL) ? $offer->image : asset('storage/' . $offer->image) }}" 
-                             alt="{{ $offer->title }}" 
-                             class="max-h-48 mx-auto rounded-lg">
-                    </div>
-                </div>
-                @endif
-
                 <!-- Image Upload -->
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
-                        {{ $offer->image ? 'Changer l\'image' : 'Image' }}
+                        Image
                     </label>
                     <div class="border-2 border-dashed rounded-lg p-6 text-center" style="border-color: #d1d5db;">
                         <input type="file" 
@@ -120,9 +126,16 @@
                             <p class="text-xs text-gray-500 mt-1">PNG, JPG, GIF jusqu'à 2MB</p>
                         </label>
                     </div>
-                    @error('image')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <?php $__errorArgs = ['image'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <p class="mt-1 text-sm text-red-600"><?php echo e($message); ?></p>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <!-- Background Color -->
@@ -133,15 +146,22 @@
                     <input type="text" 
                            name="bg_color" 
                            id="bg_color" 
-                           value="{{ old('bg_color', $offer->bg_color ?? '#003e87') }}"
+                           value="<?php echo e(old('bg_color', '#003e87')); ?>"
                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2" 
                            style="border-color: #e5e7eb;"
                            onfocus="this.style.borderColor='#003e87'; this.style.boxShadow='0 0 0 3px rgba(0,62,135,0.1)'"
                            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"
                            placeholder="#003e87">
-                    @error('bg_color')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <?php $__errorArgs = ['bg_color'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <p class="mt-1 text-sm text-red-600"><?php echo e($message); ?></p>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <!-- Active Status -->
@@ -151,7 +171,8 @@
                         <input type="checkbox" 
                                name="is_active" 
                                value="1" 
-                               {{ old('is_active', $offer->is_active) ? 'checked' : '' }}
+                               <?php echo e(old('is_active', true) ? 'checked' : ''); ?>
+
                                class="w-5 h-5 rounded" 
                                style="color: #003e87;">
                         <span class="ml-3 text-sm font-semibold text-gray-700">Offre active</span>
@@ -167,9 +188,9 @@
                     style="background: #003e87;"
                     onmouseover="this.style.background='#0855b1'" 
                     onmouseout="this.style.background='#003e87'">
-                <i class="fas fa-save mr-2"></i>Mettre à jour
+                <i class="fas fa-save mr-2"></i>Créer l'offre
             </button>
-            <a href="{{ route('admin.offers.index') }}" 
+            <a href="<?php echo e(route('admin.offers.index')); ?>" 
                class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-colors">
                 Annuler
             </a>
@@ -177,9 +198,9 @@
     </form>
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
 function previewImage(event) {
     const file = event.target.files[0];
@@ -194,4 +215,6 @@ function previewImage(event) {
     }
 }
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\temp-laravel\AnimalerieHMZ\resources\views/admin/offers/create.blade.php ENDPATH**/ ?>

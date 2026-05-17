@@ -18,4 +18,8 @@ class Offer extends Model
         'bg_color',
         'is_active',
     ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
 }

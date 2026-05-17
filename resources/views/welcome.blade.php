@@ -80,7 +80,7 @@
                         <p class="text-white/90 text-sm font-medium">Pour Chats et Rongeurs</p>
                     </div>
                     <div class="flex-shrink-0 w-24 h-24">
-                        <img src="https://images.unsplash.com/photo-1574158622682-e40e69881006?w=400&h=400&fit=crop&q=80" alt="Chat" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=400&h=400&fit=crop&q=80" alt="Chat" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
                     </div>
                 </a>
                 <!-- Offer 3 -->

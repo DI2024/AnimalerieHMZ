@@ -13,7 +13,16 @@ class OfferController extends Controller
     public function index()
     {
         $offers = Offer::orderBy('created_at', 'desc')->get();
-        return view('admin.offers.index', compact('offers'));
+        
+        // Calculate statistics
+        $stats = [
+            'total' => $offers->count(),
+            'active' => $offers->where('is_active', true)->count(),
+            'packs' => $offers->where('type', 'pack')->count(),
+            'percentage' => $offers->where('type', 'percentage')->count(),
+        ];
+        
+        return view('admin.offers.index', compact('offers', 'stats'));
     }
 
     public function create()
@@ -32,10 +41,12 @@ class OfferController extends Controller
             'subtitle' => 'nullable|string|max:255',
             'badge' => 'nullable|string|max:100',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'link' => 'nullable|string|max:255',
             'bg_color' => 'nullable|string|max:50',
             'is_active' => 'boolean',
         ]);
+
+        // Handle checkbox - convert to boolean
+        $validated['is_active'] = $request->has('is_active') && $request->is_active == '1';
 
         // Handle image upload
         if ($request->hasFile('image')) {
@@ -68,10 +79,12 @@ class OfferController extends Controller
             'subtitle' => 'nullable|string|max:255',
             'badge' => 'nullable|string|max:100',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'link' => 'nullable|string|max:255',
             'bg_color' => 'nullable|string|max:50',
             'is_active' => 'boolean',
         ]);
+
+        // Handle checkbox - convert to boolean
+        $validated['is_active'] = $request->has('is_active') && $request->is_active == '1';
 
         // Handle image upload
         if ($request->hasFile('image')) {
