@@ -138,6 +138,22 @@ Détails Commande #{{ $order->order_number }}
     <div class="bg-white rounded-lg shadow overflow-hidden">
         <div class="p-6 border-b">
             <h3 class="font-semibold text-gray-900">Articles commandés</h3>
+            @if($order->status === 'confirmed')
+                <div class="mt-2 flex items-center gap-2 text-sm text-green-600">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Stock réduit pour cette commande</span>
+                </div>
+            @elseif($order->status === 'cancelled')
+                <div class="mt-2 flex items-center gap-2 text-sm text-gray-600">
+                    <i class="fas fa-undo"></i>
+                    <span>Stock restauré (commande annulée)</span>
+                </div>
+            @else
+                <div class="mt-2 flex items-center gap-2 text-sm text-yellow-600">
+                    <i class="fas fa-clock"></i>
+                    <span>Stock non affecté (commande non confirmée)</span>
+                </div>
+            @endif
         </div>
         <table class="w-full">
             <thead class="bg-gray-50">
@@ -145,6 +161,7 @@ Détails Commande #{{ $order->order_number }}
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Produit</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Prix unitaire</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Quantité</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Stock actuel</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Sous-total</th>
                 </tr>
             </thead>
@@ -173,12 +190,27 @@ Détails Commande #{{ $order->order_number }}
                         </div>
                     </td>
                     <td class="px-6 py-4 text-sm">{{ number_format($item->price, 2) }} DH</td>
-                    <td class="px-6 py-4 text-sm">{{ $item->quantity }}</td>
+                    <td class="px-6 py-4 text-sm">
+                        <span class="font-medium">{{ $item->quantity }}</span>
+                    </td>
+                    <td class="px-6 py-4 text-sm">
+                        @if($item->product)
+                            @php
+                                $stock = $item->product->stock;
+                                $stockClass = $stock <= 0 ? 'text-red-600' : ($stock < 10 ? 'text-yellow-600' : 'text-green-600');
+                            @endphp
+                            <span class="{{ $stockClass }} font-medium">
+                                {{ $stock }} unités
+                            </span>
+                        @else
+                            <span class="text-gray-400">Produit supprimé</span>
+                        @endif
+                    </td>
                     <td class="px-6 py-4 text-sm font-medium">{{ number_format($item->price * $item->quantity, 2) }} DH</td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                    <td colspan="5" class="px-6 py-4 text-center text-gray-500">
                         Aucun article dans cette commande
                     </td>
                 </tr>
@@ -186,17 +218,17 @@ Détails Commande #{{ $order->order_number }}
             </tbody>
             <tfoot class="bg-gray-50">
                 <tr>
-                    <td colspan="3" class="px-6 py-4 text-right font-medium">Sous-total</td>
+                    <td colspan="4" class="px-6 py-4 text-right font-medium">Sous-total</td>
                     <td class="px-6 py-4 font-medium">{{ number_format($order->subtotal, 2) }} DH</td>
                 </tr>
                 @if($order->discount > 0)
                 <tr>
-                    <td colspan="3" class="px-6 py-4 text-right font-medium">Réduction</td>
+                    <td colspan="4" class="px-6 py-4 text-right font-medium">Réduction</td>
                     <td class="px-6 py-4 font-medium text-red-600">-{{ number_format($order->discount, 2) }} DH</td>
                 </tr>
                 @endif
                 <tr class="text-lg">
-                    <td colspan="3" class="px-6 py-4 text-right font-bold">Total</td>
+                    <td colspan="4" class="px-6 py-4 text-right font-bold">Total</td>
                     <td class="px-6 py-4 font-bold text-[#003e87]">{{ number_format($order->total, 2) }} DH</td>
                 </tr>
             </tfoot>
@@ -364,7 +396,11 @@ Détails Commande #{{ $order->order_number }}
         switch(newStatus) {
             case 'cancelled':
                 title = 'Annuler la commande ?';
-                message = 'Êtes-vous sûr de vouloir annuler cette commande ? Cette action affectera le client et l\'inventaire.';
+                if (currentStatus === 'confirmed') {
+                    message = 'Êtes-vous sûr de vouloir annuler cette commande ? Le stock des produits sera automatiquement restauré.';
+                } else {
+                    message = 'Êtes-vous sûr de vouloir annuler cette commande ? Cette action affectera le client.';
+                }
                 type = 'danger';
                 buttonText = 'Annuler la commande';
                 break;
@@ -378,7 +414,11 @@ Détails Commande #{{ $order->order_number }}
                 
             case 'confirmed':
                 title = 'Confirmer la commande ?';
-                message = 'Êtes-vous sûr de vouloir confirmer cette commande ? Le client sera notifié.';
+                if (currentStatus === 'cancelled') {
+                    message = 'Êtes-vous sûr de vouloir confirmer cette commande ? Le stock des produits sera automatiquement réduit à nouveau.';
+                } else {
+                    message = 'Êtes-vous sûr de vouloir confirmer cette commande ? Le stock des produits sera automatiquement réduit.';
+                }
                 type = 'info';
                 buttonText = 'Confirmer';
                 break;

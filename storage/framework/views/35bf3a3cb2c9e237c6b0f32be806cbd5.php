@@ -1,11 +1,9 @@
-@extends('layouts.app')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="bg-white min-h-screen py-12">
     <div class="max-w-[1280px] mx-auto px-6">
         <!-- Breadcrumbs -->
         <nav class="flex items-center gap-2 text-sm text-on-surface-variant mb-8">
-            <a href="{{ route('home') }}" class="hover:text-primary transition">Accueil</a>
+            <a href="<?php echo e(route('home')); ?>" class="hover:text-primary transition">Accueil</a>
             <span class="material-symbols-outlined text-sm">chevron_right</span>
             <span class="font-bold text-primary">Confirmation de commande</span>
         </nav>
@@ -24,7 +22,7 @@
                     </div>
 
                     <form id="checkoutForm" class="space-y-6">
-                        @csrf
+                        <?php echo csrf_field(); ?>
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
@@ -32,7 +30,7 @@
                                 <input type="text" 
                                        name="shipping_first_name" 
                                        id="shipping_first_name" 
-                                       value="{{ auth()->check() ? auth()->user()->name : '' }}"
+                                       value="<?php echo e(auth()->check() ? auth()->user()->name : ''); ?>"
                                        placeholder="Jean" 
                                        class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition" 
                                        required>
@@ -53,7 +51,7 @@
                             <input type="email" 
                                    name="shipping_email" 
                                    id="shipping_email" 
-                                   value="{{ auth()->check() ? auth()->user()->email : '' }}"
+                                   value="<?php echo e(auth()->check() ? auth()->user()->email : ''); ?>"
                                    placeholder="jean.dupont@example.com" 
                                    class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition" 
                                    required>
@@ -150,56 +148,56 @@
                     <h2 class="font-headline text-2xl font-bold mb-8 text-on-surface relative z-10">Résumé de la commande</h2>
                     
                     <div class="space-y-6 relative z-10">
-                        @foreach($cartItems as $item)
-                            @php
+                        <?php $__currentLoopData = $cartItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php
                                 $imageUrl = $item['product']->image && str_starts_with($item['product']->image, 'http') 
                                     ? $item['product']->image 
                                     : asset($item['product']->image);
-                            @endphp
-                            <div class="cart-item flex gap-4 items-center border-b border-gray-200 pb-4" data-product-id="{{ $item['product']->id }}">
+                            ?>
+                            <div class="cart-item flex gap-4 items-center border-b border-gray-200 pb-4" data-product-id="<?php echo e($item['product']->id); ?>">
                                 <div class="w-16 h-16 bg-surface-container-low rounded-2xl p-2 flex-shrink-0">
-                                    <img src="{{ $imageUrl }}" 
-                                         alt="{{ $item['product']->name }}" 
+                                    <img src="<?php echo e($imageUrl); ?>" 
+                                         alt="<?php echo e($item['product']->name); ?>" 
                                          class="w-full h-full object-contain"
                                          onerror="this.src='https://via.placeholder.com/100x100?text=No+Image'">
                                 </div>
                                 <div class="flex-1 min-w-0">
-                                    <h4 class="font-bold text-sm leading-tight mb-1 text-on-surface">{{ $item['product']->name }}</h4>
+                                    <h4 class="font-bold text-sm leading-tight mb-1 text-on-surface"><?php echo e($item['product']->name); ?></h4>
                                     <div class="flex items-center gap-2 mt-2">
                                         <!-- Quantity Display (Read-only) -->
                                         <div class="flex items-center gap-2 text-sm text-on-surface-variant">
                                             <span class="font-medium">Quantité:</span>
-                                            <span class="font-bold text-on-surface">{{ $item['quantity'] }}</span>
+                                            <span class="font-bold text-on-surface"><?php echo e($item['quantity']); ?></span>
                                         </div>
                                     </div>
-                                    <p class="text-on-surface-variant text-xs mt-1">{{ number_format($item['product']->price, 2, ',', ' ') }} MAD / unité</p>
+                                    <p class="text-on-surface-variant text-xs mt-1"><?php echo e(number_format($item['product']->price, 2, ',', ' ')); ?> MAD / unité</p>
                                 </div>
-                                <p class="font-bold item-subtotal text-primary">{{ number_format($item['subtotal'], 2, ',', ' ') }} MAD</p>
+                                <p class="font-bold item-subtotal text-primary"><?php echo e(number_format($item['subtotal'], 2, ',', ' ')); ?> MAD</p>
                             </div>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
 
                     <!-- Totals -->
                     <div class="mt-12 space-y-3 pt-6 border-t border-gray-200 relative z-10">
                         <div class="flex justify-between text-on-surface-variant">
                             <span>Sous-total</span>
-                            <span>{{ number_format($subtotal, 2, ',', ' ') }}€</span>
+                            <span><?php echo e(number_format($subtotal, 2, ',', ' ')); ?>€</span>
                         </div>
                         <div class="flex justify-between text-white/80">
                             <span>Frais de livraison</span>
-                            @if($shippingCost == 0)
+                            <?php if($shippingCost == 0): ?>
                                 <span class="text-green-400 font-bold uppercase text-xs">Gratuit</span>
-                            @else
-                                <span>{{ number_format($shippingCost, 2, ',', ' ') }}€</span>
-                            @endif
+                            <?php else: ?>
+                                <span><?php echo e(number_format($shippingCost, 2, ',', ' ')); ?>€</span>
+                            <?php endif; ?>
                         </div>
                         <div class="flex justify-between text-white/80">
                             <span>TVA (20%)</span>
-                            <span>{{ number_format($tax, 2, ',', ' ') }}€</span>
+                            <span><?php echo e(number_format($tax, 2, ',', ' ')); ?>€</span>
                         </div>
                         <div class="flex justify-between items-end pt-4">
                             <span class="text-xl font-headline font-bold">Total TTC</span>
-                            <span class="text-3xl font-headline font-extrabold tracking-tight">{{ number_format($total, 2, ',', ' ') }}€</span>
+                            <span class="text-3xl font-headline font-extrabold tracking-tight"><?php echo e(number_format($total, 2, ',', ' ')); ?>€</span>
                         </div>
                     </div>
 
@@ -211,7 +209,7 @@
                         <span class="material-symbols-outlined" id="btnIcon">verified_user</span>
                     </button>
 
-                    <a href="{{ route('cart.show') }}" 
+                    <a href="<?php echo e(route('cart.show')); ?>" 
                        class="w-full mt-4 bg-surface-container-low hover:bg-surface-container text-on-surface font-bold py-4 rounded-full transition text-center flex items-center justify-center gap-2 border border-gray-200">
                         <span class="material-symbols-outlined">edit</span>
                         Modifier mon panier
@@ -244,11 +242,11 @@
         const data = Object.fromEntries(formData);
         
         try {
-            const response = await fetch('{{ route('checkout.process') }}', {
+            const response = await fetch('<?php echo e(route('checkout.process')); ?>', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}'
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '<?php echo e(csrf_token()); ?>'
                 },
                 body: JSON.stringify(data)
             });
@@ -280,4 +278,6 @@
         }
     });
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\temp-laravel\AnimalerieHMZ\resources\views/checkout.blade.php ENDPATH**/ ?>

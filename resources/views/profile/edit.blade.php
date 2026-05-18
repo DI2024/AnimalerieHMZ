@@ -1,29 +1,47 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
+@section('content')
+<div class="min-h-screen bg-gray-50 py-12">
+    <div class="max-w-[1280px] mx-auto px-6">
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-8">
+            <div>
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+                    Paramètres du compte
+                </h1>
+                <p class="text-gray-600">
+                    Gérez vos informations personnelles et votre sécurité
+                </p>
+            </div>
+            <a href="{{ route('dashboard') }}" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-3 px-6 rounded-lg transition flex items-center gap-2">
+                <span class="material-symbols-outlined">arrow_back</span>
+                Retour
+            </a>
+        </div>
+
+        <div class="space-y-6">
+            <!-- Profile Information -->
+            <div class="bg-white rounded-xl p-6 md:p-8 border border-gray-200 shadow-sm">
+                <div class="max-w-2xl">
                     @include('profile.partials.update-profile-information-form')
                 </div>
             </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
+            <!-- Update Password -->
+            <div class="bg-white rounded-xl p-6 md:p-8 border border-gray-200 shadow-sm">
+                <div class="max-w-2xl">
                     @include('profile.partials.update-password-form')
                 </div>
             </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
+            <!-- Delete Account -->
+            <div class="bg-white rounded-xl p-6 md:p-8 border border-gray-200 shadow-sm">
+                <div class="max-w-2xl">
                     @include('profile.partials.delete-user-form')
                 </div>
             </div>
         </div>
     </div>
-</x-app-layout>
+</div>
+@endsection

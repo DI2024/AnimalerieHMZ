@@ -128,7 +128,7 @@
                 <!-- Right Side - Cart & Auth -->
                 <div class="flex items-center gap-4">
                     <!-- Cart Icon -->
-                    <a href="{{ route('api.cart.index') }}" class="relative p-2 hover:bg-surface-container-low rounded-lg transition-colors">
+                    <a href="{{ route('cart.show') }}" class="relative p-2 hover:bg-surface-container-low rounded-lg transition-colors">
                         <span class="material-symbols-outlined text-on-surface">shopping_cart</span>
                         <span class="absolute -top-1 -right-1 bg-primary text-on-primary text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center" id="cartCount">0</span>
                     </a>
@@ -217,7 +217,7 @@
                         <img src="{{ asset('images/logo animalerie.png') }}" alt="Animalerie HMZ" class="h-12 w-auto brightness-0 invert">
                     </div>
                     <h3 class="font-headline text-xl font-bold mb-2">Animalerie HMZ</h3>
-                    <p class="text-primary-light text-sm leading-relaxed">Votre partenaire de confiance pour le bien-être de vos animaux depuis 2020.</p>
+                    <p class="text-primary-light text-sm leading-relaxed">{{ $siteSettings['footer_description'] }}</p>
                 </div>
 
                 <!-- Quick Links -->
@@ -248,15 +248,15 @@
                     <ul class="space-y-3">
                         <li class="flex items-start gap-3 text-primary-light text-sm">
                             <span class="material-symbols-outlined text-white">location_on</span>
-                            <span>123 Rue des Animaux<br>75001 Paris, France</span>
+                            <span>Casablanca, Maroc</span>
                         </li>
                         <li class="flex items-center gap-3 text-primary-light text-sm">
                             <span class="material-symbols-outlined text-white">phone</span>
-                            <span>+33 1 23 45 67 89</span>
+                            <span>{{ $siteSettings['contact_phone'] }}</span>
                         </li>
                         <li class="flex items-center gap-3 text-primary-light text-sm">
                             <span class="material-symbols-outlined text-white">mail</span>
-                            <span>contact@animaleriehmz.fr</span>
+                            <span>{{ $siteSettings['contact_email'] }}</span>
                         </li>
                     </ul>
                     
@@ -277,7 +277,7 @@
 
             <!-- Bottom Bar -->
             <div class="border-t border-white/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p class="text-primary-light text-sm">© {{ date('Y') }} Animalerie HMZ. Tous droits réservés.</p>
+                <p class="text-primary-light text-sm">{{ $siteSettings['footer_copyright'] }}</p>
                 <div class="flex gap-6">
                     <a href="#" class="text-primary-light hover:text-white transition-colors text-sm">Mentions Légales</a>
                     <a href="#" class="text-primary-light hover:text-white transition-colors text-sm">CGV</a>

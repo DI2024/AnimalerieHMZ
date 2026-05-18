@@ -21,20 +21,24 @@ class CartManager {
         // Add to cart buttons
         document.addEventListener('click', (e) => {
             // Single product add button
-            if (e.target.closest('#addToCartBtn')) {
+            const addToCartBtn = e.target.closest('#addToCartBtn');
+            if (addToCartBtn) {
                 e.preventDefault();
-                const btn = e.target.closest('#addToCartBtn');
-                const productId = btn.dataset.productId;
+                e.stopPropagation();
+                const productId = addToCartBtn.dataset.productId;
                 const quantity = parseInt(document.getElementById('qtyDisplay')?.textContent || 1);
-                this.addToCart(productId, quantity, btn);
+                this.addToCart(productId, quantity, addToCartBtn);
+                return;
             }
             
             // Quick add buttons (product cards)
-            if (e.target.closest('.product-add-btn')) {
+            const productAddBtn = e.target.closest('.product-add-btn');
+            if (productAddBtn) {
                 e.preventDefault();
-                const btn = e.target.closest('.product-add-btn');
-                const productId = btn.dataset.productId;
-                this.addToCart(productId, 1, btn);
+                e.stopPropagation();
+                const productId = productAddBtn.dataset.productId;
+                this.addToCart(productId, 1, productAddBtn);
+                return;
             }
         });
     }
