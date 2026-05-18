@@ -59,6 +59,50 @@ class Order extends Model
                 $order->order_number = 'ORD-' . strtoupper(uniqid());
             }
         });
+
+        // Handle inventory when order status changes
+        static::updating(function ($order) {
+            $originalStatus = $order->getOriginal('status');
+            $newStatus = $order->status;
+
+            // If order is confirmed, reduce stock
+            if ($originalStatus !== 'confirmed' && $newStatus === 'confirmed') {
+                foreach ($order->items as $item) {
+                    if ($item->product) {
+                        $item->product->decrement('stock', $item->quantity);
+                    }
+                }
+            }
+
+            // If order is cancelled, restore stock (only if it was previously confirmed)
+            if ($originalStatus === 'confirmed' && $newStatus === 'cancelled') {
+                foreach ($order->items as $item) {
+                    if ($item->product) {
+                        $item->product->increment('stock', $item->quantity);
+                    }
+                }
+            }
+
+            // If order goes from cancelled back to confirmed, reduce stock again
+            if ($originalStatus === 'cancelled' && $newStatus === 'confirmed') {
+                foreach ($order->items as $item) {
+                    if ($item->product) {
+                        $item->product->decrement('stock', $item->quantity);
+                    }
+                }
+            }
+        });
+
+        // Restore stock when order is deleted
+        static::deleting(function ($order) {
+            if ($order->status === 'confirmed') {
+                foreach ($order->items as $item) {
+                    if ($item->product) {
+                        $item->product->increment('stock', $item->quantity);
+                    }
+                }
+            }
+        });
     }
 
     public function user()

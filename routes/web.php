@@ -100,6 +100,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::post('/orders/{id}/notes', [OrderController::class, 'addNotes'])->name('orders.add-notes');
     Route::delete('/orders/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
     
+    // Real-time Dashboard Data
+    Route::get('/dashboard/data', [OrderController::class, 'getDashboardData'])->name('dashboard.data');
+    
     // Offers
     Route::get('/offers', [OfferController::class, 'index'])->name('offers.index');
     Route::get('/offers/create', [OfferController::class, 'create'])->name('offers.create');
@@ -111,6 +114,23 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     
     // Sections
     Route::get('/sections', [SectionController::class, 'index'])->name('sections.index');
+    
+    // Hero Slides
+    Route::get('/sections/hero', [SectionController::class, 'heroIndex'])->name('sections.hero.index');
+    Route::get('/sections/hero/create', [SectionController::class, 'heroCreate'])->name('sections.hero.create');
+    Route::post('/sections/hero', [SectionController::class, 'heroStore'])->name('sections.hero.store');
+    Route::get('/sections/hero/{slide}/edit', [SectionController::class, 'heroEdit'])->name('sections.hero.edit');
+    Route::put('/sections/hero/{slide}', [SectionController::class, 'heroUpdate'])->name('sections.hero.update');
+    Route::delete('/sections/hero/{slide}', [SectionController::class, 'heroDestroy'])->name('sections.hero.destroy');
+    
+    // Testimonials
+    Route::get('/sections/testimonials', [SectionController::class, 'testimonialIndex'])->name('sections.testimonials.index');
+    Route::get('/sections/testimonials/create', [SectionController::class, 'testimonialCreate'])->name('sections.testimonials.create');
+    Route::post('/sections/testimonials', [SectionController::class, 'testimonialStore'])->name('sections.testimonials.store');
+    Route::get('/sections/testimonials/{testimonial}/edit', [SectionController::class, 'testimonialEdit'])->name('sections.testimonials.edit');
+    Route::put('/sections/testimonials/{testimonial}', [SectionController::class, 'testimonialUpdate'])->name('sections.testimonials.update');
+    Route::delete('/sections/testimonials/{testimonial}', [SectionController::class, 'testimonialDestroy'])->name('sections.testimonials.destroy');
+    Route::post('/sections/testimonials/{testimonial}/toggle-status', [SectionController::class, 'testimonialToggleStatus'])->name('sections.testimonials.toggle-status');
     
     // Settings
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');

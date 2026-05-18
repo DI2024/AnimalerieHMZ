@@ -89,7 +89,7 @@
 
 <!-- Single Cart Item Template -->
 <template id="cartItemTemplate">
-    <div class="cart-item bg-white rounded-2xl p-6 shadow-md border border-gray-100 hover:shadow-lg transition" data-product-id="">
+    <div class="cart-item bg-white rounded-2xl p-6 shadow-md border border-gray-100 hover:shadow-lg transition" data-product-id="" data-stock="">
         <div class="flex gap-6">
             <!-- Image -->
             <div class="w-24 h-24 flex-shrink-0 bg-surface-container-low rounded-xl overflow-hidden">
@@ -102,6 +102,7 @@
                     <div class="flex-1">
                         <h3 class="font-bold text-lg text-on-surface mb-1 item-name"></h3>
                         <p class="text-sm text-on-surface-variant item-category"></p>
+                        <p class="text-xs text-gray-500 item-stock"></p>
                     </div>
                     <button class="remove-btn w-10 h-10 flex items-center justify-center rounded-full hover:bg-red-50 text-on-surface-variant hover:text-red-600 transition">
                         <span class="material-symbols-outlined">delete</span>
@@ -127,17 +128,73 @@
     </div>
 </template>
 
+<!-- Custom Confirmation Modal -->
+<div id="deleteConfirmModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full transform transition-all">
+        <div class="p-6">
+            <!-- Icon -->
+            <div class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-red-100">
+                <span class="material-symbols-outlined text-3xl text-red-600">delete</span>
+            </div>
+            
+            <!-- Title -->
+            <h3 class="text-xl font-bold text-gray-900 text-center mb-2">
+                Retirer cet article ?
+            </h3>
+            
+            <!-- Message -->
+            <p class="text-gray-600 text-center mb-6">
+                Voulez-vous vraiment retirer cet article de votre panier ?
+            </p>
+            
+            <!-- Actions -->
+            <div class="flex space-x-3">
+                <button onclick="closeDeleteModal()" 
+                        class="flex-1 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 font-medium transition-colors">
+                    Annuler
+                </button>
+                <button onclick="confirmDelete()" 
+                        class="flex-1 px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium transition-colors">
+                    Retirer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+let pendingDeleteProductId = null;
+
 document.addEventListener('DOMContentLoaded', function() {
     loadCart();
+    setupModalListeners();
 });
+
+function setupModalListeners() {
+    // Close modal on ESC key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeDeleteModal();
+        }
+    });
+
+    // Close modal on outside click
+    const modal = document.getElementById('deleteConfirmModal');
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDeleteModal();
+            }
+        });
+    }
+}
 
 async function loadCart() {
     try {
         const response = await fetch('{{ route('api.cart.index') }}');
         const data = await response.json();
         
-        if (data.success && data.cart.length > 0) {
+        if (data.success && data.cart && data.cart.length > 0) {
             renderCart(data.cart, data.total);
         } else {
             renderEmptyCart();
@@ -151,7 +208,9 @@ async function loadCart() {
 function renderEmptyCart() {
     const container = document.getElementById('cartContent');
     const template = document.getElementById('emptyCartTemplate');
-    container.innerHTML = template.innerHTML;
+    if (template) {
+        container.innerHTML = template.innerHTML;
+    }
 }
 
 function renderCart(items, total) {
@@ -167,18 +226,38 @@ function renderCart(items, total) {
         const div = itemElement.querySelector('.cart-item');
         
         div.dataset.productId = item.id;
+        div.dataset.stock = item.stock || 0;
         div.querySelector('.item-image').src = item.image.startsWith('http') ? item.image : '/' + item.image;
         div.querySelector('.item-image').alt = item.name;
         div.querySelector('.item-name').textContent = item.name;
         div.querySelector('.item-category').textContent = item.category;
+        div.querySelector('.item-stock').textContent = `Stock disponible: ${item.stock || 0} unités`;
         div.querySelector('.item-quantity').textContent = item.quantity;
         div.querySelector('.item-subtotal').textContent = formatPrice(item.subtotal);
         div.querySelector('.item-unit-price').textContent = formatPrice(item.price) + ' / unité';
         
-        // Event listeners
-        div.querySelector('.qty-minus').addEventListener('click', () => updateQuantity(item.id, item.quantity - 1));
-        div.querySelector('.qty-plus').addEventListener('click', () => updateQuantity(item.id, item.quantity + 1));
-        div.querySelector('.remove-btn').addEventListener('click', () => removeItem(item.id));
+        // Event listeners with proper closure
+        const minusBtn = div.querySelector('.qty-minus');
+        const plusBtn = div.querySelector('.qty-plus');
+        const removeBtn = div.querySelector('.remove-btn');
+        
+        minusBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            handleDecrease(item.id, item.quantity);
+        });
+        
+        plusBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            handleIncrease(item.id, item.quantity, item.stock);
+        });
+        
+        removeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            showDeleteModal(item.id);
+        });
         
         itemsList.appendChild(itemElement);
     });
@@ -189,9 +268,27 @@ function renderCart(items, total) {
     document.getElementById('totalAmount').textContent = formatPrice(total);
 }
 
+function handleDecrease(productId, currentQuantity) {
+    if (currentQuantity <= 1) {
+        // Show custom modal instead of browser confirm
+        showDeleteModal(productId);
+    } else {
+        // Just decrease quantity
+        updateQuantity(productId, currentQuantity - 1);
+    }
+}
+
+function handleIncrease(productId, currentQuantity, availableStock) {
+    if (currentQuantity >= availableStock) {
+        showNotification('Stock insuffisant pour ce produit', 'error');
+        return;
+    }
+    
+    updateQuantity(productId, currentQuantity + 1);
+}
+
 async function updateQuantity(productId, newQuantity) {
     if (newQuantity < 1) {
-        removeItem(productId);
         return;
     }
     
@@ -200,7 +297,8 @@ async function updateQuantity(productId, newQuantity) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json'
             },
             body: JSON.stringify({
                 product_id: productId,
@@ -211,28 +309,48 @@ async function updateQuantity(productId, newQuantity) {
         const data = await response.json();
         
         if (data.success) {
-            loadCart();
+            await loadCart();
             updateCartCount(data.cart_count);
         } else {
-            alert(data.message || 'Erreur lors de la mise à jour');
+            showNotification(data.message || 'Erreur lors de la mise à jour', 'error');
         }
     } catch (error) {
         console.error('Error updating quantity:', error);
-        alert('Une erreur est survenue');
+        showNotification('Une erreur est survenue', 'error');
     }
 }
 
-async function removeItem(productId) {
-    if (!confirm('Voulez-vous vraiment retirer cet article du panier ?')) {
-        return;
+function showDeleteModal(productId) {
+    pendingDeleteProductId = productId;
+    const modal = document.getElementById('deleteConfirmModal');
+    if (modal) {
+        modal.classList.remove('hidden');
     }
-    
+}
+
+function closeDeleteModal() {
+    pendingDeleteProductId = null;
+    const modal = document.getElementById('deleteConfirmModal');
+    if (modal) {
+        modal.classList.add('hidden');
+    }
+}
+
+function confirmDelete() {
+    if (pendingDeleteProductId) {
+        removeItem(pendingDeleteProductId);
+    }
+    closeDeleteModal();
+}
+
+async function removeItem(productId) {
     try {
         const response = await fetch('{{ route('api.cart.remove') }}', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json'
             },
             body: JSON.stringify({
                 product_id: productId
@@ -242,13 +360,49 @@ async function removeItem(productId) {
         const data = await response.json();
         
         if (data.success) {
-            loadCart();
+            await loadCart();
             updateCartCount(data.cart_count);
+            showNotification('Article retiré du panier', 'success');
         }
     } catch (error) {
         console.error('Error removing item:', error);
-        alert('Une erreur est survenue');
+        showNotification('Une erreur est survenue', 'error');
     }
+}
+
+function showNotification(message, type = 'info') {
+    // Remove any existing notifications
+    const existing = document.querySelectorAll('.cart-notification');
+    existing.forEach(n => n.remove());
+    
+    const notification = document.createElement('div');
+    notification.className = 'cart-notification';
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? '#10B981' : type === 'error' ? '#EF4444' : '#3B82F6'};
+        color: white;
+        padding: 16px 24px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        z-index: 10000;
+        font-weight: 600;
+        animation: slideIn 0.3s ease-out;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    `;
+    
+    const icon = type === 'success' ? '✓' : type === 'error' ? '✕' : 'ℹ';
+    notification.innerHTML = `<span style="font-size: 20px;">${icon}</span> ${message}`;
+    
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease-in';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
 }
 
 function formatPrice(price) {
@@ -264,12 +418,26 @@ function updateCartCount(count) {
         badge.textContent = count;
     }
 }
+
+// Make functions globally accessible
+window.closeDeleteModal = closeDeleteModal;
+window.confirmDelete = confirmDelete;
 </script>
 
 <style>
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+    from { transform: translateX(400px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOut {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(400px); opacity: 0; }
 }
 
 .cart-item {

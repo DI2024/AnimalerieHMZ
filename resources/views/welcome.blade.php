@@ -13,40 +13,87 @@
                 <!-- Grid 2 colonnes en bas - 65% gauche / 35% droite -->
                 <div class="grid grid-cols-1 md:grid-cols-[65%_35%] gap-4">
                     <!-- Colonne gauche - Image Hero avec bouton en bas à droite - HAUTEUR 460px -->
-                    <div class="relative rounded-2xl h-[460px] overflow-hidden">
-                        <!-- Image de fond -->
-                        <img src="{{ asset('images/sec her.png') }}" alt="Hero" class="w-full h-full object-cover">
-                        
-                        <!-- Bouton positionné en bas à droite -->
-                        <div class="absolute bottom-6 right-6">
-                            <a href="{{ route('products.index') }}" class="bg-primary hover:bg-primary-container text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-full transition shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 text-sm flex items-center justify-center gap-2 w-fit">
-                                Découvrir la boutique
-                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                            </a>
+                    @php
+                        $mainSlide = $heroSlides->first();
+                    @endphp
+                    @if($mainSlide)
+                        <div class="relative rounded-2xl h-[460px] overflow-hidden">
+                            <!-- Image de fond -->
+                            @php
+                                $slideImageUrl = filter_var($mainSlide->image, FILTER_VALIDATE_URL) 
+                                    ? $mainSlide->image 
+                                    : asset($mainSlide->image);
+                            @endphp
+                            <img src="{{ $slideImageUrl }}" alt="Hero" class="w-full h-full object-cover">
+                            
+                            <!-- Bouton positionné en bas à droite -->
+                            @if($mainSlide->button_text)
+                                <div class="absolute bottom-6 right-6">
+                                    <a href="{{ $mainSlide->button_link ?: route('products.index') }}" class="bg-[#003e87] hover:bg-[#0855b1] text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-full transition shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 text-sm flex items-center justify-center gap-2 w-fit">
+                                        {{ $mainSlide->button_text }}
+                                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                                    </a>
+                                </div>
+                            @endif
                         </div>
-                    </div>
+                    @else
+                        <div class="relative rounded-2xl h-[460px] overflow-hidden">
+                            <img src="{{ asset('images/sec her.png') }}" alt="Hero" class="w-full h-full object-cover">
+                            <div class="absolute bottom-6 right-6">
+                                <a href="{{ route('products.index') }}" class="bg-[#003e87] hover:bg-[#0855b1] text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-full transition shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 text-sm flex items-center justify-center gap-2 w-fit">
+                                    Découvrir la boutique
+                                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                                </a>
+                            </div>
+                        </div>
+                    @endif
 
                     <!-- Colonne droite - 2 images d'offres empilées -->
                     <div class="hidden md:grid grid-rows-2 gap-4">
-                        <!-- Image offre 1 (Jaune) - HAUTEUR 222px -->
-                        <a href="{{ route('products.index', ['category' => 'chiens']) }}" class="bg-yellow-100 overflow-hidden relative group rounded-2xl h-[222px] cursor-pointer">
-                            <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&q=80" alt="Offre Chien" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                            <div class="absolute bottom-6 left-6 text-white">
-                                <span class="bg-primary px-4 py-2 rounded-full text-sm font-bold mb-2 inline-block">-25%</span>
-                                <h3 class="font-headline text-2xl font-bold">Gamme Chien</h3>
-                            </div>
-                        </a>
-
-                        <!-- Image offre 2 (Bleu) - HAUTEUR 222px -->
-                        <a href="{{ route('products.index', ['category' => 'chats']) }}" class="bg-blue-100 overflow-hidden relative group rounded-2xl h-[222px] cursor-pointer">
-                            <img src="https://images.unsplash.com/photo-1574158622682-e40e69881006?w=800&q=80" alt="Offre Chat" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                            <div class="absolute bottom-6 left-6 text-white">
-                                <span class="bg-tertiary px-4 py-2 rounded-full text-sm font-bold mb-2 inline-block">-15%</span>
-                                <h3 class="font-headline text-2xl font-bold">Accessoires Chat</h3>
-                            </div>
-                        </a>
+                        @php
+                            $rightSlides = $heroSlides->slice(1, 2); // Get slides 2 and 3
+                        @endphp
+                        @if($rightSlides->count() >= 2)
+                            @foreach($rightSlides as $slide)
+                                <a href="{{ $slide->button_link ?: '#' }}" class="bg-yellow-100 overflow-hidden relative group rounded-2xl h-[222px] cursor-pointer">
+                                    @php
+                                        $slideImageUrl = filter_var($slide->image, FILTER_VALIDATE_URL) 
+                                            ? $slide->image 
+                                            : asset($slide->image);
+                                    @endphp
+                                    <img src="{{ $slideImageUrl }}" alt="{{ $slide->title }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                                    @if($slide->title || $slide->subtitle)
+                                        <div class="absolute bottom-6 left-6 text-white">
+                                            @if($slide->subtitle)
+                                                <span class="bg-[#003e87] px-4 py-2 rounded-full text-sm font-bold mb-2 inline-block">{{ $slide->subtitle }}</span>
+                                            @endif
+                                            @if($slide->title)
+                                                <h3 class="font-headline text-2xl font-bold">{{ $slide->title }}</h3>
+                                            @endif
+                                        </div>
+                                    @endif
+                                </a>
+                            @endforeach
+                        @else
+                            <!-- Fallback: Default images if not enough slides -->
+                            <a href="{{ route('products.index', ['category' => 'chiens']) }}" class="bg-yellow-100 overflow-hidden relative group rounded-2xl h-[222px] cursor-pointer">
+                                <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&q=80" alt="Offre Chien" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                                <div class="absolute bottom-6 left-6 text-white">
+                                    <span class="bg-[#003e87] px-4 py-2 rounded-full text-sm font-bold mb-2 inline-block">-25%</span>
+                                    <h3 class="font-headline text-2xl font-bold">Gamme Chien</h3>
+                                </div>
+                            </a>
+                            <a href="{{ route('products.index', ['category' => 'chats']) }}" class="bg-blue-100 overflow-hidden relative group rounded-2xl h-[222px] cursor-pointer">
+                                <img src="https://images.unsplash.com/photo-1574158622682-e40e69881006?w=800&q=80" alt="Offre Chat" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                                <div class="absolute bottom-6 left-6 text-white">
+                                    <span class="bg-tertiary px-4 py-2 rounded-full text-sm font-bold mb-2 inline-block">-15%</span>
+                                    <h3 class="font-headline text-2xl font-bold">Accessoires Chat</h3>
+                                </div>
+                            </a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -458,89 +505,122 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Avis 1 -->
-                <div class="bg-white rounded-2xl p-8 border border-gray-100 hover:border-primary/30 transition-all duration-300 hover:shadow-xl group">
-                    <!-- Stars -->
-                    <div class="flex gap-1 mb-6">
-                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-                    </div>
-                    
-                    <!-- Review -->
-                    <p class="text-gray-700 text-base leading-relaxed mb-8 min-h-[100px]">
-                        Excellent service et produits de qualité. Mon chat adore ses nouvelles croquettes Royal Canin!
-                    </p>
-                    
-                    <!-- Author -->
-                    <div class="flex items-center gap-4">
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=faces" 
-                             alt="Sophie Martin" 
-                             class="w-16 h-16 rounded-full flex-shrink-0 shadow-md object-cover">
-                        <div>
-                            <p class="font-semibold text-gray-900">Sophie Martin</p>
-                            <p class="text-sm text-gray-500">Cliente vérifiée</p>
+                @forelse($testimonials as $testimonial)
+                    <!-- Avis {{ $loop->iteration }} -->
+                    <div class="bg-white rounded-2xl p-8 border border-gray-100 hover:border-primary/30 transition-all duration-300 hover:shadow-xl group">
+                        <!-- Stars -->
+                        <div class="flex gap-1 mb-6">
+                            @for($i = 1; $i <= 5; $i++)
+                                <svg class="w-5 h-5 {{ $i <= $testimonial->rating ? 'text-amber-400' : 'text-gray-300' }} fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            @endfor
+                        </div>
+                        
+                        <!-- Review -->
+                        <p class="text-gray-700 text-base leading-relaxed mb-8 min-h-[100px]">
+                            {{ $testimonial->content }}
+                        </p>
+                        
+                        <!-- Author -->
+                        <div class="flex items-center gap-4">
+                            @if($testimonial->avatar)
+                                @php
+                                    $avatarUrl = filter_var($testimonial->avatar, FILTER_VALIDATE_URL) 
+                                        ? $testimonial->avatar 
+                                        : asset('storage/' . $testimonial->avatar);
+                                @endphp
+                                <img src="{{ $avatarUrl }}" 
+                                     alt="{{ $testimonial->name }}" 
+                                     class="w-16 h-16 rounded-full flex-shrink-0 shadow-md object-cover">
+                            @else
+                                <div class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-user text-gray-400 text-2xl"></i>
+                                </div>
+                            @endif
+                            <div>
+                                <p class="font-semibold text-gray-900">{{ $testimonial->name }}</p>
+                                <p class="text-sm text-gray-500">{{ $testimonial->role ?: 'Client vérifié' }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Avis 2 -->
-                <div class="bg-white rounded-2xl p-8 border border-gray-100 hover:border-primary/30 transition-all duration-300 hover:shadow-xl group">
-                    <!-- Stars -->
-                    <div class="flex gap-1 mb-6">
-                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-                    </div>
-                    
-                    <!-- Review -->
-                    <p class="text-gray-700 text-base leading-relaxed mb-8 min-h-[100px]">
-                        Livraison rapide et emballage soigné. La volière est magnifique et mes oiseaux sont ravis!
-                    </p>
-                    
-                    <!-- Author -->
-                    <div class="flex items-center gap-4">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=faces" 
-                             alt="Marc Dubois" 
-                             class="w-16 h-16 rounded-full flex-shrink-0 shadow-md object-cover">
-                        <div>
-                            <p class="font-semibold text-gray-900">Marc Dubois</p>
-                            <p class="text-sm text-gray-500">Client vérifié</p>
+                @empty
+                    <!-- Avis 1 - Default -->
+                    <div class="bg-white rounded-2xl p-8 border border-gray-100 hover:border-primary/30 transition-all duration-300 hover:shadow-xl group">
+                        <!-- Stars -->
+                        <div class="flex gap-1 mb-6">
+                            @for($i = 1; $i <= 5; $i++)
+                                <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            @endfor
+                        </div>
+                        
+                        <!-- Review -->
+                        <p class="text-gray-700 text-base leading-relaxed mb-8 min-h-[100px]">
+                            Excellent service et produits de qualité. Mon chat adore ses nouvelles croquettes Royal Canin!
+                        </p>
+                        
+                        <!-- Author -->
+                        <div class="flex items-center gap-4">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=faces" 
+                                 alt="Sophie Martin" 
+                                 class="w-16 h-16 rounded-full flex-shrink-0 shadow-md object-cover">
+                            <div>
+                                <p class="font-semibold text-gray-900">Sophie Martin</p>
+                                <p class="text-sm text-gray-500">Cliente vérifiée</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Avis 3 -->
-                <div class="bg-white rounded-2xl p-8 border border-gray-100 hover:border-primary/30 transition-all duration-300 hover:shadow-xl group">
-                    <!-- Stars -->
-                    <div class="flex gap-1 mb-6">
-                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-                    </div>
                     
-                    <!-- Review -->
-                    <p class="text-gray-700 text-base leading-relaxed mb-8 min-h-[100px]">
-                        Super boutique! Les prix sont compétitifs et le service client est très réactif. Je recommande!
-                    </p>
-                    
-                    <!-- Author -->
-                    <div class="flex items-center gap-4">
-                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=faces" 
-                             alt="Laura Petit" 
-                             class="w-16 h-16 rounded-full flex-shrink-0 shadow-md object-cover">
-                        <div>
-                            <p class="font-semibold text-gray-900">Laura Petit</p>
-                            <p class="text-sm text-gray-500">Cliente vérifiée</p>
+                    <!-- Avis 2 - Default -->
+                    <div class="bg-white rounded-2xl p-8 border border-gray-100 hover:border-primary/30 transition-all duration-300 hover:shadow-xl group">
+                        <!-- Stars -->
+                        <div class="flex gap-1 mb-6">
+                            @for($i = 1; $i <= 5; $i++)
+                                <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            @endfor
+                        </div>
+                        
+                        <!-- Review -->
+                        <p class="text-gray-700 text-base leading-relaxed mb-8 min-h-[100px]">
+                            Livraison rapide et emballage soigné. La volière est magnifique et mes oiseaux sont ravis!
+                        </p>
+                        
+                        <!-- Author -->
+                        <div class="flex items-center gap-4">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=faces" 
+                                 alt="Marc Dubois" 
+                                 class="w-16 h-16 rounded-full flex-shrink-0 shadow-md object-cover">
+                            <div>
+                                <p class="font-semibold text-gray-900">Marc Dubois</p>
+                                <p class="text-sm text-gray-500">Client vérifié</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    
+                    <!-- Avis 3 - Default -->
+                    <div class="bg-white rounded-2xl p-8 border border-gray-100 hover:border-primary/30 transition-all duration-300 hover:shadow-xl group">
+                        <!-- Stars -->
+                        <div class="flex gap-1 mb-6">
+                            @for($i = 1; $i <= 5; $i++)
+                                <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            @endfor
+                        </div>
+                        
+                        <!-- Review -->
+                        <p class="text-gray-700 text-base leading-relaxed mb-8 min-h-[100px]">
+                            Super boutique! Les prix sont compétitifs et le service client est très réactif. Je recommande!
+                        </p>
+                        
+                        <!-- Author -->
+                        <div class="flex items-center gap-4">
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=faces" 
+                                 alt="Laura Petit" 
+                                 class="w-16 h-16 rounded-full flex-shrink-0 shadow-md object-cover">
+                            <div>
+                                <p class="font-semibold text-gray-900">Laura Petit</p>
+                                <p class="text-sm text-gray-500">Cliente vérifiée</p>
+                            </div>
+                        </div>
+                    </div>
+                @endforelse
             </div>
         </div>
     </section>

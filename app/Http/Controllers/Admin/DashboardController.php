@@ -18,7 +18,7 @@ class DashboardController extends Controller
         // Calculate date range based on period
         $startDate = match($period) {
             'today' => now()->startOfDay(),
-            'week' => now()->startOfWeek(),
+            'week' => now()->subDays(7),
             'month' => now()->startOfMonth(),
             'year' => now()->startOfYear(),
             default => now()->startOfDay(),
@@ -32,51 +32,43 @@ class DashboardController extends Controller
             ->where('stock', '<=', 10)
             ->count();
 
-        // New products in period
-        $newProducts = Product::where('created_at', '>=', $startDate)->count();
-
-        // Featured products
-        $featuredProducts = Product::where('is_featured', true)->count();
-        $bestsellers = Product::where('is_bestseller', true)->count();
-        $newArrivals = Product::where('is_new', true)->count();
-
-        // Category Statistics
-        $totalCategories = Category::count();
-        $activeCategories = Category::where('is_active', true)->count();
+        // Order Statistics (using real Order model)
+        $pendingOrders = \App\Models\Order::where('status', 'pending')->count();
+        $totalRevenue = \App\Models\Order::whereIn('status', ['delivered', 'shipped'])
+            ->where('created_at', '>=', $startDate)
+            ->sum('total');
+        
+        $currentOrders = \App\Models\Order::where('created_at', '>=', $startDate)->count();
 
         // User Statistics
-        $totalClients = User::count();
-        $newCustomers = User::where('created_at', '>=', $startDate)->count();
+        $totalClients = User::where('role', 'client')->count();
+        $newCustomers = User::where('role', 'client')
+            ->where('created_at', '>=', $startDate)
+            ->count();
 
-        // Calculate growth percentages (mock for now since we don't have historical data)
-        $productsGrowth = $newProducts > 0 ? round(($newProducts / max($totalProducts - $newProducts, 1)) * 100, 1) : 0;
+        // Calculate growth percentages
+        $previousPeriodStart = match($period) {
+            'today' => now()->subDay()->startOfDay(),
+            'week' => now()->subDays(14),
+            'month' => now()->subMonth()->startOfMonth(),
+            'year' => now()->subYear()->startOfYear(),
+            default => now()->subDay()->startOfDay(),
+        };
+
+        $previousRevenue = \App\Models\Order::whereIn('status', ['delivered', 'shipped'])
+            ->whereBetween('created_at', [$previousPeriodStart, $startDate])
+            ->sum('total');
+        
+        $previousOrders = \App\Models\Order::whereBetween('created_at', [$previousPeriodStart, $startDate])->count();
+
+        $revenueGrowth = $previousRevenue > 0 ? round((($totalRevenue - $previousRevenue) / $previousRevenue) * 100, 1) : 0;
+        $ordersGrowth = $previousOrders > 0 ? round((($currentOrders - $previousOrders) / $previousOrders) * 100, 1) : 0;
         $customersGrowth = $newCustomers > 0 ? round(($newCustomers / max($totalClients - $newCustomers, 1)) * 100, 1) : 0;
 
-        // Top categories by product count
-        $topCategories = Category::withCount('products')
-            ->orderBy('products_count', 'desc')
-            ->take(5)
-            ->get();
-
-        // Recent products
-        $recentProducts = Product::with('category')
+        // Recent orders from database
+        $recentOrders = \App\Models\Order::with('user')
             ->orderBy('created_at', 'desc')
             ->take(5)
-            ->get();
-
-        // Low stock alerts
-        $lowStockAlerts = Product::with('category')
-            ->where('stock', '>', 0)
-            ->where('stock', '<=', 10)
-            ->orderBy('stock', 'asc')
-            ->take(10)
-            ->get();
-
-        // Out of stock products
-        $outOfStockProducts = Product::with('category')
-            ->where('stock', 0)
-            ->orderBy('updated_at', 'desc')
-            ->take(10)
             ->get();
 
         // Prepare stats array
@@ -84,9 +76,9 @@ class DashboardController extends Controller
             'period' => $period,
             'out_of_stock' => $outOfStock,
             'low_stock_products' => $lowStockProducts,
-            'pending_orders' => 0, // Will be implemented in Phase 4
-            'total_revenue' => 0, // Will be implemented in Phase 4
-            'revenue_growth' => 0,
+            'pending_orders' => $pendingOrders,
+            'total_revenue' => $totalRevenue,
+            'revenue_growth' => $revenueGrowth,
             'comparison_label' => match($period) {
                 'today' => 'vs hier',
                 'week' => 'vs semaine dernière',
@@ -94,46 +86,15 @@ class DashboardController extends Controller
                 'year' => 'vs année dernière',
                 default => 'vs hier',
             },
-            'current_orders' => 0, // Will be implemented in Phase 4
-            'orders_growth' => 0,
+            'current_orders' => $currentOrders,
+            'orders_growth' => $ordersGrowth,
             'active_products' => $activeProducts,
             'total_products' => $totalProducts,
             'total_clients' => $totalClients,
             'new_customers' => $newCustomers,
-            'products_growth' => $productsGrowth,
             'customers_growth' => $customersGrowth,
-            'featured_products' => $featuredProducts,
-            'bestsellers' => $bestsellers,
-            'new_arrivals' => $newArrivals,
-            'total_categories' => $totalCategories,
-            'active_categories' => $activeCategories,
         ];
 
-        // Mock recent orders (will be real in Phase 4)
-        $recentOrders = collect([
-            (object)[
-                'id' => 1024,
-                'shipping_name' => 'Ahmed Alaoui',
-                'total' => 450.00,
-                'status' => 'pending',
-                'created_at' => now()->subMinutes(15),
-            ],
-            (object)[
-                'id' => 1023,
-                'shipping_name' => 'Sara Mansouri',
-                'total' => 890.50,
-                'status' => 'confirmed',
-                'created_at' => now()->subHours(2),
-            ],
-        ]);
-
-        return view('admin.dashboard', compact(
-            'stats',
-            'recentOrders',
-            'topCategories',
-            'recentProducts',
-            'lowStockAlerts',
-            'outOfStockProducts'
-        ));
+        return view('admin.dashboard', compact('stats', 'recentOrders'));
     }
 }

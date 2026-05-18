@@ -67,6 +67,36 @@ class OrderController extends Controller
     }
 
     /**
+     * Get real-time dashboard data (AJAX endpoint)
+     */
+    public function getDashboardData(Request $request)
+    {
+        $pendingOrders = Order::where('status', 'pending')->count();
+        $recentOrders = Order::with(['user', 'items'])
+            ->orderBy('created_at', 'desc')
+            ->take(10)
+            ->get()
+            ->map(function($order) {
+                return [
+                    'id' => $order->id,
+                    'order_number' => str_pad($order->id, 4, '0', STR_PAD_LEFT),
+                    'shipping_name' => $order->shipping_name,
+                    'total' => number_format($order->total, 2),
+                    'status' => $order->status,
+                    'status_label' => $order->status_label,
+                    'created_at' => $order->created_at->diffForHumans(),
+                    'url' => route('admin.orders.show', $order),
+                ];
+            });
+
+        return response()->json([
+            'pending_orders' => $pendingOrders,
+            'recent_orders' => $recentOrders,
+            'timestamp' => now()->toIso8601String(),
+        ]);
+    }
+
+    /**
      * Display specific order details
      */
     public function show($id)
@@ -86,12 +116,21 @@ class OrderController extends Controller
         ]);
 
         $order = Order::findOrFail($id);
+        $oldStatus = $order->status;
         $order->status = $request->status;
         $order->save();
 
+        // Log the inventory change
+        $inventoryMessage = '';
+        if ($oldStatus !== 'confirmed' && $request->status === 'confirmed') {
+            $inventoryMessage = ' - Stock réduit';
+        } elseif ($oldStatus === 'confirmed' && $request->status === 'cancelled') {
+            $inventoryMessage = ' - Stock restauré';
+        }
+
         return response()->json([
             'success' => true,
-            'message' => 'Statut de la commande mis à jour',
+            'message' => 'Statut de la commande mis à jour' . $inventoryMessage,
             'status_label' => $order->status_label,
             'status_color' => $order->status_color,
         ]);

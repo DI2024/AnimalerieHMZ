@@ -256,7 +256,7 @@
     <div class="flex-1 min-w-0 space-y-6">
         
         <!-- Header Bar - Two Row Layout -->
-        <div class="bg-white rounded-lg shadow p-4 sticky top-0 z-30 before:content-[''] before:absolute before:left-0 before:right-0 before:bottom-full before:h-16 before:bg-gradient-to-b before:from-transparent before:via-white/60 before:to-white before:backdrop-blur-lg before:pointer-events-none">
+        <div class="bg-white rounded-lg shadow p-4 sticky top-0 z-30">
             <!-- Primary Actions Row -->
             <div class="flex items-center gap-3 mb-3">
                 <form method="GET" action="{{ route('admin.products.index') }}" class="flex items-center gap-3 flex-1">

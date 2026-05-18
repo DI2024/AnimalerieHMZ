@@ -25,6 +25,12 @@
                 </div>
             @endif
 
+            @if (session('success'))
+                <div class="mb-4 p-4 rounded-xl bg-green-50 border border-green-200">
+                    <p class="text-sm text-green-600">{{ session('success') }}</p>
+                </div>
+            @endif
+
             @if (session('error'))
                 <div class="mb-4 p-4 rounded-xl bg-red-50 border border-red-200">
                     <p class="text-sm text-red-600">{{ session('error') }}</p>

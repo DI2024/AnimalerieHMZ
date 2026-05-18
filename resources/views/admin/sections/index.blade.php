@@ -12,13 +12,6 @@
             <h1 class="text-3xl font-bold text-gray-900">📄 Homepage Sections</h1>
             <p class="text-gray-600 mt-1">Manage your homepage sections content.</p>
         </div>
-        <div class="flex items-center space-x-3">
-            <!-- Preview Site -->
-            <a href="http://localhost:8080/index.html" target="_blank" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                <i class="fas fa-external-link-alt mr-2"></i>
-                Preview Site
-            </a>
-        </div>
     </div>
     
     <!-- Info Banner -->
@@ -30,7 +23,7 @@
                 </div>
                 <div class="ml-3 flex-1">
                     <p class="text-sm text-blue-900 font-medium">
-                        Customize each section with text, images, colors, and buttons. All sections are displayed on your homepage.
+                        Customize hero slides and testimonials displayed on your homepage.
                     </p>
                 </div>
             </div>
@@ -38,8 +31,12 @@
             <!-- Quick Stats -->
             <div class="flex items-center space-x-6 ml-6">
                 <div class="text-center">
-                    <p class="text-2xl font-bold text-blue-900">4</p>
-                    <p class="text-xs text-blue-700">Total Sections</p>
+                    <p class="text-2xl font-bold text-blue-900">{{ $heroSlides->count() }}</p>
+                    <p class="text-xs text-blue-700">Hero Slides</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-2xl font-bold text-blue-900">{{ $testimonials->count() }}</p>
+                    <p class="text-xs text-blue-700">Testimonials</p>
                 </div>
             </div>
         </div>
@@ -47,43 +44,47 @@
     
     <!-- Sections Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Static Hero Section -->
+        <!-- Hero Section -->
         <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden border border-gray-200">
             <div class="p-6">
                 <div class="flex items-center justify-between mb-3">
                     <div class="flex items-center space-x-3 flex-1">
                         <div class="flex-shrink-0">
-                            <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
-                                <i class="fas fa-home text-primary text-xl"></i>
+                            <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-[#003e87]/20 to-[#003e87]/10 flex items-center justify-center">
+                                <i class="fas fa-images text-[#003e87] text-xl"></i>
                             </div>
                         </div>
-                        <h3 class="text-lg font-semibold text-gray-900">Hero Section</h3>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900">Hero Slides</h3>
+                            <p class="text-sm text-gray-500">{{ $heroSlides->where('is_active', true)->count() }} active slides</p>
+                        </div>
                     </div>
-                    <a href="#" class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg hover:bg-yellow-600 transition-colors text-sm font-medium shadow-sm">
-                        <i class="fas fa-edit mr-2"></i> Edit Section
+                    <a href="{{ route('admin.sections.hero.index') }}" class="inline-flex items-center px-4 py-2 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] transition-colors text-sm font-medium shadow-sm">
+                        <i class="fas fa-edit mr-2"></i> Manage Slides
                     </a>
                 </div>
-                <p class="text-xs text-gray-500 ml-15"><i class="far fa-clock mr-1"></i> Last updated Il y a 2 jours</p>
             </div>
         </div>
 
-        <!-- Static About Section -->
+        <!-- Testimonials Section -->
         <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden border border-gray-200">
             <div class="p-6">
                 <div class="flex items-center justify-between mb-3">
                     <div class="flex items-center space-x-3 flex-1">
                         <div class="flex-shrink-0">
-                            <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
-                                <i class="fas fa-info-circle text-primary text-xl"></i>
+                            <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-[#003e87]/20 to-[#003e87]/10 flex items-center justify-center">
+                                <i class="fas fa-star text-[#003e87] text-xl"></i>
                             </div>
                         </div>
-                        <h3 class="text-lg font-semibold text-gray-900">About Section</h3>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900">Testimonials (Avis)</h3>
+                            <p class="text-sm text-gray-500">{{ $testimonials->where('is_active', true)->count() }} active reviews</p>
+                        </div>
                     </div>
-                    <a href="#" class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg hover:bg-yellow-600 transition-colors text-sm font-medium shadow-sm">
-                        <i class="fas fa-edit mr-2"></i> Edit Section
+                    <a href="{{ route('admin.sections.testimonials.index') }}" class="inline-flex items-center px-4 py-2 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] transition-colors text-sm font-medium shadow-sm">
+                        <i class="fas fa-edit mr-2"></i> Manage Reviews
                     </a>
                 </div>
-                <p class="text-xs text-gray-500 ml-15"><i class="far fa-clock mr-1"></i> Last updated Il y a 5 jours</p>
             </div>
         </div>
     </div>
@@ -140,13 +141,6 @@
     
     .animate-fade-in {
         animation: fade-in 0.3s ease-out;
-    }
-    
-    .line-clamp-2 {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
     }
 </style>
 @endpush

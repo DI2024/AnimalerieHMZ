@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +13,14 @@ class SettingController extends Controller
 {
     public function index()
     {
-        return view('admin.settings.index');
+        $settings = [
+            'contact_email' => Setting::get('contact_email', 'contact@animaleriehmz.ma'),
+            'contact_phone' => Setting::get('contact_phone', '+212 626-911209'),
+            'footer_description' => Setting::get('footer_description', 'Animalerie HMZ - Votre boutique en ligne pour tous vos animaux de compagnie au Maroc.'),
+            'footer_copyright' => Setting::get('footer_copyright', '© 2024 Animalerie HMZ. Tous droits réservés.'),
+        ];
+
+        return view('admin.settings.index', compact('settings'));
     }
 
     public function updateContact(Request $request)
@@ -22,8 +30,8 @@ class SettingController extends Controller
             'contact_phone' => 'required|string|max:50',
         ]);
 
-        // TODO: Save to settings table when created
-        // For now, just show success message
+        Setting::set('contact_email', $validated['contact_email']);
+        Setting::set('contact_phone', $validated['contact_phone']);
         
         return redirect()->route('admin.settings.index')
             ->with('success', 'Informations de contact mises à jour avec succès!');
@@ -36,8 +44,8 @@ class SettingController extends Controller
             'footer_copyright' => 'required|string|max:255',
         ]);
 
-        // TODO: Save to settings table when created
-        // For now, just show success message
+        Setting::set('footer_description', $validated['footer_description']);
+        Setting::set('footer_copyright', $validated['footer_copyright']);
         
         return redirect()->route('admin.settings.index')
             ->with('success', 'Texte du footer mis à jour avec succès!');
@@ -62,7 +70,15 @@ class SettingController extends Controller
         $user->password = Hash::make($request->new_password);
         $user->save();
 
-        return redirect()->route('admin.settings.index')
-            ->with('success', 'Mot de passe mis à jour avec succès!');
+        // Log out the user
+        Auth::logout();
+
+        // Invalidate the session
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        // Redirect to login with success message
+        return redirect()->route('login')
+            ->with('success', 'Mot de passe mis à jour avec succès! Veuillez vous reconnecter.');
     }
 }

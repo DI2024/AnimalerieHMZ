@@ -156,7 +156,7 @@
                                     ? $item['product']->image 
                                     : asset($item['product']->image);
                             @endphp
-                            <div class="cart-item flex gap-4 items-center border-b border-gray-200 pb-4 transition-transform duration-200" data-product-id="{{ $item['product']->id }}">
+                            <div class="cart-item flex gap-4 items-center border-b border-gray-200 pb-4" data-product-id="{{ $item['product']->id }}">
                                 <div class="w-16 h-16 bg-surface-container-low rounded-2xl p-2 flex-shrink-0">
                                     <img src="{{ $imageUrl }}" 
                                          alt="{{ $item['product']->name }}" 
@@ -165,21 +165,12 @@
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <h4 class="font-bold text-sm leading-tight mb-1 text-on-surface">{{ $item['product']->name }}</h4>
-                                    <div class="flex items-center gap-3 mt-2">
-                                        <!-- Quantity Controls -->
-                                        <div class="flex items-center bg-surface-container-low rounded-full border border-gray-200">
-                                            <button onclick="updateCartQuantity({{ $item['product']->id }}, {{ $item['quantity'] - 1 }})" 
-                                                    class="w-7 h-7 flex items-center justify-center text-sm font-bold hover:bg-gray-100 rounded-full transition text-on-surface">-</button>
-                                            <span class="item-quantity w-8 text-center text-sm font-bold text-on-surface">{{ $item['quantity'] }}</span>
-                                            <button onclick="updateCartQuantity({{ $item['product']->id }}, {{ $item['quantity'] + 1 }})" 
-                                                    class="w-7 h-7 flex items-center justify-center text-sm font-bold hover:bg-gray-100 rounded-full transition text-on-surface">+</button>
+                                    <div class="flex items-center gap-2 mt-2">
+                                        <!-- Quantity Display (Read-only) -->
+                                        <div class="flex items-center gap-2 text-sm text-on-surface-variant">
+                                            <span class="font-medium">Quantité:</span>
+                                            <span class="font-bold text-on-surface">{{ $item['quantity'] }}</span>
                                         </div>
-                                        <!-- Remove Button -->
-                                        <button onclick="removeFromCart({{ $item['product']->id }})" 
-                                                class="text-on-surface-variant hover:text-red-600 transition" 
-                                                title="Retirer">
-                                            <span class="material-symbols-outlined text-sm">delete</span>
-                                        </button>
                                     </div>
                                     <p class="text-on-surface-variant text-xs mt-1">{{ number_format($item['product']->price, 2, ',', ' ') }} MAD / unité</p>
                                 </div>
@@ -220,10 +211,10 @@
                         <span class="material-symbols-outlined" id="btnIcon">verified_user</span>
                     </button>
 
-                    <a href="{{ route('products.index') }}" 
+                    <a href="{{ route('cart.show') }}" 
                        class="w-full mt-4 bg-surface-container-low hover:bg-surface-container text-on-surface font-bold py-4 rounded-full transition text-center flex items-center justify-center gap-2 border border-gray-200">
-                        <span class="material-symbols-outlined">arrow_back</span>
-                        Continuer mes achats
+                        <span class="material-symbols-outlined">edit</span>
+                        Modifier mon panier
                     </a>
 
                     <p class="text-center text-on-surface-variant text-[10px] mt-6 px-4">
@@ -288,158 +279,5 @@
             btnIcon.classList.remove('animate-spin');
         }
     });
-
-    // Update cart quantity
-    async function updateCartQuantity(productId, newQuantity) {
-        if (newQuantity < 1) {
-            removeFromCart(productId);
-            return;
-        }
-
-        // Find the cart item element
-        const cartItem = document.querySelector(`.cart-item[data-product-id="${productId}"]`);
-        if (!cartItem) return;
-
-        // Show loading state
-        const quantitySpan = cartItem.querySelector('.item-quantity');
-        const originalQuantity = quantitySpan.textContent;
-        quantitySpan.style.opacity = '0.5';
-
-        try {
-            const response = await fetch('/api/cart/update', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({
-                    product_id: productId,
-                    quantity: newQuantity
-                })
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-                // Update quantity display
-                quantitySpan.textContent = newQuantity;
-                quantitySpan.style.opacity = '1';
-
-                // Update item subtotal
-                const pricePerUnit = parseFloat(cartItem.querySelector('.text-xs').textContent.match(/[\d,]+/)[0].replace(',', '.'));
-                const newSubtotal = pricePerUnit * newQuantity;
-                cartItem.querySelector('.item-subtotal').textContent = newSubtotal.toFixed(2).replace('.', ',') + ' MAD';
-
-                // Recalculate totals
-                updateTotals();
-
-                // Show success animation
-                cartItem.style.transform = 'scale(1.02)';
-                setTimeout(() => {
-                    cartItem.style.transform = 'scale(1)';
-                }, 200);
-            } else {
-                // Revert on error
-                quantitySpan.textContent = originalQuantity;
-                quantitySpan.style.opacity = '1';
-                
-                if (window.showToast) {
-                    showToast({
-                        type: 'error',
-                        title: 'Erreur',
-                        message: data.message || 'Impossible de mettre à jour la quantité',
-                        duration: 3000
-                    });
-                } else {
-                    alert(data.message || 'Impossible de mettre à jour la quantité');
-                }
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            quantitySpan.textContent = originalQuantity;
-            quantitySpan.style.opacity = '1';
-            alert('Une erreur est survenue');
-        }
-    }
-
-    // Update totals without page reload
-    function updateTotals() {
-        let subtotal = 0;
-        
-        // Calculate new subtotal from all items
-        document.querySelectorAll('.cart-item').forEach(item => {
-            const subtotalText = item.querySelector('.item-subtotal').textContent;
-            const itemSubtotal = parseFloat(subtotalText.replace('MAD', '').replace(',', '.').trim());
-            subtotal += itemSubtotal;
-        });
-
-        // Calculate shipping (free if > 500 MAD)
-        const shippingCost = subtotal >= 500 ? 0 : 50;
-        
-        // Calculate tax (20%)
-        const tax = subtotal * 0.20;
-        
-        // Calculate total
-        const total = subtotal + shippingCost + tax;
-
-        // Update display
-        const totalsSection = document.querySelector('.mt-12.space-y-3');
-        const totalsElements = totalsSection.querySelectorAll('.flex.justify-between');
-        
-        // Update subtotal
-        totalsElements[0].querySelector('span:last-child').textContent = subtotal.toFixed(2).replace('.', ',') + ' MAD';
-        
-        // Update shipping
-        if (shippingCost === 0) {
-            totalsElements[1].querySelector('span:last-child').innerHTML = '<span class="text-green-600 font-bold uppercase text-xs">Gratuit</span>';
-        } else {
-            totalsElements[1].querySelector('span:last-child').textContent = shippingCost.toFixed(2).replace('.', ',') + ' MAD';
-        }
-        
-        // Update tax
-        totalsElements[2].querySelector('span:last-child').textContent = tax.toFixed(2).replace('.', ',') + ' MAD';
-        
-        // Update total
-        const totalElement = totalsSection.querySelector('.text-3xl');
-        totalElement.textContent = total.toFixed(2).replace('.', ',') + ' MAD';
-        
-        // Animate total
-        totalElement.style.transform = 'scale(1.1)';
-        setTimeout(() => {
-            totalElement.style.transform = 'scale(1)';
-        }, 200);
-    }
-
-    // Remove from cart
-    async function removeFromCart(productId) {
-        if (!confirm('Voulez-vous vraiment retirer cet article du panier ?')) {
-            return;
-        }
-
-        try {
-            const response = await fetch('/api/cart/remove', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({
-                    product_id: productId
-                })
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-                // Reload page
-                window.location.reload();
-            } else {
-                alert('Erreur lors de la suppression');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Une erreur est survenue');
-        }
-    }
 </script>
 @endsection

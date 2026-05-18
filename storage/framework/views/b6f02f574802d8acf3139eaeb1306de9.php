@@ -11,40 +11,88 @@
                 <!-- Grid 2 colonnes en bas - 65% gauche / 35% droite -->
                 <div class="grid grid-cols-1 md:grid-cols-[65%_35%] gap-4">
                     <!-- Colonne gauche - Image Hero avec bouton en bas à droite - HAUTEUR 460px -->
-                    <div class="relative rounded-2xl h-[460px] overflow-hidden">
-                        <!-- Image de fond -->
-                        <img src="<?php echo e(asset('images/sec her.png')); ?>" alt="Hero" class="w-full h-full object-cover">
-                        
-                        <!-- Bouton positionné en bas à droite -->
-                        <div class="absolute bottom-6 right-6">
-                            <a href="<?php echo e(route('products.index')); ?>" class="bg-primary hover:bg-primary-container text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-full transition shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 text-sm flex items-center justify-center gap-2 w-fit">
-                                Découvrir la boutique
-                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                            </a>
+                    <?php
+                        $mainSlide = $heroSlides->first();
+                    ?>
+                    <?php if($mainSlide): ?>
+                        <div class="relative rounded-2xl h-[460px] overflow-hidden">
+                            <!-- Image de fond -->
+                            <?php
+                                $slideImageUrl = filter_var($mainSlide->image, FILTER_VALIDATE_URL) 
+                                    ? $mainSlide->image 
+                                    : asset($mainSlide->image);
+                            ?>
+                            <img src="<?php echo e($slideImageUrl); ?>" alt="Hero" class="w-full h-full object-cover">
+                            
+                            <!-- Bouton positionné en bas à droite -->
+                            <?php if($mainSlide->button_text): ?>
+                                <div class="absolute bottom-6 right-6">
+                                    <a href="<?php echo e($mainSlide->button_link ?: route('products.index')); ?>" class="bg-[#003e87] hover:bg-[#0855b1] text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-full transition shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 text-sm flex items-center justify-center gap-2 w-fit">
+                                        <?php echo e($mainSlide->button_text); ?>
+
+                                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                                    </a>
+                                </div>
+                            <?php endif; ?>
                         </div>
-                    </div>
+                    <?php else: ?>
+                        <div class="relative rounded-2xl h-[460px] overflow-hidden">
+                            <img src="<?php echo e(asset('images/sec her.png')); ?>" alt="Hero" class="w-full h-full object-cover">
+                            <div class="absolute bottom-6 right-6">
+                                <a href="<?php echo e(route('products.index')); ?>" class="bg-[#003e87] hover:bg-[#0855b1] text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-full transition shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 text-sm flex items-center justify-center gap-2 w-fit">
+                                    Découvrir la boutique
+                                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                                </a>
+                            </div>
+                        </div>
+                    <?php endif; ?>
 
                     <!-- Colonne droite - 2 images d'offres empilées -->
                     <div class="hidden md:grid grid-rows-2 gap-4">
-                        <!-- Image offre 1 (Jaune) - HAUTEUR 222px -->
-                        <a href="<?php echo e(route('products.index', ['category' => 'chiens'])); ?>" class="bg-yellow-100 overflow-hidden relative group rounded-2xl h-[222px] cursor-pointer">
-                            <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&q=80" alt="Offre Chien" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                            <div class="absolute bottom-6 left-6 text-white">
-                                <span class="bg-primary px-4 py-2 rounded-full text-sm font-bold mb-2 inline-block">-25%</span>
-                                <h3 class="font-headline text-2xl font-bold">Gamme Chien</h3>
-                            </div>
-                        </a>
-
-                        <!-- Image offre 2 (Bleu) - HAUTEUR 222px -->
-                        <a href="<?php echo e(route('products.index', ['category' => 'chats'])); ?>" class="bg-blue-100 overflow-hidden relative group rounded-2xl h-[222px] cursor-pointer">
-                            <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=800&q=80" alt="Offre Chat" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                            <div class="absolute bottom-6 left-6 text-white">
-                                <span class="bg-tertiary px-4 py-2 rounded-full text-sm font-bold mb-2 inline-block">-15%</span>
-                                <h3 class="font-headline text-2xl font-bold">Accessoires Chat</h3>
-                            </div>
-                        </a>
+                        <?php
+                            $rightSlides = $heroSlides->slice(1, 2); // Get slides 2 and 3
+                        ?>
+                        <?php if($rightSlides->count() >= 2): ?>
+                            <?php $__currentLoopData = $rightSlides; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $slide): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <a href="<?php echo e($slide->button_link ?: '#'); ?>" class="bg-yellow-100 overflow-hidden relative group rounded-2xl h-[222px] cursor-pointer">
+                                    <?php
+                                        $slideImageUrl = filter_var($slide->image, FILTER_VALIDATE_URL) 
+                                            ? $slide->image 
+                                            : asset($slide->image);
+                                    ?>
+                                    <img src="<?php echo e($slideImageUrl); ?>" alt="<?php echo e($slide->title); ?>" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                                    <?php if($slide->title || $slide->subtitle): ?>
+                                        <div class="absolute bottom-6 left-6 text-white">
+                                            <?php if($slide->subtitle): ?>
+                                                <span class="bg-[#003e87] px-4 py-2 rounded-full text-sm font-bold mb-2 inline-block"><?php echo e($slide->subtitle); ?></span>
+                                            <?php endif; ?>
+                                            <?php if($slide->title): ?>
+                                                <h3 class="font-headline text-2xl font-bold"><?php echo e($slide->title); ?></h3>
+                                            <?php endif; ?>
+                                        </div>
+                                    <?php endif; ?>
+                                </a>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php else: ?>
+                            <!-- Fallback: Default images if not enough slides -->
+                            <a href="<?php echo e(route('products.index', ['category' => 'chiens'])); ?>" class="bg-yellow-100 overflow-hidden relative group rounded-2xl h-[222px] cursor-pointer">
+                                <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&q=80" alt="Offre Chien" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                                <div class="absolute bottom-6 left-6 text-white">
+                                    <span class="bg-[#003e87] px-4 py-2 rounded-full text-sm font-bold mb-2 inline-block">-25%</span>
+                                    <h3 class="font-headline text-2xl font-bold">Gamme Chien</h3>
+                                </div>
+                            </a>
+                            <a href="<?php echo e(route('products.index', ['category' => 'chats'])); ?>" class="bg-blue-100 overflow-hidden relative group rounded-2xl h-[222px] cursor-pointer">
+                                <img src="https://images.unsplash.com/photo-1574158622682-e40e69881006?w=800&q=80" alt="Offre Chat" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                                <div class="absolute bottom-6 left-6 text-white">
+                                    <span class="bg-tertiary px-4 py-2 rounded-full text-sm font-bold mb-2 inline-block">-15%</span>
+                                    <h3 class="font-headline text-2xl font-bold">Accessoires Chat</h3>
+                                </div>
+                            </a>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -59,81 +107,39 @@
                 <p class="text-on-surface-variant text-lg">Profitez de nos promotions exclusives</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <?php $__empty_1 = true; $__currentLoopData = $offers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $offer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                    <?php
-                        // Define gradient colors for each offer
-                        $gradients = [
-                            'from-primary-container to-primary',
-                            'from-tertiary to-blue-600',
-                            'from-purple-500 to-pink-500',
-                        ];
-                        $gradient = $gradients[$index % 3];
-                        
-                        // Use white background for third offer if it exists
-                        $isWhiteBg = ($index % 3 == 2);
-                    ?>
-                    
-                    <div class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] group transition-all duration-500 hover:scale-105 hover:shadow-2xl
-                              <?php if($isWhiteBg): ?> bg-white border-2 border-primary/20 text-primary hover:border-primary <?php else: ?> bg-gradient-to-br <?php echo e($gradient); ?> text-white <?php endif; ?>">
-                        <div class="flex-1 pr-4">
-                            <?php if($offer->badge): ?>
-                                <span class="inline-block px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg
-                                             <?php if($isWhiteBg): ?> bg-gradient-to-r from-primary/10 to-tertiary/10 text-primary <?php else: ?> bg-white/30 backdrop-blur-sm <?php endif; ?>">
-                                    <?php echo e($offer->badge); ?>
-
-                                </span>
-                            <?php endif; ?>
-                            <h3 class="font-headline text-lg font-bold leading-tight mb-2"><?php echo e($offer->title); ?></h3>
-                            <?php if($offer->subtitle): ?>
-                                <p class="text-sm font-medium <?php if($isWhiteBg): ?> text-on-surface-variant <?php else: ?> text-white/90 <?php endif; ?>">
-                                    <?php echo e($offer->subtitle); ?>
-
-                                </p>
-                            <?php endif; ?>
-                        </div>
-                        <?php if($offer->image): ?>
-                            <div class="flex-shrink-0 w-24 h-24">
-                                <?php if(filter_var($offer->image, FILTER_VALIDATE_URL)): ?>
-                                    <img src="<?php echo e($offer->image); ?>" alt="<?php echo e($offer->title); ?>" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
-                                <?php else: ?>
-                                    <img src="<?php echo e(asset('storage/' . $offer->image)); ?>" alt="<?php echo e($offer->title); ?>" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
-                                <?php endif; ?>
-                            </div>
-                        <?php endif; ?>
+                <!-- Offer 1 -->
+                <a href="<?php echo e(route('products.index', ['category' => 'chiens'])); ?>" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-gradient-to-br from-primary-container to-primary text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
+                    <div class="flex-1 pr-4">
+                        <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">🔥 Offre Spéciale</span>
+                        <h3 class="font-headline text-lg font-bold leading-tight mb-2">Jusqu'à 25% de remise</h3>
+                        <p class="text-white/90 text-sm font-medium">Sur toute la gamme Chien</p>
                     </div>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                    <!-- Fallback: Show default offers if no database offers exist -->
-                    <a href="<?php echo e(route('products.index', ['category' => 'chiens'])); ?>" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-gradient-to-br from-primary-container to-primary text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
-                        <div class="flex-1 pr-4">
-                            <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">🔥 Offre Spéciale</span>
-                            <h3 class="font-headline text-lg font-bold leading-tight mb-2">Jusqu'à 25% de remise</h3>
-                            <p class="text-white/90 text-sm font-medium">Sur toute la gamme Chien</p>
-                        </div>
-                        <div class="flex-shrink-0 w-24 h-24">
-                            <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=400&fit=crop&q=80" alt="Chien" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
-                        </div>
-                    </a>
-                    <a href="<?php echo e(route('products.index', ['category' => 'chats'])); ?>" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-gradient-to-br from-tertiary to-blue-600 text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
-                        <div class="flex-1 pr-4">
-                            <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">✨ Exclusivité Web</span>
-                            <h3 class="font-headline text-lg font-bold leading-tight mb-2">-15% Accessoires</h3>
-                            <p class="text-white/90 text-sm font-medium">Pour Chats et Rongeurs</p>
-                        </div>
-                        <div class="flex-shrink-0 w-24 h-24">
-                            <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=400&h=400&fit=crop&q=80" alt="Chat" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
-                        </div>
-                    </a>
-                    <a href="<?php echo e(route('products.index')); ?>" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-white border-2 border-primary/20 text-primary group transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:border-primary cursor-pointer">
-                        <div class="flex-1 pr-4">
-                            <span class="inline-block bg-gradient-to-r from-primary/10 to-tertiary/10 text-primary px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-md">🎁 Nouveauté</span>
-                            <h3 class="font-headline text-lg font-bold leading-tight mb-2">Pack Bienvenue</h3>
-                            <p class="text-on-surface-variant text-sm font-medium">Offert pour votre 1ère commande</p>
-                        </div>
-                        <div class="flex-shrink-0 w-24 h-24">
-                            <img src="https://images.unsplash.com/photo-1520763185298-1b434c919102?w=400&h=400&fit=crop&q=80" alt="Oiseau" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-xl">
-                        </div>
-                    </a>
-                <?php endif; ?>
+                    <div class="flex-shrink-0 w-24 h-24">
+                        <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=400&fit=crop&q=80" alt="Chien" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
+                    </div>
+                </a>
+                <!-- Offer 2 -->
+                <a href="<?php echo e(route('products.index', ['category' => 'chats'])); ?>" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-gradient-to-br from-tertiary to-blue-600 text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
+                    <div class="flex-1 pr-4">
+                        <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">✨ Exclusivité Web</span>
+                        <h3 class="font-headline text-lg font-bold leading-tight mb-2">-15% Accessoires</h3>
+                        <p class="text-white/90 text-sm font-medium">Pour Chats et Rongeurs</p>
+                    </div>
+                    <div class="flex-shrink-0 w-24 h-24">
+                        <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=400&h=400&fit=crop&q=80" alt="Chat" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
+                    </div>
+                </a>
+                <!-- Offer 3 -->
+                <a href="<?php echo e(route('products.index')); ?>" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-white border-2 border-primary/20 text-primary group transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:border-primary cursor-pointer">
+                    <div class="flex-1 pr-4">
+                        <span class="inline-block bg-gradient-to-r from-primary/10 to-tertiary/10 text-primary px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-md">🎁 Nouveauté</span>
+                        <h3 class="font-headline text-lg font-bold leading-tight mb-2">Pack Bienvenue</h3>
+                        <p class="text-on-surface-variant text-sm font-medium">Offert pour votre 1ère commande</p>
+                    </div>
+                    <div class="flex-shrink-0 w-24 h-24">
+                        <img src="https://images.unsplash.com/photo-1520763185298-1b434c919102?w=400&h=400&fit=crop&q=80" alt="Oiseau" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-xl">
+                    </div>
+                </a>
             </div>
         </div>
     </section>
@@ -345,7 +351,7 @@
         <div class="max-w-[1280px] mx-auto px-6">
             <!-- Banner Pigeons - IMAGE PLEINE LARGEUR -->
             <div class="relative rounded-3xl overflow-hidden mb-12 min-h-[300px] flex items-center shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1520763185298-1b434c919102?w=1200&q=80" alt="Pigeon" class="absolute inset-0 w-full h-full object-cover">
+                <img src="<?php echo e(asset('images/sec peigon.png')); ?>" alt="Pigeon" class="absolute inset-0 w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
                 <div class="relative z-10 max-w-md p-12 text-white">
                     <span class="block text-lg uppercase tracking-widest mb-3 opacity-90 font-semibold">Tout pour les</span>
@@ -378,12 +384,12 @@
         <div class="max-w-[1280px] mx-auto px-6">
             <!-- Banner Chats - IMAGE PLEINE LARGEUR -->
             <div class="relative rounded-3xl overflow-hidden mb-12 min-h-[300px] flex items-center shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=1200&q=80" alt="Chat" class="absolute inset-0 w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-r from-indigo-900/70 via-indigo-900/40 to-transparent"></div>
+                <img src="<?php echo e(asset('images/sec chat.png')); ?>" alt="Chat" class="absolute inset-0 w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
                 <div class="relative z-10 max-w-md p-12 text-white">
                     <span class="block text-lg uppercase tracking-widest mb-3 opacity-90 font-semibold">Tout pour les</span>
                     <h1 class="font-headline text-4xl font-extrabold mb-4">Chats</h1>
-                    <p class="text-indigo-50 text-base">Tout ce dont votre félin a besoin pour être heureux</p>
+                    <p class="text-gray-200 text-base">Tout ce dont votre félin a besoin pour être heureux</p>
                 </div>
             </div>
             
@@ -410,12 +416,12 @@
         <div class="max-w-[1280px] mx-auto px-6">
             <!-- Banner Oiseaux - IMAGE PLEINE LARGEUR -->
             <div class="relative rounded-3xl overflow-hidden mb-12 min-h-[300px] flex items-center shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=1200&q=80" alt="Oiseau" class="absolute inset-0 w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-r from-blue-900/70 via-blue-900/40 to-transparent"></div>
+                <img src="<?php echo e(asset('images/sec oiseau.png')); ?>" alt="Oiseau" class="absolute inset-0 w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
                 <div class="relative z-10 max-w-md p-12 text-white">
                     <span class="block text-lg uppercase tracking-widest mb-3 opacity-90 font-semibold">Tout pour les</span>
                     <h1 class="font-headline text-4xl font-extrabold mb-4">Oiseaux</h1>
-                    <p class="text-blue-50 text-base">Une sélection complète pour le bien-être de vos oiseaux</p>
+                    <p class="text-gray-200 text-base">Une sélection complète pour le bien-être de vos oiseaux</p>
                 </div>
             </div>
             
@@ -450,11 +456,11 @@
                 <div class="flex flex-col gap-3">
                     <!-- Image horizontale - Pigeon 1 -->
                     <div class="relative overflow-hidden rounded-xl h-[180px] group">
-                        <img src="https://images.unsplash.com/photo-1520763185298-1b434c919102?w=600&q=80" alt="Pigeon" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <img src="<?php echo e(asset('images/gal peg1.jpg')); ?>" alt="Pigeon" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                     </div>
                     <!-- Image verticale - Chat -->
                     <div class="relative overflow-hidden rounded-xl h-[280px] group">
-                        <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=600&q=80" alt="Chat" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <img src="<?php echo e(asset('images/gal cat.jpg')); ?>" alt="Chat" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                     </div>
                 </div>
 
@@ -462,11 +468,11 @@
                 <div class="flex flex-col gap-3">
                     <!-- Image verticale grande - Chien -->
                     <div class="relative overflow-hidden rounded-xl h-[280px] group">
-                        <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&q=80" alt="Chien" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <img src="<?php echo e(asset('images/gal peg2.jpg')); ?>" alt="Chien" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                     </div>
                     <!-- Image horizontale - Oiseau -->
                     <div class="relative overflow-hidden rounded-xl h-[180px] group">
-                        <img src="https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=600&q=80" alt="Oiseau" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <img src="<?php echo e(asset('images/gal dog.jpg')); ?>" alt="Oiseau" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                     </div>
                 </div>
 
@@ -474,11 +480,11 @@
                 <div class="flex flex-col gap-3">
                     <!-- Image horizontale - Poisson -->
                     <div class="relative overflow-hidden rounded-xl h-[180px] group">
-                        <img src="https://images.unsplash.com/photo-1524704654690-b56c05c78a00?w=600&q=80" alt="Poisson" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <img src="<?php echo e(asset('images/gal fish.jpg')); ?>" alt="Poisson" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                     </div>
                     <!-- Image verticale grande - Pigeon 2 -->
                     <div class="relative overflow-hidden rounded-xl h-[280px] group">
-                        <img src="https://images.unsplash.com/photo-1605460375648-278bcbd579a6?w=600&q=80" alt="Pigeon" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <img src="<?php echo e(asset('images/gal oiseau.jpg')); ?>" alt="Pigeon" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                     </div>
                 </div>
             </div>
@@ -486,73 +492,135 @@
     </section>
 
     <!-- Testimonials Section -->
-    <section class="py-12 md:py-20 bg-white">
-        <div class="max-w-[1280px] mx-auto px-6">
-            <div class="text-center mb-12">
-                <h2 class="font-headline text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-primary mb-3">Avis Clients</h2>
-                <p class="text-on-surface-variant text-lg">Ce que nos clients disent de nous</p>
+    <section class="py-20 md:py-32 bg-white relative overflow-hidden">
+        <!-- Background decoration -->
+        <div class="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-secondary/5 rounded-full blur-3xl"></div>
+        
+        <div class="max-w-[1280px] mx-auto px-6 relative z-10">
+            <div class="text-center mb-20">
+                <h2 class="font-headline text-4xl md:text-5xl font-bold text-on-surface mb-4">Ils nous font confiance</h2>
+                <p class="text-on-surface-variant text-lg">Découvrez les retours de nos clients satisfaits</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <!-- Avis 1 -->
-                <div class="ticket-card group">
-                    <div class="ticket-inner h-full flex flex-col">
-                        <div class="flex items-center gap-1 mb-6 text-amber-400 text-xl">
-                            <span class="material-symbols-outlined fill-1">star</span>
-                            <span class="material-symbols-outlined fill-1">star</span>
-                            <span class="material-symbols-outlined fill-1">star</span>
-                            <span class="material-symbols-outlined fill-1">star</span>
-                            <span class="material-symbols-outlined fill-1">star</span>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <?php $__empty_1 = true; $__currentLoopData = $testimonials; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $testimonial): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                    <!-- Avis <?php echo e($loop->iteration); ?> -->
+                    <div class="bg-white rounded-2xl p-8 border border-gray-100 hover:border-primary/30 transition-all duration-300 hover:shadow-xl group">
+                        <!-- Stars -->
+                        <div class="flex gap-1 mb-6">
+                            <?php for($i = 1; $i <= 5; $i++): ?>
+                                <svg class="w-5 h-5 <?php echo e($i <= $testimonial->rating ? 'text-amber-400' : 'text-gray-300'); ?> fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <?php endfor; ?>
                         </div>
-                        <p class="text-on-surface-variant dark:text-gray-400 mb-8 flex-grow leading-relaxed italic">"Excellent service et produits de qualité. Mon chat adore ses nouvelles croquettes Royal Canin!"</p>
+                        
+                        <!-- Review -->
+                        <p class="text-gray-700 text-base leading-relaxed mb-8 min-h-[100px]">
+                            <?php echo e($testimonial->content); ?>
+
+                        </p>
+                        
+                        <!-- Author -->
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">S</div>
+                            <?php if($testimonial->avatar): ?>
+                                <?php
+                                    $avatarUrl = filter_var($testimonial->avatar, FILTER_VALIDATE_URL) 
+                                        ? $testimonial->avatar 
+                                        : asset('storage/' . $testimonial->avatar);
+                                ?>
+                                <img src="<?php echo e($avatarUrl); ?>" 
+                                     alt="<?php echo e($testimonial->name); ?>" 
+                                     class="w-16 h-16 rounded-full flex-shrink-0 shadow-md object-cover">
+                            <?php else: ?>
+                                <div class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-user text-gray-400 text-2xl"></i>
+                                </div>
+                            <?php endif; ?>
                             <div>
-                                <p class="font-bold dark:text-white">Sophie Martin</p>
-                                <p class="text-xs text-on-surface-variant/60">Cliente depuis 2024</p>
+                                <p class="font-semibold text-gray-900"><?php echo e($testimonial->name); ?></p>
+                                <p class="text-sm text-gray-500"><?php echo e($testimonial->role ?: 'Client vérifié'); ?></p>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- Avis 2 -->
-                <div class="ticket-card group">
-                    <div class="ticket-inner h-full flex flex-col">
-                        <div class="flex items-center gap-1 mb-6 text-amber-400 text-xl">
-                            <span class="material-symbols-outlined fill-1">star</span>
-                            <span class="material-symbols-outlined fill-1">star</span>
-                            <span class="material-symbols-outlined fill-1">star</span>
-                            <span class="material-symbols-outlined fill-1">star</span>
-                            <span class="material-symbols-outlined fill-1">star</span>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                    <!-- Avis 1 - Default -->
+                    <div class="bg-white rounded-2xl p-8 border border-gray-100 hover:border-primary/30 transition-all duration-300 hover:shadow-xl group">
+                        <!-- Stars -->
+                        <div class="flex gap-1 mb-6">
+                            <?php for($i = 1; $i <= 5; $i++): ?>
+                                <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <?php endfor; ?>
                         </div>
-                        <p class="text-on-surface-variant dark:text-gray-400 mb-8 flex-grow leading-relaxed italic">"Livraison rapide et emballage soigné. La volière est magnifique et mes oiseaux sont ravis!"</p>
+                        
+                        <!-- Review -->
+                        <p class="text-gray-700 text-base leading-relaxed mb-8 min-h-[100px]">
+                            Excellent service et produits de qualité. Mon chat adore ses nouvelles croquettes Royal Canin!
+                        </p>
+                        
+                        <!-- Author -->
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center font-bold text-secondary">M</div>
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=faces" 
+                                 alt="Sophie Martin" 
+                                 class="w-16 h-16 rounded-full flex-shrink-0 shadow-md object-cover">
                             <div>
-                                <p class="font-bold dark:text-white">Marc Dubois</p>
-                                <p class="text-xs text-on-surface-variant/60">Client depuis 2023</p>
+                                <p class="font-semibold text-gray-900">Sophie Martin</p>
+                                <p class="text-sm text-gray-500">Cliente vérifiée</p>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- Avis 3 -->
-                <div class="ticket-card group">
-                    <div class="ticket-inner h-full flex flex-col">
-                        <div class="flex items-center gap-1 mb-6 text-amber-400 text-xl">
-                            <span class="material-symbols-outlined fill-1">star</span>
-                            <span class="material-symbols-outlined fill-1">star</span>
-                            <span class="material-symbols-outlined fill-1">star</span>
-                            <span class="material-symbols-outlined fill-1">star</span>
-                            <span class="material-symbols-outlined fill-1">star</span>
+                    
+                    <!-- Avis 2 - Default -->
+                    <div class="bg-white rounded-2xl p-8 border border-gray-100 hover:border-primary/30 transition-all duration-300 hover:shadow-xl group">
+                        <!-- Stars -->
+                        <div class="flex gap-1 mb-6">
+                            <?php for($i = 1; $i <= 5; $i++): ?>
+                                <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <?php endfor; ?>
                         </div>
-                        <p class="text-on-surface-variant dark:text-gray-400 mb-8 flex-grow leading-relaxed italic">"Super boutique! Les prix sont compétitifs et le service client est très réactif. Je recommande!"</p>
+                        
+                        <!-- Review -->
+                        <p class="text-gray-700 text-base leading-relaxed mb-8 min-h-[100px]">
+                            Livraison rapide et emballage soigné. La volière est magnifique et mes oiseaux sont ravis!
+                        </p>
+                        
+                        <!-- Author -->
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-full bg-tertiary/10 flex items-center justify-center font-bold text-tertiary">L</div>
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=faces" 
+                                 alt="Marc Dubois" 
+                                 class="w-16 h-16 rounded-full flex-shrink-0 shadow-md object-cover">
                             <div>
-                                <p class="font-bold dark:text-white">Laura Petit</p>
-                                <p class="text-xs text-on-surface-variant/60">Cliente depuis 2025</p>
+                                <p class="font-semibold text-gray-900">Marc Dubois</p>
+                                <p class="text-sm text-gray-500">Client vérifié</p>
                             </div>
                         </div>
                     </div>
-                </div>
+                    
+                    <!-- Avis 3 - Default -->
+                    <div class="bg-white rounded-2xl p-8 border border-gray-100 hover:border-primary/30 transition-all duration-300 hover:shadow-xl group">
+                        <!-- Stars -->
+                        <div class="flex gap-1 mb-6">
+                            <?php for($i = 1; $i <= 5; $i++): ?>
+                                <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <?php endfor; ?>
+                        </div>
+                        
+                        <!-- Review -->
+                        <p class="text-gray-700 text-base leading-relaxed mb-8 min-h-[100px]">
+                            Super boutique! Les prix sont compétitifs et le service client est très réactif. Je recommande!
+                        </p>
+                        
+                        <!-- Author -->
+                        <div class="flex items-center gap-4">
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=faces" 
+                                 alt="Laura Petit" 
+                                 class="w-16 h-16 rounded-full flex-shrink-0 shadow-md object-cover">
+                            <div>
+                                <p class="font-semibold text-gray-900">Laura Petit</p>
+                                <p class="text-sm text-gray-500">Cliente vérifiée</p>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </section>

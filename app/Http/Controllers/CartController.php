@@ -35,6 +35,7 @@ class CartController extends Controller
                     'image' => $product->image,
                     'category' => $product->category ? $product->category->name : '',
                     'quantity' => $quantity,
+                    'stock' => $product->stock,
                     'subtotal' => $product->price * $quantity,
                 ];
                 $total += $product->price * $quantity;

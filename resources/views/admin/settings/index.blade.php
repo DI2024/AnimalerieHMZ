@@ -115,7 +115,7 @@
                         <input type="email" 
                                name="contact_email" 
                                class="form-input" 
-                               value="{{ old('contact_email', 'contact@animaleriehmz.ma') }}"
+                               value="{{ old('contact_email', $settings['contact_email']) }}"
                                required>
                         <p class="help-text">Email principal pour les clients</p>
                         @error('contact_email')
@@ -131,7 +131,7 @@
                         <input type="text" 
                                name="contact_phone" 
                                class="form-input" 
-                               value="{{ old('contact_phone', '+212 626-911209') }}"
+                               value="{{ old('contact_phone', $settings['contact_phone']) }}"
                                required>
                         <p class="help-text">Numéro affiché sur le site</p>
                         @error('contact_phone')
@@ -168,7 +168,7 @@
                         <textarea name="footer_description" 
                                   class="form-input" 
                                   rows="3"
-                                  required>{{ old('footer_description', 'Animalerie HMZ - Votre boutique en ligne pour tous vos animaux de compagnie au Maroc.') }}</textarea>
+                                  required>{{ old('footer_description', $settings['footer_description']) }}</textarea>
                         <p class="help-text">Texte affiché dans le footer du site</p>
                         @error('footer_description')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -182,7 +182,7 @@
                         <input type="text" 
                                name="footer_copyright" 
                                class="form-input" 
-                               value="{{ old('footer_copyright', '© 2024 Animalerie HMZ. Tous droits réservés.') }}"
+                               value="{{ old('footer_copyright', $settings['footer_copyright']) }}"
                                required>
                         <p class="help-text">Texte de copyright</p>
                         @error('footer_copyright')
