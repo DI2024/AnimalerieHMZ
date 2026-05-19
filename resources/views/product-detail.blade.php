@@ -60,9 +60,9 @@
 
             <div class="flex items-center gap-6">
                 <div class="space-y-1">
-                    <span class="text-4xl font-black text-primary">189,00€</span>
+                    <span class="text-4xl font-black text-primary">189,00 MAD</span>
                     <div class="flex items-center gap-2">
-                        <span class="text-lg text-on-surface-variant/50 line-through">249,00€</span>
+                        <span class="text-lg text-on-surface-variant/50 line-through">249,00 MAD</span>
                         <span class="bg-error/10 text-error px-2 py-0.5 rounded-md text-xs font-bold">-24%</span>
                     </div>
                 </div>
@@ -265,7 +265,7 @@
                 <h3 class="font-bold text-base px-2">Lit Velours Royal</h3>
                 <p class="text-on-surface-variant/60 text-sm px-2 mb-4">Confort et élégance</p>
                 <div class="flex justify-between items-center px-2">
-                    <span class="text-xl font-black text-primary">89,00€</span>
+                    <span class="text-xl font-black text-primary">89,00 MAD</span>
                     <a href="{{ route('checkout') }}" class="w-10 h-10 rounded-full bg-primary/5 text-primary hover:bg-primary hover:text-white transition-colors flex items-center justify-center">
                         <span class="material-symbols-outlined">add_shopping_cart</span>
                     </a>
@@ -280,7 +280,7 @@
                 <h3 class="font-bold text-base px-2">Bol Céramique Zen</h3>
                 <p class="text-on-surface-variant/60 text-sm px-2 mb-4">Minimalisme scandinave</p>
                 <div class="flex justify-between items-center px-2">
-                    <span class="text-xl font-black text-primary">34,00€</span>
+                    <span class="text-xl font-black text-primary">34,00 MAD</span>
                     <a href="{{ route('checkout') }}" class="w-10 h-10 rounded-full bg-primary/5 text-primary hover:bg-primary hover:text-white transition-colors flex items-center justify-center">
                         <span class="material-symbols-outlined">add_shopping_cart</span>
                     </a>

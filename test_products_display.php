@@ -114,7 +114,7 @@ foreach ($categories as $category) {
         $imageExists = file_exists(public_path($product->image)) ? '✓' : '✗';
         
         echo "   {$imageExists} [{$product->id}] {$product->name}\n";
-        echo "      Prix: {$product->price}€ | Stock: {$product->stock} | Sous-cat: {$subcatName}\n";
+        echo "      Prix: {$product->price} MAD | Stock: {$product->stock} | Sous-cat: {$subcatName}\n";
     }
 }
 echo "\n";
@@ -139,9 +139,9 @@ $minPrice = Product::min('price');
 $maxPrice = Product::max('price');
 $productsWithDiscount = Product::whereNotNull('price_old')->count();
 
-printf("Prix moyen             : %.2f€\n", $avgPrice);
-printf("Prix minimum           : %.2f€\n", $minPrice);
-printf("Prix maximum           : %.2f€\n", $maxPrice);
+printf("Prix moyen             : %.2f MAD\n", $avgPrice);
+printf("Prix minimum           : %.2f MAD\n", $minPrice);
+printf("Prix maximum           : %.2f MAD\n", $maxPrice);
 echo "Produits en promo      : {$productsWithDiscount}\n";
 echo "\n";
 
