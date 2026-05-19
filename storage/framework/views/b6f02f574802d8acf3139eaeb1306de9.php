@@ -1,85 +1,84 @@
-@extends('layouts.public')
+<?php $__env->startSection('title', 'Accueil - Animalerie HMZ'); ?>
 
-@section('title', 'Accueil - Animalerie HMZ')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <!-- Hero Section avec Grid - Largeur limitée et centrée -->
     <section class="bg-white py-8">
         <div class="max-w-[1280px] mx-auto px-6">
             <div class="grid grid-rows-[92px_1fr] gap-4">
                 <!-- Bande du haut - Marques de produits -->
                 <div class="relative flex items-center rounded-2xl overflow-hidden">
-                    <img src="{{ asset('images/img brand product.png') }}" alt="Marques de produits" class="w-full h-full object-cover">
+                    <img src="<?php echo e(asset('images/img brand product.png')); ?>" alt="Marques de produits" class="w-full h-full object-cover">
                 </div>
 
                 <!-- Grid 2 colonnes en bas - 65% gauche / 35% droite -->
                 <div class="grid grid-cols-1 md:grid-cols-[65%_35%] gap-4">
                     <!-- Colonne gauche - Image Hero avec bouton en bas à droite - HAUTEUR 460px -->
-                    @php
+                    <?php
                         $mainSlide = $heroSlides->first();
-                    @endphp
-                    @if($mainSlide)
+                    ?>
+                    <?php if($mainSlide): ?>
                         <div class="relative rounded-2xl h-[460px] overflow-hidden">
                             <!-- Image de fond -->
-                            @php
+                            <?php
                                 $slideImageUrl = filter_var($mainSlide->image, FILTER_VALIDATE_URL) 
                                     ? $mainSlide->image 
                                     : asset($mainSlide->image);
-                            @endphp
-                            <img src="{{ $slideImageUrl }}" alt="Hero" class="w-full h-full object-cover">
+                            ?>
+                            <img src="<?php echo e($slideImageUrl); ?>" alt="Hero" class="w-full h-full object-cover">
                             
                             <!-- Bouton positionné en bas à droite -->
-                            @if($mainSlide->button_text)
+                            <?php if($mainSlide->button_text): ?>
                                 <div class="absolute bottom-6 right-6">
-                                    <a href="{{ $mainSlide->button_link ?: route('products.index') }}" class="bg-[#003e87] hover:bg-[#0855b1] text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-full transition shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 text-sm flex items-center justify-center gap-2 w-fit">
-                                        {{ $mainSlide->button_text }}
+                                    <a href="<?php echo e($mainSlide->button_link ?: route('products.index')); ?>" class="bg-[#003e87] hover:bg-[#0855b1] text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-full transition shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 text-sm flex items-center justify-center gap-2 w-fit">
+                                        <?php echo e($mainSlide->button_text); ?>
+
                                         <span class="material-symbols-outlined text-sm">arrow_forward</span>
                                     </a>
                                 </div>
-                            @endif
+                            <?php endif; ?>
                         </div>
-                    @else
+                    <?php else: ?>
                         <div class="relative rounded-2xl h-[460px] overflow-hidden">
-                            <img src="{{ asset('images/sec her.png') }}" alt="Hero" class="w-full h-full object-cover">
+                            <img src="<?php echo e(asset('images/sec her.png')); ?>" alt="Hero" class="w-full h-full object-cover">
                             <div class="absolute bottom-6 right-6">
-                                <a href="{{ route('products.index') }}" class="bg-[#003e87] hover:bg-[#0855b1] text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-full transition shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 text-sm flex items-center justify-center gap-2 w-fit">
+                                <a href="<?php echo e(route('products.index')); ?>" class="bg-[#003e87] hover:bg-[#0855b1] text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-full transition shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 text-sm flex items-center justify-center gap-2 w-fit">
                                     Découvrir la boutique
                                     <span class="material-symbols-outlined text-sm">arrow_forward</span>
                                 </a>
                             </div>
                         </div>
-                    @endif
+                    <?php endif; ?>
 
                     <!-- Colonne droite - 2 images d'offres empilées -->
                     <div class="hidden md:grid grid-rows-2 gap-4">
-                        @php
+                        <?php
                             $rightSlides = $heroSlides->slice(1, 2); // Get slides 2 and 3
-                        @endphp
-                        @if($rightSlides->count() >= 2)
-                            @foreach($rightSlides as $slide)
-                                <a href="{{ $slide->button_link ?: '#' }}" class="bg-yellow-100 overflow-hidden relative group rounded-2xl h-[222px] cursor-pointer">
-                                    @php
+                        ?>
+                        <?php if($rightSlides->count() >= 2): ?>
+                            <?php $__currentLoopData = $rightSlides; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $slide): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <a href="<?php echo e($slide->button_link ?: '#'); ?>" class="bg-yellow-100 overflow-hidden relative group rounded-2xl h-[222px] cursor-pointer">
+                                    <?php
                                         $slideImageUrl = filter_var($slide->image, FILTER_VALIDATE_URL) 
                                             ? $slide->image 
                                             : asset($slide->image);
-                                    @endphp
-                                    <img src="{{ $slideImageUrl }}" alt="{{ $slide->title }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                    ?>
+                                    <img src="<?php echo e($slideImageUrl); ?>" alt="<?php echo e($slide->title); ?>" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                                    @if($slide->title || $slide->subtitle)
+                                    <?php if($slide->title || $slide->subtitle): ?>
                                         <div class="absolute bottom-6 left-6 text-white">
-                                            @if($slide->subtitle)
-                                                <span class="bg-[#003e87] px-4 py-2 rounded-full text-sm font-bold mb-2 inline-block">{{ $slide->subtitle }}</span>
-                                            @endif
-                                            @if($slide->title)
-                                                <h3 class="font-headline text-2xl font-bold">{{ $slide->title }}</h3>
-                                            @endif
+                                            <?php if($slide->subtitle): ?>
+                                                <span class="bg-[#003e87] px-4 py-2 rounded-full text-sm font-bold mb-2 inline-block"><?php echo e($slide->subtitle); ?></span>
+                                            <?php endif; ?>
+                                            <?php if($slide->title): ?>
+                                                <h3 class="font-headline text-2xl font-bold"><?php echo e($slide->title); ?></h3>
+                                            <?php endif; ?>
                                         </div>
-                                    @endif
+                                    <?php endif; ?>
                                 </a>
-                            @endforeach
-                        @else
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php else: ?>
                             <!-- Fallback: Default images if not enough slides -->
-                            <a href="{{ route('products.index', ['category' => 'chiens']) }}" class="bg-yellow-100 overflow-hidden relative group rounded-2xl h-[222px] cursor-pointer">
+                            <a href="<?php echo e(route('products.index', ['category' => 'chiens'])); ?>" class="bg-yellow-100 overflow-hidden relative group rounded-2xl h-[222px] cursor-pointer">
                                 <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&q=80" alt="Offre Chien" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                                 <div class="absolute bottom-6 left-6 text-white">
@@ -87,7 +86,7 @@
                                     <h3 class="font-headline text-2xl font-bold">Gamme Chien</h3>
                                 </div>
                             </a>
-                            <a href="{{ route('products.index', ['category' => 'chats']) }}" class="bg-blue-100 overflow-hidden relative group rounded-2xl h-[222px] cursor-pointer">
+                            <a href="<?php echo e(route('products.index', ['category' => 'chats'])); ?>" class="bg-blue-100 overflow-hidden relative group rounded-2xl h-[222px] cursor-pointer">
                                 <img src="https://images.unsplash.com/photo-1574158622682-e40e69881006?w=800&q=80" alt="Offre Chat" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                                 <div class="absolute bottom-6 left-6 text-white">
@@ -95,7 +94,7 @@
                                     <h3 class="font-headline text-2xl font-bold">Accessoires Chat</h3>
                                 </div>
                             </a>
-                        @endif
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -111,7 +110,7 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Offer 1 -->
-                <a href="{{ route('products.index', ['category' => 'chiens']) }}" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-gradient-to-br from-primary-container to-primary text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
+                <a href="<?php echo e(route('products.index', ['category' => 'chiens'])); ?>" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-gradient-to-br from-primary-container to-primary text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
                     <div class="flex-1 pr-4">
                         <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">🔥 Offre Spéciale</span>
                         <h3 class="font-headline text-lg font-bold leading-tight mb-2">Jusqu'à 25% de remise</h3>
@@ -122,7 +121,7 @@
                     </div>
                 </a>
                 <!-- Offer 2 -->
-                <a href="{{ route('products.index', ['category' => 'chats']) }}" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-gradient-to-br from-tertiary to-blue-600 text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
+                <a href="<?php echo e(route('products.index', ['category' => 'chats'])); ?>" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-gradient-to-br from-tertiary to-blue-600 text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
                     <div class="flex-1 pr-4">
                         <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">✨ Exclusivité Web</span>
                         <h3 class="font-headline text-lg font-bold leading-tight mb-2">-15% Accessoires</h3>
@@ -133,7 +132,7 @@
                     </div>
                 </a>
                 <!-- Offer 3 -->
-                <a href="{{ route('products.index') }}" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-white border-2 border-primary/20 text-primary group transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:border-primary cursor-pointer">
+                <a href="<?php echo e(route('products.index')); ?>" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-white border-2 border-primary/20 text-primary group transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:border-primary cursor-pointer">
                     <div class="flex-1 pr-4">
                         <span class="inline-block bg-gradient-to-r from-primary/10 to-tertiary/10 text-primary px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-md">🎁 Nouveauté</span>
                         <h3 class="font-headline text-lg font-bold leading-tight mb-2">Pack Bienvenue</h3>
@@ -151,24 +150,24 @@
     <section class="py-12 md:py-20 bg-white">
         <div class="max-w-[1280px] mx-auto px-6">
             <div class="flex justify-center items-center gap-6 overflow-x-visible pb-2" id="categoriesGrid">
-                <a href="{{ route('products.index', ['category' => 'oiseaux']) }}" class="flex flex-col items-center gap-3 transition min-w-[220px] shrink-0 group">
-                    <img src="{{ asset('images/img_category/cat_oiseau.png') }}" alt="Oiseaux" class="w-[220px] h-[220px] rounded-3xl object-contain transition transform group-hover:-translate-y-1 group-hover:shadow-lg">
+                <a href="<?php echo e(route('products.index', ['category' => 'oiseaux'])); ?>" class="flex flex-col items-center gap-3 transition min-w-[220px] shrink-0 group">
+                    <img src="<?php echo e(asset('images/img_category/cat_oiseau.png')); ?>" alt="Oiseaux" class="w-[220px] h-[220px] rounded-3xl object-contain transition transform group-hover:-translate-y-1 group-hover:shadow-lg">
                     <span class="font-semibold text-[0.875rem] text-on-surface transition group-hover:text-primary group-hover:font-bold">Oiseaux</span>
                 </a>
-                <a href="{{ route('products.index', ['category' => 'pigeons']) }}" class="flex flex-col items-center gap-3 transition min-w-[220px] shrink-0 group">
-                    <img src="{{ asset('images/img_category/cat_pigeon.png') }}" alt="Pigeons" class="w-[220px] h-[220px] rounded-3xl object-contain transition transform group-hover:-translate-y-1 group-hover:shadow-lg">
+                <a href="<?php echo e(route('products.index', ['category' => 'pigeons'])); ?>" class="flex flex-col items-center gap-3 transition min-w-[220px] shrink-0 group">
+                    <img src="<?php echo e(asset('images/img_category/cat_pigeon.png')); ?>" alt="Pigeons" class="w-[220px] h-[220px] rounded-3xl object-contain transition transform group-hover:-translate-y-1 group-hover:shadow-lg">
                     <span class="font-semibold text-[0.875rem] text-on-surface transition group-hover:text-primary group-hover:font-bold">Pigeons</span>
                 </a>
-                <a href="{{ route('products.index', ['category' => 'chats']) }}" class="flex flex-col items-center gap-3 transition min-w-[220px] shrink-0 group">
-                    <img src="{{ asset('images/img_category/cat_chat.png') }}" alt="Chat" class="w-[220px] h-[220px] rounded-3xl object-contain transition transform group-hover:-translate-y-1 group-hover:shadow-lg">
+                <a href="<?php echo e(route('products.index', ['category' => 'chats'])); ?>" class="flex flex-col items-center gap-3 transition min-w-[220px] shrink-0 group">
+                    <img src="<?php echo e(asset('images/img_category/cat_chat.png')); ?>" alt="Chat" class="w-[220px] h-[220px] rounded-3xl object-contain transition transform group-hover:-translate-y-1 group-hover:shadow-lg">
                     <span class="font-semibold text-[0.875rem] text-on-surface transition group-hover:text-primary group-hover:font-bold">Chat</span>
                 </a>
-                <a href="{{ route('products.index', ['category' => 'chiens']) }}" class="flex flex-col items-center gap-3 transition min-w-[220px] shrink-0 group">
-                    <img src="{{ asset('images/img_category/cat_chien.png') }}" alt="Chien" class="w-[220px] h-[220px] rounded-3xl object-contain transition transform group-hover:-translate-y-1 group-hover:shadow-lg">
+                <a href="<?php echo e(route('products.index', ['category' => 'chiens'])); ?>" class="flex flex-col items-center gap-3 transition min-w-[220px] shrink-0 group">
+                    <img src="<?php echo e(asset('images/img_category/cat_chien.png')); ?>" alt="Chien" class="w-[220px] h-[220px] rounded-3xl object-contain transition transform group-hover:-translate-y-1 group-hover:shadow-lg">
                     <span class="font-semibold text-[0.875rem] text-on-surface transition group-hover:text-primary group-hover:font-bold">Chien</span>
                 </a>
-                <a href="{{ route('products.index', ['category' => 'poissons']) }}" class="flex flex-col items-center gap-3 transition min-w-[220px] shrink-0 group">
-                    <img src="{{ asset('images/img_category/cat_poisson.png') }}" alt="Poissons" class="w-[220px] h-[220px] rounded-3xl object-contain transition transform group-hover:-translate-y-1 group-hover:shadow-lg">
+                <a href="<?php echo e(route('products.index', ['category' => 'poissons'])); ?>" class="flex flex-col items-center gap-3 transition min-w-[220px] shrink-0 group">
+                    <img src="<?php echo e(asset('images/img_category/cat_poisson.png')); ?>" alt="Poissons" class="w-[220px] h-[220px] rounded-3xl object-contain transition transform group-hover:-translate-y-1 group-hover:shadow-lg">
                     <span class="font-semibold text-[0.875rem] text-on-surface transition group-hover:text-primary group-hover:font-bold">Poissons</span>
                 </a>
             </div>
@@ -196,43 +195,45 @@
             <div class="relative">
                 <div class="overflow-x-auto hide-scrollbar scroll-smooth" id="productsCarousel">
                     <div class="flex gap-6 pb-4">
-                        @foreach($bestsellers as $product)
-                            @php
+                        <?php $__currentLoopData = $bestsellers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php
                                 $imageUrl = $product->image && str_starts_with($product->image, 'http') 
                                     ? $product->image 
                                     : asset($product->image);
-                            @endphp
+                            ?>
                             <!-- Carte Produit -->
                             <div class="min-w-[230px] w-[230px] bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col group border border-gray-200 flex-shrink-0">
-                                <a href="{{ route('products.show', $product->slug) }}" class="relative w-full h-48 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4 overflow-hidden">
-                                    <img src="{{ $imageUrl }}" 
-                                         alt="{{ $product->name }}" 
+                                <a href="<?php echo e(route('products.show', $product->slug)); ?>" class="relative w-full h-48 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4 overflow-hidden">
+                                    <img src="<?php echo e($imageUrl); ?>" 
+                                         alt="<?php echo e($product->name); ?>" 
                                          class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
-                                         onerror="this.src='{{ asset('images/placeholder.svg') }}'">
-                                    @if($product->rating)
-                                        <div class="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded-full">⭐ {{ number_format($product->rating, 1) }}</div>
-                                    @endif
+                                         onerror="this.src='<?php echo e(asset('images/placeholder.svg')); ?>'">
+                                    <?php if($product->rating): ?>
+                                        <div class="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded-full">⭐ <?php echo e(number_format($product->rating, 1)); ?></div>
+                                    <?php endif; ?>
                                 </a>
                                 <div class="p-4 flex flex-col flex-grow">
                                     <span class="text-xs font-bold uppercase tracking-wider text-primary/70 mb-1">
-                                        {{ $product->category->name ?? 'Produit' }}
+                                        <?php echo e($product->category->name ?? 'Produit'); ?>
+
                                     </span>
-                                    <a href="{{ route('products.show', $product->slug) }}">
+                                    <a href="<?php echo e(route('products.show', $product->slug)); ?>">
                                         <h4 class="font-bold text-sm text-gray-900 mb-2 line-clamp-2 min-h-[40px] hover:text-primary transition">
-                                            {{ $product->name }}
+                                            <?php echo e($product->name); ?>
+
                                         </h4>
                                     </a>
                                     <div class="flex items-center justify-between mt-auto">
-                                        <p class="font-headline text-xl font-bold text-primary">{{ number_format($product->price, 2, ',', ' ') }} MAD</p>
+                                        <p class="font-headline text-xl font-bold text-primary"><?php echo e(number_format($product->price, 2, ',', ' ')); ?> MAD</p>
                                         <button class="bg-primary text-white p-2 rounded-lg hover:bg-primary-container transition-colors product-add-btn" 
-                                                data-product-id="{{ $product->id }}"
+                                                data-product-id="<?php echo e($product->id); ?>"
                                                 aria-label="Ajouter au panier">
                                             <span class="material-symbols-outlined text-[18px]">shopping_cart</span>
                                         </button>
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
                 </div>
             </div>
@@ -295,7 +296,7 @@
         <div class="max-w-[1280px] mx-auto px-6">
             <!-- Banner Pigeons - IMAGE PLEINE LARGEUR -->
             <div class="relative rounded-3xl overflow-hidden mb-12 min-h-[300px] flex items-center shadow-2xl">
-                <img src="{{ asset('images/sec peigon.png') }}" alt="Pigeon" class="absolute inset-0 w-full h-full object-cover">
+                <img src="<?php echo e(asset('images/sec peigon.png')); ?>" alt="Pigeon" class="absolute inset-0 w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
                 <div class="relative z-10 max-w-md p-12 text-white">
                     <span class="block text-lg uppercase tracking-widest mb-3 opacity-90 font-semibold">Tout pour les</span>
@@ -306,15 +307,15 @@
             
             <!-- Category Cards Pigeons -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-16">
-                <a href="{{ route('products.index', ['subcategory' => 'cages-volieres-pigeons']) }}" class="bg-gradient-to-br from-slate-100 to-slate-200 hover:from-slate-200 hover:to-slate-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
+                <a href="<?php echo e(route('products.index', ['subcategory' => 'cages-volieres-pigeons'])); ?>" class="bg-gradient-to-br from-slate-100 to-slate-200 hover:from-slate-200 hover:to-slate-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
                     <span class="font-bold text-gray-900 text-lg">Cages & Volières</span>
                     <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuClYWz_RZMFkeB388ZG-bh97mfPIVfjx52xnIAnsFCry5DWZr8JkZXXkvrfCd2JOvT3T7_e_oaDJovqOm9TBKI3IPyEu2oy5WBERvzx8P9OZF6BSRW8An7kMKAtFYnnXop35gZx-PEXS_yHmFD-LtMRfnHJT1pW5KpMrlxiH3KmQsMgNQ4Tw1qRfUb6-hhALmKaLq4mLRU_KmVH0ZVgQ14sGqeKKwRf8YeIsbeMVZX3BKvf70UPS2eUrgW-ETcGeGK4Byx_hIfiVFw" alt="Cage" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 </a>
-                <a href="{{ route('products.index', ['subcategory' => 'graines-nutrition-pigeons']) }}" class="bg-gradient-to-br from-emerald-100 to-emerald-200 hover:from-emerald-200 hover:to-emerald-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
+                <a href="<?php echo e(route('products.index', ['subcategory' => 'graines-nutrition-pigeons'])); ?>" class="bg-gradient-to-br from-emerald-100 to-emerald-200 hover:from-emerald-200 hover:to-emerald-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
                     <span class="font-bold text-gray-900 text-lg">Graines & Nutrition</span>
                     <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQXx6hiUnOCX6DzOYQFjw2OrpfOIMoRhffQpWaGCqdsUlortBdVqSqAR_xd6Fn6gCZZUFji4VdfAmXhX5s9pzWEhG5UH0lcp21npAq9fuGnRxAzrecick6_ERfAUEza0zCesRzz7kF6nnzRK2ioGzio6gLFkdV9n4QIJMRSH5Rb4rk8a7uyW_yBHJxsVn-H1Qv975itGYfYFVHtLTgQnig4KiM5eMzekLdU-8CzNjmglwOOp0ov466FOPQqMVrFSAg8dhT_-nR4Ko" alt="Graines" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 </a>
-                <a href="{{ route('products.index', ['subcategory' => 'accessoires-pigeons']) }}" class="bg-gradient-to-br from-amber-100 to-amber-200 hover:from-amber-200 hover:to-amber-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
+                <a href="<?php echo e(route('products.index', ['subcategory' => 'accessoires-pigeons'])); ?>" class="bg-gradient-to-br from-amber-100 to-amber-200 hover:from-amber-200 hover:to-amber-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
                     <span class="font-bold text-gray-900 text-lg">Accessoires</span>
                     <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4n77pofZu0M7VUhuXGR57lrTtl_tb-uNTk86gHkIkGqm1VFQc7Ht2jLvyEZKkW0AIbNxsAawhHLmTYSyIluEMqF1ZTczZNvtpUpaEaABo4njvV99IleGHi4r6DK88eCwSmUKJI6JGjFSXwyIX_a05sHUoItu8TmjYM6jQ4Qa4yXFWe19SAQJdSHxcvN0O8vOKKeF-cOkmKKYTsKwPH218RptL2fIyj5VYNURR36Np6h6wrZFTBawkN2X8PygsVeVd_OzbAr9Lpp8" alt="Accessoires" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 </a>
@@ -328,7 +329,7 @@
         <div class="max-w-[1280px] mx-auto px-6">
             <!-- Banner Chats - IMAGE PLEINE LARGEUR -->
             <div class="relative rounded-3xl overflow-hidden mb-12 min-h-[300px] flex items-center shadow-2xl">
-                <img src="{{ asset('images/sec chat.png') }}" alt="Chat" class="absolute inset-0 w-full h-full object-cover">
+                <img src="<?php echo e(asset('images/sec chat.png')); ?>" alt="Chat" class="absolute inset-0 w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
                 <div class="relative z-10 max-w-md p-12 text-white">
                     <span class="block text-lg uppercase tracking-widest mb-3 opacity-90 font-semibold">Tout pour les</span>
@@ -339,15 +340,15 @@
             
             <!-- Category Cards Chats -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-16">
-                <a href="{{ route('products.index', ['subcategory' => 'cage-transport']) }}" class="bg-gradient-to-br from-purple-100 to-purple-200 hover:from-purple-200 hover:to-purple-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
+                <a href="<?php echo e(route('products.index', ['subcategory' => 'cage-transport'])); ?>" class="bg-gradient-to-br from-purple-100 to-purple-200 hover:from-purple-200 hover:to-purple-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
                     <span class="font-bold text-gray-900 text-lg">Cage de transport</span>
                     <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIgvNYgMNUX5dDqy9Ji_Xgxifl2RujROG1NGbtl-Mih2srLRpvr-ALYegp6tS66MyQnjGxpl4olvyw9hCamdiCkFivkf896OtEa385MGru_6Q019kTiqpbFtKgGowNvA-C_TqIx5l22H157bz1Kcvgw2kJCLW2ErRaYX-3bMGsSF7HTL6rLtQi-kLHDBGF2tudqZjjiCzdZKJopX7DanJL1aNaI1FjSwc8AKJscFoxJWMwFwX9dD2EIjNlqIw5XwkaHGF8gSSmNmY" alt="Cage" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 </a>
-                <a href="{{ route('products.index', ['subcategory' => 'croquettes-chat']) }}" class="bg-gradient-to-br from-blue-100 to-blue-200 hover:from-blue-200 hover:to-blue-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
+                <a href="<?php echo e(route('products.index', ['subcategory' => 'croquettes-chat'])); ?>" class="bg-gradient-to-br from-blue-100 to-blue-200 hover:from-blue-200 hover:to-blue-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
                     <span class="font-bold text-gray-900 text-lg">Croquettes pour chat</span>
                     <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDT4uP4tjFYK2FyqRUBsgeX_3U1Sa0cnbKyWDNkkOIJ2qiF_tZzDvPMGr8qy-CJN0FYgWdskAw7NgJXfBKXvkBg4qCXvtdGBmGnFGFQ7Cl6ILs9iRxZROeBNnJ2Xbz6aSDyNjwv1U3ScEX2ApndJiQL7YxbpeV8_6sl0Zbo1DBMpmaVDHdsRAJXLUFCxqAN71D1h41oWGvXOhQOYWuN5u2bYKehj_7IV0ipdrG4TfMOEnhmA7iCCfOBb_h_SvgahbCPaN9BSaNpX9k" alt="Croquettes" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 </a>
-                <a href="{{ route('products.index', ['subcategory' => 'accessoires-chat']) }}" class="bg-gradient-to-br from-green-100 to-green-200 hover:from-green-200 hover:to-green-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
+                <a href="<?php echo e(route('products.index', ['subcategory' => 'accessoires-chat'])); ?>" class="bg-gradient-to-br from-green-100 to-green-200 hover:from-green-200 hover:to-green-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
                     <span class="font-bold text-gray-900 text-lg">Accessoires</span>
                     <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCf13j3hn9fIiDpqfSIlA9_FGHwtCP_eI4a3XaBc8PRii4W1Xpek9f00xWvJE9IUbjlRXdu8-LuGY5LKKcih9AXo-YkFHi7qYjMJd47ArOAqqoOoWn9leyXVBBQuw1n3PCI2GBC55QG4gMu1HBDQkpsFbkZS_WJ0_q_vf2YXJFxlB0HrVo3E1bjSgW_uyEks74dsBVn7FKDLKCduZjyu-6-aJScVW_a1dPEPCDq1rgNwr8q4NCWWeiWomcEutvwHdKGXHPcFYJEMAw" alt="Arbre à chat" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 </a>
@@ -360,7 +361,7 @@
         <div class="max-w-[1280px] mx-auto px-6">
             <!-- Banner Oiseaux - IMAGE PLEINE LARGEUR -->
             <div class="relative rounded-3xl overflow-hidden mb-12 min-h-[300px] flex items-center shadow-2xl">
-                <img src="{{ asset('images/sec oiseau.png') }}" alt="Oiseau" class="absolute inset-0 w-full h-full object-cover">
+                <img src="<?php echo e(asset('images/sec oiseau.png')); ?>" alt="Oiseau" class="absolute inset-0 w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
                 <div class="relative z-10 max-w-md p-12 text-white">
                     <span class="block text-lg uppercase tracking-widest mb-3 opacity-90 font-semibold">Tout pour les</span>
@@ -371,15 +372,15 @@
             
             <!-- Category Cards Oiseaux -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-16">
-                <a href="{{ route('products.index', ['subcategory' => 'cages-volieres']) }}" class="bg-gradient-to-br from-blue-100 to-blue-200 hover:from-blue-200 hover:to-blue-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
+                <a href="<?php echo e(route('products.index', ['subcategory' => 'cages-volieres'])); ?>" class="bg-gradient-to-br from-blue-100 to-blue-200 hover:from-blue-200 hover:to-blue-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
                     <span class="font-bold text-gray-900 text-lg">Cages & Volières</span>
                     <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuClYWz_RZMFkeB388ZG-bh97mfPIVfjx52xnIAnsFCry5DWZr8JkZXXkvrfCd2JOvT3T7_e_oaDJovqOm9TBKI3IPyEu2oy5WBERvzx8P9OZF6BSRW8An7kMKAtFYnnXop35gZx-PEXS_yHmFD-LtMRfnHJT1pW5KpMrlxiH3KmQsMgNQ4Tw1qRfUb6-hhALmKaLq4mLRU_KmVH0ZVgQ14sGqeKKwRf8YeIsbeMVZX3BKvf70UPS2eUrgW-ETcGeGK4Byx_hIfiVFw" alt="Cage" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 </a>
-                <a href="{{ route('products.index', ['subcategory' => 'graines-nutrition']) }}" class="bg-gradient-to-br from-green-100 to-green-200 hover:from-green-200 hover:to-green-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
+                <a href="<?php echo e(route('products.index', ['subcategory' => 'graines-nutrition'])); ?>" class="bg-gradient-to-br from-green-100 to-green-200 hover:from-green-200 hover:to-green-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
                     <span class="font-bold text-gray-900 text-lg">Graines & Nutrition</span>
                     <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQXx6hiUnOCX6DzOYQFjw2OrpfOIMoRhffQpWaGCqdsUlortBdVqSqAR_xd6Fn6gCZZUFji4VdfAmXhX5s9pzWEhG5UH0lcp21npAq9fuGnRxAzrecick6_ERfAUEza0zCesRzz7kF6nnzRK2ioGzio6gLFkdV9n4QIJMRSH5Rb4rk8a7uyW_yBHJxsVn-H1Qv975itGYfYFVHtLTgQnig4KiM5eMzekLdU-8CzNjmglwOOp0ov466FOPQqMVrFSAg8dhT_-nR4Ko" alt="Graines" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 </a>
-                <a href="{{ route('products.index', ['subcategory' => 'accessoires-oiseaux']) }}" class="bg-gradient-to-br from-purple-100 to-purple-200 hover:from-purple-200 hover:to-purple-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
+                <a href="<?php echo e(route('products.index', ['subcategory' => 'accessoires-oiseaux'])); ?>" class="bg-gradient-to-br from-purple-100 to-purple-200 hover:from-purple-200 hover:to-purple-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
                     <span class="font-bold text-gray-900 text-lg">Accessoires</span>
                     <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4n77pofZu0M7VUhuXGR57lrTtl_tb-uNTk86gHkIkGqm1VFQc7Ht2jLvyEZKkW0AIbNxsAawhHLmTYSyIluEMqF1ZTczZNvtpUpaEaABo4njvV99IleGHi4r6DK88eCwSmUKJI6JGjFSXwyIX_a05sHUoItu8TmjYM6jQ4Qa4yXFWe19SAQJdSHxcvN0O8vOKKeF-cOkmKKYTsKwPH218RptL2fIyj5VYNURR36Np6h6wrZFTBawkN2X8PygsVeVd_OzbAr9Lpp8" alt="Jouets" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 </a>
@@ -400,11 +401,11 @@
                 <div class="flex flex-col gap-3">
                     <!-- Image horizontale - Pigeon 1 -->
                     <div class="relative overflow-hidden rounded-xl h-[180px] group">
-                        <img src="{{ asset('images/gal peg1.jpg') }}" alt="Pigeon" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <img src="<?php echo e(asset('images/gal peg1.jpg')); ?>" alt="Pigeon" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                     </div>
                     <!-- Image verticale - Chat -->
                     <div class="relative overflow-hidden rounded-xl h-[280px] group">
-                        <img src="{{ asset('images/gal cat.jpg') }}" alt="Chat" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <img src="<?php echo e(asset('images/gal cat.jpg')); ?>" alt="Chat" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                     </div>
                 </div>
 
@@ -412,11 +413,11 @@
                 <div class="flex flex-col gap-3">
                     <!-- Image verticale grande - Chien -->
                     <div class="relative overflow-hidden rounded-xl h-[280px] group">
-                        <img src="{{ asset('images/gal peg2.jpg') }}" alt="Chien" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <img src="<?php echo e(asset('images/gal peg2.jpg')); ?>" alt="Chien" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                     </div>
                     <!-- Image horizontale - Oiseau -->
                     <div class="relative overflow-hidden rounded-xl h-[180px] group">
-                        <img src="{{ asset('images/gal dog.jpg') }}" alt="Oiseau" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <img src="<?php echo e(asset('images/gal dog.jpg')); ?>" alt="Oiseau" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                     </div>
                 </div>
 
@@ -424,11 +425,11 @@
                 <div class="flex flex-col gap-3">
                     <!-- Image horizontale - Poisson -->
                     <div class="relative overflow-hidden rounded-xl h-[180px] group">
-                        <img src="{{ asset('images/gal fish.jpg') }}" alt="Poisson" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <img src="<?php echo e(asset('images/gal fish.jpg')); ?>" alt="Poisson" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                     </div>
                     <!-- Image verticale grande - Pigeon 2 -->
                     <div class="relative overflow-hidden rounded-xl h-[280px] group">
-                        <img src="{{ asset('images/gal oiseau.jpg') }}" alt="Pigeon" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <img src="<?php echo e(asset('images/gal oiseau.jpg')); ?>" alt="Pigeon" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                     </div>
                 </div>
             </div>
@@ -448,51 +449,52 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                @forelse($testimonials as $testimonial)
-                    <!-- Avis {{ $loop->iteration }} -->
+                <?php $__empty_1 = true; $__currentLoopData = $testimonials; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $testimonial): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                    <!-- Avis <?php echo e($loop->iteration); ?> -->
                     <div class="bg-white rounded-2xl p-8 border border-gray-100 hover:border-primary/30 transition-all duration-300 hover:shadow-xl group">
                         <!-- Stars -->
                         <div class="flex gap-1 mb-6">
-                            @for($i = 1; $i <= 5; $i++)
-                                <svg class="w-5 h-5 {{ $i <= $testimonial->rating ? 'text-amber-400' : 'text-gray-300' }} fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-                            @endfor
+                            <?php for($i = 1; $i <= 5; $i++): ?>
+                                <svg class="w-5 h-5 <?php echo e($i <= $testimonial->rating ? 'text-amber-400' : 'text-gray-300'); ?> fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <?php endfor; ?>
                         </div>
                         
                         <!-- Review -->
                         <p class="text-gray-700 text-base leading-relaxed mb-8 min-h-[100px]">
-                            {{ $testimonial->content }}
+                            <?php echo e($testimonial->content); ?>
+
                         </p>
                         
                         <!-- Author -->
                         <div class="flex items-center gap-4">
-                            @if($testimonial->avatar)
-                                @php
+                            <?php if($testimonial->avatar): ?>
+                                <?php
                                     $avatarUrl = filter_var($testimonial->avatar, FILTER_VALIDATE_URL) 
                                         ? $testimonial->avatar 
                                         : asset('storage/' . $testimonial->avatar);
-                                @endphp
-                                <img src="{{ $avatarUrl }}" 
-                                     alt="{{ $testimonial->name }}" 
+                                ?>
+                                <img src="<?php echo e($avatarUrl); ?>" 
+                                     alt="<?php echo e($testimonial->name); ?>" 
                                      class="w-16 h-16 rounded-full flex-shrink-0 shadow-md object-cover">
-                            @else
+                            <?php else: ?>
                                 <div class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
                                     <i class="fas fa-user text-gray-400 text-2xl"></i>
                                 </div>
-                            @endif
+                            <?php endif; ?>
                             <div>
-                                <p class="font-semibold text-gray-900">{{ $testimonial->name }}</p>
-                                <p class="text-sm text-gray-500">{{ $testimonial->role ?: 'Client vérifié' }}</p>
+                                <p class="font-semibold text-gray-900"><?php echo e($testimonial->name); ?></p>
+                                <p class="text-sm text-gray-500"><?php echo e($testimonial->role ?: 'Client vérifié'); ?></p>
                             </div>
                         </div>
                     </div>
-                @empty
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <!-- Avis 1 - Default -->
                     <div class="bg-white rounded-2xl p-8 border border-gray-100 hover:border-primary/30 transition-all duration-300 hover:shadow-xl group">
                         <!-- Stars -->
                         <div class="flex gap-1 mb-6">
-                            @for($i = 1; $i <= 5; $i++)
+                            <?php for($i = 1; $i <= 5; $i++): ?>
                                 <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-                            @endfor
+                            <?php endfor; ?>
                         </div>
                         
                         <!-- Review -->
@@ -516,9 +518,9 @@
                     <div class="bg-white rounded-2xl p-8 border border-gray-100 hover:border-primary/30 transition-all duration-300 hover:shadow-xl group">
                         <!-- Stars -->
                         <div class="flex gap-1 mb-6">
-                            @for($i = 1; $i <= 5; $i++)
+                            <?php for($i = 1; $i <= 5; $i++): ?>
                                 <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-                            @endfor
+                            <?php endfor; ?>
                         </div>
                         
                         <!-- Review -->
@@ -542,9 +544,9 @@
                     <div class="bg-white rounded-2xl p-8 border border-gray-100 hover:border-primary/30 transition-all duration-300 hover:shadow-xl group">
                         <!-- Stars -->
                         <div class="flex gap-1 mb-6">
-                            @for($i = 1; $i <= 5; $i++)
+                            <?php for($i = 1; $i <= 5; $i++): ?>
                                 <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-                            @endfor
+                            <?php endfor; ?>
                         </div>
                         
                         <!-- Review -->
@@ -563,8 +565,10 @@
                             </div>
                         </div>
                     </div>
-                @endforelse
+                <?php endif; ?>
             </div>
         </div>
     </section>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.public', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\temp-laravel\AnimalerieHMZ\resources\views/welcome.blade.php ENDPATH**/ ?>

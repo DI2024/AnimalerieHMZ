@@ -33,7 +33,7 @@
                      src="{{ $imageUrl }}" 
                      alt="{{ $product->name }}" 
                      class="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105 p-8"
-                     onerror="this.src='https://via.placeholder.com/800x800?text=No+Image'">
+                     onerror="this.src='{{ asset('images/placeholder.svg') }}'">
                 
                 <!-- Wishlist Button - Top Right -->
                 <button id="likeBtn" class="absolute top-6 right-6 w-12 h-12 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition group/like">
@@ -198,7 +198,7 @@
                             <div class="aspect-square rounded-[1.5rem] overflow-hidden mb-4 relative bg-gradient-to-br from-gray-50 to-gray-100">
                                 <img src="{{ $relatedImageUrl }}" 
                                      class="w-full h-full object-contain p-4"
-                                     onerror="this.src='https://via.placeholder.com/300x300?text=No+Image'">
+                                     onerror="this.src='{{ asset('images/placeholder.svg') }}'">
                             </div>
                             <h3 class="font-bold text-base px-2 line-clamp-2">{{ $related->name }}</h3>
                             <p class="text-on-surface-variant/60 text-sm px-2 mb-4">{{ $related->category->name }}</p>
