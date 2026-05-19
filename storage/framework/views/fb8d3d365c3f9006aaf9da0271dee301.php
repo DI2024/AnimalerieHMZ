@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
-    <title><?php echo $__env->yieldContent('title', config('app.name', 'Animalerie HMZ') . ' - Tout pour vos animaux'); ?></title>
+    <title><?php echo e(config('app.name', 'Animalerie HMZ')); ?> - Tout pour vos animaux</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="<?php echo e(asset('images/logo animalerie.png')); ?>">
-    <link rel="shortcut icon" type="image/png" href="<?php echo e(asset('images/logo animalerie.png')); ?>">
-    <link rel="apple-touch-icon" href="<?php echo e(asset('images/logo animalerie.png')); ?>">
     
     <!-- Material Symbols -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -22,9 +20,6 @@
     
     <!-- Mobile Scroll CSS -->
     <link rel="stylesheet" href="<?php echo e(asset('css/mobile-scroll.css')); ?>">
-    
-    <!-- Carousel & Responsive JS -->
-    <script src="<?php echo e(asset('js/carousel.js')); ?>" defer></script>
     
     <style>
         :root {
@@ -110,13 +105,12 @@
         }
     </style>
 </head>
-<body class="font-sans antialiased bg-white">
+<body class="font-sans antialiased bg-white min-h-screen flex flex-col">
     
     <!-- Navbar -->
     <nav class="sticky top-0 z-50 bg-white shadow-sm border-b border-outline-variant">
         <div class="max-w-[1280px] mx-auto px-6">
-            <!-- Desktop Navigation -->
-            <div class="hidden md:flex justify-between items-center h-20">
+            <div class="flex justify-between items-center h-20">
                 <!-- Logo -->
                 <a href="<?php echo e(route('home')); ?>" class="flex items-center gap-3 group">
                     <img src="<?php echo e(asset('images/logo animalerie.png')); ?>" alt="Animalerie HMZ" class="h-12 w-auto transition-transform group-hover:scale-105">
@@ -126,12 +120,12 @@
                 </a>
 
                 <!-- Navigation Links - Desktop -->
-                <div class="flex items-center gap-8">
-                    <a href="#pigeons" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105">Pigeons</a>
-                    <a href="#chats" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105">Chats</a>
-                    <a href="#oiseaux" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105">Oiseaux</a>
-                    <a href="#offres" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105">Offres</a>
-                    <a href="#contact" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105">Contact</a>
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="<?php echo e(route('products.index', ['category' => 'pigeons'])); ?>" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105">Pigeons</a>
+                    <a href="<?php echo e(route('products.index', ['category' => 'chats'])); ?>" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105">Chats</a>
+                    <a href="<?php echo e(route('products.index', ['category' => 'oiseaux'])); ?>" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105">Oiseaux</a>
+                    <a href="<?php echo e(route('home')); ?>#offres" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105">Offres</a>
+                    <a href="#contact" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105" onclick="scrollToContact(event)">Contact</a>
                 </div>
 
                 <!-- Right Side - Cart & Auth -->
@@ -190,100 +184,31 @@
                             Inscription
                         </a>
                     <?php endif; ?>
-                </div>
-            </div>
-            
-            <!-- Mobile Navigation -->
-            <div class="md:hidden flex justify-between items-center h-16">
-                <!-- Hamburger Menu (Gauche) -->
-                <button class="p-2 hover:bg-surface-container-low rounded-lg transition-colors touch-target" data-mobile-menu-open>
-                    <span class="material-symbols-outlined text-on-surface">menu</span>
-                </button>
-                
-                <!-- Logo (Centre) -->
-                <a href="<?php echo e(route('home')); ?>" class="absolute left-1/2 transform -translate-x-1/2">
-                    <img src="<?php echo e(asset('images/logo animalerie.png')); ?>" alt="Animalerie HMZ" class="h-10 w-auto">
-                </a>
-                
-                <!-- Panier + Profil (Droite) -->
-                <div class="flex items-center gap-2">
-                    <!-- Cart Icon -->
-                    <a href="<?php echo e(route('cart.show')); ?>" class="relative p-2 hover:bg-surface-container-low rounded-lg transition-colors">
-                        <span class="material-symbols-outlined text-on-surface">shopping_cart</span>
-                        <span class="absolute -top-1 -right-1 bg-primary text-on-primary text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center" id="cartCountMobile">0</span>
-                    </a>
-                    
-                    <?php if(auth()->guard()->check()): ?>
-                        <!-- Profile Icon -->
-                        <a href="<?php echo e(route('dashboard')); ?>" class="p-2 hover:bg-surface-container-low rounded-lg transition-colors">
-                            <span class="material-symbols-outlined text-primary">account_circle</span>
-                        </a>
-                    <?php else: ?>
-                        <!-- Login Icon -->
-                        <a href="<?php echo e(route('login')); ?>" class="p-2 hover:bg-surface-container-low rounded-lg transition-colors">
-                            <span class="material-symbols-outlined text-on-surface">person</span>
-                        </a>
-                    <?php endif; ?>
+
+                    <!-- Mobile Menu Button -->
+                    <button class="md:hidden p-2 hover:bg-surface-container-low rounded-lg transition-colors" onclick="toggleMobileMenu()">
+                        <span class="material-symbols-outlined text-on-surface">menu</span>
+                    </button>
                 </div>
             </div>
 
-            <!-- Mobile Menu Overlay -->
-            <div class="mobile-menu-overlay"></div>
-            
-            <!-- Mobile Menu Sidebar -->
-            <div class="mobile-menu">
-                <div class="mobile-menu-header">
-                    <div class="flex items-center gap-3">
-                        <img src="<?php echo e(asset('images/logo animalerie.png')); ?>" alt="Logo" class="h-10 w-auto">
-                        <span class="font-headline text-lg font-bold text-primary">Animalerie HMZ</span>
-                    </div>
-                    <button class="mobile-menu-close" data-mobile-menu-close>
-                        <span class="material-symbols-outlined">close</span>
-                    </button>
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="hidden md:hidden pb-4 border-t border-outline-variant mt-2 pt-4">
+                <div class="flex flex-col gap-2">
+                    <a href="<?php echo e(route('products.index', ['category' => 'pigeons'])); ?>" class="px-4 py-2 text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">Pigeons</a>
+                    <a href="<?php echo e(route('products.index', ['category' => 'chats'])); ?>" class="px-4 py-2 text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">Chats</a>
+                    <a href="<?php echo e(route('products.index', ['category' => 'oiseaux'])); ?>" class="px-4 py-2 text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">Oiseaux</a>
+                    <a href="<?php echo e(route('home')); ?>#offres" class="px-4 py-2 text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">Offres</a>
+                    <a href="#contact" class="px-4 py-2 text-on-surface hover:bg-surface-container-low rounded-lg transition-colors" onclick="scrollToContact(event)">Contact</a>
                 </div>
-                <nav class="mobile-menu-nav">
-                    <a href="<?php echo e(route('home')); ?>" class="mobile-menu-link">
-                        <span class="material-symbols-outlined">home</span>
-                        Accueil
-                    </a>
-                    <a href="#pigeons" class="mobile-menu-link">
-                        <span class="material-symbols-outlined">flutter</span>
-                        Pigeons
-                    </a>
-                    <a href="#chats" class="mobile-menu-link">
-                        <span class="material-symbols-outlined">pets</span>
-                        Chats
-                    </a>
-                    <a href="#oiseaux" class="mobile-menu-link">
-                        <span class="material-symbols-outlined">flutter_dash</span>
-                        Oiseaux
-                    </a>
-                    <a href="#offres" class="mobile-menu-link">
-                        <span class="material-symbols-outlined">local_offer</span>
-                        Offres
-                    </a>
-                    <a href="<?php echo e(route('products.index')); ?>" class="mobile-menu-link">
-                        <span class="material-symbols-outlined">shopping_bag</span>
-                        Tous les produits
-                    </a>
-                    <a href="#contact" class="mobile-menu-link">
-                        <span class="material-symbols-outlined">contact_mail</span>
-                        Contact
-                    </a>
-                </nav>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <main>
+    <main class="flex-grow">
         <?php echo $__env->yieldContent('content'); ?>
     </main>
-    
-    <!-- Bouton Retour en Haut (z-index élevé pour être devant tout) -->
-    <button id="scrollToTopBtn" class="fixed bottom-6 right-6 w-12 h-12 bg-primary text-white rounded-full shadow-lg hover:bg-primary-container transition-all duration-300 z-[9999] opacity-0 pointer-events-none" aria-label="Retour en haut">
-        <span class="material-symbols-outlined">arrow_upward</span>
-    </button>
 
     <!-- Footer -->
     <footer id="contact" class="bg-primary text-on-primary py-16">
@@ -304,8 +229,8 @@
                     <ul class="space-y-3">
                         <li><a href="<?php echo e(route('home')); ?>" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Accueil</a></li>
                         <li><a href="<?php echo e(route('products.index')); ?>" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Produits</a></li>
-                        <li><a href="#offres" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Offres</a></li>
-                        <li><a href="#contact" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Contact</a></li>
+                        <li><a href="<?php echo e(route('home')); ?>#offres" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Offres</a></li>
+                        <li><a href="#contact" onclick="scrollToContact(event)" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Contact</a></li>
                     </ul>
                 </div>
 
@@ -365,62 +290,21 @@
         </div>
     </footer>
 
-    <!-- Toast Notification Container -->
-    <div id="toastContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
-
-    <!-- Toast Notification Script -->
-    <script>
-        // Simple toast notification system
-        window.showToast = function({ type = 'info', title = '', message = '', icon = '', duration = 3000 }) {
-            const container = document.getElementById('toastContainer');
-            if (!container) return;
-
-            const colors = {
-                success: 'bg-green-500',
-                error: 'bg-red-500',
-                info: 'bg-blue-500',
-                warning: 'bg-yellow-500'
-            };
-
-            const toast = document.createElement('div');
-            toast.className = `${colors[type] || colors.info} text-white px-6 py-4 rounded-lg shadow-lg flex items-center gap-3 min-w-[300px] transform transition-all duration-300 translate-x-full`;
-            
-            toast.innerHTML = `
-                ${icon ? `<span class="material-symbols-outlined">${icon}</span>` : ''}
-                <div class="flex-1">
-                    ${title ? `<div class="font-bold">${title}</div>` : ''}
-                    ${message ? `<div class="text-sm">${message}</div>` : ''}
-                </div>
-                <button onclick="this.parentElement.remove()" class="text-white hover:text-gray-200">
-                    <span class="material-symbols-outlined text-sm">close</span>
-                </button>
-            `;
-
-            container.appendChild(toast);
-
-            // Animate in
-            setTimeout(() => {
-                toast.classList.remove('translate-x-full');
-            }, 10);
-
-            // Auto remove
-            setTimeout(() => {
-                toast.classList.add('translate-x-full', 'opacity-0');
-                setTimeout(() => toast.remove(), 300);
-            }, duration);
-        };
-    </script>
-
-    <!-- Cart Management Script -->
-    <script src="<?php echo e(asset('js/cart.js')); ?>"></script>
-    
-    <!-- Alpine.js for dropdowns -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
     <script>
         function toggleMobileMenu() {
             const menu = document.getElementById('mobileMenu');
             menu.classList.toggle('hidden');
+        }
+
+        function scrollToContact(event) {
+            event.preventDefault();
+            const contactSection = document.getElementById('contact');
+            if (contactSection) {
+                contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                // Si on n'est pas sur la page d'accueil, rediriger vers la page d'accueil avec l'ancre
+                window.location.href = "<?php echo e(route('home')); ?>#contact";
+            }
         }
 
         // Update cart count from session
@@ -429,9 +313,15 @@
             // For now, it will show 0
         });
     </script>
+
+    <!-- Toast Notifications -->
+    <?php echo $__env->make('components.toast-notification', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+
+    <!-- Cart Management Script -->
+    <script src="<?php echo e(asset('js/cart.js')); ?>"></script>
     
-    <!-- Testimonials Scroll Indicators -->
-    <script src="<?php echo e(asset('js/testimonials-scroll.js')); ?>" defer></script>
+    <!-- Mobile Scroll & Product Gallery Script -->
+    <script src="<?php echo e(asset('js/testimonials-scroll.js')); ?>"></script>
 </body>
 </html>
-<?php /**PATH C:\Users\User\Desktop\animx\AnimalerieHMZ\resources\views/layouts/public.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\User\Desktop\animx\AnimalerieHMZ\resources\views/layouts/app.blade.php ENDPATH**/ ?>

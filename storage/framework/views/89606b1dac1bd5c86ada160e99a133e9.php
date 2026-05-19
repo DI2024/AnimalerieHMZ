@@ -1,3 +1,5 @@
+<?php $__env->startSection('title', 'Accueil - Animalerie HMZ'); ?>
+
 <?php $__env->startSection('content'); ?>
     <!-- Hero Section avec Grid - Largeur limitée et centrée -->
     <section class="bg-white py-8">
@@ -212,7 +214,7 @@
                                     <img src="<?php echo e($imageUrl); ?>" 
                                          alt="<?php echo e($product->name); ?>" 
                                          class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
-                                         onerror="this.src='https://via.placeholder.com/300x300?text=No+Image'">
+                                         onerror="this.src='<?php echo e(asset('images/placeholder.svg')); ?>'">
                                     <?php if($product->rating): ?>
                                         <div class="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded-full">⭐ <?php echo e(number_format($product->rating, 1)); ?></div>
                                     <?php endif; ?>
