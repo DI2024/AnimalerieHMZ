@@ -1,59 +1,80 @@
-@extends('layouts.admin')
 
-@section('title', 'Add Hero Slide')
-@section('page-title', 'Add New Hero Slide')
 
-@section('content')
+<?php $__env->startSection('title', 'Edit Hero Slide'); ?>
+<?php $__env->startSection('page-title', 'Edit Hero Slide'); ?>
+
+<?php $__env->startSection('content'); ?>
 <div class="space-y-6">
     
     <!-- Header -->
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-3xl font-bold text-gray-900">➕ Add New Hero Slide</h1>
-            <p class="text-gray-600 mt-1">Create a new hero slide for your homepage.</p>
+            <h1 class="text-3xl font-bold text-gray-900">✏️ Edit Hero Slide</h1>
+            <p class="text-gray-600 mt-1">Update hero slide information.</p>
         </div>
-        <a href="{{ route('admin.sections.hero.index') }}" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+        <a href="<?php echo e(route('admin.sections.hero.index')); ?>" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
             <i class="fas fa-arrow-left mr-2"></i>
             Back to Slides
         </a>
     </div>
     
     <!-- Form -->
-    <form action="{{ route('admin.sections.hero.store') }}" method="POST" enctype="multipart/form-data" class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-        @csrf
+    <form action="<?php echo e(route('admin.sections.hero.update', $slide)); ?>" method="POST" enctype="multipart/form-data" class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+        <?php echo csrf_field(); ?>
+        <?php echo method_field('PUT'); ?>
         
         <div class="space-y-6">
+            
+            <!-- Current Image -->
+            <?php if($slide->image): ?>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Current Image
+                    </label>
+                    <div class="border-2 border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <?php
+                            // Handle both URL and local path
+                            if (filter_var($slide->image, FILTER_VALIDATE_URL)) {
+                                $imageUrl = $slide->image;
+                            } elseif (str_starts_with($slide->image, 'images/')) {
+                                // Local public path (e.g., images/sec her.png)
+                                $imageUrl = asset($slide->image);
+                            } else {
+                                // Storage path (e.g., hero_slides/xyz.jpg)
+                                $imageUrl = asset('storage/' . $slide->image);
+                            }
+                        ?>
+                        <img src="<?php echo e($imageUrl); ?>" alt="<?php echo e($slide->title); ?>" class="max-w-full max-h-64 mx-auto rounded-lg shadow-md">
+                    </div>
+                </div>
+            <?php endif; ?>
             
             <!-- Image Upload -->
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                    Slide Image <span class="text-red-500">*</span>
+                    Change Image (Optional)
                 </label>
                 <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-[#003e87] transition-colors bg-gray-50">
                     <div id="image-preview" class="mb-4">
                         <i class="fas fa-image text-gray-400 text-6xl"></i>
                     </div>
-                    <input type="file" name="image" id="image-input" accept="image/jpeg,image/jpg,image/png,image/webp" class="hidden" required onchange="previewImage(this)">
+                    <input type="file" name="image" id="image-input" accept="image/jpeg,image/jpg,image/png,image/webp" class="hidden" onchange="previewImage(this)">
                     <label for="image-input" class="cursor-pointer inline-flex items-center px-6 py-3 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] transition-all text-sm font-semibold">
                         <i class="fas fa-upload mr-2"></i>
-                        Choose Image
+                        Choose New Image
                     </label>
                     <p class="text-xs text-gray-500 mt-2">Recommended: 1920x600px, Max 2MB (JPG, PNG, WEBP)</p>
                 </div>
-                @error('image')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-            
-            <!-- Info Box -->
-            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <div class="flex items-start">
-                    <i class="fas fa-info-circle text-blue-500 mt-1 mr-3"></i>
-                    <div>
-                        <h4 class="font-semibold text-blue-900 mb-1">Automatic Configuration</h4>
-                        <p class="text-sm text-blue-800">All hero slides automatically link to the products page with the button text "Voir nos produits". You only need to upload an image and set the active status.</p>
-                    </div>
-                </div>
+                <?php $__errorArgs = ['image'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <p class="text-red-500 text-sm mt-1"><?php echo e($message); ?></p>
+                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
             </div>
             
             <!-- Title -->
@@ -88,7 +109,7 @@
                 <label for="button_link" class="block text-sm font-medium text-gray-400 mb-2">
                     Button Link (Auto: Products Page)
                 </label>
-                <input type="text" id="button_link" name="button_link" value="{{ route('products.index') }}" disabled class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg bg-gray-100 text-gray-500 cursor-not-allowed" placeholder="Automatically set">
+                <input type="text" id="button_link" name="button_link" value="<?php echo e(route('products.index')); ?>" disabled class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg bg-gray-100 text-gray-500 cursor-not-allowed" placeholder="Automatically set">
                 <p class="text-xs text-gray-500 mt-1">All slides automatically link to products page</p>
             </div>
             
@@ -97,14 +118,14 @@
                 <label for="order" class="block text-sm font-medium text-gray-400 mb-2">
                     Display Order
                 </label>
-                <input type="number" id="order" name="order" value="{{ old('order', 0) }}" disabled class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg bg-gray-100 text-gray-500 cursor-not-allowed">
+                <input type="number" id="order" name="order" value="<?php echo e(old('order', $slide->order)); ?>" disabled class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg bg-gray-100 text-gray-500 cursor-not-allowed">
                 <p class="text-xs text-gray-500 mt-1">Order is managed from the slides list</p>
             </div>
             
             <!-- Active Status -->
             <div class="flex items-center">
                 <input type="hidden" name="is_active" value="0">
-                <input type="checkbox" id="is_active" name="is_active" value="1" {{ old('is_active', true) ? 'checked' : '' }} class="w-5 h-5 text-[#003e87] border-gray-300 rounded focus:ring-[#003e87]">
+                <input type="checkbox" id="is_active" name="is_active" value="1" <?php echo e(old('is_active', $slide->is_active) ? 'checked' : ''); ?> class="w-5 h-5 text-[#003e87] border-gray-300 rounded focus:ring-[#003e87]">
                 <label for="is_active" class="ml-3 text-sm font-medium text-gray-700">
                     Active (Display on homepage)
                 </label>
@@ -112,12 +133,12 @@
             
             <!-- Submit Buttons -->
             <div class="flex items-center justify-end space-x-3 pt-6 border-t">
-                <a href="{{ route('admin.sections.hero.index') }}" class="px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors font-medium">
+                <a href="<?php echo e(route('admin.sections.hero.index')); ?>" class="px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors font-medium">
                     Cancel
                 </a>
                 <button type="submit" class="px-6 py-3 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] transition-colors font-medium shadow-sm">
                     <i class="fas fa-save mr-2"></i>
-                    Create Slide
+                    Update Slide
                 </button>
             </div>
             
@@ -126,7 +147,7 @@
     
 </div>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
     function previewImage(input) {
         const preview = document.getElementById('image-preview');
@@ -141,5 +162,7 @@
         }
     }
 </script>
-@endpush
-@endsection
+<?php $__env->stopPush(); ?>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\temp-laravel\AnimalerieHMZ\resources\views/admin/sections/hero/edit.blade.php ENDPATH**/ ?>

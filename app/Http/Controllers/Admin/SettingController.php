@@ -17,7 +17,6 @@ class SettingController extends Controller
             'contact_email' => Setting::get('contact_email', 'contact@animaleriehmz.ma'),
             'contact_phone' => Setting::get('contact_phone', '+212 626-911209'),
             'footer_description' => Setting::get('footer_description', 'Animalerie HMZ - Votre boutique en ligne pour tous vos animaux de compagnie au Maroc.'),
-            'footer_copyright' => Setting::get('footer_copyright', '© 2024 Animalerie HMZ. Tous droits réservés.'),
         ];
 
         return view('admin.settings.index', compact('settings'));
@@ -41,11 +40,9 @@ class SettingController extends Controller
     {
         $validated = $request->validate([
             'footer_description' => 'required|string|max:500',
-            'footer_copyright' => 'required|string|max:255',
         ]);
 
         Setting::set('footer_description', $validated['footer_description']);
-        Setting::set('footer_copyright', $validated['footer_copyright']);
         
         return redirect()->route('admin.settings.index')
             ->with('success', 'Texte du footer mis à jour avec succès!');

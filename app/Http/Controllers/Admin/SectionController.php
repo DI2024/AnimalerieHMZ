@@ -33,16 +33,18 @@ class SectionController extends Controller
     public function heroStore(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'nullable|string|max:255',
-            'subtitle' => 'nullable|string|max:255',
             'image' => 'required|image|mimes:jpeg,jpg,png,webp|max:2048',
-            'button_text' => 'nullable|string|max:100',
-            'button_link' => 'nullable|string|max:255',
             'order' => 'required|integer|min:0',
             'is_active' => 'boolean',
         ]);
 
         $validated['is_active'] = $request->has('is_active');
+        
+        // Automatically set all slides to link to products page
+        $validated['button_link'] = route('products.index');
+        $validated['button_text'] = 'Voir nos produits';
+        $validated['title'] = null;
+        $validated['subtitle'] = null;
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('hero_slides', 'public');
@@ -62,16 +64,18 @@ class SectionController extends Controller
     public function heroUpdate(Request $request, HeroSlide $slide)
     {
         $validated = $request->validate([
-            'title' => 'nullable|string|max:255',
-            'subtitle' => 'nullable|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
-            'button_text' => 'nullable|string|max:100',
-            'button_link' => 'nullable|string|max:255',
             'order' => 'required|integer|min:0',
             'is_active' => 'boolean',
         ]);
 
         $validated['is_active'] = $request->has('is_active');
+        
+        // Automatically set all slides to link to products page
+        $validated['button_link'] = route('products.index');
+        $validated['button_text'] = 'Voir nos produits';
+        $validated['title'] = null;
+        $validated['subtitle'] = null;
 
         if ($request->hasFile('image')) {
             // Delete old image
