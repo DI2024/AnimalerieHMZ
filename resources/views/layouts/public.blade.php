@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'Animalerie HMZ') }} - Tout pour vos animaux</title>
+    <title>@yield('title', config('app.name', 'Animalerie HMZ') . ' - Tout pour vos animaux')</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ asset('images/logo animalerie.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('images/logo animalerie.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/logo animalerie.png') }}">
     
     <!-- Material Symbols -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -363,45 +365,69 @@
         </div>
     </footer>
 
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <!-- Toast Notification Script -->
     <script>
+        // Simple toast notification system
+        window.showToast = function({ type = 'info', title = '', message = '', icon = '', duration = 3000 }) {
+            const container = document.getElementById('toastContainer');
+            if (!container) return;
+
+            const colors = {
+                success: 'bg-green-500',
+                error: 'bg-red-500',
+                info: 'bg-blue-500',
+                warning: 'bg-yellow-500'
+            };
+
+            const toast = document.createElement('div');
+            toast.className = `${colors[type] || colors.info} text-white px-6 py-4 rounded-lg shadow-lg flex items-center gap-3 min-w-[300px] transform transition-all duration-300 translate-x-full`;
+            
+            toast.innerHTML = `
+                ${icon ? `<span class="material-symbols-outlined">${icon}</span>` : ''}
+                <div class="flex-1">
+                    ${title ? `<div class="font-bold">${title}</div>` : ''}
+                    ${message ? `<div class="text-sm">${message}</div>` : ''}
+                </div>
+                <button onclick="this.parentElement.remove()" class="text-white hover:text-gray-200">
+                    <span class="material-symbols-outlined text-sm">close</span>
+                </button>
+            `;
+
+            container.appendChild(toast);
+
+            // Animate in
+            setTimeout(() => {
+                toast.classList.remove('translate-x-full');
+            }, 10);
+
+            // Auto remove
+            setTimeout(() => {
+                toast.classList.add('translate-x-full', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+        };
+    </script>
+
+    <!-- Cart Management Script -->
+    <script src="{{ asset('js/cart.js') }}"></script>
+    
+    <!-- Alpine.js for dropdowns -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
         // Update cart count from session
         document.addEventListener('DOMContentLoaded', function() {
-            // Fetch cart count via AJAX
-            updateCartCount();
-            
-            // Scroll to Top Button
-            initScrollToTop();
-        });
-        
-        function updateCartCount() {
-            // Implement cart count update logic here
+            // You can fetch cart count via AJAX here
             // For now, it will show 0
-        }
-        
-        // Scroll to Top Button Logic
-        function initScrollToTop() {
-            const scrollBtn = document.getElementById('scrollToTopBtn');
-            if (!scrollBtn) return;
-            
-            // Show/hide button based on scroll position
-            window.addEventListener('scroll', function() {
-                if (window.pageYOffset > 300) {
-                    scrollBtn.style.opacity = '1';
-                    scrollBtn.style.pointerEvents = 'auto';
-                } else {
-                    scrollBtn.style.opacity = '0';
-                    scrollBtn.style.pointerEvents = 'none';
-                }
-            });
-            
-            // Scroll to top when clicked
-            scrollBtn.addEventListener('click', function() {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
-        }
+        });
     </script>
     
     <!-- Testimonials Scroll Indicators -->

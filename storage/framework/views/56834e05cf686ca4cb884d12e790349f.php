@@ -220,7 +220,7 @@
                                              alt="<?php echo e($product->name); ?>" 
                                              class="w-full h-full object-contain" 
                                              loading="lazy"
-                                             onerror="this.src='https://via.placeholder.com/300x300?text=No+Image'">
+                                             onerror="this.src='<?php echo e(asset('images/placeholder.svg')); ?>'">
                                     </div>
                                     <div class="flex-grow flex flex-col">
                                         <span class="text-[10px] font-bold uppercase tracking-wider text-primary mb-1">

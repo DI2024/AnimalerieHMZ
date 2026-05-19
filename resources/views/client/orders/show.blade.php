@@ -49,7 +49,7 @@
                                 <img src="{{ $imageUrl }}" 
                                      alt="{{ $item->product_name }}" 
                                      class="w-20 h-20 object-contain rounded-lg"
-                                     onerror="this.src='https://via.placeholder.com/100x100?text=No+Image'">
+                                     onerror="this.src='{{ asset('images/placeholder.svg') }}'">
                                 <div class="flex-1">
                                     <h4 class="font-semibold text-gray-900">{{ $item->product_name }}</h4>
                                     @if($item->product_sku)

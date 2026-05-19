@@ -175,21 +175,6 @@
                         @enderror
                     </div>
 
-                    <div class="form-group">
-                        <label class="form-label">
-                            Copyright
-                        </label>
-                        <input type="text" 
-                               name="footer_copyright" 
-                               class="form-input" 
-                               value="{{ old('footer_copyright', $settings['footer_copyright']) }}"
-                               required>
-                        <p class="help-text">Texte de copyright</p>
-                        @error('footer_copyright')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
                     <div class="flex justify-end mt-6">
                         <button type="submit" class="save-button">
                             <i class="fas fa-save"></i> 

@@ -1,9 +1,9 @@
-@extends('layouts.admin')
 
-@section('title', 'Produits')
-@section('page-title', 'Gestion des Produits')
 
-@push('styles')
+<?php $__env->startSection('title', 'Produits'); ?>
+<?php $__env->startSection('page-title', 'Gestion des Produits'); ?>
+
+<?php $__env->startPush('styles'); ?>
 <style>
     /* View Mode Styles */
     .view-toggle button {
@@ -241,15 +241,15 @@
         background: #f9fafb;
     }
 </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="flex gap-6 relative">
     
     <!-- Filter Sidebar Wrapper (for mobile overlay) -->
     <div id="filter-sidebar-wrapper" class="filter-sidebar-wrapper hidden lg:contents">
         <!-- Filter Sidebar -->
-        @include('admin.products.partials.filter-sidebar', ['categories' => $categories])
+        <?php echo $__env->make('admin.products.partials.filter-sidebar', ['categories' => $categories], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     </div>
 
     <!-- Main Content -->
@@ -259,10 +259,10 @@
         <div class="bg-white rounded-lg shadow p-4 sticky top-0 z-30">
             <!-- Primary Actions Row -->
             <div class="flex items-center gap-3 mb-3">
-                <form method="GET" action="{{ route('admin.products.index') }}" class="flex items-center gap-3 flex-1">
+                <form method="GET" action="<?php echo e(route('admin.products.index')); ?>" class="flex items-center gap-3 flex-1">
                     <!-- Large Search Input -->
                     <div class="relative flex-1 min-w-[200px] max-w-[600px]">
-                        <input type="text" id="quick-search" name="search" value="{{ request('search') }}" placeholder="Rechercher des produits..." 
+                        <input type="text" id="quick-search" name="search" value="<?php echo e(request('search')); ?>" placeholder="Rechercher des produits..." 
                                class="w-full pl-10 pr-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm">
                         <i class="fas fa-search absolute left-3 top-3.5 text-gray-400"></i>
                     </div>
@@ -274,7 +274,7 @@
                     </button>
                 </form>
 
-                <a href="{{ route('admin.products.create') }}" 
+                <a href="<?php echo e(route('admin.products.create')); ?>" 
                    class="px-4 py-2.5 bg-[#003e87] text-white border-2 border-[#003e87] rounded-lg hover:bg-white hover:text-[#003e87] text-sm font-bold whitespace-nowrap transition-all shadow-md hover:shadow-lg">
                     <i class="fas fa-plus mr-2"></i>Nouveau Produit
                 </a>
@@ -335,71 +335,71 @@
         <div id="products-container">
             <!-- Card View (Default) -->
             <div id="card-view" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                @forelse($products as $product)
-                    @include('admin.products.partials.card', ['product' => $product])
-                @empty
+                <?php $__empty_1 = true; $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                    <?php echo $__env->make('admin.products.partials.card', ['product' => $product], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <div class="col-span-full text-center py-12">
                         <i class="fas fa-box-open text-6xl text-gray-300 mb-4"></i>
                         <p class="text-gray-500 text-lg">Aucun produit trouvé</p>
                     </div>
-                @endforelse
+                <?php endif; ?>
             </div>
 
             <!-- Table View (Hidden) -->
             <div id="table-view" class="hidden bg-white rounded-lg shadow overflow-hidden">
-                @include('admin.products.partials.table', ['products' => $products])
+                <?php echo $__env->make('admin.products.partials.table', ['products' => $products], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
             </div>
 
             <!-- List View (Hidden) -->
             <div id="list-view" class="hidden bg-white rounded-lg shadow">
-                @forelse($products as $product)
-                    @include('admin.products.partials.list', ['product' => $product])
-                @empty
+                <?php $__empty_1 = true; $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                    <?php echo $__env->make('admin.products.partials.list', ['product' => $product], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <div class="text-center py-12">
                         <i class="fas fa-box-open text-6xl text-gray-300 mb-4"></i>
                         <p class="text-gray-500 text-lg">Aucun produit trouvé</p>
                     </div>
-                @endforelse
+                <?php endif; ?>
             </div>
         </div>
 
         <!-- Pagination -->
-        @if($products->hasPages())
+        <?php if($products->hasPages()): ?>
         <div class="mt-6 flex justify-center">
             <nav class="inline-flex items-center gap-1 rounded-lg shadow-sm">
                 <!-- Previous Arrow -->
-                @if($products->onFirstPage())
+                <?php if($products->onFirstPage()): ?>
                     <span class="px-3 py-2 border border-gray-300 bg-gray-100 text-gray-400 rounded-l-lg cursor-not-allowed">
                         <i class="fas fa-chevron-left"></i>
                     </span>
-                @else
-                    <a href="{{ $products->previousPageUrl() }}" class="px-3 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-l-lg transition-colors">
+                <?php else: ?>
+                    <a href="<?php echo e($products->previousPageUrl()); ?>" class="px-3 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-l-lg transition-colors">
                         <i class="fas fa-chevron-left"></i>
                     </a>
-                @endif
+                <?php endif; ?>
                 
                 <!-- Page Numbers -->
-                @foreach(range(1, $products->lastPage()) as $page)
-                    @if($page == $products->currentPage())
-                        <span class="px-4 py-2 border-t border-b border-gray-300 bg-[#003e87] text-white text-sm font-medium">{{ $page }}</span>
-                    @else
-                        <a href="{{ $products->url($page) }}" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">{{ $page }}</a>
-                    @endif
-                @endforeach
+                <?php $__currentLoopData = range(1, $products->lastPage()); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $page): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php if($page == $products->currentPage()): ?>
+                        <span class="px-4 py-2 border-t border-b border-gray-300 bg-[#003e87] text-white text-sm font-medium"><?php echo e($page); ?></span>
+                    <?php else: ?>
+                        <a href="<?php echo e($products->url($page)); ?>" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"><?php echo e($page); ?></a>
+                    <?php endif; ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 
                 <!-- Next Arrow -->
-                @if($products->hasMorePages())
-                    <a href="{{ $products->nextPageUrl() }}" class="px-3 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-r-lg transition-colors">
+                <?php if($products->hasMorePages()): ?>
+                    <a href="<?php echo e($products->nextPageUrl()); ?>" class="px-3 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-r-lg transition-colors">
                         <i class="fas fa-chevron-right"></i>
                     </a>
-                @else
+                <?php else: ?>
                     <span class="px-3 py-2 border border-gray-300 bg-gray-100 text-gray-400 rounded-r-lg cursor-not-allowed">
                         <i class="fas fa-chevron-right"></i>
                     </span>
-                @endif
+                <?php endif; ?>
             </nav>
         </div>
-        @endif
+        <?php endif; ?>
     </div>
 </div>
 
@@ -453,9 +453,9 @@
     </div>
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
     let selectedProducts = new Set();
     let currentView = 'card';
@@ -593,7 +593,7 @@
     // Execute Bulk Action
     function executeBulkAction(action) {
         // Send AJAX request
-        fetch('{{ route("admin.products.bulk-action") }}', {
+        fetch('<?php echo e(route("admin.products.bulk-action")); ?>', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -756,8 +756,8 @@
                 form.method = 'POST';
                 form.action = `/admin/products/${productId}`;
                 form.innerHTML = `
-                    @csrf
-                    @method('DELETE')
+                    <?php echo csrf_field(); ?>
+                    <?php echo method_field('DELETE'); ?>
                 `;
                 document.body.appendChild(form);
                 form.submit();
@@ -792,4 +792,6 @@
         });
     }
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\temp-laravel\AnimalerieHMZ\resources\views/admin/products/index.blade.php ENDPATH**/ ?>

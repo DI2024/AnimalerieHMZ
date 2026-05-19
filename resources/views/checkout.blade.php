@@ -161,7 +161,7 @@
                                     <img src="{{ $imageUrl }}" 
                                          alt="{{ $item['product']->name }}" 
                                          class="w-full h-full object-contain"
-                                         onerror="this.src='https://via.placeholder.com/100x100?text=No+Image'">
+                                         onerror="this.src='{{ asset('images/placeholder.svg') }}'">
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <h4 class="font-bold text-sm leading-tight mb-1 text-on-surface">{{ $item['product']->name }}</h4>

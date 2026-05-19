@@ -30,45 +30,11 @@
         <div class="lg:col-span-6 space-y-4">
             <!-- Image principale (Desktop) ou Galerie scroll (Mobile si plusieurs images) -->
             <div class="relative aspect-square rounded-[2.5rem] overflow-hidden bg-white shadow-xl group max-w-[500px] mx-auto">
-                @php
-                    // Simuler plusieurs images pour la démo (à remplacer par les vraies images du produit)
-                    $productImages = [$imageUrl]; // Image principale
-                    // Si le produit a d'autres images, les ajouter ici
-                    // Exemple: $productImages = [$product->image, $product->image2, $product->image3];
-                @endphp
-                
-                @if(count($productImages) > 1)
-                    <!-- Galerie scroll horizontal (Mobile uniquement) -->
-                    <div class="product-gallery-scroll md:hidden">
-                        @foreach($productImages as $index => $img)
-                            @php
-                                $imgUrl = $img && str_starts_with($img, 'http') ? $img : asset($img);
-                            @endphp
-                            <div class="product-gallery-slide">
-                                <img src="{{ $imgUrl }}" 
-                                     alt="{{ $product->name }} - Image {{ $index + 1 }}" 
-                                     class="w-full h-full object-contain p-8"
-                                     onerror="this.src='https://via.placeholder.com/800x800?text=No+Image'">
-                            </div>
-                        @endforeach
-                    </div>
-                    
-                    <!-- Indicateurs (dots) pour la galerie mobile -->
-                    <div class="product-gallery-indicators md:hidden"></div>
-                    
-                    <!-- Image principale (Desktop) -->
-                    <img src="{{ $imageUrl }}" 
-                         alt="{{ $product->name }}" 
-                         class="hidden md:block w-full h-full object-contain transition-transform duration-700 group-hover:scale-105 p-8"
-                         onerror="this.src='https://via.placeholder.com/800x800?text=No+Image'">
-                @else
-                    <!-- Une seule image (Mobile + Desktop) -->
-                    <img id="mainImage" 
-                         src="{{ $imageUrl }}" 
-                         alt="{{ $product->name }}" 
-                         class="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105 p-8"
-                         onerror="this.src='https://via.placeholder.com/800x800?text=No+Image'">
-                @endif
+                <img id="mainImage" 
+                     src="{{ $imageUrl }}" 
+                     alt="{{ $product->name }}" 
+                     class="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105 p-8"
+                     onerror="this.src='https://via.placeholder.com/800x800?text=No+Image'">
                 
                 <!-- Wishlist Button - Top Right -->
                 <button id="likeBtn" class="absolute top-6 right-6 w-12 h-12 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition group/like z-10">
@@ -233,7 +199,7 @@
                             <div class="aspect-square rounded-[1.5rem] overflow-hidden mb-4 relative bg-gradient-to-br from-gray-50 to-gray-100">
                                 <img src="{{ $relatedImageUrl }}" 
                                      class="w-full h-full object-contain p-4"
-                                     onerror="this.src='https://via.placeholder.com/300x300?text=No+Image'">
+                                     onerror="this.src='{{ asset('images/placeholder.svg') }}'">
                             </div>
                             <h3 class="font-bold text-base px-2 line-clamp-2">{{ $related->name }}</h3>
                             <p class="text-on-surface-variant/60 text-sm px-2 mb-4">{{ $related->category->name }}</p>

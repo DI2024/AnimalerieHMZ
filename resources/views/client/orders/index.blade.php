@@ -54,7 +54,7 @@
                                     <img src="{{ $imageUrl }}" 
                                          alt="{{ $item->product_name }}" 
                                          class="w-16 h-16 object-contain rounded-lg"
-                                         onerror="this.src='https://via.placeholder.com/100x100?text=No+Image'">
+                                         onerror="this.src='{{ asset('images/placeholder.svg') }}'">
                                     <div class="flex-1">
                                         <h4 class="font-semibold text-sm text-gray-900 line-clamp-1">{{ $item->product_name }}</h4>
                                         <p class="text-xs text-gray-500">Qté: {{ $item->quantity }}</p>

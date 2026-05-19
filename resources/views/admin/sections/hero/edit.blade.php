@@ -72,58 +72,47 @@
             
             <!-- Title -->
             <div>
-                <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
-                    Title (Optional)
+                <label for="title" class="block text-sm font-medium text-gray-400 mb-2">
+                    Title (Auto: Links to Products)
                 </label>
-                <input type="text" id="title" name="title" value="{{ old('title', $slide->title) }}" maxlength="255" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#003e87] focus:border-transparent" placeholder="Enter slide title">
-                @error('title')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
+                <input type="text" id="title" name="title" value="Automatic - Links to Products Page" disabled class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg bg-gray-100 text-gray-500 cursor-not-allowed" placeholder="Automatically set">
+                <p class="text-xs text-gray-500 mt-1">This field is automatically managed</p>
             </div>
             
             <!-- Subtitle -->
             <div>
-                <label for="subtitle" class="block text-sm font-medium text-gray-700 mb-2">
-                    Subtitle (Optional)
+                <label for="subtitle" class="block text-sm font-medium text-gray-400 mb-2">
+                    Subtitle (Auto: Links to Products)
                 </label>
-                <input type="text" id="subtitle" name="subtitle" value="{{ old('subtitle', $slide->subtitle) }}" maxlength="255" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#003e87] focus:border-transparent" placeholder="Enter slide subtitle">
-                @error('subtitle')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
+                <input type="text" id="subtitle" name="subtitle" value="Automatic - Links to Products Page" disabled class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg bg-gray-100 text-gray-500 cursor-not-allowed" placeholder="Automatically set">
+                <p class="text-xs text-gray-500 mt-1">This field is automatically managed</p>
             </div>
             
             <!-- Button Text -->
             <div>
-                <label for="button_text" class="block text-sm font-medium text-gray-700 mb-2">
-                    Button Text (Optional)
+                <label for="button_text" class="block text-sm font-medium text-gray-400 mb-2">
+                    Button Text (Auto: "Voir nos produits")
                 </label>
-                <input type="text" id="button_text" name="button_text" value="{{ old('button_text', $slide->button_text) }}" maxlength="100" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#003e87] focus:border-transparent" placeholder="e.g., Shop Now">
-                @error('button_text')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
+                <input type="text" id="button_text" name="button_text" value="Voir nos produits" disabled class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg bg-gray-100 text-gray-500 cursor-not-allowed" placeholder="Automatically set">
+                <p class="text-xs text-gray-500 mt-1">This field is automatically managed</p>
             </div>
             
             <!-- Button Link -->
             <div>
-                <label for="button_link" class="block text-sm font-medium text-gray-700 mb-2">
-                    Button Link (Optional)
+                <label for="button_link" class="block text-sm font-medium text-gray-400 mb-2">
+                    Button Link (Auto: Products Page)
                 </label>
-                <input type="text" id="button_link" name="button_link" value="{{ old('button_link', $slide->button_link) }}" maxlength="255" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#003e87] focus:border-transparent" placeholder="e.g., /products">
-                @error('button_link')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
+                <input type="text" id="button_link" name="button_link" value="{{ route('products.index') }}" disabled class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg bg-gray-100 text-gray-500 cursor-not-allowed" placeholder="Automatically set">
+                <p class="text-xs text-gray-500 mt-1">All slides automatically link to products page</p>
             </div>
             
             <!-- Order -->
             <div>
-                <label for="order" class="block text-sm font-medium text-gray-700 mb-2">
-                    Display Order <span class="text-red-500">*</span>
+                <label for="order" class="block text-sm font-medium text-gray-400 mb-2">
+                    Display Order
                 </label>
-                <input type="number" id="order" name="order" value="{{ old('order', $slide->order) }}" min="0" required class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#003e87] focus:border-transparent" placeholder="0">
-                <p class="text-xs text-gray-500 mt-1">Lower numbers appear first</p>
-                @error('order')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
+                <input type="number" id="order" name="order" value="{{ old('order', $slide->order) }}" disabled class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg bg-gray-100 text-gray-500 cursor-not-allowed">
+                <p class="text-xs text-gray-500 mt-1">Order is managed from the slides list</p>
             </div>
             
             <!-- Active Status -->

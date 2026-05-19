@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Admin - @yield('title', 'Dashboard') | Animalerie HMZ</title>
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+    <title>Admin - <?php echo $__env->yieldContent('title', 'Dashboard'); ?> | Animalerie HMZ</title>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ asset('images/logo animalerie.png') }}">
+    <link rel="icon" type="image/png" href="<?php echo e(asset('images/logo animalerie.png')); ?>">
     
     <!-- Material Symbols -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -88,7 +88,7 @@
             }
         }
     </style>
-    @stack('styles')
+    <?php echo $__env->yieldPushContent('styles'); ?>
 </head>
 <body>
     <!-- Sidebar -->
@@ -101,40 +101,40 @@
         </div>
         
         <nav class="flex flex-col gap-1">
-            <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+            <a href="<?php echo e(route('admin.dashboard')); ?>" class="nav-link <?php echo e(request()->routeIs('admin.dashboard') ? 'active' : ''); ?>">
                 <i class="fas fa-grid-2"></i>
                 <span class="font-semibold">Dashboard</span>
             </a>
             
             <div class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest mt-4">Boutique</div>
             
-            <a href="{{ route('admin.products.index') }}" class="nav-link {{ request()->is('admin/products*') ? 'active' : '' }}">
+            <a href="<?php echo e(route('admin.products.index')); ?>" class="nav-link <?php echo e(request()->is('admin/products*') ? 'active' : ''); ?>">
                 <i class="fas fa-box"></i>
                 <span class="font-semibold">Produits</span>
             </a>
-            <a href="{{ route('admin.categories.index') }}" class="nav-link {{ request()->is('admin/categories*') ? 'active' : '' }}">
+            <a href="<?php echo e(route('admin.categories.index')); ?>" class="nav-link <?php echo e(request()->is('admin/categories*') ? 'active' : ''); ?>">
                 <i class="fas fa-tags"></i>
                 <span class="font-semibold">Catégories</span>
             </a>
-            <a href="{{ route('admin.orders.index') }}" class="nav-link {{ request()->is('admin/orders*') ? 'active' : '' }}">
+            <a href="<?php echo e(route('admin.orders.index')); ?>" class="nav-link <?php echo e(request()->is('admin/orders*') ? 'active' : ''); ?>">
                 <i class="fas fa-shopping-cart"></i>
                 <span class="font-semibold">Commandes</span>
             </a>
             
             <div class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest mt-4">Marketing</div>
             
-            <a href="{{ route('admin.offers.index') }}" class="nav-link {{ request()->is('admin/offers*') ? 'active' : '' }}">
+            <a href="<?php echo e(route('admin.offers.index')); ?>" class="nav-link <?php echo e(request()->is('admin/offers*') ? 'active' : ''); ?>">
                 <i class="fas fa-percentage"></i>
                 <span class="font-semibold">Offres & Packs</span>
             </a>
             
             <div class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest mt-4">Système</div>
             
-            <a href="{{ route('admin.sections.index') }}" class="nav-link {{ request()->is('admin/sections*') ? 'active' : '' }}">
+            <a href="<?php echo e(route('admin.sections.index')); ?>" class="nav-link <?php echo e(request()->is('admin/sections*') ? 'active' : ''); ?>">
                 <i class="fas fa-layer-group"></i>
                 <span class="font-semibold">Sections Accueil</span>
             </a>
-            <a href="{{ route('admin.settings.index') }}" class="nav-link {{ request()->is('admin/settings*') ? 'active' : '' }}">
+            <a href="<?php echo e(route('admin.settings.index')); ?>" class="nav-link <?php echo e(request()->is('admin/settings*') ? 'active' : ''); ?>">
                 <i class="fas fa-cog"></i>
                 <span class="font-semibold">Paramètres</span>
             </a>
@@ -152,7 +152,7 @@
     <main class="main-content">
         <header class="flex justify-between items-center mb-10">
             <div>
-                <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">@yield('page-title', 'Tableau de bord')</h1>
+                <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight"><?php echo $__env->yieldContent('page-title', 'Tableau de bord'); ?></h1>
                 <p class="text-gray-500 font-medium mt-1">Bienvenue sur votre espace de gestion.</p>
             </div>
             
@@ -169,9 +169,10 @@
             </div>
         </header>
 
-        @yield('content')
+        <?php echo $__env->yieldContent('content'); ?>
     </main>
 
-    @stack('scripts')
+    <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
 </html>
+<?php /**PATH C:\xampp\htdocs\temp-laravel\AnimalerieHMZ\resources\views/layouts/admin.blade.php ENDPATH**/ ?>
