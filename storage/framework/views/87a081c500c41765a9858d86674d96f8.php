@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+<html lang="<?php echo e(str_replace('_', '-', app()->getLocale())); ?>" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'Animalerie HMZ') }} - Tout pour vos animaux</title>
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+    <title><?php echo e(config('app.name', 'Animalerie HMZ')); ?> - Tout pour vos animaux</title>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ asset('images/logo animalerie.png') }}">
+    <link rel="icon" type="image/png" href="<?php echo e(asset('images/logo animalerie.png')); ?>">
     
     <!-- Material Symbols -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -16,10 +16,13 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800,900&display=swap" rel="stylesheet" />
     
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
     
     <!-- Mobile Scroll CSS -->
-    <link rel="stylesheet" href="{{ asset('css/mobile-scroll.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('css/mobile-scroll.css')); ?>">
+    
+    <!-- Carousel & Responsive JS -->
+    <script src="<?php echo e(asset('js/carousel.js')); ?>" defer></script>
     
     <style>
         :root {
@@ -105,69 +108,70 @@
         }
     </style>
 </head>
-<body class="font-sans antialiased bg-white min-h-screen flex flex-col">
+<body class="font-sans antialiased bg-white">
     
     <!-- Navbar -->
     <nav class="sticky top-0 z-50 bg-white shadow-sm border-b border-outline-variant">
         <div class="max-w-[1280px] mx-auto px-6">
-            <div class="flex justify-between items-center h-20">
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex justify-between items-center h-20">
                 <!-- Logo -->
-                <a href="{{ route('home') }}" class="flex items-center gap-3 group">
-                    <img src="{{ asset('images/logo animalerie.png') }}" alt="Animalerie HMZ" class="h-12 w-auto transition-transform group-hover:scale-105">
+                <a href="<?php echo e(route('home')); ?>" class="flex items-center gap-3 group">
+                    <img src="<?php echo e(asset('images/logo animalerie.png')); ?>" alt="Animalerie HMZ" class="h-12 w-auto transition-transform group-hover:scale-105">
                     <div class="flex flex-col">
                         <span class="font-headline text-xl font-bold text-primary">Animalerie HMZ</span>
                     </div>
                 </a>
 
                 <!-- Navigation Links - Desktop -->
-                <div class="hidden md:flex items-center gap-8">
-                    <a href="{{ route('products.index', ['category' => 'pigeons']) }}" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105">Pigeons</a>
-                    <a href="{{ route('products.index', ['category' => 'chats']) }}" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105">Chats</a>
-                    <a href="{{ route('products.index', ['category' => 'oiseaux']) }}" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105">Oiseaux</a>
-                    <a href="{{ route('home') }}#offres" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105">Offres</a>
-                    <a href="#contact" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105" onclick="scrollToContact(event)">Contact</a>
+                <div class="flex items-center gap-8">
+                    <a href="#pigeons" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105">Pigeons</a>
+                    <a href="#chats" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105">Chats</a>
+                    <a href="#oiseaux" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105">Oiseaux</a>
+                    <a href="#offres" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105">Offres</a>
+                    <a href="#contact" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105">Contact</a>
                 </div>
 
                 <!-- Right Side - Cart & Auth -->
                 <div class="flex items-center gap-4">
                     <!-- Cart Icon -->
-                    <a href="{{ route('cart.show') }}" class="relative p-2 hover:bg-surface-container-low rounded-lg transition-colors">
+                    <a href="<?php echo e(route('cart.show')); ?>" class="relative p-2 hover:bg-surface-container-low rounded-lg transition-colors">
                         <span class="material-symbols-outlined text-on-surface">shopping_cart</span>
                         <span class="absolute -top-1 -right-1 bg-primary text-on-primary text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center" id="cartCount">0</span>
                     </a>
 
-                    @auth
+                    <?php if(auth()->guard()->check()): ?>
                         <!-- User Dropdown -->
                         <div class="relative" x-data="{ open: false }">
                             <button @click="open = !open" class="flex items-center gap-2 px-4 py-2 bg-surface-container-low hover:bg-surface-container rounded-lg transition-colors">
                                 <span class="material-symbols-outlined text-primary">account_circle</span>
-                                <span class="text-sm font-medium text-on-surface hidden lg:block">{{ Auth::user()->name }}</span>
+                                <span class="text-sm font-medium text-on-surface hidden lg:block"><?php echo e(Auth::user()->name); ?></span>
                                 <span class="material-symbols-outlined text-on-surface-variant text-sm">expand_more</span>
                             </button>
                             
                             <div x-show="open" @click.away="open = false" x-transition class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-outline-variant py-2">
-                                @if(Auth::user()->role === 'admin')
-                                    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-2 text-sm text-on-surface hover:bg-surface-container-low transition-colors">
+                                <?php if(Auth::user()->role === 'admin'): ?>
+                                    <a href="<?php echo e(route('admin.dashboard')); ?>" class="flex items-center gap-3 px-4 py-2 text-sm text-on-surface hover:bg-surface-container-low transition-colors">
                                         <span class="material-symbols-outlined text-lg">dashboard</span>
                                         Admin Dashboard
                                     </a>
-                                @else
-                                    <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-2 text-sm text-on-surface hover:bg-surface-container-low transition-colors">
+                                <?php else: ?>
+                                    <a href="<?php echo e(route('dashboard')); ?>" class="flex items-center gap-3 px-4 py-2 text-sm text-on-surface hover:bg-surface-container-low transition-colors">
                                         <span class="material-symbols-outlined text-lg">dashboard</span>
                                         Mon Compte
                                     </a>
-                                    <a href="{{ route('orders.index') }}" class="flex items-center gap-3 px-4 py-2 text-sm text-on-surface hover:bg-surface-container-low transition-colors">
+                                    <a href="<?php echo e(route('orders.index')); ?>" class="flex items-center gap-3 px-4 py-2 text-sm text-on-surface hover:bg-surface-container-low transition-colors">
                                         <span class="material-symbols-outlined text-lg">shopping_bag</span>
                                         Mes Commandes
                                     </a>
-                                @endif
-                                <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 px-4 py-2 text-sm text-on-surface hover:bg-surface-container-low transition-colors">
+                                <?php endif; ?>
+                                <a href="<?php echo e(route('profile.edit')); ?>" class="flex items-center gap-3 px-4 py-2 text-sm text-on-surface hover:bg-surface-container-low transition-colors">
                                     <span class="material-symbols-outlined text-lg">settings</span>
                                     Paramètres
                                 </a>
                                 <hr class="my-2 border-outline-variant">
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
+                                <form method="POST" action="<?php echo e(route('logout')); ?>">
+                                    <?php echo csrf_field(); ?>
                                     <button type="submit" class="flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors w-full text-left">
                                         <span class="material-symbols-outlined text-lg">logout</span>
                                         Déconnexion
@@ -175,40 +179,109 @@
                                 </form>
                             </div>
                         </div>
-                    @else
+                    <?php else: ?>
                         <!-- Login & Register Buttons -->
-                        <a href="{{ route('login') }}" class="text-sm font-medium text-on-surface hover:text-primary transition-colors px-4 py-2">
+                        <a href="<?php echo e(route('login')); ?>" class="text-sm font-medium text-on-surface hover:text-primary transition-colors px-4 py-2">
                             Connexion
                         </a>
-                        <a href="{{ route('register') }}" class="text-sm font-medium text-on-primary bg-primary hover:bg-primary-container px-6 py-2 rounded-lg transition-all shadow-md hover:shadow-lg">
+                        <a href="<?php echo e(route('register')); ?>" class="text-sm font-medium text-on-primary bg-primary hover:bg-primary-container px-6 py-2 rounded-lg transition-all shadow-md hover:shadow-lg">
                             Inscription
                         </a>
-                    @endauth
-
-                    <!-- Mobile Menu Button -->
-                    <button class="md:hidden p-2 hover:bg-surface-container-low rounded-lg transition-colors" onclick="toggleMobileMenu()">
-                        <span class="material-symbols-outlined text-on-surface">menu</span>
-                    </button>
+                    <?php endif; ?>
+                </div>
+            </div>
+            
+            <!-- Mobile Navigation -->
+            <div class="md:hidden flex justify-between items-center h-16">
+                <!-- Hamburger Menu (Gauche) -->
+                <button class="p-2 hover:bg-surface-container-low rounded-lg transition-colors touch-target" data-mobile-menu-open>
+                    <span class="material-symbols-outlined text-on-surface">menu</span>
+                </button>
+                
+                <!-- Logo (Centre) -->
+                <a href="<?php echo e(route('home')); ?>" class="absolute left-1/2 transform -translate-x-1/2">
+                    <img src="<?php echo e(asset('images/logo animalerie.png')); ?>" alt="Animalerie HMZ" class="h-10 w-auto">
+                </a>
+                
+                <!-- Panier + Profil (Droite) -->
+                <div class="flex items-center gap-2">
+                    <!-- Cart Icon -->
+                    <a href="<?php echo e(route('cart.show')); ?>" class="relative p-2 hover:bg-surface-container-low rounded-lg transition-colors">
+                        <span class="material-symbols-outlined text-on-surface">shopping_cart</span>
+                        <span class="absolute -top-1 -right-1 bg-primary text-on-primary text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center" id="cartCountMobile">0</span>
+                    </a>
+                    
+                    <?php if(auth()->guard()->check()): ?>
+                        <!-- Profile Icon -->
+                        <a href="<?php echo e(route('dashboard')); ?>" class="p-2 hover:bg-surface-container-low rounded-lg transition-colors">
+                            <span class="material-symbols-outlined text-primary">account_circle</span>
+                        </a>
+                    <?php else: ?>
+                        <!-- Login Icon -->
+                        <a href="<?php echo e(route('login')); ?>" class="p-2 hover:bg-surface-container-low rounded-lg transition-colors">
+                            <span class="material-symbols-outlined text-on-surface">person</span>
+                        </a>
+                    <?php endif; ?>
                 </div>
             </div>
 
-            <!-- Mobile Menu -->
-            <div id="mobileMenu" class="hidden md:hidden pb-4 border-t border-outline-variant mt-2 pt-4">
-                <div class="flex flex-col gap-2">
-                    <a href="{{ route('products.index', ['category' => 'pigeons']) }}" class="px-4 py-2 text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">Pigeons</a>
-                    <a href="{{ route('products.index', ['category' => 'chats']) }}" class="px-4 py-2 text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">Chats</a>
-                    <a href="{{ route('products.index', ['category' => 'oiseaux']) }}" class="px-4 py-2 text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">Oiseaux</a>
-                    <a href="{{ route('home') }}#offres" class="px-4 py-2 text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">Offres</a>
-                    <a href="#contact" class="px-4 py-2 text-on-surface hover:bg-surface-container-low rounded-lg transition-colors" onclick="scrollToContact(event)">Contact</a>
+            <!-- Mobile Menu Overlay -->
+            <div class="mobile-menu-overlay"></div>
+            
+            <!-- Mobile Menu Sidebar -->
+            <div class="mobile-menu">
+                <div class="mobile-menu-header">
+                    <div class="flex items-center gap-3">
+                        <img src="<?php echo e(asset('images/logo animalerie.png')); ?>" alt="Logo" class="h-10 w-auto">
+                        <span class="font-headline text-lg font-bold text-primary">Animalerie HMZ</span>
+                    </div>
+                    <button class="mobile-menu-close" data-mobile-menu-close>
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
                 </div>
+                <nav class="mobile-menu-nav">
+                    <a href="<?php echo e(route('home')); ?>" class="mobile-menu-link">
+                        <span class="material-symbols-outlined">home</span>
+                        Accueil
+                    </a>
+                    <a href="#pigeons" class="mobile-menu-link">
+                        <span class="material-symbols-outlined">flutter</span>
+                        Pigeons
+                    </a>
+                    <a href="#chats" class="mobile-menu-link">
+                        <span class="material-symbols-outlined">pets</span>
+                        Chats
+                    </a>
+                    <a href="#oiseaux" class="mobile-menu-link">
+                        <span class="material-symbols-outlined">flutter_dash</span>
+                        Oiseaux
+                    </a>
+                    <a href="#offres" class="mobile-menu-link">
+                        <span class="material-symbols-outlined">local_offer</span>
+                        Offres
+                    </a>
+                    <a href="<?php echo e(route('products.index')); ?>" class="mobile-menu-link">
+                        <span class="material-symbols-outlined">shopping_bag</span>
+                        Tous les produits
+                    </a>
+                    <a href="#contact" class="mobile-menu-link">
+                        <span class="material-symbols-outlined">contact_mail</span>
+                        Contact
+                    </a>
+                </nav>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <main class="flex-grow">
-        @yield('content')
+    <main>
+        <?php echo $__env->yieldContent('content'); ?>
     </main>
+    
+    <!-- Bouton Retour en Haut (z-index élevé pour être devant tout) -->
+    <button id="scrollToTopBtn" class="fixed bottom-6 right-6 w-12 h-12 bg-primary text-white rounded-full shadow-lg hover:bg-primary-container transition-all duration-300 z-[9999] opacity-0 pointer-events-none" aria-label="Retour en haut">
+        <span class="material-symbols-outlined">arrow_upward</span>
+    </button>
 
     <!-- Footer -->
     <footer id="contact" class="bg-primary text-on-primary py-16">
@@ -217,20 +290,20 @@
                 <!-- About -->
                 <div>
                     <div class="flex items-center gap-3 mb-6">
-                        <img src="{{ asset('images/logo animalerie.png') }}" alt="Animalerie HMZ" class="h-12 w-auto brightness-0 invert">
+                        <img src="<?php echo e(asset('images/logo animalerie.png')); ?>" alt="Animalerie HMZ" class="h-12 w-auto brightness-0 invert">
                     </div>
                     <h3 class="font-headline text-xl font-bold mb-2">Animalerie HMZ</h3>
-                    <p class="text-primary-light text-sm leading-relaxed">{{ $siteSettings['footer_description'] }}</p>
+                    <p class="text-primary-light text-sm leading-relaxed"><?php echo e($siteSettings['footer_description']); ?></p>
                 </div>
 
                 <!-- Quick Links -->
                 <div>
                     <h3 class="font-bold text-lg mb-4">Liens Rapides</h3>
                     <ul class="space-y-3">
-                        <li><a href="{{ route('home') }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Accueil</a></li>
-                        <li><a href="{{ route('products.index') }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Produits</a></li>
-                        <li><a href="{{ route('home') }}#offres" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Offres</a></li>
-                        <li><a href="#contact" onclick="scrollToContact(event)" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Contact</a></li>
+                        <li><a href="<?php echo e(route('home')); ?>" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Accueil</a></li>
+                        <li><a href="<?php echo e(route('products.index')); ?>" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Produits</a></li>
+                        <li><a href="#offres" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Offres</a></li>
+                        <li><a href="#contact" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Contact</a></li>
                     </ul>
                 </div>
 
@@ -238,10 +311,10 @@
                 <div>
                     <h3 class="font-bold text-lg mb-4">Catégories</h3>
                     <ul class="space-y-3">
-                        <li><a href="{{ route('products.index', ['category' => 'chiens']) }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Chiens</a></li>
-                        <li><a href="{{ route('products.index', ['category' => 'chats']) }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Chats</a></li>
-                        <li><a href="{{ route('products.index', ['category' => 'oiseaux']) }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Oiseaux</a></li>
-                        <li><a href="{{ route('products.index', ['category' => 'pigeons']) }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Pigeons</a></li>
+                        <li><a href="<?php echo e(route('products.index', ['category' => 'chiens'])); ?>" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Chiens</a></li>
+                        <li><a href="<?php echo e(route('products.index', ['category' => 'chats'])); ?>" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Chats</a></li>
+                        <li><a href="<?php echo e(route('products.index', ['category' => 'oiseaux'])); ?>" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Oiseaux</a></li>
+                        <li><a href="<?php echo e(route('products.index', ['category' => 'pigeons'])); ?>" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Pigeons</a></li>
                     </ul>
                 </div>
 
@@ -255,11 +328,11 @@
                         </li>
                         <li class="flex items-center gap-3 text-primary-light text-sm">
                             <span class="material-symbols-outlined text-white">phone</span>
-                            <span>{{ $siteSettings['contact_phone'] }}</span>
+                            <span><?php echo e($siteSettings['contact_phone']); ?></span>
                         </li>
                         <li class="flex items-center gap-3 text-primary-light text-sm">
                             <span class="material-symbols-outlined text-white">mail</span>
-                            <span>{{ $siteSettings['contact_email'] }}</span>
+                            <span><?php echo e($siteSettings['contact_email']); ?></span>
                         </li>
                     </ul>
                     
@@ -280,7 +353,7 @@
 
             <!-- Bottom Bar -->
             <div class="border-t border-white/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p class="text-primary-light text-sm">{{ $siteSettings['footer_copyright'] }}</p>
+                <p class="text-primary-light text-sm"><?php echo e($siteSettings['footer_copyright']); ?></p>
                 <div class="flex gap-6">
                     <a href="#" class="text-primary-light hover:text-white transition-colors text-sm">Mentions Légales</a>
                     <a href="#" class="text-primary-light hover:text-white transition-colors text-sm">CGV</a>
@@ -291,36 +364,48 @@
     </footer>
 
     <script>
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('hidden');
-        }
-
-        function scrollToContact(event) {
-            event.preventDefault();
-            const contactSection = document.getElementById('contact');
-            if (contactSection) {
-                contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            } else {
-                // Si on n'est pas sur la page d'accueil, rediriger vers la page d'accueil avec l'ancre
-                window.location.href = "{{ route('home') }}#contact";
-            }
-        }
-
         // Update cart count from session
         document.addEventListener('DOMContentLoaded', function() {
-            // You can fetch cart count via AJAX here
-            // For now, it will show 0
+            // Fetch cart count via AJAX
+            updateCartCount();
+            
+            // Scroll to Top Button
+            initScrollToTop();
         });
+        
+        function updateCartCount() {
+            // Implement cart count update logic here
+            // For now, it will show 0
+        }
+        
+        // Scroll to Top Button Logic
+        function initScrollToTop() {
+            const scrollBtn = document.getElementById('scrollToTopBtn');
+            if (!scrollBtn) return;
+            
+            // Show/hide button based on scroll position
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    scrollBtn.style.opacity = '1';
+                    scrollBtn.style.pointerEvents = 'auto';
+                } else {
+                    scrollBtn.style.opacity = '0';
+                    scrollBtn.style.pointerEvents = 'none';
+                }
+            });
+            
+            // Scroll to top when clicked
+            scrollBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
     </script>
-
-    <!-- Toast Notifications -->
-    @include('components.toast-notification')
-
-    <!-- Cart Management Script -->
-    <script src="{{ asset('js/cart.js') }}"></script>
     
-    <!-- Mobile Scroll & Product Gallery Script -->
-    <script src="{{ asset('js/testimonials-scroll.js') }}"></script>
+    <!-- Testimonials Scroll Indicators -->
+    <script src="<?php echo e(asset('js/testimonials-scroll.js')); ?>" defer></script>
 </body>
 </html>
+<?php /**PATH C:\Users\User\Desktop\animx\AnimalerieHMZ\resources\views/layouts/public.blade.php ENDPATH**/ ?>

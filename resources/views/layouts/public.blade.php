@@ -18,6 +18,12 @@
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
+    <!-- Mobile Scroll CSS -->
+    <link rel="stylesheet" href="{{ asset('css/mobile-scroll.css') }}">
+    
+    <!-- Carousel & Responsive JS -->
+    <script src="{{ asset('js/carousel.js') }}" defer></script>
+    
     <style>
         :root {
             --color-primary: #003e87;
@@ -107,7 +113,8 @@
     <!-- Navbar -->
     <nav class="sticky top-0 z-50 bg-white shadow-sm border-b border-outline-variant">
         <div class="max-w-[1280px] mx-auto px-6">
-            <div class="flex justify-between items-center h-20">
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex justify-between items-center h-20">
                 <!-- Logo -->
                 <a href="{{ route('home') }}" class="flex items-center gap-3 group">
                     <img src="{{ asset('images/logo animalerie.png') }}" alt="Animalerie HMZ" class="h-12 w-auto transition-transform group-hover:scale-105">
@@ -117,7 +124,7 @@
                 </a>
 
                 <!-- Navigation Links - Desktop -->
-                <div class="hidden md:flex items-center gap-8">
+                <div class="flex items-center gap-8">
                     <a href="#pigeons" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105">Pigeons</a>
                     <a href="#chats" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105">Chats</a>
                     <a href="#oiseaux" class="nav-link text-on-surface hover:text-primary font-medium transition-all hover:scale-105">Oiseaux</a>
@@ -181,23 +188,87 @@
                             Inscription
                         </a>
                     @endauth
-
-                    <!-- Mobile Menu Button -->
-                    <button class="md:hidden p-2 hover:bg-surface-container-low rounded-lg transition-colors" onclick="toggleMobileMenu()">
-                        <span class="material-symbols-outlined text-on-surface">menu</span>
-                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Navigation -->
+            <div class="md:hidden flex justify-between items-center h-16">
+                <!-- Hamburger Menu (Gauche) -->
+                <button class="p-2 hover:bg-surface-container-low rounded-lg transition-colors touch-target" data-mobile-menu-open>
+                    <span class="material-symbols-outlined text-on-surface">menu</span>
+                </button>
+                
+                <!-- Logo (Centre) -->
+                <a href="{{ route('home') }}" class="absolute left-1/2 transform -translate-x-1/2">
+                    <img src="{{ asset('images/logo animalerie.png') }}" alt="Animalerie HMZ" class="h-10 w-auto">
+                </a>
+                
+                <!-- Panier + Profil (Droite) -->
+                <div class="flex items-center gap-2">
+                    <!-- Cart Icon -->
+                    <a href="{{ route('cart.show') }}" class="relative p-2 hover:bg-surface-container-low rounded-lg transition-colors">
+                        <span class="material-symbols-outlined text-on-surface">shopping_cart</span>
+                        <span class="absolute -top-1 -right-1 bg-primary text-on-primary text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center" id="cartCountMobile">0</span>
+                    </a>
+                    
+                    @auth
+                        <!-- Profile Icon -->
+                        <a href="{{ route('dashboard') }}" class="p-2 hover:bg-surface-container-low rounded-lg transition-colors">
+                            <span class="material-symbols-outlined text-primary">account_circle</span>
+                        </a>
+                    @else
+                        <!-- Login Icon -->
+                        <a href="{{ route('login') }}" class="p-2 hover:bg-surface-container-low rounded-lg transition-colors">
+                            <span class="material-symbols-outlined text-on-surface">person</span>
+                        </a>
+                    @endauth
                 </div>
             </div>
 
-            <!-- Mobile Menu -->
-            <div id="mobileMenu" class="hidden md:hidden pb-4 border-t border-outline-variant mt-2 pt-4">
-                <div class="flex flex-col gap-2">
-                    <a href="#pigeons" class="px-4 py-2 text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">Pigeons</a>
-                    <a href="#chats" class="px-4 py-2 text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">Chats</a>
-                    <a href="#oiseaux" class="px-4 py-2 text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">Oiseaux</a>
-                    <a href="#offres" class="px-4 py-2 text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">Offres</a>
-                    <a href="#contact" class="px-4 py-2 text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">Contact</a>
+            <!-- Mobile Menu Overlay -->
+            <div class="mobile-menu-overlay"></div>
+            
+            <!-- Mobile Menu Sidebar -->
+            <div class="mobile-menu">
+                <div class="mobile-menu-header">
+                    <div class="flex items-center gap-3">
+                        <img src="{{ asset('images/logo animalerie.png') }}" alt="Logo" class="h-10 w-auto">
+                        <span class="font-headline text-lg font-bold text-primary">Animalerie HMZ</span>
+                    </div>
+                    <button class="mobile-menu-close" data-mobile-menu-close>
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
                 </div>
+                <nav class="mobile-menu-nav">
+                    <a href="{{ route('home') }}" class="mobile-menu-link">
+                        <span class="material-symbols-outlined">home</span>
+                        Accueil
+                    </a>
+                    <a href="#pigeons" class="mobile-menu-link">
+                        <span class="material-symbols-outlined">flutter</span>
+                        Pigeons
+                    </a>
+                    <a href="#chats" class="mobile-menu-link">
+                        <span class="material-symbols-outlined">pets</span>
+                        Chats
+                    </a>
+                    <a href="#oiseaux" class="mobile-menu-link">
+                        <span class="material-symbols-outlined">flutter_dash</span>
+                        Oiseaux
+                    </a>
+                    <a href="#offres" class="mobile-menu-link">
+                        <span class="material-symbols-outlined">local_offer</span>
+                        Offres
+                    </a>
+                    <a href="{{ route('products.index') }}" class="mobile-menu-link">
+                        <span class="material-symbols-outlined">shopping_bag</span>
+                        Tous les produits
+                    </a>
+                    <a href="#contact" class="mobile-menu-link">
+                        <span class="material-symbols-outlined">contact_mail</span>
+                        Contact
+                    </a>
+                </nav>
             </div>
         </div>
     </nav>
@@ -206,6 +277,11 @@
     <main>
         @yield('content')
     </main>
+    
+    <!-- Bouton Retour en Haut (z-index élevé pour être devant tout) -->
+    <button id="scrollToTopBtn" class="fixed bottom-6 right-6 w-12 h-12 bg-primary text-white rounded-full shadow-lg hover:bg-primary-container transition-all duration-300 z-[9999] opacity-0 pointer-events-none" aria-label="Retour en haut">
+        <span class="material-symbols-outlined">arrow_upward</span>
+    </button>
 
     <!-- Footer -->
     <footer id="contact" class="bg-primary text-on-primary py-16">
@@ -288,16 +364,47 @@
     </footer>
 
     <script>
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('hidden');
-        }
-
         // Update cart count from session
         document.addEventListener('DOMContentLoaded', function() {
-            // You can fetch cart count via AJAX here
-            // For now, it will show 0
+            // Fetch cart count via AJAX
+            updateCartCount();
+            
+            // Scroll to Top Button
+            initScrollToTop();
         });
+        
+        function updateCartCount() {
+            // Implement cart count update logic here
+            // For now, it will show 0
+        }
+        
+        // Scroll to Top Button Logic
+        function initScrollToTop() {
+            const scrollBtn = document.getElementById('scrollToTopBtn');
+            if (!scrollBtn) return;
+            
+            // Show/hide button based on scroll position
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    scrollBtn.style.opacity = '1';
+                    scrollBtn.style.pointerEvents = 'auto';
+                } else {
+                    scrollBtn.style.opacity = '0';
+                    scrollBtn.style.pointerEvents = 'none';
+                }
+            });
+            
+            // Scroll to top when clicked
+            scrollBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
     </script>
+    
+    <!-- Testimonials Scroll Indicators -->
+    <script src="{{ asset('js/testimonials-scroll.js') }}" defer></script>
 </body>
 </html>

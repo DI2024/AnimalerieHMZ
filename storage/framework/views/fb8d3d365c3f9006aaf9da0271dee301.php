@@ -18,6 +18,9 @@
     
     <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
     
+    <!-- Mobile Scroll CSS -->
+    <link rel="stylesheet" href="<?php echo e(asset('css/mobile-scroll.css')); ?>">
+    
     <style>
         :root {
             --color-primary: #003e87;
@@ -316,6 +319,9 @@
 
     <!-- Cart Management Script -->
     <script src="<?php echo e(asset('js/cart.js')); ?>"></script>
+    
+    <!-- Mobile Scroll & Product Gallery Script -->
+    <script src="<?php echo e(asset('js/testimonials-scroll.js')); ?>"></script>
 </body>
 </html>
 <?php /**PATH C:\Users\User\Desktop\animx\AnimalerieHMZ\resources\views/layouts/app.blade.php ENDPATH**/ ?>

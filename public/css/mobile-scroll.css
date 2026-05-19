@@ -1,0 +1,295 @@
+/* ============================================
+   SCROLL HORIZONTAL MOBILE - SECTIONS SPÉCIFIQUES
+   ============================================ */
+
+/* Section Hero - Mobile uniquement */
+@media (max-width: 767px) {
+  .hero-slides-scroll {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 1rem;
+    padding-bottom: 1rem;
+  }
+  
+  .hero-slides-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .hero-slide {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+  
+  /* Indicateurs (dots) pour le hero */
+  .hero-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  
+  .hero-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #d1d5db;
+    transition: all 0.3s;
+  }
+  
+  .hero-dot.active {
+    width: 24px;
+    border-radius: 4px;
+    background-color: #003e87;
+  }
+}
+
+/* Desktop - Pas de scroll */
+@media (min-width: 768px) {
+  .hero-slides-scroll {
+    display: block;
+  }
+  
+  .hero-slide:not(:first-child) {
+    display: none;
+  }
+  
+  .hero-indicators {
+    display: none;
+  }
+}
+
+/* Section Offres - Mobile uniquement */
+@media (max-width: 767px) {
+  .offers-mobile-scroll {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 1rem;
+    padding-bottom: 1rem;
+  }
+  
+  .offers-mobile-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .offers-mobile-scroll > * {
+    flex: 0 0 85%;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+}
+
+/* Section Catégories - Mobile uniquement */
+@media (max-width: 767px) {
+  .categories-mobile-scroll {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+    justify-content: flex-start !important;
+  }
+  
+  .categories-mobile-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .categories-mobile-scroll > * {
+    flex: 0 0 70%;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+  
+  /* Indicateurs (dots) pour les catégories */
+  .categories-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+  
+  .categories-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #d1d5db;
+    transition: all 0.3s;
+  }
+  
+  .categories-dot.active {
+    width: 24px;
+    border-radius: 4px;
+    background-color: #003e87;
+  }
+}
+
+/* Section Avis - Mobile uniquement */
+@media (max-width: 767px) {
+  .testimonials-mobile-scroll {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 1rem;
+    padding-bottom: 1rem;
+  }
+  
+  .testimonials-mobile-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .testimonials-mobile-scroll > * {
+    flex: 0 0 90%;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+  
+  /* Indicateurs (dots) pour les avis */
+  .testimonials-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  
+  .testimonials-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #d1d5db;
+    transition: all 0.3s;
+  }
+  
+  .testimonials-dot.active {
+    width: 24px;
+    border-radius: 4px;
+    background-color: #003e87;
+  }
+}
+
+/* Sections Pigeons/Chats/Oiseaux - Cartes sous-catégories */
+@media (max-width: 767px) {
+  .subcategories-mobile-scroll {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 1rem;
+    padding-bottom: 1rem;
+  }
+  
+  .subcategories-mobile-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .subcategories-mobile-scroll > * {
+    flex: 0 0 85%;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+}
+
+/* Desktop - Garder le layout normal */
+@media (min-width: 768px) {
+  .offers-mobile-scroll,
+  .testimonials-mobile-scroll,
+  .subcategories-mobile-scroll {
+    display: grid;
+  }
+  
+  .categories-mobile-scroll {
+    display: flex;
+  }
+  
+  .testimonials-indicators,
+  .categories-indicators {
+    display: none;
+  }
+}
+
+/* ============================================
+   BOTTOM SHEET FILTRES (MOBILE)
+   ============================================ */
+@media (max-width: 1023px) {
+  #filtersBottomSheet {
+    pointer-events: auto;
+  }
+  
+  #filtersSheet {
+    scrollbar-width: thin;
+  }
+  
+  #filtersSheet::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  #filtersSheet::-webkit-scrollbar-thumb {
+    background-color: #d1d5db;
+    border-radius: 2px;
+  }
+}
+
+/* ============================================
+   GALERIE PRODUIT SCROLL HORIZONTAL (MOBILE)
+   ============================================ */
+@media (max-width: 767px) {
+  .product-gallery-scroll {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .product-gallery-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .product-gallery-slide {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Indicateurs (dots) pour la galerie produit */
+  .product-gallery-indicators {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    z-index: 5;
+  }
+  
+  .product-gallery-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #d1d5db;
+    transition: all 0.3s;
+  }
+  
+  .product-gallery-dot.active {
+    width: 24px;
+    border-radius: 4px;
+    background-color: #003e87;
+  }
+}
