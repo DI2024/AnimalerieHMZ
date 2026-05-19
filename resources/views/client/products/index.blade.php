@@ -23,22 +23,80 @@
                     
                     <form method="GET" action="{{ route('products.index') }}" class="space-y-6">
                         
-                        <!-- Categories -->
+                        <!-- Categories with Subcategories Accordion -->
                         <div>
                             <h4 class="font-bold text-sm mb-3 text-gray-900">Catégories</h4>
-                            <div class="space-y-2">
+                            <div class="space-y-1">
+                                <!-- Option "Toutes" -->
                                 <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition">
-                                    <input type="radio" name="category" value="" {{ !request('category') ? 'checked' : '' }} class="rounded border-gray-300 text-primary focus:ring-primary">
-                                    <span class="ml-2 text-sm text-gray-700">Toutes</span>
+                                    <input type="radio" 
+                                           name="filter_type" 
+                                           value="all" 
+                                           {{ !request('category') && !request('subcategory') ? 'checked' : '' }} 
+                                           class="rounded border-gray-300 text-primary focus:ring-primary" 
+                                           onchange="clearFilters(this.form)">
+                                    <span class="ml-2 text-sm text-gray-700 font-medium">Toutes les catégories</span>
                                 </label>
+                                
+                                <!-- Categories with Accordion -->
                                 @foreach($categories as $category)
-                                <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition">
-                                    <input type="radio" name="category" value="{{ $category->slug }}" {{ request('category') == $category->slug ? 'checked' : '' }} class="rounded border-gray-300 text-primary focus:ring-primary">
-                                    <span class="ml-2 text-sm text-gray-700">{{ $category->name }} <span class="text-gray-400">({{ $category->products_count }})</span></span>
-                                </label>
+                                <div class="border-b border-gray-100 last:border-0">
+                                    <!-- Category Header (clickable to expand) -->
+                                    <div class="flex items-center justify-between hover:bg-gray-50 rounded-lg transition">
+                                        <label class="flex items-center cursor-pointer p-2 flex-1">
+                                            <input type="radio" 
+                                                   name="filter_type" 
+                                                   value="category_{{ $category->slug }}" 
+                                                   {{ request('category') == $category->slug && !request('subcategory') ? 'checked' : '' }} 
+                                                   class="rounded border-gray-300 text-primary focus:ring-primary"
+                                                   onchange="selectCategory(this.form, '{{ $category->slug }}')">
+                                            <span class="ml-2 text-sm text-gray-700 font-medium">
+                                                {{ $category->name }} 
+                                                <span class="text-gray-400">({{ $category->products_count }})</span>
+                                            </span>
+                                        </label>
+                                        
+                                        @if($category->subcategories->count() > 0)
+                                        <button type="button" 
+                                                onclick="toggleCategoryAccordion('category{{ $category->id }}')" 
+                                                class="p-2 hover:bg-gray-100 rounded-lg transition">
+                                            <span class="material-symbols-outlined text-gray-500 text-sm transition-transform duration-300" 
+                                                  id="category{{ $category->id }}Icon">
+                                                expand_more
+                                            </span>
+                                        </button>
+                                        @endif
+                                    </div>
+                                    
+                                    <!-- Subcategories (collapsible) -->
+                                    @if($category->subcategories->count() > 0)
+                                    <div id="category{{ $category->id }}" 
+                                         class="ml-6 space-y-1 overflow-hidden transition-all duration-300"
+                                         style="max-height: 0; padding-bottom: 0;">
+                                        @foreach($category->subcategories as $subcategory)
+                                        <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition">
+                                            <input type="radio" 
+                                                   name="filter_type" 
+                                                   value="subcategory_{{ $subcategory->slug }}" 
+                                                   {{ request('subcategory') == $subcategory->slug ? 'checked' : '' }} 
+                                                   class="rounded border-gray-300 text-primary focus:ring-primary"
+                                                   onchange="selectSubcategory(this.form, '{{ $subcategory->slug }}')">
+                                            <span class="ml-2 text-xs text-gray-600">
+                                                {{ $subcategory->name }} 
+                                                <span class="text-gray-400">({{ $subcategory->products_count }})</span>
+                                            </span>
+                                        </label>
+                                        @endforeach
+                                    </div>
+                                    @endif
+                                </div>
                                 @endforeach
                             </div>
                         </div>
+                        
+                        <!-- Hidden inputs for category and subcategory -->
+                        <input type="hidden" name="category" id="categoryInput" value="{{ request('category') }}">
+                        <input type="hidden" name="subcategory" id="subcategoryInput" value="{{ request('subcategory') }}">
 
                         <!-- Price Range - Accordion -->
                         <div class="border-b border-gray-200">
@@ -198,14 +256,69 @@ function toggleAccordion(id) {
     }
 }
 
+function toggleCategoryAccordion(id) {
+    const accordion = document.getElementById(id);
+    const icon = document.getElementById(id + 'Icon');
+    
+    if (accordion.style.maxHeight && accordion.style.maxHeight !== '0px') {
+        accordion.style.maxHeight = '0px';
+        accordion.style.paddingBottom = '0px';
+        icon.style.transform = 'rotate(0deg)';
+    } else {
+        accordion.style.maxHeight = accordion.scrollHeight + 'px';
+        accordion.style.paddingBottom = '0.5rem';
+        icon.style.transform = 'rotate(180deg)';
+    }
+}
+
+// Clear all filters (show all products)
+function clearFilters(form) {
+    document.getElementById('categoryInput').value = '';
+    document.getElementById('subcategoryInput').value = '';
+    form.submit();
+}
+
+// Select a category (clear subcategory)
+function selectCategory(form, categorySlug) {
+    document.getElementById('categoryInput').value = categorySlug;
+    document.getElementById('subcategoryInput').value = '';
+    form.submit();
+}
+
+// Select a subcategory (clear category)
+function selectSubcategory(form, subcategorySlug) {
+    document.getElementById('categoryInput').value = '';
+    document.getElementById('subcategoryInput').value = subcategorySlug;
+    form.submit();
+}
+
 // Initialize accordions as open by default
 document.addEventListener('DOMContentLoaded', function() {
+    // Open price and options accordions
     ['priceAccordion', 'optionsAccordion'].forEach(id => {
         const accordion = document.getElementById(id);
         const icon = document.getElementById(id + 'Icon');
-        accordion.style.maxHeight = accordion.scrollHeight + 'px';
-        icon.style.transform = 'rotate(180deg)';
+        if (accordion && icon) {
+            accordion.style.maxHeight = accordion.scrollHeight + 'px';
+            icon.style.transform = 'rotate(180deg)';
+        }
     });
+    
+    // Auto-open category accordion if a subcategory is selected
+    const selectedSubcategory = document.querySelector('input[name="filter_type"][value^="subcategory_"]:checked');
+    if (selectedSubcategory) {
+        // Find the parent category accordion
+        const parentAccordion = selectedSubcategory.closest('[id^="category"]');
+        if (parentAccordion) {
+            const accordionId = parentAccordion.id;
+            const icon = document.getElementById(accordionId + 'Icon');
+            parentAccordion.style.maxHeight = parentAccordion.scrollHeight + 'px';
+            parentAccordion.style.paddingBottom = '0.5rem';
+            if (icon) {
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+    }
 });
 </script>
 @endsection

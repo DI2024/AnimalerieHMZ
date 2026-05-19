@@ -65,40 +65,44 @@ class Order extends Model
             $originalStatus = $order->getOriginal('status');
             $newStatus = $order->status;
 
-            // If order is confirmed, reduce stock
+            // If order is confirmed, reduce stock and increment sales
             if ($originalStatus !== 'confirmed' && $newStatus === 'confirmed') {
                 foreach ($order->items as $item) {
                     if ($item->product) {
                         $item->product->decrement('stock', $item->quantity);
+                        $item->product->increment('total_sales', $item->quantity);
                     }
                 }
             }
 
-            // If order is cancelled, restore stock (only if it was previously confirmed)
+            // If order is cancelled, restore stock and decrement sales (only if it was previously confirmed)
             if ($originalStatus === 'confirmed' && $newStatus === 'cancelled') {
                 foreach ($order->items as $item) {
                     if ($item->product) {
                         $item->product->increment('stock', $item->quantity);
+                        $item->product->decrement('total_sales', $item->quantity);
                     }
                 }
             }
 
-            // If order goes from cancelled back to confirmed, reduce stock again
+            // If order goes from cancelled back to confirmed, reduce stock and increment sales again
             if ($originalStatus === 'cancelled' && $newStatus === 'confirmed') {
                 foreach ($order->items as $item) {
                     if ($item->product) {
                         $item->product->decrement('stock', $item->quantity);
+                        $item->product->increment('total_sales', $item->quantity);
                     }
                 }
             }
         });
 
-        // Restore stock when order is deleted
+        // Restore stock and decrement sales when order is deleted
         static::deleting(function ($order) {
             if ($order->status === 'confirmed') {
                 foreach ($order->items as $item) {
                     if ($item->product) {
                         $item->product->increment('stock', $item->quantity);
+                        $item->product->decrement('total_sales', $item->quantity);
                     }
                 }
             }

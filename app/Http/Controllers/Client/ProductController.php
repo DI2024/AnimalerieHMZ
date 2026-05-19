@@ -60,27 +60,40 @@ class ProductController extends Controller
         $sortBy = $request->get('sort', 'created_at');
         $sortOrder = $request->get('order', 'desc');
         
-        switch ($sortBy) {
-            case 'price_asc':
-                $query->orderBy('price', 'asc');
-                break;
-            case 'price_desc':
-                $query->orderBy('price', 'desc');
-                break;
-            case 'name':
-                $query->orderBy('name', 'asc');
-                break;
-            case 'rating':
-                $query->orderBy('rating', 'desc');
-                break;
-            default:
-                $query->orderBy('created_at', 'desc');
+        // Si aucun filtre de catégorie/sous-catégorie et tri par défaut, afficher aléatoirement
+        if (!$request->filled('category') && !$request->filled('subcategory') && $sortBy == 'created_at') {
+            $query->inRandomOrder();
+        } else {
+            // Sinon, appliquer le tri normal
+            switch ($sortBy) {
+                case 'price_asc':
+                    $query->orderBy('price', 'asc');
+                    break;
+                case 'price_desc':
+                    $query->orderBy('price', 'desc');
+                    break;
+                case 'name':
+                    $query->orderBy('name', 'asc');
+                    break;
+                case 'rating':
+                    $query->orderBy('rating', 'desc');
+                    break;
+                default:
+                    $query->orderBy('created_at', 'desc');
+            }
         }
 
         $products = $query->paginate(12)->withQueryString();
 
+        // Load categories with their subcategories and product counts
         $categories = Category::where('is_active', true)
             ->withCount('products')
+            ->with(['subcategories' => function($query) {
+                $query->where('is_active', true)
+                      ->withCount('products')
+                      ->orderBy('name');
+            }])
+            ->orderBy('name')
             ->get();
 
         return view('client.products.index', compact('products', 'categories'));

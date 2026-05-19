@@ -152,4 +152,4 @@
         info: (title, message, duration) => showToast({ type: 'info', title, message, duration })
     };
 </script>
-<?php /**PATH C:\xampp\htdocs\temp-laravel\AnimalerieHMZ\resources\views/components/toast-notification.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\User\Desktop\animx\AnimalerieHMZ\resources\views/components/toast-notification.blade.php ENDPATH**/ ?>

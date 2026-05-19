@@ -52,7 +52,7 @@
                 <div class="space-y-4 mb-6">
                     <div class="flex justify-between text-on-surface-variant">
                         <span>Sous-total (<span id="itemCount">0</span> articles)</span>
-                        <span id="subtotalAmount">0,00€</span>
+                        <span id="subtotalAmount">0,00 MAD</span>
                     </div>
                     <div class="flex justify-between text-on-surface-variant">
                         <span>Frais de livraison</span>
@@ -61,7 +61,7 @@
                     <div class="h-px bg-gray-200"></div>
                     <div class="flex justify-between items-center text-xl font-bold">
                         <span>Total estimé</span>
-                        <span class="text-primary" id="totalAmount">0,00€</span>
+                        <span class="text-primary" id="totalAmount">0,00 MAD</span>
                     </div>
                 </div>
 
@@ -78,7 +78,7 @@
                     <div class="flex items-start gap-2">
                         <span class="material-symbols-outlined text-green-600 text-sm mt-0.5">local_shipping</span>
                         <p class="text-xs text-green-800">
-                            <strong>Livraison gratuite</strong> pour les commandes de plus de 100€
+                            <strong>Livraison gratuite</strong> pour les commandes de plus de 500 MAD
                         </p>
                     </div>
                 </div>
@@ -119,8 +119,8 @@
 
                     <!-- Price -->
                     <div class="text-right">
-                        <p class="text-2xl font-bold text-primary item-subtotal">0,00€</p>
-                        <p class="text-xs text-on-surface-variant item-unit-price">0,00€ / unité</p>
+                        <p class="text-2xl font-bold text-primary item-subtotal">0,00 MAD</p>
+                        <p class="text-xs text-on-surface-variant item-unit-price">0,00 MAD / unité</p>
                     </div>
                 </div>
             </div>
@@ -406,10 +406,10 @@ function showNotification(message, type = 'info') {
 }
 
 function formatPrice(price) {
-    return new Intl.NumberFormat('fr-FR', {
-        style: 'currency',
-        currency: 'EUR'
-    }).format(price);
+    return new Intl.NumberFormat('fr-MA', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(price) + ' MAD';
 }
 
 function updateCartCount(count) {
