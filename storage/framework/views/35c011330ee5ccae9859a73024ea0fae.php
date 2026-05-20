@@ -17,6 +17,29 @@
         margin-bottom: 32px;
     }
     
+    /* Mobile: Scroll horizontal pour alerts */
+    @media (max-width: 767px) {
+        .alerts-grid {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            gap: 16px;
+            padding-bottom: 16px;
+        }
+        
+        .alerts-grid::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .alert-card {
+            flex: 0 0 85%;
+            scroll-snap-align: center;
+            scroll-snap-stop: always;
+        }
+    }
+    
     .alert-card {
         background: white;
         border-radius: 12px;
@@ -125,6 +148,29 @@
         grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
         gap: 20px;
         margin-bottom: 32px;
+    }
+    
+    /* Mobile: Scroll horizontal pour metrics */
+    @media (max-width: 767px) {
+        .metrics-grid {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            gap: 16px;
+            padding-bottom: 16px;
+        }
+        
+        .metrics-grid::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .metric-card {
+            flex: 0 0 85%;
+            scroll-snap-align: center;
+            scroll-snap-stop: always;
+        }
     }
     
     .metric-card {
@@ -282,11 +328,64 @@
     
     .orders-table-container {
         overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
     
     .orders-table {
         width: 100%;
         border-collapse: collapse;
+        min-width: 800px;
+    }
+    
+    /* Mobile: Affichage en cartes */
+    @media (max-width: 767px) {
+        .orders-table {
+            min-width: 100%;
+        }
+        
+        .orders-table thead {
+            display: none;
+        }
+        
+        .orders-table tbody tr {
+            display: block;
+            margin-bottom: 16px;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 16px;
+            background: white;
+        }
+        
+        .orders-table tbody tr:hover {
+            background: #F9FAFB;
+        }
+        
+        .orders-table td {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #F3F4F6;
+        }
+        
+        .orders-table td:last-child {
+            border-bottom: none;
+            justify-content: center;
+            padding-top: 12px;
+        }
+        
+        .orders-table td::before {
+            content: attr(data-label);
+            font-weight: 700;
+            color: #6B7280;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .orders-table td:last-child::before {
+            display: none;
+        }
     }
     
     .orders-table thead {
@@ -380,6 +479,36 @@
         color: #111827;
         transform: scale(1.1);
     }
+    
+    /* Indicateurs (dots) pour mobile */
+    .dashboard-indicators {
+        display: none;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 16px;
+        margin-bottom: 16px;
+    }
+    
+    @media (max-width: 767px) {
+        .dashboard-indicators {
+            display: flex;
+        }
+    }
+    
+    .dashboard-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #d1d5db;
+        transition: all 0.3s;
+        cursor: pointer;
+    }
+    
+    .dashboard-dot.active {
+        width: 24px;
+        border-radius: 4px;
+        background-color: #003e87;
+    }
 </style>
 <?php $__env->stopPush(); ?>
 
@@ -404,7 +533,7 @@
     </div>
 
     <!-- ZONE 1: Alerts -->
-    <div class="alerts-grid">
+    <div class="alerts-grid" id="alertsGrid">
         <!-- Out of Stock -->
         <div class="alert-card critical">
             <div class="alert-header">
@@ -456,9 +585,12 @@
             </div>
         </div>
     </div>
+    
+    <!-- Indicateurs pour alerts (mobile uniquement) -->
+    <div class="dashboard-indicators" id="alertsIndicators"></div>
 
     <!-- ZONE 2: Metrics -->
-    <div class="metrics-grid">
+    <div class="metrics-grid" id="metricsGrid">
         <!-- Revenue -->
         <div class="metric-card">
             <div class="metric-header">
@@ -522,6 +654,9 @@
             <div class="metric-subtitle"><?php echo e(round(($stats['active_products'] / max($stats['total_products'], 1)) * 100, 1)); ?>% du catalogue total</div>
         </div>
     </div>
+    
+    <!-- Indicateurs pour metrics (mobile uniquement) -->
+    <div class="dashboard-indicators" id="metricsIndicators"></div>
 
     <!-- ZONE 3: Recent Activity -->
     <div class="mb-8">
@@ -551,10 +686,10 @@
                     <tbody>
                         <?php $__empty_1 = true; $__currentLoopData = $recentOrders; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $order): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                         <tr>
-                            <td><span class="order-number">#<?php echo e(str_pad($order->id, 4, '0', STR_PAD_LEFT)); ?></span></td>
-                            <td><span class="order-customer"><?php echo e($order->shipping_name); ?></span></td>
-                            <td><span class="order-total"><?php echo e(number_format($order->total, 2)); ?> DH</span></td>
-                            <td>
+                            <td data-label="ID"><span class="order-number">#<?php echo e(str_pad($order->id, 4, '0', STR_PAD_LEFT)); ?></span></td>
+                            <td data-label="Client"><span class="order-customer"><?php echo e($order->shipping_name); ?></span></td>
+                            <td data-label="Total"><span class="order-total"><?php echo e(number_format($order->total, 2)); ?> DH</span></td>
+                            <td data-label="Statut">
                                 <?php
                                     $statusClasses = [
                                         'pending' => 'status-pending',
@@ -586,13 +721,13 @@
 
                                 </span>
                             </td>
-                            <td>
+                            <td data-label="Date">
                                 <span class="order-time">
                                     <i class="far fa-clock mr-1"></i> <?php echo e($order->created_at->diffForHumans()); ?>
 
                                 </span>
                             </td>
-                            <td style="text-align: center;">
+                            <td>
                                 <a href="<?php echo e(route('admin.orders.show', $order)); ?>" class="order-action-btn" title="Voir détails">
                                     <i class="fas fa-eye"></i>
                                 </a>
@@ -617,6 +752,73 @@
 
 <?php $__env->startPush('scripts'); ?>
 <script>
+    // Dashboard Scroll Indicators (Mobile)
+    function initDashboardScrollIndicators() {
+        if (window.innerWidth > 767) return;
+
+        // Alerts indicators
+        initScrollIndicators('alertsGrid', 'alertsIndicators', '.alert-card');
+        
+        // Metrics indicators
+        initScrollIndicators('metricsGrid', 'metricsIndicators', '.metric-card');
+    }
+
+    function initScrollIndicators(containerId, indicatorsId, itemSelector) {
+        const container = document.getElementById(containerId);
+        const indicatorsContainer = document.getElementById(indicatorsId);
+        
+        if (!container || !indicatorsContainer) return;
+
+        const items = container.querySelectorAll(itemSelector);
+        const count = items.length;
+
+        if (count <= 1) return;
+
+        // Créer les dots
+        indicatorsContainer.innerHTML = '';
+        for (let i = 0; i < count; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'dashboard-dot';
+            if (i === 0) dot.classList.add('active');
+            indicatorsContainer.appendChild(dot);
+        }
+
+        // Mettre à jour les dots lors du scroll
+        let scrollTimeout;
+        container.addEventListener('scroll', function() {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(function() {
+                const scrollLeft = container.scrollLeft;
+                const itemWidth = items[0].offsetWidth;
+                const gap = parseFloat(getComputedStyle(container).gap) || 16;
+                const currentIndex = Math.round(scrollLeft / (itemWidth + gap));
+
+                const dots = indicatorsContainer.querySelectorAll('.dashboard-dot');
+                dots.forEach((dot, index) => {
+                    if (index === currentIndex) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            }, 100);
+        });
+    }
+
+    // Initialiser au chargement
+    document.addEventListener('DOMContentLoaded', function() {
+        initDashboardScrollIndicators();
+    });
+
+    // Réinitialiser lors du redimensionnement
+    let resizeTimeout;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(function() {
+            initDashboardScrollIndicators();
+        }, 250);
+    });
+
     // Real-time Dashboard Updates
     let lastUpdateTime = null;
     let updateInterval = null;

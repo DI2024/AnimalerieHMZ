@@ -96,18 +96,19 @@
             </div>
 
             <!-- Actions -->
-            <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                <div class="flex items-center bg-surface-container-low rounded-full p-1 border border-gray-200">
-                    <button class="w-12 h-12 flex items-center justify-center text-xl font-bold hover:bg-white rounded-full transition" onclick="updateQty(-1)">-</button>
-                    <span id="qtyDisplay" class="w-12 text-center font-bold text-lg">1</span>
-                    <button class="w-12 h-12 flex items-center justify-center text-xl font-bold hover:bg-white rounded-full transition" onclick="updateQty(1)">+</button>
+            <div class="flex flex-row gap-3 md:gap-4 pt-4">
+                <div class="flex items-center bg-surface-container-low rounded-full p-1 border border-gray-200 shrink-0">
+                    <button class="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center text-lg md:text-xl font-bold hover:bg-white rounded-full transition" onclick="updateQty(-1)">-</button>
+                    <span id="qtyDisplay" class="w-8 md:w-12 text-center font-bold text-base md:text-lg">1</span>
+                    <button class="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center text-lg md:text-xl font-bold hover:bg-white rounded-full transition" onclick="updateQty(1)">+</button>
                 </div>
                 <button id="addToCartBtn" 
                         data-product-id="{{ $product->id }}"
                         {{ $product->stock <= 0 ? 'disabled' : '' }}
-                        class="flex-1 bg-primary hover:bg-primary-container text-white font-bold py-4 px-8 rounded-full transition-all shadow-xl hover:shadow-2xl transform hover:-translate-y-1 active:translate-y-0 flex items-center justify-center gap-3 group disabled:opacity-50 disabled:cursor-not-allowed">
-                    <span class="material-symbols-outlined group-hover:animate-bounce">shopping_cart</span>
-                    {{ $product->stock > 0 ? 'Ajouter au panier' : 'Rupture de stock' }}
+                        class="flex-1 bg-primary hover:bg-primary-container text-white font-bold py-3 md:py-4 px-4 md:px-8 rounded-full transition-all shadow-xl hover:shadow-2xl transform hover:-translate-y-1 active:translate-y-0 flex items-center justify-center gap-2 md:gap-3 group disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base">
+                    <span class="material-symbols-outlined group-hover:animate-bounce text-xl md:text-2xl">shopping_cart</span>
+                    <span class="hidden sm:inline">{{ $product->stock > 0 ? 'Ajouter au panier' : 'Rupture de stock' }}</span>
+                    <span class="sm:hidden">{{ $product->stock > 0 ? 'Ajouter' : 'Rupture' }}</span>
                 </button>
             </div>
 
@@ -186,7 +187,9 @@
                 </a>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Mobile: Scroll horizontal avec 1 produit visible -->
+            <!-- Desktop: Grid 4 colonnes -->
+            <div class="related-products-scroll grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 @foreach($relatedProducts->take(4) as $related)
                     @php
                         $relatedImageUrl = $related->image && str_starts_with($related->image, 'http') 
@@ -194,7 +197,7 @@
                             : asset($related->image);
                     @endphp
                     
-                    <div class="group relative bg-white rounded-[2rem] p-4 shadow-md hover:shadow-2xl transition duration-500 border border-gray-200">
+                    <div class="related-product-card group relative bg-white rounded-[2rem] p-4 shadow-md hover:shadow-2xl transition duration-500 border border-gray-200">
                         <a href="{{ route('products.show', $related->slug) }}">
                             <div class="aspect-square rounded-[1.5rem] overflow-hidden mb-4 relative bg-gradient-to-br from-gray-50 to-gray-100">
                                 <img src="{{ $relatedImageUrl }}" 
@@ -213,6 +216,9 @@
                     </div>
                 @endforeach
             </div>
+            
+            <!-- Indicateurs (dots) pour mobile uniquement -->
+            <div class="related-products-indicators md:hidden"></div>
         </div>
     @endif
 </div>

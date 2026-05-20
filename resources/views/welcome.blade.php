@@ -8,8 +8,18 @@
         <div class="max-w-[1280px] mx-auto px-6">
             <div class="grid grid-rows-[92px_1fr] gap-4">
                 <!-- Bande du haut - Marques de produits -->
-                <div class="relative flex items-center rounded-2xl overflow-hidden">
-                    <img src="{{ asset('images/img brand product.png') }}" alt="Marques de produits" class="w-full h-full object-cover">
+                <!-- Desktop: Image complète -->
+                <!-- Mobile: Scroll horizontal pour voir toutes les marques -->
+                <div class="relative overflow-hidden rounded-2xl">
+                    <!-- Desktop: Image complète -->
+                    <div class="hidden md:flex items-center">
+                        <img src="{{ asset('images/img brand product.png') }}" alt="Marques de produits" class="w-full h-full object-cover">
+                    </div>
+                    
+                    <!-- Mobile: Scroll horizontal sur l'image complète -->
+                    <div class="md:hidden brands-mobile-scroll-container overflow-x-auto h-[92px]">
+                        <img src="{{ asset('images/img brand product.png') }}" alt="Marques de produits" class="h-full object-cover min-w-[300%]">
+                    </div>
                 </div>
 
                 <!-- Grid 2 colonnes en bas - 65% gauche / 35% droite (Desktop) -->
@@ -410,7 +420,7 @@
                 </div>
                 <!-- Ligne 1: Pigeon -->
                 <div class="relative overflow-hidden rounded-xl aspect-square group">
-                    <img src="https://images.unsplash.com/photo-1520763185298-1b434c919102?w=600&h=600&fit=crop&q=80" alt="Pigeon" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <img src="{{ asset('images/téléchargement.jpg') }}" alt="Pigeon" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                 </div>
                 
                 <!-- Ligne 2: Oiseau -->
@@ -419,7 +429,7 @@
                 </div>
                 <!-- Ligne 2: Poisson -->
                 <div class="relative overflow-hidden rounded-xl aspect-square group">
-                    <img src="https://images.unsplash.com/photo-1520990269108-4f2d4c2c86e2?w=600&h=600&fit=crop&q=80" alt="Poisson" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <img src="{{ asset('images/gal fish.jpg') }}" alt="Poisson" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                 </div>
                 
                 <!-- Ligne 3: Pigeon -->

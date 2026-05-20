@@ -281,12 +281,6 @@
             <!-- Secondary Controls Row -->
             <div class="flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
-                    <!-- Filter Toggle -->
-                    <button onclick="toggleFilters()" id="filter-toggle-btn"
-                            class="px-4 py-2 border rounded-lg hover:bg-gray-50 text-sm font-medium transition-colors">
-                        <i class="fas fa-filter mr-2"></i>Filtres
-                    </button>
-
                     <!-- Sort Dropdown -->
                     <select onchange="sortProducts(this.value)" 
                             class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary text-sm">

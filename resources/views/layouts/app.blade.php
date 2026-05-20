@@ -110,7 +110,8 @@
     <!-- Navbar -->
     <nav class="sticky top-0 z-50 bg-white shadow-sm border-b border-outline-variant">
         <div class="max-w-[1280px] mx-auto px-6">
-            <div class="flex justify-between items-center h-20">
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex justify-between items-center h-20">
                 <!-- Logo -->
                 <a href="{{ route('home') }}" class="flex items-center gap-3 group">
                     <img src="{{ asset('images/logo animalerie.png') }}" alt="Animalerie HMZ" class="h-12 w-auto transition-transform group-hover:scale-105">
@@ -184,23 +185,87 @@
                             Inscription
                         </a>
                     @endauth
-
-                    <!-- Mobile Menu Button -->
-                    <button class="md:hidden p-2 hover:bg-surface-container-low rounded-lg transition-colors" onclick="toggleMobileMenu()">
-                        <span class="material-symbols-outlined text-on-surface">menu</span>
-                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Navigation -->
+            <div class="md:hidden flex justify-between items-center h-16">
+                <!-- Hamburger Menu (Gauche) -->
+                <button class="p-2 hover:bg-surface-container-low rounded-lg transition-colors" id="mobileMenuToggle">
+                    <span class="material-symbols-outlined text-on-surface">menu</span>
+                </button>
+                
+                <!-- Logo (Centre) -->
+                <a href="{{ route('home') }}" class="absolute left-1/2 transform -translate-x-1/2">
+                    <img src="{{ asset('images/logo animalerie.png') }}" alt="Animalerie HMZ" class="h-10 w-auto">
+                </a>
+                
+                <!-- Panier + Profil (Droite) -->
+                <div class="flex items-center gap-2">
+                    <!-- Cart Icon -->
+                    <a href="{{ route('cart.show') }}" class="relative p-2 hover:bg-surface-container-low rounded-lg transition-colors">
+                        <span class="material-symbols-outlined text-on-surface">shopping_cart</span>
+                        <span class="absolute -top-1 -right-1 bg-primary text-on-primary text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center" id="cartCountMobile">0</span>
+                    </a>
+                    
+                    @auth
+                        <!-- Profile Icon -->
+                        <a href="{{ route('dashboard') }}" class="p-2 hover:bg-surface-container-low rounded-lg transition-colors">
+                            <span class="material-symbols-outlined text-primary">account_circle</span>
+                        </a>
+                    @else
+                        <!-- Login Icon -->
+                        <a href="{{ route('login') }}" class="p-2 hover:bg-surface-container-low rounded-lg transition-colors">
+                            <span class="material-symbols-outlined text-on-surface">person</span>
+                        </a>
+                    @endauth
                 </div>
             </div>
 
-            <!-- Mobile Menu -->
-            <div id="mobileMenu" class="hidden md:hidden pb-4 border-t border-outline-variant mt-2 pt-4">
-                <div class="flex flex-col gap-2">
-                    <a href="{{ route('products.index', ['category' => 'pigeons']) }}" class="px-4 py-2 text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">Pigeons</a>
-                    <a href="{{ route('products.index', ['category' => 'chats']) }}" class="px-4 py-2 text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">Chats</a>
-                    <a href="{{ route('products.index', ['category' => 'oiseaux']) }}" class="px-4 py-2 text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">Oiseaux</a>
-                    <a href="{{ route('home') }}#offres" class="px-4 py-2 text-on-surface hover:bg-surface-container-low rounded-lg transition-colors">Offres</a>
-                    <a href="#contact" class="px-4 py-2 text-on-surface hover:bg-surface-container-low rounded-lg transition-colors" onclick="scrollToContact(event)">Contact</a>
+            <!-- Mobile Menu Overlay -->
+            <div class="mobile-menu-overlay"></div>
+            
+            <!-- Mobile Menu Sidebar -->
+            <div class="mobile-menu">
+                <div class="mobile-menu-header">
+                    <div class="flex items-center gap-3">
+                        <img src="{{ asset('images/logo animalerie.png') }}" alt="Logo" class="h-10 w-auto">
+                        <span class="font-headline text-lg font-bold text-primary">Animalerie HMZ</span>
+                    </div>
+                    <button class="mobile-menu-close" data-mobile-menu-close>
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
                 </div>
+                <nav class="mobile-menu-nav">
+                    <a href="{{ route('home') }}" class="mobile-menu-link">
+                        <span class="material-symbols-outlined">home</span>
+                        Accueil
+                    </a>
+                    <a href="{{ route('products.index', ['category' => 'pigeons']) }}" class="mobile-menu-link">
+                        <span class="material-symbols-outlined">flutter</span>
+                        Pigeons
+                    </a>
+                    <a href="{{ route('products.index', ['category' => 'chats']) }}" class="mobile-menu-link">
+                        <span class="material-symbols-outlined">pets</span>
+                        Chats
+                    </a>
+                    <a href="{{ route('products.index', ['category' => 'oiseaux']) }}" class="mobile-menu-link">
+                        <span class="material-symbols-outlined">flutter_dash</span>
+                        Oiseaux
+                    </a>
+                    <a href="{{ route('home') }}#offres" class="mobile-menu-link">
+                        <span class="material-symbols-outlined">local_offer</span>
+                        Offres
+                    </a>
+                    <a href="{{ route('products.index') }}" class="mobile-menu-link">
+                        <span class="material-symbols-outlined">shopping_bag</span>
+                        Tous les produits
+                    </a>
+                    <a href="{{ route('home') }}#contact" class="mobile-menu-link" onclick="scrollToContact(event)">
+                        <span class="material-symbols-outlined">contact_mail</span>
+                        Contact
+                    </a>
+                </nav>
             </div>
         </div>
     </nav>
@@ -215,56 +280,59 @@
         <div class="max-w-[1280px] mx-auto px-6">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
                 <!-- About -->
-                <div>
-                    <div class="flex items-center gap-3 mb-6">
+                <div class="md:col-span-1 text-center md:text-left">
+                    <div class="flex items-center gap-3 mb-6 justify-center md:justify-start">
                         <img src="{{ asset('images/logo animalerie.png') }}" alt="Animalerie HMZ" class="h-12 w-auto brightness-0 invert">
                     </div>
                     <h3 class="font-headline text-xl font-bold mb-2">Animalerie HMZ</h3>
                     <p class="text-primary-light text-sm leading-relaxed">{{ $siteSettings['footer_description'] }}</p>
                 </div>
 
-                <!-- Quick Links -->
-                <div>
-                    <h3 class="font-bold text-lg mb-4">Liens Rapides</h3>
-                    <ul class="space-y-3">
-                        <li><a href="{{ route('home') }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Accueil</a></li>
-                        <li><a href="{{ route('products.index') }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Produits</a></li>
-                        <li><a href="{{ route('home') }}#offres" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Offres</a></li>
-                        <li><a href="#contact" onclick="scrollToContact(event)" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Contact</a></li>
-                    </ul>
-                </div>
+                <!-- Quick Links & Categories - 2 colonnes en mobile, 1 colonne chacune en desktop -->
+                <div class="grid grid-cols-2 md:grid-cols-1 gap-8 md:gap-0 md:col-span-1">
+                    <!-- Quick Links -->
+                    <div class="text-center md:text-left">
+                        <h3 class="font-bold text-lg mb-4">Liens Rapides</h3>
+                        <ul class="space-y-3">
+                            <li><a href="{{ route('home') }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2 justify-center md:justify-start"><span class="material-symbols-outlined text-sm">chevron_right</span> Accueil</a></li>
+                            <li><a href="{{ route('products.index') }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2 justify-center md:justify-start"><span class="material-symbols-outlined text-sm">chevron_right</span> Produits</a></li>
+                            <li><a href="{{ route('home') }}#offres" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2 justify-center md:justify-start"><span class="material-symbols-outlined text-sm">chevron_right</span> Offres</a></li>
+                            <li><a href="#contact" onclick="scrollToContact(event)" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2 justify-center md:justify-start"><span class="material-symbols-outlined text-sm">chevron_right</span> Contact</a></li>
+                        </ul>
+                    </div>
 
-                <!-- Categories -->
-                <div>
-                    <h3 class="font-bold text-lg mb-4">Catégories</h3>
-                    <ul class="space-y-3">
-                        <li><a href="{{ route('products.index', ['category' => 'chiens']) }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Chiens</a></li>
-                        <li><a href="{{ route('products.index', ['category' => 'chats']) }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Chats</a></li>
-                        <li><a href="{{ route('products.index', ['category' => 'oiseaux']) }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Oiseaux</a></li>
-                        <li><a href="{{ route('products.index', ['category' => 'pigeons']) }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2"><span class="material-symbols-outlined text-sm">chevron_right</span> Pigeons</a></li>
-                    </ul>
+                    <!-- Categories -->
+                    <div class="text-center md:text-left">
+                        <h3 class="font-bold text-lg mb-4">Catégories</h3>
+                        <ul class="space-y-3">
+                            <li><a href="{{ route('products.index', ['category' => 'chiens']) }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2 justify-center md:justify-start"><span class="material-symbols-outlined text-sm">chevron_right</span> Chiens</a></li>
+                            <li><a href="{{ route('products.index', ['category' => 'chats']) }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2 justify-center md:justify-start"><span class="material-symbols-outlined text-sm">chevron_right</span> Chats</a></li>
+                            <li><a href="{{ route('products.index', ['category' => 'oiseaux']) }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2 justify-center md:justify-start"><span class="material-symbols-outlined text-sm">chevron_right</span> Oiseaux</a></li>
+                            <li><a href="{{ route('products.index', ['category' => 'pigeons']) }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2 justify-center md:justify-start"><span class="material-symbols-outlined text-sm">chevron_right</span> Pigeons</a></li>
+                        </ul>
+                    </div>
                 </div>
 
                 <!-- Contact -->
-                <div>
+                <div class="text-center md:text-left">
                     <h3 class="font-bold text-lg mb-4">Contact</h3>
                     <ul class="space-y-3">
-                        <li class="flex items-start gap-3 text-primary-light text-sm">
+                        <li class="flex items-start gap-3 text-primary-light text-sm justify-center md:justify-start">
                             <span class="material-symbols-outlined text-white">location_on</span>
                             <span>Casablanca, Maroc</span>
                         </li>
-                        <li class="flex items-center gap-3 text-primary-light text-sm">
+                        <li class="flex items-center gap-3 text-primary-light text-sm justify-center md:justify-start">
                             <span class="material-symbols-outlined text-white">phone</span>
                             <span>{{ $siteSettings['contact_phone'] }}</span>
                         </li>
-                        <li class="flex items-center gap-3 text-primary-light text-sm">
+                        <li class="flex items-center gap-3 text-primary-light text-sm justify-center md:justify-start">
                             <span class="material-symbols-outlined text-white">mail</span>
                             <span>{{ $siteSettings['contact_email'] }}</span>
                         </li>
                     </ul>
                     
                     <!-- Social Media -->
-                    <div class="flex gap-3 mt-6">
+                    <div class="flex gap-3 mt-6 justify-center md:justify-start">
                         <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center transition-colors" aria-label="Facebook">
                             <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                         </a>
@@ -279,22 +347,77 @@
             </div>
 
             <!-- Bottom Bar -->
-            <div class="border-t border-white/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p class="text-primary-light text-sm">{{ $siteSettings['footer_copyright'] }}</p>
-                <div class="flex gap-6">
-                    <a href="#" class="text-primary-light hover:text-white transition-colors text-sm">Mentions Légales</a>
-                    <a href="#" class="text-primary-light hover:text-white transition-colors text-sm">CGV</a>
-                    <a href="#" class="text-primary-light hover:text-white transition-colors text-sm">Politique de Confidentialité</a>
-                </div>
+            <div class="border-t border-white/20 pt-8">
+                <p class="text-primary-light text-sm text-center md:text-left">{{ $siteSettings['footer_copyright'] }}</p>
             </div>
         </div>
     </footer>
 
     <script>
+        // Mobile Menu Toggle
         function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('hidden');
+            const menu = document.querySelector('.mobile-menu');
+            const overlay = document.querySelector('.mobile-menu-overlay');
+            
+            if (menu && overlay) {
+                menu.classList.toggle('active');
+                overlay.classList.toggle('active');
+                
+                // Empêcher le scroll du body quand le menu est ouvert
+                if (menu.classList.contains('active')) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
+            }
         }
+
+        // Fermer le menu mobile
+        function closeMobileMenu() {
+            const menu = document.querySelector('.mobile-menu');
+            const overlay = document.querySelector('.mobile-menu-overlay');
+            
+            if (menu && overlay) {
+                menu.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Event listeners pour le menu mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            // Bouton hamburger
+            const menuOpenBtn = document.getElementById('mobileMenuToggle');
+            if (menuOpenBtn) {
+                menuOpenBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    toggleMobileMenu();
+                });
+            }
+            
+            // Bouton fermer
+            const menuCloseBtn = document.querySelector('[data-mobile-menu-close]');
+            if (menuCloseBtn) {
+                menuCloseBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    closeMobileMenu();
+                });
+            }
+            
+            // Clic sur l'overlay
+            const overlay = document.querySelector('.mobile-menu-overlay');
+            if (overlay) {
+                overlay.addEventListener('click', closeMobileMenu);
+            }
+            
+            // Fermer le menu quand on clique sur un lien
+            const menuLinks = document.querySelectorAll('.mobile-menu-link');
+            menuLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    closeMobileMenu();
+                });
+            });
+        });
 
         function scrollToContact(event) {
             event.preventDefault();

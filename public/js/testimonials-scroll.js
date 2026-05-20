@@ -185,6 +185,9 @@ function initProductGalleryIndicators() {
 document.addEventListener('DOMContentLoaded', function() {
     // Initialiser la galerie produit
     initProductGalleryIndicators();
+    
+    // Initialiser les produits similaires
+    initRelatedProductsIndicators();
 });
 
 // Réinitialiser lors du redimensionnement (ajouter à l'event listener existant)
@@ -194,6 +197,62 @@ window.addEventListener('resize', function() {
         initHeroIndicators();
         initTestimonialsIndicators();
         initCategoriesIndicators();
-        initProductGalleryIndicators(); // Ajouter cette ligne
+        initProductGalleryIndicators();
+        initRelatedProductsIndicators(); // Ajouter cette ligne
     }, 250);
 });
+
+
+/**
+ * RELATED PRODUCTS SCROLL - PAGE DÉTAILS PRODUIT
+ * Gère les indicateurs (dots) pour les produits similaires en mode mobile
+ */
+
+// Initialiser les indicateurs pour les produits similaires
+function initRelatedProductsIndicators() {
+    // Vérifier si on est en mode mobile (max-width: 639px pour sm breakpoint)
+    if (window.innerWidth > 639) return;
+
+    const container = document.querySelector('.related-products-scroll');
+    const indicatorsContainer = document.querySelector('.related-products-indicators');
+    
+    if (!container || !indicatorsContainer) return;
+
+    // Compter le nombre de produits
+    const products = container.querySelectorAll('.related-product-card');
+    const count = products.length;
+
+    // Ne créer les dots que s'il y a plusieurs produits
+    if (count <= 1) return;
+
+    // Créer les dots
+    indicatorsContainer.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'related-products-dot';
+        if (i === 0) dot.classList.add('active');
+        indicatorsContainer.appendChild(dot);
+    }
+
+    // Mettre à jour les dots lors du scroll
+    let scrollTimeout;
+    container.addEventListener('scroll', function() {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(function() {
+            const scrollLeft = container.scrollLeft;
+            const itemWidth = products[0].offsetWidth;
+            const gap = parseFloat(getComputedStyle(container).gap) || 16;
+            const currentIndex = Math.round(scrollLeft / (itemWidth + gap));
+
+            // Mettre à jour les dots
+            const dots = indicatorsContainer.querySelectorAll('.related-products-dot');
+            dots.forEach((dot, index) => {
+                if (index === currentIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }, 100);
+    });
+}

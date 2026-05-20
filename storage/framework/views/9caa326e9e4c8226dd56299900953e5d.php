@@ -28,45 +28,11 @@
         <div class="lg:col-span-6 space-y-4">
             <!-- Image principale (Desktop) ou Galerie scroll (Mobile si plusieurs images) -->
             <div class="relative aspect-square rounded-[2.5rem] overflow-hidden bg-white shadow-xl group max-w-[500px] mx-auto">
-                <?php
-                    // Simuler plusieurs images pour la démo (à remplacer par les vraies images du produit)
-                    $productImages = [$imageUrl]; // Image principale
-                    // Si le produit a d'autres images, les ajouter ici
-                    // Exemple: $productImages = [$product->image, $product->image2, $product->image3];
-                ?>
-                
-                <?php if(count($productImages) > 1): ?>
-                    <!-- Galerie scroll horizontal (Mobile uniquement) -->
-                    <div class="product-gallery-scroll md:hidden">
-                        <?php $__currentLoopData = $productImages; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $img): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <?php
-                                $imgUrl = $img && str_starts_with($img, 'http') ? $img : asset($img);
-                            ?>
-                            <div class="product-gallery-slide">
-                                <img src="<?php echo e($imgUrl); ?>" 
-                                     alt="<?php echo e($product->name); ?> - Image <?php echo e($index + 1); ?>" 
-                                     class="w-full h-full object-contain p-8"
-                                     onerror="this.src='https://via.placeholder.com/800x800?text=No+Image'">
-                            </div>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    </div>
-                    
-                    <!-- Indicateurs (dots) pour la galerie mobile -->
-                    <div class="product-gallery-indicators md:hidden"></div>
-                    
-                    <!-- Image principale (Desktop) -->
-                    <img src="<?php echo e($imageUrl); ?>" 
-                         alt="<?php echo e($product->name); ?>" 
-                         class="hidden md:block w-full h-full object-contain transition-transform duration-700 group-hover:scale-105 p-8"
-                         onerror="this.src='https://via.placeholder.com/800x800?text=No+Image'">
-                <?php else: ?>
-                    <!-- Une seule image (Mobile + Desktop) -->
-                    <img id="mainImage" 
-                         src="<?php echo e($imageUrl); ?>" 
-                         alt="<?php echo e($product->name); ?>" 
-                         class="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105 p-8"
-                         onerror="this.src='https://via.placeholder.com/800x800?text=No+Image'">
-                <?php endif; ?>
+                <img id="mainImage" 
+                     src="<?php echo e($imageUrl); ?>" 
+                     alt="<?php echo e($product->name); ?>" 
+                     class="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105 p-8"
+                     onerror="this.src='https://via.placeholder.com/800x800?text=No+Image'">
                 
                 <!-- Wishlist Button - Top Right -->
                 <button id="likeBtn" class="absolute top-6 right-6 w-12 h-12 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition group/like z-10">
@@ -130,20 +96,20 @@
             </div>
 
             <!-- Actions -->
-            <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                <div class="flex items-center bg-surface-container-low rounded-full p-1 border border-gray-200">
-                    <button class="w-12 h-12 flex items-center justify-center text-xl font-bold hover:bg-white rounded-full transition" onclick="updateQty(-1)">-</button>
-                    <span id="qtyDisplay" class="w-12 text-center font-bold text-lg">1</span>
-                    <button class="w-12 h-12 flex items-center justify-center text-xl font-bold hover:bg-white rounded-full transition" onclick="updateQty(1)">+</button>
+            <div class="flex flex-row gap-3 md:gap-4 pt-4">
+                <div class="flex items-center bg-surface-container-low rounded-full p-1 border border-gray-200 shrink-0">
+                    <button class="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center text-lg md:text-xl font-bold hover:bg-white rounded-full transition" onclick="updateQty(-1)">-</button>
+                    <span id="qtyDisplay" class="w-8 md:w-12 text-center font-bold text-base md:text-lg">1</span>
+                    <button class="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center text-lg md:text-xl font-bold hover:bg-white rounded-full transition" onclick="updateQty(1)">+</button>
                 </div>
                 <button id="addToCartBtn" 
                         data-product-id="<?php echo e($product->id); ?>"
                         <?php echo e($product->stock <= 0 ? 'disabled' : ''); ?>
 
-                        class="flex-1 bg-primary hover:bg-primary-container text-white font-bold py-4 px-8 rounded-full transition-all shadow-xl hover:shadow-2xl transform hover:-translate-y-1 active:translate-y-0 flex items-center justify-center gap-3 group disabled:opacity-50 disabled:cursor-not-allowed">
-                    <span class="material-symbols-outlined group-hover:animate-bounce">shopping_cart</span>
-                    <?php echo e($product->stock > 0 ? 'Ajouter au panier' : 'Rupture de stock'); ?>
-
+                        class="flex-1 bg-primary hover:bg-primary-container text-white font-bold py-3 md:py-4 px-4 md:px-8 rounded-full transition-all shadow-xl hover:shadow-2xl transform hover:-translate-y-1 active:translate-y-0 flex items-center justify-center gap-2 md:gap-3 group disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base">
+                    <span class="material-symbols-outlined group-hover:animate-bounce text-xl md:text-2xl">shopping_cart</span>
+                    <span class="hidden sm:inline"><?php echo e($product->stock > 0 ? 'Ajouter au panier' : 'Rupture de stock'); ?></span>
+                    <span class="sm:hidden"><?php echo e($product->stock > 0 ? 'Ajouter' : 'Rupture'); ?></span>
                 </button>
             </div>
 
@@ -223,7 +189,9 @@
                 </a>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Mobile: Scroll horizontal avec 1 produit visible -->
+            <!-- Desktop: Grid 4 colonnes -->
+            <div class="related-products-scroll grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 <?php $__currentLoopData = $relatedProducts->take(4); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $related): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <?php
                         $relatedImageUrl = $related->image && str_starts_with($related->image, 'http') 
@@ -231,12 +199,12 @@
                             : asset($related->image);
                     ?>
                     
-                    <div class="group relative bg-white rounded-[2rem] p-4 shadow-md hover:shadow-2xl transition duration-500 border border-gray-200">
+                    <div class="related-product-card group relative bg-white rounded-[2rem] p-4 shadow-md hover:shadow-2xl transition duration-500 border border-gray-200">
                         <a href="<?php echo e(route('products.show', $related->slug)); ?>">
                             <div class="aspect-square rounded-[1.5rem] overflow-hidden mb-4 relative bg-gradient-to-br from-gray-50 to-gray-100">
                                 <img src="<?php echo e($relatedImageUrl); ?>" 
                                      class="w-full h-full object-contain p-4"
-                                     onerror="this.src='https://via.placeholder.com/300x300?text=No+Image'">
+                                     onerror="this.src='<?php echo e(asset('images/placeholder.svg')); ?>'">
                             </div>
                             <h3 class="font-bold text-base px-2 line-clamp-2"><?php echo e($related->name); ?></h3>
                             <p class="text-on-surface-variant/60 text-sm px-2 mb-4"><?php echo e($related->category->name); ?></p>
@@ -250,6 +218,9 @@
                     </div>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
+            
+            <!-- Indicateurs (dots) pour mobile uniquement -->
+            <div class="related-products-indicators md:hidden"></div>
         </div>
     <?php endif; ?>
 </div>

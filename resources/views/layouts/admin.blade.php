@@ -40,6 +40,7 @@
             z-index: 50;
             border-right: 1px solid #E5E7EB;
             box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease-in-out;
         }
         
         .main-content {
@@ -79,20 +80,215 @@
             margin-bottom: 24px;
         }
         
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+        }
+        
+        .mobile-navbar {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: white;
+            border-bottom: 1px solid #E5E7EB;
+            z-index: 70;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .mobile-navbar-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+            padding: 0 16px;
+        }
+        
+        .mobile-navbar .hamburger-btn {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #F3F4F6;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .mobile-navbar .hamburger-btn:hover {
+            background: #E5E7EB;
+        }
+        
+        .mobile-navbar .logo-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .mobile-navbar .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #003e87 0%, #0855b1 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+        
+        .mobile-navbar .logout-btn {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #FEE2E2;
+            color: #DC2626;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        
+        .mobile-navbar .logout-btn:hover {
+            background: #FEE2E2;
+            transform: scale(1.05);
+        }
+        
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 40;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        .sidebar-overlay.active {
+            opacity: 1;
+        }
+        
+        /* Mobile Responsive */
         @media (max-width: 1024px) {
+            .mobile-navbar {
+                display: block;
+            }
+            
             .sidebar {
                 transform: translateX(-100%);
+                z-index: 60;
+                top: 64px;
+                height: calc(100vh - 64px);
             }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
             .main-content {
                 margin-left: 0;
+                padding: 80px 16px 20px 16px;
+            }
+            
+            .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 44px;
+                height: 44px;
+                background: white;
+                border: 1px solid #E5E7EB;
+                border-radius: 12px;
+                cursor: pointer;
+                transition: all 0.2s;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            }
+            
+            .mobile-menu-btn:hover {
+                background: #F3F4F6;
+            }
+            
+            .sidebar-overlay {
+                display: block;
+                pointer-events: none;
+                top: 64px;
+            }
+            
+            .sidebar-overlay.active {
+                pointer-events: auto;
+            }
+            
+            /* Header mobile */
+            header h1 {
+                font-size: 1.5rem !important;
+            }
+            
+            header p {
+                font-size: 0.875rem !important;
+                display: none;
+            }
+            
+            .admin-avatar {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .main-content {
+                padding: 80px 12px 16px 12px;
+            }
+            
+            header h1 {
+                font-size: 1.25rem !important;
+            }
+            
+            .mobile-navbar .logo-center span {
+                display: none;
             }
         }
     </style>
     @stack('styles')
 </head>
 <body>
+    <!-- Mobile Navbar (visible uniquement en mobile) -->
+    <nav class="mobile-navbar">
+        <div class="mobile-navbar-content">
+            <!-- Hamburger (Gauche) -->
+            <button class="hamburger-btn" onclick="toggleSidebar()">
+                <i class="fas fa-bars text-gray-700 text-lg"></i>
+            </button>
+            
+            <!-- Logo (Centre) -->
+            <div class="logo-center">
+                <div class="logo-icon">
+                    <i class="fas fa-paw"></i>
+                </div>
+                <span class="text-lg font-extrabold text-gray-900">Admin <span class="text-[#003e87]">HMZ</span></span>
+            </div>
+            
+            <!-- Déconnexion (Droite) -->
+            <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
+                @csrf
+                <button type="submit" class="logout-btn" title="Déconnexion">
+                    <i class="fas fa-sign-out-alt text-lg"></i>
+                </button>
+            </form>
+        </div>
+    </nav>
+    
+    <!-- Sidebar Overlay (Mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    
     <!-- Sidebar -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="adminSidebar">
         <div class="logo-container">
             <div class="w-10 h-10 bg-gradient-to-br from-[#003e87] to-[#0855b1] rounded-xl flex items-center justify-center text-white text-xl shadow-lg">
                 <i class="fas fa-paw"></i>
@@ -150,14 +346,14 @@
 
     <!-- Main Content -->
     <main class="main-content">
-        <header class="flex justify-between items-center mb-10">
+        <header class="flex justify-between items-center mb-6 md:mb-10">
             <div>
                 <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">@yield('page-title', 'Tableau de bord')</h1>
                 <p class="text-gray-500 font-medium mt-1">Bienvenue sur votre espace de gestion.</p>
             </div>
             
             <div class="flex items-center gap-4">
-                <div class="flex items-center gap-3 pl-4">
+                <div class="admin-avatar flex items-center gap-3 pl-4">
                     <div class="text-right">
                         <div class="text-sm font-bold text-gray-900">Administrateur</div>
                         <div class="text-xs font-medium text-green-500">En ligne</div>
@@ -171,6 +367,35 @@
 
         @yield('content')
     </main>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('adminSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+            
+            // Empêcher le scroll du body quand le menu est ouvert
+            if (sidebar.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+        
+        // Fermer la sidebar quand on clique sur un lien (mobile)
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 1024) {
+                        toggleSidebar();
+                    }
+                });
+            });
+        });
+    </script>
 
     @stack('scripts')
 </body>

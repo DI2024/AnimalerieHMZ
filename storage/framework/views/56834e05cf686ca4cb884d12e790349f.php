@@ -198,7 +198,7 @@
 
                 <!-- Products -->
                 <?php if($products->count() > 0): ?>
-                    <div class="grid grid-cols-2 gap-4 mb-8">
+                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5 mb-8">
                         <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <?php
                                 $imageUrl = $product->image && str_starts_with($product->image, 'http') 
@@ -209,12 +209,12 @@
                             
                             <article class="bg-white border border-gray-200 rounded-xl p-3 flex flex-col h-full transition duration-300 hover:shadow-xl group">
                                 <a href="<?php echo e(route('products.show', $product->slug)); ?>" class="block">
-                                    <div class="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg overflow-hidden aspect-square flex items-center justify-center p-2 mb-3">
+                                    <div class="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg overflow-hidden aspect-square flex items-center justify-center p-2 lg:p-3 mb-3">
                                         <?php if($discount > 0): ?>
-                                            <span class="absolute top-1 left-1 bg-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full shadow-lg">-<?php echo e($discount); ?>%</span>
+                                            <span class="absolute top-1 left-1 lg:top-2 lg:left-2 bg-primary text-white text-[10px] lg:text-xs font-bold px-1.5 py-0.5 lg:px-2 lg:py-1 rounded-full shadow-lg">-<?php echo e($discount); ?>%</span>
                                         <?php endif; ?>
                                         <?php if($product->is_new): ?>
-                                            <span class="absolute top-1 right-1 bg-green-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full shadow-lg">Nouveau</span>
+                                            <span class="absolute top-1 right-1 lg:top-2 lg:right-2 bg-green-500 text-white text-[10px] lg:text-xs font-bold px-1.5 py-0.5 lg:px-2 lg:py-1 rounded-full shadow-lg">Nouveau</span>
                                         <?php endif; ?>
                                         <img src="<?php echo e($imageUrl); ?>" 
                                              alt="<?php echo e($product->name); ?>" 
@@ -223,18 +223,18 @@
                                              onerror="this.src='<?php echo e(asset('images/placeholder.svg')); ?>'">
                                     </div>
                                     <div class="flex-grow flex flex-col">
-                                        <span class="text-[10px] font-bold uppercase tracking-wider text-primary mb-1">
+                                        <span class="text-[10px] lg:text-xs font-bold uppercase tracking-wider text-primary mb-1">
                                             <?php echo e($product->category->name ?? 'Produit'); ?>
 
                                         </span>
-                                        <h3 class="text-xs font-bold mb-2 leading-tight text-gray-900 line-clamp-2 min-h-[32px]">
+                                        <h3 class="text-xs lg:text-sm font-bold mb-2 leading-tight text-gray-900 line-clamp-2 min-h-[32px] lg:min-h-[38px]">
                                             <?php echo e($product->name); ?>
 
                                         </h3>
                                         <?php if($product->rating): ?>
-                                            <div class="flex gap-0.5 mb-2 text-yellow-400 text-xs">
+                                            <div class="flex gap-0.5 mb-2 text-yellow-400 text-xs lg:text-sm">
                                                 <?php for($i = 1; $i <= 5; $i++): ?>
-                                                    <span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' <?php echo e($i <= $product->rating ? 1 : 0); ?>;">star</span>
+                                                    <span class="material-symbols-outlined text-xs lg:text-sm" style="font-variation-settings: 'FILL' <?php echo e($i <= $product->rating ? 1 : 0); ?>;">star</span>
                                                 <?php endfor; ?>
                                             </div>
                                         <?php endif; ?>
@@ -242,15 +242,15 @@
                                 </a>
                                 <div class="flex justify-between items-center mt-auto pt-2 border-t border-gray-100">
                                     <div class="flex flex-col">
-                                        <span class="font-headline text-sm font-bold text-primary"><?php echo e(number_format($product->price, 2, ',', ' ')); ?> MAD</span>
+                                        <span class="font-headline text-sm lg:text-lg font-bold text-primary"><?php echo e(number_format($product->price, 2, ',', ' ')); ?> MAD</span>
                                         <?php if($product->old_price && $product->old_price > $product->price): ?>
-                                            <span class="text-[10px] text-gray-400 line-through"><?php echo e(number_format($product->old_price, 2, ',', ' ')); ?> MAD</span>
+                                            <span class="text-[10px] lg:text-xs text-gray-400 line-through"><?php echo e(number_format($product->old_price, 2, ',', ' ')); ?> MAD</span>
                                         <?php endif; ?>
                                     </div>
                                     <button class="bg-primary text-white p-2 rounded-lg flex items-center justify-center transition hover:bg-primary-container hover:scale-110 shadow-md product-add-btn" 
                                             data-product-id="<?php echo e($product->id); ?>" 
                                             aria-label="Ajouter au panier">
-                                        <span class="material-symbols-outlined text-sm">shopping_cart</span>
+                                        <span class="material-symbols-outlined text-sm lg:text-base">shopping_cart</span>
                                     </button>
                                 </div>
                             </article>
@@ -276,9 +276,9 @@
 </div>
 
 <!-- Bottom Sheet Filtres (Mobile uniquement) -->
-<div id="filtersBottomSheet" class="fixed inset-0 z-[9999] pointer-events-none">
+<div id="filtersBottomSheet" class="fixed inset-0 z-[9999] pointer-events-none hidden">
     <!-- Overlay -->
-    <div id="filtersOverlay" class="absolute inset-0 bg-black/50 opacity-0 transition-opacity duration-300"></div>
+    <div id="filtersOverlay" class="absolute inset-0 bg-black/50 opacity-0 transition-opacity duration-300 pointer-events-none"></div>
     
     <!-- Bottom Sheet Content -->
     <div id="filtersSheet" class="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-2xl transform translate-y-full transition-transform duration-300 max-h-[85vh] overflow-y-auto">
@@ -426,8 +426,9 @@ const closeFiltersBtn = document.getElementById('closeFiltersBtn');
 // Ouvrir le bottom sheet
 if (openFiltersBtn) {
     openFiltersBtn.addEventListener('click', function() {
-        filtersBottomSheet.classList.remove('pointer-events-none');
-        filtersOverlay.classList.remove('opacity-0');
+        filtersBottomSheet.classList.remove('pointer-events-none', 'hidden');
+        filtersOverlay.classList.remove('opacity-0', 'pointer-events-none');
+        filtersOverlay.classList.add('pointer-events-auto');
         filtersSheet.classList.remove('translate-y-full');
         document.body.style.overflow = 'hidden';
     });
@@ -435,11 +436,12 @@ if (openFiltersBtn) {
 
 // Fermer le bottom sheet
 function closeFiltersBottomSheet() {
-    filtersOverlay.classList.add('opacity-0');
+    filtersOverlay.classList.add('opacity-0', 'pointer-events-none');
+    filtersOverlay.classList.remove('pointer-events-auto');
     filtersSheet.classList.add('translate-y-full');
     document.body.style.overflow = '';
     setTimeout(() => {
-        filtersBottomSheet.classList.add('pointer-events-none');
+        filtersBottomSheet.classList.add('pointer-events-none', 'hidden');
     }, 300);
 }
 

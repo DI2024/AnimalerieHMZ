@@ -1,11 +1,9 @@
-@extends('layouts.app')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="min-h-screen bg-gradient-to-b from-surface-container-low to-white py-12">
     <div class="max-w-[1280px] mx-auto px-6">
         <!-- Breadcrumbs -->
         <nav class="flex items-center gap-2 text-sm text-on-surface-variant mb-8">
-            <a href="{{ route('home') }}" class="hover:text-primary transition">Accueil</a>
+            <a href="<?php echo e(route('home')); ?>" class="hover:text-primary transition">Accueil</a>
             <span class="material-symbols-outlined text-sm">chevron_right</span>
             <span class="font-bold text-primary">Panier</span>
         </nav>
@@ -29,7 +27,7 @@
         </div>
         <h2 class="text-2xl font-bold text-on-surface mb-4">Votre panier est vide</h2>
         <p class="text-on-surface-variant mb-8">Découvrez nos produits et ajoutez-les à votre panier</p>
-        <a href="{{ route('products.index') }}" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-container text-white font-bold py-4 px-8 rounded-full transition shadow-lg hover:shadow-xl">
+        <a href="<?php echo e(route('products.index')); ?>" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-container text-white font-bold py-4 px-8 rounded-full transition shadow-lg hover:shadow-xl">
             <span class="material-symbols-outlined">shopping_bag</span>
             Découvrir nos produits
         </a>
@@ -66,10 +64,10 @@
                 </div>
 
                 <div class="space-y-3">
-                    <a href="{{ route('checkout') }}" id="checkoutBtn" class="block w-full bg-primary hover:bg-primary-container text-white font-bold py-4 px-6 rounded-full transition text-center shadow-lg hover:shadow-xl hover:-translate-y-1 active:translate-y-0">
+                    <a href="<?php echo e(route('checkout')); ?>" id="checkoutBtn" class="block w-full bg-primary hover:bg-primary-container text-white font-bold py-4 px-6 rounded-full transition text-center shadow-lg hover:shadow-xl hover:-translate-y-1 active:translate-y-0">
                         Passer la commande
                     </a>
-                    <a href="{{ route('products.index') }}" class="block w-full bg-surface-container-low hover:bg-surface-container text-on-surface font-bold py-4 px-6 rounded-full transition text-center">
+                    <a href="<?php echo e(route('products.index')); ?>" class="block w-full bg-surface-container-low hover:bg-surface-container text-on-surface font-bold py-4 px-6 rounded-full transition text-center">
                         Continuer mes achats
                     </a>
                 </div>
@@ -191,7 +189,7 @@ function setupModalListeners() {
 
 async function loadCart() {
     try {
-        const response = await fetch('{{ route('api.cart.index') }}');
+        const response = await fetch('<?php echo e(route('api.cart.index')); ?>');
         const data = await response.json();
         
         if (data.success && data.cart && data.cart.length > 0) {
@@ -293,7 +291,7 @@ async function updateQuantity(productId, newQuantity) {
     }
     
     try {
-        const response = await fetch('{{ route('api.cart.update') }}', {
+        const response = await fetch('<?php echo e(route('api.cart.update')); ?>', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -345,7 +343,7 @@ function confirmDelete() {
 
 async function removeItem(productId) {
     try {
-        const response = await fetch('{{ route('api.cart.remove') }}', {
+        const response = await fetch('<?php echo e(route('api.cart.remove')); ?>', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -444,4 +442,6 @@ window.confirmDelete = confirmDelete;
     animation: fadeIn 0.3s ease-out;
 }
 </style>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\User\Desktop\animx\AnimalerieHMZ\resources\views/cart.blade.php ENDPATH**/ ?>

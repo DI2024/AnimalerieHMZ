@@ -220,23 +220,17 @@
 /* ============================================
    BOTTOM SHEET FILTRES (MOBILE)
    ============================================ */
-@media (max-width: 1023px) {
-  #filtersBottomSheet {
-    pointer-events: auto;
-  }
-  
-  #filtersSheet {
-    scrollbar-width: thin;
-  }
-  
-  #filtersSheet::-webkit-scrollbar {
-    width: 4px;
-  }
-  
-  #filtersSheet::-webkit-scrollbar-thumb {
-    background-color: #d1d5db;
-    border-radius: 2px;
-  }
+#filtersSheet {
+  scrollbar-width: thin;
+}
+
+#filtersSheet::-webkit-scrollbar {
+  width: 4px;
+}
+
+#filtersSheet::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 2px;
 }
 
 /* ============================================
@@ -291,5 +285,82 @@
     width: 24px;
     border-radius: 4px;
     background-color: #003e87;
+  }
+}
+
+/* ============================================
+   PRODUITS SIMILAIRES SCROLL HORIZONTAL (MOBILE)
+   ============================================ */
+@media (max-width: 639px) {
+  .related-products-scroll {
+    display: flex !important;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 1rem;
+    padding-bottom: 1rem;
+  }
+  
+  .related-products-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .related-product-card {
+    flex: 0 0 85%;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+  
+  /* Indicateurs (dots) pour les produits similaires */
+  .related-products-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+  
+  .related-products-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #d1d5db;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  
+  .related-products-dot.active {
+    width: 24px;
+    border-radius: 4px;
+    background-color: #003e87;
+  }
+}
+
+/* Desktop - Garder le grid normal */
+@media (min-width: 640px) {
+  .related-products-indicators {
+    display: none;
+  }
+}
+
+/* ============================================
+   MARQUES PRODUITS SCROLL HORIZONTAL (MOBILE)
+   ============================================ */
+@media (max-width: 767px) {
+  .brands-mobile-scroll-container {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  
+  .brands-mobile-scroll-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .brands-mobile-scroll-container img {
+    height: 100%;
+    object-fit: cover;
+    min-width: 300%;
   }
 }

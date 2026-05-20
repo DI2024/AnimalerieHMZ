@@ -83,7 +83,7 @@ class ProductController extends Controller
             }
         }
 
-        $products = $query->paginate(10)->withQueryString();
+        $products = $query->paginate(12)->withQueryString();
 
         // Load categories with their subcategories and product counts
         $categories = Category::where('is_active', true)
