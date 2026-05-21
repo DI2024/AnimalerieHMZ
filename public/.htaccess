@@ -5,6 +5,10 @@
 
     RewriteEngine On
 
+    # Redirect to root if someone accesses /public directly
+    RewriteCond %{REQUEST_URI} !^/index\.php
+    RewriteRule ^(.*)$ /$1 [L,R=301]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
@@ -23,3 +27,18 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+# Prevent directory browsing
+Options -Indexes
+
+# Protect uploaded files from execution
+<FilesMatch "\.(php|php3|php4|php5|phtml)$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+# Allow only specific file types to be served
+<FilesMatch "\.(css|js|jpg|jpeg|png|gif|svg|ico|woff|woff2|ttf|eot|webp|pdf|zip|json)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
