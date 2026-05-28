@@ -6,16 +6,7 @@
              class="w-full rounded-lg mb-4"
              onerror="this.src='<?php echo e(asset('images/placeholder-product.svg')); ?>'; this.onerror=null;">
         
-        <?php if($product->images->count() > 0): ?>
-            <div class="grid grid-cols-4 gap-2">
-                <?php $__currentLoopData = $product->images; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $image): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <img src="<?php echo e(asset('storage/' . $image->image)); ?>" 
-                         alt="<?php echo e($product->name); ?>" 
-                         class="w-full h-20 object-cover rounded"
-                         onerror="this.src='<?php echo e(asset('images/placeholder-product.svg')); ?>'; this.onerror=null;">
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            </div>
-        <?php endif; ?>
+
     </div>
 
     <!-- Right: Info -->

@@ -11,19 +11,29 @@ use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::withCount(['products', 'subcategories'])
-            ->orderBy('order')
+        $query = Category::withCount(['products', 'subcategories']);
+        
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('slug', 'like', '%' . $search . '%');
+            });
+        }
+        
+        $categories = $query->orderBy('order')
             ->orderBy('name')
             ->get();
         
-        // Calculate stats
+        // Calculate stats based on all categories
+        $allCategories = Category::withCount('products')->get();
         $stats = [
-            'total' => $categories->count(),
-            'active' => $categories->where('is_active', 1)->count(),
-            'inactive' => $categories->where('is_active', 0)->count(),
-            'total_products' => $categories->sum('products_count'),
+            'total' => $allCategories->count(),
+            'active' => $allCategories->where('is_active', 1)->count(),
+            'inactive' => $allCategories->where('is_active', 0)->count(),
+            'total_products' => $allCategories->sum('products_count'),
         ];
             
         return view('admin.categories.index', compact('categories', 'stats'));
@@ -79,6 +89,7 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255',
             'icon' => 'nullable|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'order' => 'required|integer|min:0',
         ]);
 
         // Handle checkbox - convert to boolean

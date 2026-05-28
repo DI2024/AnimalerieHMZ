@@ -41,7 +41,7 @@
     </div>
     
     <!-- Sections Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mobile-cards-scroll">
         <!-- Hero Section -->
         <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden border border-gray-200">
             <div class="p-6">

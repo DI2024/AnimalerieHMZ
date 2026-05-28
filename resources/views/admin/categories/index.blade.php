@@ -241,7 +241,7 @@
 
 @section('content')
 <!-- Stats Cards -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6 mobile-cards-scroll">
     <!-- Total Categories -->
     <div class="bg-white rounded-lg shadow p-6">
         <div class="flex items-center justify-between">
@@ -303,22 +303,38 @@
     <!-- Two-Row Header -->
     <div class="bg-white rounded-lg shadow p-4">
         <!-- Primary Actions Row -->
-        <div class="flex items-center gap-3 mb-3">
+        <div class="flex flex-col md:flex-row md:items-center gap-3 mb-3">
             <!-- Search Bar -->
             <div class="relative flex-1 min-w-[200px] max-w-[600px]">
-                <form method="GET" action="{{ route('admin.categories.index') }}">
+                <form method="GET" action="{{ route('admin.categories.index') }}" id="search-form">
                     <input type="text" name="search" value="{{ request('search') }}" 
                            placeholder="Rechercher une catégorie..." 
-                           class="w-full pl-10 pr-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm">
-                    <i class="fas fa-search absolute left-3 top-3.5 text-gray-400"></i>
+                           class="w-full pl-10 pr-10 py-2.5 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm">
+                    <button type="submit" class="absolute left-3 top-3.5 text-gray-400 hover:text-primary focus:outline-none">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    @if(request('search'))
+                        <a href="{{ route('admin.categories.index') }}" class="absolute right-3 top-3.5 text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times-circle"></i>
+                        </a>
+                    @endif
                 </form>
             </div>
 
-            <!-- Refresh Button -->
-            <button onclick="window.location.reload()" 
-                    class="px-4 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm font-medium whitespace-nowrap transition-colors">
-                <i class="fas fa-sync-alt mr-2"></i>Actualiser
-            </button>
+            <!-- Action Buttons Group (Rechercher & Actualiser) -->
+            <div class="flex items-center gap-2 w-full md:w-auto">
+                <!-- Search Submit Button -->
+                <button type="button" onclick="document.getElementById('search-form').submit();"
+                        class="flex-1 md:flex-none px-4 py-2.5 bg-[#003e87]/10 text-[#003e87] border border-[#003e87]/20 rounded-lg hover:bg-[#003e87]/20 text-sm font-medium whitespace-nowrap transition-colors flex items-center justify-center gap-2">
+                    <i class="fas fa-search"></i>Rechercher
+                </button>
+
+                <!-- Refresh Button -->
+                <button onclick="window.location.reload()" 
+                        class="flex-1 md:flex-none px-4 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm font-medium whitespace-nowrap transition-colors flex items-center justify-center gap-2">
+                    <i class="fas fa-sync-alt"></i>Actualiser
+                </button>
+            </div>
 
             <!-- New Category Button -->
             <a href="{{ route('admin.categories.create') }}" 
@@ -328,29 +344,31 @@
         </div>
 
         <!-- Secondary Controls Row -->
-        <div class="flex items-center justify-between gap-3">
-            <div class="flex items-center gap-3">
+        <div class="flex flex-row items-center justify-between gap-3 mt-2 border-t pt-3 md:border-t-0 md:pt-0 md:mt-0">
+            <!-- Count (Left on mobile, Right on desktop) -->
+            <div class="text-sm text-gray-600 font-bold md:order-2">
+                <span id="category-count">{{ $categories->count() }}</span> catégorie(s)
+            </div>
+            
+            <!-- Buttons (Right on mobile, Left on desktop) -->
+            <div class="flex items-center gap-2 md:order-1">
                 <!-- Reorder Mode Toggle -->
                 <button onclick="toggleReorderMode()" id="reorder-btn"
-                        class="px-4 py-2 border rounded-lg hover:bg-gray-50 text-sm font-medium transition-colors">
-                    <i class="fas fa-arrows-alt mr-2"></i>Réorganiser
+                        class="hidden md:inline-flex px-3 py-2 border rounded-lg hover:bg-gray-50 text-xs md:text-sm font-medium transition-colors whitespace-nowrap">
+                    <i class="fas fa-arrows-alt mr-1.5"></i>Réorganiser
                 </button>
 
                 <!-- Save Order Button (hidden by default) -->
                 <button onclick="saveOrder()" id="save-order-btn"
-                        class="hidden px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium transition-colors">
-                    <i class="fas fa-save mr-2"></i>Enregistrer l'ordre
+                        class="hidden px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-xs md:text-sm font-medium transition-colors whitespace-nowrap">
+                    <i class="fas fa-save mr-1.5"></i>Enregistrer
                 </button>
 
                 <!-- Cancel Button (hidden by default) -->
                 <button onclick="cancelReorder()" id="cancel-order-btn"
-                        class="hidden px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm font-medium transition-colors">
-                    <i class="fas fa-times mr-2"></i>Annuler
+                        class="hidden px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-xs md:text-sm font-medium transition-colors whitespace-nowrap">
+                    <i class="fas fa-times mr-1.5"></i>Annuler
                 </button>
-            </div>
-
-            <div class="text-sm text-gray-600">
-                <span id="category-count">{{ $categories->count() }}</span> catégorie(s)
             </div>
         </div>
     </div>
@@ -361,22 +379,22 @@
         <table class="w-full" id="categories-table">
             <thead class="bg-gray-50">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase w-12">
+                    <th id="drag-column-header" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase w-12 hidden md:table-cell">
                         <span id="drag-header" class="hidden">
                             <i class="fas fa-grip-vertical text-gray-400"></i>
                         </span>
                     </th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Catégorie</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Produits</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ordre</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase hidden md:table-cell">Ordre</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Statut</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase hidden md:table-cell">Actions</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200" id="sortable-categories">
                 @forelse($categories as $category)
-                <tr class="category-row hover:bg-gray-50" data-id="{{ $category->id }}">
-                    <td class="px-6 py-4">
+                <tr class="category-row hover:bg-gray-50 cursor-pointer" data-id="{{ $category->id }}">
+                    <td class="drag-column-cell px-6 py-4 hidden md:table-cell">
                         <div class="drag-handle hidden text-gray-400 cursor-move">
                             <i class="fas fa-grip-vertical"></i>
                         </div>
@@ -406,11 +424,12 @@
                     </td>
                     <td class="px-6 py-4 text-sm">
                         <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
-                            {{ $category->products_count }} produit{{ $category->products_count > 1 ? 's' : '' }}
+                            <span class="md:hidden">{{ $category->products_count }}</span>
+                            <span class="hidden md:inline">{{ $category->products_count }} produit{{ $category->products_count > 1 ? 's' : '' }}</span>
                         </span>
                     </td>
-                    <td class="px-6 py-4 text-sm text-gray-600">
-                        <span class="order-value">{{ $loop->iteration }}</span>
+                    <td class="px-6 py-4 text-sm text-gray-600 hidden md:table-cell">
+                        <span class="order-value">{{ $category->order }}</span>
                     </td>
                     <td class="px-6 py-4">
                         <label class="toggle-switch">
@@ -421,7 +440,7 @@
                             <span class="toggle-slider"></span>
                         </label>
                     </td>
-                    <td class="px-6 py-4 text-sm">
+                    <td class="px-6 py-4 text-sm hidden md:table-cell">
                         <div class="dropdown">
                             <button onclick="toggleDropdown(this)" 
                                     class="px-3 py-1.5 text-gray-600 hover:bg-gray-100 rounded">
@@ -1035,6 +1054,9 @@
         const saveBtn = document.getElementById('save-order-btn');
         const cancelBtn = document.getElementById('cancel-order-btn');
         
+        const dragColumnHeader = document.getElementById('drag-column-header');
+        const dragColumnCells = document.querySelectorAll('.drag-column-cell');
+        
         if (reorderMode) {
             // Enable reorder mode
             dragHandles.forEach(handle => handle.classList.remove('hidden'));
@@ -1043,6 +1065,12 @@
             reorderBtn.classList.add('hidden');
             saveBtn.classList.remove('hidden');
             cancelBtn.classList.remove('hidden');
+            
+            // Show drag column on mobile
+            if (window.innerWidth < 768) {
+                if (dragColumnHeader) dragColumnHeader.classList.remove('hidden');
+                dragColumnCells.forEach(cell => cell.classList.remove('hidden'));
+            }
             
             // Store original order based on current view
             if (currentView === 'table') {
@@ -1198,12 +1226,21 @@
         const saveBtn = document.getElementById('save-order-btn');
         const cancelBtn = document.getElementById('cancel-order-btn');
         
+        const dragColumnHeader = document.getElementById('drag-column-header');
+        const dragColumnCells = document.querySelectorAll('.drag-column-cell');
+        
         dragHandles.forEach(handle => handle.classList.add('hidden'));
         dragHandlesGrid.forEach(handle => handle.classList.add('hidden'));
         dragHeader.classList.add('hidden');
         reorderBtn.classList.remove('hidden');
         saveBtn.classList.add('hidden');
         cancelBtn.classList.add('hidden');
+        
+        // Hide drag column on mobile
+        if (window.innerWidth < 768) {
+            if (dragColumnHeader) dragColumnHeader.classList.add('hidden');
+            dragColumnCells.forEach(cell => cell.classList.add('hidden'));
+        }
         
         if (sortableTable) {
             sortableTable.destroy();
@@ -1276,11 +1313,12 @@
         }, 3000);
     }
 
-    // Auto-submit search on input (debounced)
+    // Auto-submit search on input (debounced) - disabled on mobile to prevent keyboard interruption
     let searchTimeout;
     const searchInput = document.querySelector('input[name="search"]');
     if (searchInput) {
         searchInput.addEventListener('input', function() {
+            if (window.innerWidth < 768) return;
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(() => {
                 this.form.submit();

@@ -6,16 +6,7 @@
              class="w-full rounded-lg mb-4"
              onerror="this.src='{{ asset('images/placeholder-product.svg') }}'; this.onerror=null;">
         
-        @if($product->images->count() > 0)
-            <div class="grid grid-cols-4 gap-2">
-                @foreach($product->images as $image)
-                    <img src="{{ asset('storage/' . $image->image) }}" 
-                         alt="{{ $product->name }}" 
-                         class="w-full h-20 object-cover rounded"
-                         onerror="this.src='{{ asset('images/placeholder-product.svg') }}'; this.onerror=null;">
-                @endforeach
-            </div>
-        @endif
+
     </div>
 
     <!-- Right: Info -->

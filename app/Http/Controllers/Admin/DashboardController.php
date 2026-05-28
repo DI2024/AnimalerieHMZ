@@ -65,10 +65,10 @@ class DashboardController extends Controller
         $ordersGrowth = $previousOrders > 0 ? round((($currentOrders - $previousOrders) / $previousOrders) * 100, 1) : 0;
         $customersGrowth = $newCustomers > 0 ? round(($newCustomers / max($totalClients - $newCustomers, 1)) * 100, 1) : 0;
 
-        // Recent orders from database
+        // Recent orders from database (limit to 10)
         $recentOrders = \App\Models\Order::with('user')
             ->orderBy('created_at', 'desc')
-            ->take(5)
+            ->take(10)
             ->get();
 
         // Prepare stats array

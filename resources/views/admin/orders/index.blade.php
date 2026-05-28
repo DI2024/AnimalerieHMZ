@@ -167,7 +167,7 @@
 <div class="space-y-6">
     
     <!-- Statistics Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mobile-cards-scroll">
         <!-- Total Orders -->
         <div class="stat-card">
             <div class="flex items-center justify-between">
@@ -237,21 +237,22 @@
         </div>
     </div>
     
-    <!-- Search Bar & Quick Filters -->
-    <div class="bg-white rounded-lg shadow p-6">
+    @php
+        $filterCount = 0;
+        if(request('status_filter')) $filterCount += count(request('status_filter'));
+        if(request('date_from') || request('date_to')) $filterCount++;
+        if(request('amount_min') || request('amount_max')) $filterCount++;
+        if(request('payment_filter')) $filterCount += count(request('payment_filter'));
+    @endphp
+
+    <!-- Search Bar & Quick Filters - Desktop -->
+    <div class="hidden md:block bg-white rounded-lg shadow p-6 mb-6">
         <div class="flex flex-wrap gap-4 items-center">
             <!-- Filter Toggle Button -->
             <button type="button" id="filterToggleBtn" onclick="toggleFilterSidebar()" 
                     class="filter-toggle-btn {{ request()->hasAny(['status_filter', 'date_from', 'date_to', 'amount_min', 'amount_max', 'payment_filter']) ? 'has-filters' : '' }}">
                 <i class="fas fa-sliders-h"></i>
                 <span id="filterToggleText">Masquer les filtres</span>
-                @php
-                    $filterCount = 0;
-                    if(request('status_filter')) $filterCount += count(request('status_filter'));
-                    if(request('date_from') || request('date_to')) $filterCount++;
-                    if(request('amount_min') || request('amount_max')) $filterCount++;
-                    if(request('payment_filter')) $filterCount += count(request('payment_filter'));
-                @endphp
                 @if($filterCount > 0)
                     <span class="filter-count-badge">{{ $filterCount }}</span>
                 @endif
@@ -281,23 +282,78 @@
                 </form>
             </div>
             
-            <!-- Quick Filter Buttons -->
+            <!-- Quick Filter Buttons - Desktop (Aujourd'hui and Calendrier) -->
             <div class="flex gap-2">
                 <a href="{{ route('admin.orders.index', ['date_from' => date('Y-m-d'), 'date_to' => date('Y-m-d')]) }}" 
-                   class="px-4 py-2 text-sm bg-gray-100 hover:bg-[#003e87] hover:text-white rounded-lg transition-colors">
-                    <i class="fas fa-calendar-day mr-1"></i>
+                   class="px-4 py-2 text-sm bg-gray-100 hover:bg-[#003e87] hover:text-white rounded-lg transition-colors flex items-center gap-2">
+                    <i class="fas fa-calendar-day"></i>
                     Aujourd'hui
                 </a>
-                <a href="{{ route('admin.orders.index', ['date_from' => date('Y-m-d', strtotime('-7 days')), 'date_to' => date('Y-m-d')]) }}" 
-                   class="px-4 py-2 text-sm bg-gray-100 hover:bg-[#003e87] hover:text-white rounded-lg transition-colors">
-                    <i class="fas fa-calendar-week mr-1"></i>
-                    Cette semaine
+                <div class="relative inline-block">
+                    <input type="date" onchange="applyCalendarFilter(this.value)" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10">
+                    <button type="button" class="px-4 py-2 text-sm bg-gray-100 hover:bg-[#003e87] hover:text-white rounded-lg transition-colors flex items-center gap-2">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Calendrier</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Bar & Quick Filters - Mobile -->
+    <div class="block md:hidden bg-white rounded-lg shadow p-4 mb-6">
+        <div class="flex flex-col gap-4">
+            <!-- 1. Search Input (no inline button) -->
+            <div>
+                <form id="mobileSearchForm" method="GET" action="{{ route('admin.orders.index') }}" class="relative">
+                    <!-- Preserve existing filters -->
+                    @foreach(request()->except(['search', 'page']) as $key => $value)
+                        @if(is_array($value))
+                            @foreach($value as $item)
+                                <input type="hidden" name="{{ $key }}[]" value="{{ $item }}">
+                            @endforeach
+                        @else
+                            <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                        @endif
+                    @endforeach
+                    <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" name="search" placeholder="Rechercher par N° commande, nom..." 
+                           value="{{ request('search') }}"
+                           class="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#003e87] focus:border-transparent">
+                </form>
+            </div>
+
+            <!-- 2. Today and Calendar (Middle part) -->
+            <div class="flex gap-2 w-full">
+                <a href="{{ route('admin.orders.index', ['date_from' => date('Y-m-d'), 'date_to' => date('Y-m-d')]) }}" 
+                   class="flex-1 px-4 py-2.5 text-center text-sm bg-gray-100 hover:bg-[#003e87] hover:text-white rounded-lg transition-colors flex items-center justify-center gap-2">
+                    <i class="fas fa-calendar-day"></i>
+                    Aujourd'hui
                 </a>
-                <a href="{{ route('admin.orders.index', ['status_filter' => ['pending']]) }}" 
-                   class="px-4 py-2 text-sm bg-amber-100 text-amber-800 hover:bg-amber-200 rounded-lg transition-colors">
-                    <i class="fas fa-clock mr-1"></i>
-                    En attente
-                </a>
+                <div class="relative flex-1">
+                    <input type="date" onchange="applyCalendarFilter(this.value)" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10">
+                    <button type="button" class="w-full px-4 py-2.5 text-center text-sm bg-gray-100 hover:bg-[#003e87] hover:text-white rounded-lg transition-colors flex items-center justify-center gap-2">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Calendrier</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3. Filter Toggle Button and Search Button side-by-side (Bottom part) -->
+            <div class="flex gap-2 w-full">
+                <button type="button" onclick="toggleFilterSidebar()" 
+                        class="flex-1 filter-toggle-btn flex items-center justify-center gap-2 py-2.5 text-sm {{ request()->hasAny(['status_filter', 'date_from', 'date_to', 'amount_min', 'amount_max', 'payment_filter']) ? 'has-filters' : '' }}">
+                    <i class="fas fa-sliders-h"></i>
+                    <span>Filtres</span>
+                    @if($filterCount > 0)
+                        <span class="filter-count-badge">{{ $filterCount }}</span>
+                    @endif
+                </button>
+                <button type="submit" form="mobileSearchForm" 
+                        class="flex-1 px-4 py-2.5 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] text-sm font-semibold flex items-center justify-center gap-2 transition-colors">
+                    <i class="fas fa-search"></i>
+                    Rechercher
+                </button>
             </div>
         </div>
     </div>
@@ -384,8 +440,8 @@
             @endif
     
     <!-- Orders Table -->
-    <div class="bg-white rounded-lg shadow overflow-hidden">
-        <table class="w-full">
+    <div class="bg-white rounded-lg shadow overflow-x-auto">
+        <table class="w-full min-w-[800px]">
             <thead class="bg-gray-50 border-b border-gray-200">
                 <tr>
                     <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -394,10 +450,10 @@
                     <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                         Client
                     </th>
-                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden md:table-cell">
                         Date
                     </th>
-                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden md:table-cell">
                         Articles
                     </th>
                     <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -410,7 +466,7 @@
             </thead>
             <tbody class="divide-y divide-gray-200">
                 @forelse($orders as $order)
-                <tr class="hover:bg-gray-50 cursor-pointer" onclick="window.location='{{ route('admin.orders.show', $order->id) }}'">
+                <tr class="hover:bg-gray-50 cursor-pointer clickable-row" data-href="{{ route('admin.orders.show', $order->id) }}">
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex items-center gap-2">
                             <i class="fas fa-hashtag text-gray-400 text-xs"></i>
@@ -423,31 +479,31 @@
                     </td>
                     <td class="px-6 py-4">
                         <div class="flex items-center gap-3">
-                            <div class="customer-avatar">
+                            <div class="customer-avatar hidden md:flex">
                                 {{ strtoupper(substr($order->shipping_first_name ?? 'U', 0, 1)) }}{{ strtoupper(substr($order->shipping_last_name ?? 'N', 0, 1)) }}
                             </div>
                             <div>
                                 <p class="font-medium text-gray-900">
                                     {{ $order->shipping_first_name }} {{ $order->shipping_last_name }}
                                 </p>
-                                <p class="text-xs text-gray-500">
+                                <p class="text-xs text-gray-500 hidden md:block">
                                     <i class="far fa-envelope mr-1"></i>{{ $order->shipping_email }}
                                 </p>
                                 @if($order->shipping_phone)
-                                <p class="text-xs text-gray-500">
+                                <p class="text-xs text-gray-500 hidden md:block">
                                     <i class="fas fa-phone mr-1"></i>{{ $order->shipping_phone }}
                                 </p>
                                 @endif
                             </div>
                         </div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">
                         <div class="text-sm">
                             <p class="font-medium text-gray-900">{{ $order->created_at->format('d/m/Y') }}</p>
                             <p class="text-gray-500">{{ $order->created_at->format('H:i') }}</p>
                         </div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">
                         <div class="flex items-center gap-2">
                             <i class="fas fa-box text-gray-400"></i>
                             <span class="font-medium text-gray-900">{{ $order->items->count() }}</span>
@@ -514,6 +570,16 @@
 
 @push('scripts')
 <script>
+    // Filtrage calendrier
+    function applyCalendarFilter(dateValue) {
+        if (!dateValue) return;
+        const url = new URL(window.location.href);
+        url.searchParams.set('date_from', dateValue);
+        url.searchParams.set('date_to', dateValue);
+        url.searchParams.delete('page');
+        window.location.href = url.toString();
+    }
+
     // Toggle Filter Sidebar
     function toggleFilterSidebar() {
         const wrapper = document.getElementById('filterSidebarWrapper');

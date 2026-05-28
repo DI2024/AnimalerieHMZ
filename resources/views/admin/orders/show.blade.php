@@ -155,84 +155,86 @@ Détails Commande #{{ $order->order_number }}
                 </div>
             @endif
         </div>
-        <table class="w-full">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Produit</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Prix unitaire</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Quantité</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Stock actuel</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Sous-total</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200">
-                @forelse($order->items as $item)
-                <tr>
-                    <td class="px-6 py-4">
-                        <div class="flex items-center">
-                            @if($item->product_image)
-                                @if(filter_var($item->product_image, FILTER_VALIDATE_URL))
-                                    <img src="{{ $item->product_image }}" class="w-12 h-12 object-cover rounded mr-3" alt="{{ $item->product_name }}">
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Produit</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Prix unitaire</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Quantité</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Stock actuel</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Sous-total</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    @forelse($order->items as $item)
+                    <tr>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                @if($item->product_image)
+                                    @if(filter_var($item->product_image, FILTER_VALIDATE_URL))
+                                        <img src="{{ $item->product_image }}" class="w-12 h-12 object-cover rounded mr-3" alt="{{ $item->product_name }}">
+                                    @else
+                                        <img src="{{ asset('storage/' . $item->product_image) }}" class="w-12 h-12 object-cover rounded mr-3" alt="{{ $item->product_name }}">
+                                    @endif
                                 @else
-                                    <img src="{{ asset('storage/' . $item->product_image) }}" class="w-12 h-12 object-cover rounded mr-3" alt="{{ $item->product_name }}">
+                                    <div class="w-12 h-12 bg-gray-200 rounded mr-3 flex items-center justify-center">
+                                        <i class="fas fa-image text-gray-400"></i>
+                                    </div>
                                 @endif
-                            @else
-                                <div class="w-12 h-12 bg-gray-200 rounded mr-3 flex items-center justify-center">
-                                    <i class="fas fa-image text-gray-400"></i>
+                                <div>
+                                    <p class="font-medium">{{ $item->product_name }}</p>
+                                    @if($item->product_sku)
+                                        <p class="text-sm text-gray-500">SKU: {{ $item->product_sku }}</p>
+                                    @endif
                                 </div>
-                            @endif
-                            <div>
-                                <p class="font-medium">{{ $item->product_name }}</p>
-                                @if($item->product_sku)
-                                    <p class="text-sm text-gray-500">SKU: {{ $item->product_sku }}</p>
-                                @endif
                             </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 text-sm">{{ number_format($item->price, 2) }} DH</td>
-                    <td class="px-6 py-4 text-sm">
-                        <span class="font-medium">{{ $item->quantity }}</span>
-                    </td>
-                    <td class="px-6 py-4 text-sm">
-                        @if($item->product)
-                            @php
-                                $stock = $item->product->stock;
-                                $stockClass = $stock <= 0 ? 'text-red-600' : ($stock < 10 ? 'text-yellow-600' : 'text-green-600');
-                            @endphp
-                            <span class="{{ $stockClass }} font-medium">
-                                {{ $stock }} unités
-                            </span>
-                        @else
-                            <span class="text-gray-400">Produit supprimé</span>
-                        @endif
-                    </td>
-                    <td class="px-6 py-4 text-sm font-medium">{{ number_format($item->price * $item->quantity, 2) }} DH</td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="5" class="px-6 py-4 text-center text-gray-500">
-                        Aucun article dans cette commande
-                    </td>
-                </tr>
-                @endforelse
-            </tbody>
-            <tfoot class="bg-gray-50">
-                <tr>
-                    <td colspan="4" class="px-6 py-4 text-right font-medium">Sous-total</td>
-                    <td class="px-6 py-4 font-medium">{{ number_format($order->subtotal, 2) }} DH</td>
-                </tr>
-                @if($order->discount > 0)
-                <tr>
-                    <td colspan="4" class="px-6 py-4 text-right font-medium">Réduction</td>
-                    <td class="px-6 py-4 font-medium text-red-600">-{{ number_format($order->discount, 2) }} DH</td>
-                </tr>
-                @endif
-                <tr class="text-lg">
-                    <td colspan="4" class="px-6 py-4 text-right font-bold">Total</td>
-                    <td class="px-6 py-4 font-bold text-[#003e87]">{{ number_format($order->total, 2) }} DH</td>
-                </tr>
-            </tfoot>
-        </table>
+                        </td>
+                        <td class="px-6 py-4 text-sm">{{ number_format($item->price, 2) }} DH</td>
+                        <td class="px-6 py-4 text-sm">
+                            <span class="font-medium">{{ $item->quantity }}</span>
+                        </td>
+                        <td class="px-6 py-4 text-sm">
+                            @if($item->product)
+                                @php
+                                    $stock = $item->product->stock;
+                                    $stockClass = $stock <= 0 ? 'text-red-600' : ($stock < 10 ? 'text-yellow-600' : 'text-green-600');
+                                @endphp
+                                <span class="{{ $stockClass }} font-medium">
+                                    {{ $stock }} unités
+                                </span>
+                            @else
+                                <span class="text-gray-400">Produit supprimé</span>
+                            @endif
+                        </td>
+                        <td class="px-6 py-4 text-sm font-medium">{{ number_format($item->price * $item->quantity, 2) }} DH</td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                            Aucun article dans cette commande
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+                <tfoot class="bg-gray-50">
+                    <tr>
+                        <td colspan="4" class="px-6 py-4 text-right font-medium">Sous-total</td>
+                        <td class="px-6 py-4 font-medium">{{ number_format($order->subtotal, 2) }} DH</td>
+                    </tr>
+                    @if($order->discount > 0)
+                    <tr>
+                        <td colspan="4" class="px-6 py-4 text-right font-medium">Réduction</td>
+                        <td class="px-6 py-4 font-medium text-red-600">-{{ number_format($order->discount, 2) }} DH</td>
+                    </tr>
+                    @endif
+                    <tr class="text-lg">
+                        <td colspan="4" class="px-6 py-4 text-right font-bold">Total</td>
+                        <td class="px-6 py-4 font-bold text-[#003e87]">{{ number_format($order->total, 2) }} DH</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
     </div>
     
     <!-- Admin Notes -->

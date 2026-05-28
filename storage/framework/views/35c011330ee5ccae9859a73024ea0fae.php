@@ -337,16 +337,16 @@
         min-width: 800px;
     }
     
-    /* Mobile: Affichage en cartes */
+    /* Mobile: Affichage en cartes - DESACTIVE pour conserver le format tableau épuré */
     @media (max-width: 767px) {
         .orders-table {
             min-width: 100%;
         }
-        
+        /* Desactivation des régles de bloc */
+        /*
         .orders-table thead {
             display: none;
         }
-        
         .orders-table tbody tr {
             display: block;
             margin-bottom: 16px;
@@ -355,11 +355,6 @@
             padding: 16px;
             background: white;
         }
-        
-        .orders-table tbody tr:hover {
-            background: #F9FAFB;
-        }
-        
         .orders-table td {
             display: flex;
             justify-content: space-between;
@@ -367,25 +362,7 @@
             padding: 8px 0;
             border-bottom: 1px solid #F3F4F6;
         }
-        
-        .orders-table td:last-child {
-            border-bottom: none;
-            justify-content: center;
-            padding-top: 12px;
-        }
-        
-        .orders-table td::before {
-            content: attr(data-label);
-            font-weight: 700;
-            color: #6B7280;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .orders-table td:last-child::before {
-            display: none;
-        }
+        */
     }
     
     .orders-table thead {
@@ -521,15 +498,6 @@
             <div class="section-icon"><i class="fas fa-chart-line"></i></div>
             Aperçu de l'activité
         </h2>
-        
-        <form id="period-form" method="GET" action="<?php echo e(route('admin.dashboard')); ?>">
-            <select name="period" class="period-select" onchange="this.form.submit()">
-                <option value="today" <?php echo e($stats['period'] === 'today' ? 'selected' : ''); ?>>Aujourd'hui</option>
-                <option value="week" <?php echo e($stats['period'] === 'week' ? 'selected' : ''); ?>>7 derniers jours</option>
-                <option value="month" <?php echo e($stats['period'] === 'month' ? 'selected' : ''); ?>>Ce mois</option>
-                <option value="year" <?php echo e($stats['period'] === 'year' ? 'selected' : ''); ?>>Cette année</option>
-            </select>
-        </form>
     </div>
 
     <!-- ZONE 1: Alerts -->
@@ -588,6 +556,15 @@
     
     <!-- Indicateurs pour alerts (mobile uniquement) -->
     <div class="dashboard-indicators" id="alertsIndicators"></div>
+
+    <!-- ZONE 2: Metrics Header & Period Dropdown -->
+    <div class="flex justify-end items-center mb-4 mt-6">
+        <select onchange="changeDashboardPeriod(this.value)" class="period-select" style="padding: 6px 12px; font-size: 14px; font-weight: 600; border-color: #E5E7EB; background-color: white; border-radius: 8px; width: auto;">
+            <option value="today" <?php echo e($stats['period'] === 'today' ? 'selected' : ''); ?>>Jour</option>
+            <option value="week" <?php echo e($stats['period'] === 'week' ? 'selected' : ''); ?>>Semaine</option>
+            <option value="month" <?php echo e($stats['period'] === 'month' ? 'selected' : ''); ?>>Mois</option>
+        </select>
+    </div>
 
     <!-- ZONE 2: Metrics -->
     <div class="metrics-grid" id="metricsGrid">
@@ -675,19 +652,19 @@
                 <table class="orders-table">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Client</th>
+                            <th>N° Commande</th>
+                            <th class="hidden md:table-cell">Client</th>
                             <th>Total</th>
                             <th>Statut</th>
-                            <th>Date</th>
-                            <th style="text-align: center;">Action</th>
+                            <th class="hidden md:table-cell">Date</th>
+                            <th class="hidden md:table-cell" style="text-align: center;">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php $__empty_1 = true; $__currentLoopData = $recentOrders; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $order): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                        <tr>
-                            <td data-label="ID"><span class="order-number">#<?php echo e(str_pad($order->id, 4, '0', STR_PAD_LEFT)); ?></span></td>
-                            <td data-label="Client"><span class="order-customer"><?php echo e($order->shipping_name); ?></span></td>
+                        <tr class="hover:bg-gray-50 clickable-row cursor-pointer" data-href="<?php echo e(route('admin.orders.show', $order)); ?>">
+                            <td data-label="N° Commande"><span class="text-[#003e87] font-semibold"><?php echo e($order->order_number); ?></span></td>
+                            <td class="hidden md:table-cell" data-label="Client"><span class="order-customer"><?php echo e($order->shipping_name); ?></span></td>
                             <td data-label="Total"><span class="order-total"><?php echo e(number_format($order->total, 2)); ?> DH</span></td>
                             <td data-label="Statut">
                                 <?php
@@ -721,13 +698,13 @@
 
                                 </span>
                             </td>
-                            <td data-label="Date">
+                            <td class="hidden md:table-cell" data-label="Date">
                                 <span class="order-time">
                                     <i class="far fa-clock mr-1"></i> <?php echo e($order->created_at->diffForHumans()); ?>
 
                                 </span>
                             </td>
-                            <td>
+                            <td class="hidden md:table-cell">
                                 <a href="<?php echo e(route('admin.orders.show', $order)); ?>" class="order-action-btn" title="Voir détails">
                                     <i class="fas fa-eye"></i>
                                 </a>
@@ -752,6 +729,12 @@
 
 <?php $__env->startPush('scripts'); ?>
 <script>
+    // Change dashboard statistics period
+    function changeDashboardPeriod(period) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('period', period);
+        window.location.href = url.toString();
+    }
     // Dashboard Scroll Indicators (Mobile)
     function initDashboardScrollIndicators() {
         if (window.innerWidth > 767) return;

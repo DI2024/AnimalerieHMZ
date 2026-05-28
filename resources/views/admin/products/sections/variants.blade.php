@@ -60,7 +60,7 @@
                 </div>
             </div>
 
-            <div class="variant-matrix border rounded-lg overflow-hidden">
+            <div class="variant-matrix border rounded-lg overflow-x-auto">
                 <table>
                     <thead class="bg-gray-50">
                         <tr>

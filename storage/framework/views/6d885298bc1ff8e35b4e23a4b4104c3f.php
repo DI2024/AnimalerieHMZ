@@ -621,7 +621,7 @@
 <div class="space-y-6">
     
     <!-- Statistics Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mobile-cards-scroll">
         <div class="stat-card">
             <div class="flex items-center justify-between">
                 <div>
@@ -661,9 +661,9 @@
     
     <!-- Search & Actions Bar -->
     <div class="bg-white rounded-lg shadow p-4">
-        <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+        <div class="flex flex-col lg:flex-row gap-4 items-center justify-between">
             <!-- Search -->
-            <div class="relative flex-1 max-w-md">
+            <div class="relative flex-grow max-w-md w-full">
                 <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                 <input type="text" 
                        id="searchInput" 
@@ -673,22 +673,50 @@
                        value="<?php echo e(request('search')); ?>">
             </div>
             
-            <!-- New Offer Button -->
-            <a href="<?php echo e(route('admin.offers.create')); ?>" 
-               class="px-6 py-2 text-white rounded-lg transition-colors flex items-center gap-2" 
-               style="background: #003e87;" 
-               onmouseover="this.style.background='#0855b1'" 
-               onmouseout="this.style.background='#003e87'">
-                <i class="fas fa-plus"></i>
-                <span>Nouvelle Offre</span>
-            </a>
+            <!-- Type Filter -->
+            <div class="type-filter flex-shrink-0">
+                <button id="filterAll" onclick="filterByType('all')" class="active">
+                    Tout <span id="countAll" class="count-badge">0</span>
+                </button>
+                <button id="filterPack" onclick="filterByType('pack')">
+                    Packs <span id="countPack" class="count-badge">0</span>
+                </button>
+                <button id="filterOffer" onclick="filterByType('offer')">
+                    Offres <span id="countOffer" class="count-badge">0</span>
+                </button>
+            </div>
+            
+            <!-- Action Buttons Container -->
+            <div class="flex flex-col sm:flex-row gap-2 w-full lg:w-auto justify-center items-center">
+                <!-- New Offer Button -->
+                <a href="<?php echo e(route('admin.offers.create', ['type' => 'offer'])); ?>" 
+                   id="btnNewOffer"
+                   class="px-6 py-2 text-white rounded-lg transition-colors flex items-center gap-2 w-full sm:w-auto justify-center" 
+                   style="background: #003e87;" 
+                   onmouseover="this.style.background='#0855b1'" 
+                   onmouseout="this.style.background='#003e87'">
+                    <i class="fas fa-plus"></i>
+                    <span>Nouvelle Offre</span>
+                </a>
+                
+                <!-- New Pack Button -->
+                <a href="<?php echo e(route('admin.offers.create', ['type' => 'pack'])); ?>" 
+                   id="btnNewPack"
+                   class="px-6 py-2 text-white rounded-lg transition-colors flex items-center gap-2 w-full sm:w-auto justify-center" 
+                   style="background: #7c3aed;" 
+                   onmouseover="this.style.background='#6d28d9'" 
+                   onmouseout="this.style.background='#7c3aed'">
+                    <i class="fas fa-box-open"></i>
+                    <span>Nouveau Pack</span>
+                </a>
+            </div>
         </div>
     </div>
     
     <!-- Main Content -->
     <div class="space-y-4">
             <!-- Table View -->
-            <div id="tableView" class="bg-white rounded-lg shadow overflow-hidden">
+            <div id="tableView" class="bg-white rounded-lg shadow overflow-x-auto">
                 <table class="w-full">
                     <thead class="bg-gray-50 border-b border-gray-200">
                         <tr>
@@ -698,23 +726,23 @@
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 Titre
                             </th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden md:table-cell">
                                 Badge
                             </th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden md:table-cell">
                                 Date Création
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 Statut
                             </th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden md:table-cell">
                                 Actions
                             </th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
                         <?php $__empty_1 = true; $__currentLoopData = $offers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $offer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                        <tr class="hover:bg-gray-50 transition-colors">
+                        <tr class="hover:bg-gray-50 transition-colors cursor-pointer" data-offer-type="<?php echo e($offer->type); ?>" data-offer-id="<?php echo e($offer->id); ?>">
                             <td class="px-6 py-4">
                                 <?php if($offer->image): ?>
                                     <?php if(filter_var($offer->image, FILTER_VALIDATE_URL)): ?>
@@ -730,13 +758,35 @@
                             </td>
                             <td class="px-6 py-4">
                                 <div>
-                                    <p class="font-semibold text-gray-900"><?php echo e($offer->title); ?></p>
+                                    <div class="flex items-center gap-2">
+                                        <p class="font-semibold text-gray-900"><?php echo e($offer->title); ?></p>
+                                        <?php if($offer->type === 'pack'): ?>
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-purple-100 text-purple-800">
+                                                Pack (<?php echo e(number_format($offer->pack_price, 2, ',', ' ')); ?> DH)
+                                            </span>
+                                        <?php elseif($offer->type === 'percentage'): ?>
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-blue-100 text-blue-800">
+                                                % Remise
+                                            </span>
+                                        <?php else: ?>
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-gray-100 text-gray-800">
+                                                Standard
+                                            </span>
+                                        <?php endif; ?>
+                                    </div>
                                     <?php if($offer->subtitle): ?>
                                         <p class="text-sm text-gray-500 mt-1"><?php echo e($offer->subtitle); ?></p>
                                     <?php endif; ?>
+                                    <?php if($offer->type === 'pack' && $offer->products->count() > 0): ?>
+                                        <p class="text-xs text-purple-600/80 mt-1.5">
+                                            <span class="font-semibold">Produits inclus :</span> 
+                                            <?php echo e($offer->products->pluck('name')->implode(', ')); ?>
+
+                                        </p>
+                                    <?php endif; ?>
                                 </div>
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-4 hidden md:table-cell">
                                 <?php if($offer->badge): ?>
                                     <span class="inline-block px-3 py-1 text-xs font-medium rounded-full" style="background: #dbeafe; color: #1e40af;">
                                         <?php echo e($offer->badge); ?>
@@ -746,7 +796,7 @@
                                     <span class="text-sm text-gray-400">-</span>
                                 <?php endif; ?>
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-4 hidden md:table-cell">
                                 <div class="text-sm text-gray-600">
                                     <?php echo e($offer->created_at->format('d/m/Y')); ?>
 
@@ -765,7 +815,7 @@
                                     </label>
                                 </form>
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-4 hidden md:table-cell">
                                 <div class="flex items-center gap-2">
                                     <a href="<?php echo e(route('admin.offers.edit', $offer)); ?>" 
                                        class="px-3 py-1.5 text-white rounded-lg text-sm transition-opacity" 
@@ -973,6 +1023,22 @@
             btn.classList.remove('active');
         });
         document.getElementById('filter' + type.charAt(0).toUpperCase() + type.slice(1)).classList.add('active');
+        
+        // Update dynamic buttons
+        const btnNewOffer = document.getElementById('btnNewOffer');
+        const btnNewPack = document.getElementById('btnNewPack');
+        if (btnNewOffer && btnNewPack) {
+            if (type === 'all') {
+                btnNewOffer.style.display = '';
+                btnNewPack.style.display = '';
+            } else if (type === 'pack') {
+                btnNewOffer.style.display = 'none';
+                btnNewPack.style.display = '';
+            } else {
+                btnNewOffer.style.display = '';
+                btnNewPack.style.display = 'none';
+            }
+        }
         
         // Filter table rows
         const tableRows = document.querySelectorAll('#tableView tbody tr[data-offer-type]');

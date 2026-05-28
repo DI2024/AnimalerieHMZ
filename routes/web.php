@@ -29,14 +29,17 @@ Route::prefix('api')->name('api.')->group(function () {
     // Cart API
     Route::get('/cart', [App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add', [App\Http\Controllers\CartController::class, 'add'])->name('cart.add');
+    Route::post('/cart/add-pack', [App\Http\Controllers\CartController::class, 'addPack'])->name('cart.addPack');
     Route::post('/cart/update', [App\Http\Controllers\CartController::class, 'update'])->name('cart.update');
     Route::post('/cart/remove', [App\Http\Controllers\CartController::class, 'remove'])->name('cart.remove');
     Route::post('/cart/clear', [App\Http\Controllers\CartController::class, 'clear'])->name('cart.clear');
 });
 
-// Checkout Routes (Public - can be guest or authenticated)
-Route::get('/checkout', [App\Http\Controllers\CheckoutController::class, 'index'])->name('checkout');
-Route::post('/checkout/process', [App\Http\Controllers\CheckoutController::class, 'process'])->name('checkout.process');
+// Checkout Routes (Forced authentication)
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout', [App\Http\Controllers\CheckoutController::class, 'index'])->name('checkout');
+    Route::post('/checkout/process', [App\Http\Controllers\CheckoutController::class, 'process'])->name('checkout.process');
+});
 Route::get('/orders/confirmation/{orderNumber}', [App\Http\Controllers\CheckoutController::class, 'confirmation'])->name('orders.confirmation');
 
 // Order Tracking (Guest)

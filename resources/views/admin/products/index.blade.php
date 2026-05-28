@@ -258,7 +258,7 @@
         <!-- Header Bar - Two Row Layout -->
         <div class="bg-white rounded-lg shadow p-4 sticky top-0 z-30">
             <!-- Primary Actions Row -->
-            <div class="flex items-center gap-3 mb-3">
+            <div class="flex flex-col md:flex-row md:items-center gap-3 mb-3">
                 <form method="GET" action="{{ route('admin.products.index') }}" class="flex items-center gap-3 flex-1">
                     <!-- Large Search Input -->
                     <div class="relative flex-1 min-w-[200px] max-w-[600px]">
@@ -281,7 +281,7 @@
             </div>
 
             <!-- Secondary Controls Row -->
-            <div class="flex items-center justify-between gap-3">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
                     <!-- Sort Dropdown -->
                     <select onchange="sortProducts(this.value)" 
@@ -317,7 +317,7 @@
                 </div>
 
                 <!-- View Mode Toggle -->
-                <div class="view-toggle flex rounded-lg overflow-hidden border">
+                <div class="view-toggle hidden md:flex rounded-lg overflow-hidden border">
                     <button onclick="switchView('card')" id="view-card" class="active" title="Vue Cartes">
                         <i class="fas fa-th-large"></i>
                     </button>
@@ -334,7 +334,7 @@
         <!-- Products Display -->
         <div id="products-container">
             <!-- Card View (Default) -->
-            <div id="card-view" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div id="card-view" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mobile-cards-scroll">
                 @forelse($products as $product)
                     @include('admin.products.partials.card', ['product' => $product])
                 @empty
@@ -346,7 +346,7 @@
             </div>
 
             <!-- Table View (Hidden) -->
-            <div id="table-view" class="hidden bg-white rounded-lg shadow overflow-hidden">
+            <div id="table-view" class="hidden bg-white rounded-lg shadow overflow-x-auto">
                 @include('admin.products.partials.table', ['products' => $products])
             </div>
 
@@ -489,25 +489,42 @@
 
     // Switch View
     function switchView(view) {
+        if (window.innerWidth < 768) {
+            view = 'card';
+        }
         currentView = view;
         
         // Update buttons
         document.querySelectorAll('.view-toggle button').forEach(btn => btn.classList.remove('active'));
-        document.getElementById('view-' + view).classList.add('active');
+        const activeBtn = document.getElementById('view-' + view);
+        if (activeBtn) {
+            activeBtn.classList.add('active');
+        }
         
         // Show/hide views
-        document.getElementById('card-view').classList.toggle('hidden', view !== 'card');
-        document.getElementById('table-view').classList.toggle('hidden', view !== 'table');
-        document.getElementById('list-view').classList.toggle('hidden', view !== 'list');
+        const cardViewEl = document.getElementById('card-view');
+        if (cardViewEl) cardViewEl.classList.toggle('hidden', view !== 'card');
         
-        localStorage.setItem('products-view', view);
+        const tableViewEl = document.getElementById('table-view');
+        if (tableViewEl) tableViewEl.classList.toggle('hidden', view !== 'table');
+        
+        const listViewEl = document.getElementById('list-view');
+        if (listViewEl) listViewEl.classList.toggle('hidden', view !== 'list');
+        
+        if (window.innerWidth >= 768) {
+            localStorage.setItem('products-view', view);
+        }
     }
 
     // Restore view from localStorage
     document.addEventListener('DOMContentLoaded', function() {
-        const savedView = localStorage.getItem('products-view');
-        if (savedView) {
-            switchView(savedView);
+        if (window.innerWidth < 768) {
+            switchView('card');
+        } else {
+            const savedView = localStorage.getItem('products-view');
+            if (savedView) {
+                switchView(savedView);
+            }
         }
     });
 

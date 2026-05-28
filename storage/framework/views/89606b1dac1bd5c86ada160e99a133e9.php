@@ -123,39 +123,130 @@
                 <p class="text-on-surface-variant text-lg">Profitez de nos promotions exclusives</p>
             </div>
             <div class="offers-mobile-scroll grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Offer 1 -->
-                <a href="<?php echo e(route('products.index', ['category' => 'chiens'])); ?>" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-gradient-to-br from-primary-container to-primary text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
-                    <div class="flex-1 pr-4">
-                        <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">🔥 Offre Spéciale</span>
-                        <h3 class="font-headline text-lg font-bold leading-tight mb-2">Jusqu'à 25% de remise</h3>
-                        <p class="text-white/90 text-sm font-medium">Sur toute la gamme Chien</p>
-                    </div>
-                    <div class="flex-shrink-0 w-24 h-24">
-                        <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=400&fit=crop&q=80" alt="Chien" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
-                    </div>
-                </a>
-                <!-- Offer 2 -->
-                <a href="<?php echo e(route('products.index', ['category' => 'chats'])); ?>" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-gradient-to-br from-tertiary to-blue-600 text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
-                    <div class="flex-1 pr-4">
-                        <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">✨ Exclusivité Web</span>
-                        <h3 class="font-headline text-lg font-bold leading-tight mb-2">-15% Accessoires</h3>
-                        <p class="text-white/90 text-sm font-medium">Pour Chats et Rongeurs</p>
-                    </div>
-                    <div class="flex-shrink-0 w-24 h-24">
-                        <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=400&h=400&fit=crop&q=80" alt="Chat" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
-                    </div>
-                </a>
-                <!-- Offer 3 -->
-                <a href="<?php echo e(route('products.index')); ?>" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-white border-2 border-primary/20 text-primary group transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:border-primary cursor-pointer">
-                    <div class="flex-1 pr-4">
-                        <span class="inline-block bg-gradient-to-r from-primary/10 to-tertiary/10 text-primary px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-md">🎁 Nouveauté</span>
-                        <h3 class="font-headline text-lg font-bold leading-tight mb-2">Pack Bienvenue</h3>
-                        <p class="text-on-surface-variant text-sm font-medium">Offert pour votre 1ère commande</p>
-                    </div>
-                    <div class="flex-shrink-0 w-24 h-24">
-                        <img src="https://images.unsplash.com/photo-1520763185298-1b434c919102?w=400&h=400&fit=crop&q=80" alt="Oiseau" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-xl">
-                    </div>
-                </a>
+                <?php $__empty_1 = true; $__currentLoopData = $offers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $offer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                    <?php
+                        $offerImageUrl = $offer->image 
+                            ? (filter_var($offer->image, FILTER_VALIDATE_URL) ? $offer->image : asset('storage/' . $offer->image)) 
+                            : asset('images/placeholder.svg');
+                            
+                        $offerLink = $offer->link ?: route('products.index');
+                    ?>
+                    
+                    <?php if($offer->type === 'pack'): ?>
+                        <!-- Pack Offer: Fond blanc, bordure violette -->
+                        <a href="<?php echo e($offerLink); ?>" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-white border-2 border-purple-500/20 text-purple-700 group transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:border-purple-600 cursor-pointer">
+                            <div class="flex-1 pr-4 z-10">
+                                <?php if($offer->badge): ?>
+                                    <span class="inline-block bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-md">
+                                        <?php echo e($offer->badge); ?>
+
+                                    </span>
+                                <?php endif; ?>
+                                <h3 class="font-headline text-lg font-bold leading-tight mb-2 text-purple-950"><?php echo e($offer->title); ?></h3>
+                                <?php if($offer->subtitle): ?>
+                                    <p class="text-purple-700/90 text-sm font-medium mb-1"><?php echo e($offer->subtitle); ?></p>
+                                <?php endif; ?>
+                                
+                                <?php if($offer->products->count() > 0): ?>
+                                    <p class="text-xs text-purple-600/80 mt-2">
+                                        <span class="font-semibold text-purple-800">Inclus :</span> 
+                                        <?php echo e($offer->products->pluck('name')->implode(', ')); ?>
+
+                                    </p>
+                                <?php endif; ?>
+
+                                <div class="mt-4 flex items-baseline gap-2">
+                                    <span class="text-2xl font-bold text-purple-600"><?php echo e(number_format($offer->pack_price, 2, ',', ' ')); ?> DH</span>
+                                    <?php if($offer->total_original_price > 0 && $offer->total_original_price > $offer->pack_price): ?>
+                                        <span class="text-sm text-gray-400 line-through"><?php echo e(number_format($offer->total_original_price, 2, ',', ' ')); ?> DH</span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                            <div class="flex-shrink-0 w-24 h-24 z-10">
+                                <img src="<?php echo e($offerImageUrl); ?>" alt="<?php echo e($offer->title); ?>" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-xl" onerror="this.src='<?php echo e(asset('images/placeholder.svg')); ?>'">
+                            </div>
+                        </a>
+                    <?php elseif($offer->type === 'percentage'): ?>
+                        <!-- Percentage Offer: bg-gradient-to-br from-tertiary to-blue-600 text-white -->
+                        <a href="<?php echo e($offerLink); ?>" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-gradient-to-br from-tertiary to-blue-600 text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
+                            <div class="flex-1 pr-4 z-10">
+                                <?php if($offer->badge): ?>
+                                    <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">
+                                        <?php echo e($offer->badge); ?>
+
+                                    </span>
+                                <?php endif; ?>
+                                <h3 class="font-headline text-lg font-bold leading-tight mb-2"><?php echo e($offer->title); ?></h3>
+                                <?php if($offer->subtitle): ?>
+                                    <p class="text-white/90 text-sm font-medium"><?php echo e($offer->subtitle); ?></p>
+                                <?php endif; ?>
+                            </div>
+                            <div class="flex-shrink-0 w-24 h-24 z-10">
+                                <img src="<?php echo e($offerImageUrl); ?>" alt="<?php echo e($offer->title); ?>" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl" onerror="this.src='<?php echo e(asset('images/placeholder.svg')); ?>'">
+                            </div>
+                        </a>
+                    <?php else: ?>
+                        <!-- Standard Offer: bg-gradient-to-br from-primary-container to-primary text-white -->
+                        <a href="<?php echo e($offerLink); ?>" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-gradient-to-br from-primary-container to-primary text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
+                            <div class="flex-1 pr-4 z-10">
+                                <?php if($offer->badge): ?>
+                                    <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">
+                                        <?php echo e($offer->badge); ?>
+
+                                    </span>
+                                <?php endif; ?>
+                                <h3 class="font-headline text-lg font-bold leading-tight mb-2"><?php echo e($offer->title); ?></h3>
+                                <?php if($offer->subtitle): ?>
+                                    <p class="text-white/90 text-sm font-medium"><?php echo e($offer->subtitle); ?></p>
+                                <?php endif; ?>
+                            </div>
+                            <div class="flex-shrink-0 w-24 h-24 z-10">
+                                <img src="<?php echo e($offerImageUrl); ?>" alt="<?php echo e($offer->title); ?>" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl" onerror="this.src='<?php echo e(asset('images/placeholder.svg')); ?>'">
+                            </div>
+                        </a>
+                    <?php endif; ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                    <!-- Fallback 1 -->
+                    <a href="<?php echo e(route('products.index', ['category' => 'chiens'])); ?>" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-gradient-to-br from-primary-container to-primary text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
+                        <div class="flex-1 pr-4">
+                            <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">🔥 Offre Spéciale</span>
+                            <h3 class="font-headline text-lg font-bold leading-tight mb-2">Jusqu'à 25% de remise</h3>
+                            <p class="text-white/90 text-sm font-medium">Sur toute la gamme Chien</p>
+                        </div>
+                        <div class="flex-shrink-0 w-24 h-24">
+                            <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=400&fit=crop&q=80" alt="Chien" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
+                        </div>
+                    </a>
+                    <!-- Fallback 2 -->
+                    <a href="<?php echo e(route('products.index', ['category' => 'chats'])); ?>" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-gradient-to-br from-tertiary to-blue-600 text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
+                        <div class="flex-1 pr-4">
+                            <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">✨ Exclusivité Web</span>
+                            <h3 class="font-headline text-lg font-bold leading-tight mb-2">-15% Accessoires</h3>
+                            <p class="text-white/90 text-sm font-medium">Pour Chats et Rongeurs</p>
+                        </div>
+                        <div class="flex-shrink-0 w-24 h-24">
+                            <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=400&h=400&fit=crop&q=80" alt="Chat" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-2xl">
+                        </div>
+                    </a>
+                    <!-- Fallback 3 (Pack) -->
+                    <a href="<?php echo e(route('products.index')); ?>" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-white border-2 border-purple-500/20 text-purple-700 group transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:border-purple-600 cursor-pointer">
+                        <div class="flex-1 pr-4">
+                            <span class="inline-block bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-md">🎁 Nouveauté</span>
+                            <h3 class="font-headline text-lg font-bold leading-tight mb-2 text-purple-950">Pack Bienvenue</h3>
+                            <p class="text-purple-700/90 text-sm font-medium">Mélange de graines + Accessoires offerts</p>
+                            <p class="text-xs text-purple-600/80 mt-2">
+                                <span class="font-semibold text-purple-800">Inclus :</span> Graines Pigeon, Abreuvoir, Mangeoire
+                            </p>
+                            <div class="mt-4 flex items-baseline gap-2">
+                                <span class="text-2xl font-bold text-purple-600">89,00 DH</span>
+                                <span class="text-sm text-gray-400 line-through">120,00 DH</span>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0 w-24 h-24">
+                            <img src="https://images.unsplash.com/photo-1520763185298-1b434c919102?w=400&h=400&fit=crop&q=80" alt="Oiseau" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-xl">
+                        </div>
+                    </a>
+                <?php endif; ?>
             </div>
         </div>
     </section>
@@ -164,26 +255,21 @@
     <section class="py-12 md:py-20 bg-white">
         <div class="max-w-[1280px] mx-auto px-6">
             <div class="categories-mobile-scroll flex justify-center items-center gap-6 overflow-x-visible pb-2" id="categoriesGrid">
-                <a href="<?php echo e(route('products.index', ['category' => 'oiseaux'])); ?>" class="flex flex-col items-center gap-3 transition min-w-[220px] shrink-0 group">
-                    <img src="<?php echo e(asset('images/img_category/cat_oiseau.png')); ?>" alt="Oiseaux" class="w-[220px] h-[220px] rounded-3xl object-contain transition transform group-hover:-translate-y-1 group-hover:shadow-lg">
-                    <span class="font-semibold text-[0.875rem] text-on-surface transition group-hover:text-primary group-hover:font-bold">Oiseaux</span>
-                </a>
-                <a href="<?php echo e(route('products.index', ['category' => 'pigeons'])); ?>" class="flex flex-col items-center gap-3 transition min-w-[220px] shrink-0 group">
-                    <img src="<?php echo e(asset('images/img_category/cat_pigeon.png')); ?>" alt="Pigeons" class="w-[220px] h-[220px] rounded-3xl object-contain transition transform group-hover:-translate-y-1 group-hover:shadow-lg">
-                    <span class="font-semibold text-[0.875rem] text-on-surface transition group-hover:text-primary group-hover:font-bold">Pigeons</span>
-                </a>
-                <a href="<?php echo e(route('products.index', ['category' => 'chats'])); ?>" class="flex flex-col items-center gap-3 transition min-w-[220px] shrink-0 group">
-                    <img src="<?php echo e(asset('images/img_category/cat_chat.png')); ?>" alt="Chat" class="w-[220px] h-[220px] rounded-3xl object-contain transition transform group-hover:-translate-y-1 group-hover:shadow-lg">
-                    <span class="font-semibold text-[0.875rem] text-on-surface transition group-hover:text-primary group-hover:font-bold">Chat</span>
-                </a>
-                <a href="<?php echo e(route('products.index', ['category' => 'chiens'])); ?>" class="flex flex-col items-center gap-3 transition min-w-[220px] shrink-0 group">
-                    <img src="<?php echo e(asset('images/img_category/cat_chien.png')); ?>" alt="Chien" class="w-[220px] h-[220px] rounded-3xl object-contain transition transform group-hover:-translate-y-1 group-hover:shadow-lg">
-                    <span class="font-semibold text-[0.875rem] text-on-surface transition group-hover:text-primary group-hover:font-bold">Chien</span>
-                </a>
-                <a href="<?php echo e(route('products.index', ['category' => 'poissons'])); ?>" class="flex flex-col items-center gap-3 transition min-w-[220px] shrink-0 group">
-                    <img src="<?php echo e(asset('images/img_category/cat_poisson.png')); ?>" alt="Poissons" class="w-[220px] h-[220px] rounded-3xl object-contain transition transform group-hover:-translate-y-1 group-hover:shadow-lg">
-                    <span class="font-semibold text-[0.875rem] text-on-surface transition group-hover:text-primary group-hover:font-bold">Poissons</span>
-                </a>
+                <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php
+                        $catImageUrl = $category->image 
+                            ? (filter_var($category->image, FILTER_VALIDATE_URL) 
+                                ? $category->image 
+                                : (str_starts_with($category->image, 'images/') 
+                                    ? asset($category->image) 
+                                    : asset('storage/' . $category->image))) 
+                            : asset('images/placeholder.svg');
+                    ?>
+                    <a href="<?php echo e(route('products.index', ['category' => $category->slug])); ?>" class="flex flex-col items-center gap-3 transition min-w-[220px] shrink-0 group">
+                        <img src="<?php echo e($catImageUrl); ?>" alt="<?php echo e($category->name); ?>" class="w-[220px] h-[220px] rounded-3xl object-contain transition transform group-hover:-translate-y-1 group-hover:shadow-lg">
+                        <span class="font-semibold text-[0.875rem] text-on-surface transition group-hover:text-primary group-hover:font-bold"><?php echo e($category->name); ?></span>
+                    </a>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
             
             <!-- Indicateurs (dots) pour mobile uniquement -->

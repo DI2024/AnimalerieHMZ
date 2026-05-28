@@ -2,17 +2,17 @@
     <thead class="bg-gray-50 sticky top-0">
         <tr>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Produit</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Catégorie</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">Catégorie</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prix</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Badges</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">Badges</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">Actions</th>
         </tr>
     </thead>
     <tbody class="divide-y divide-gray-200">
         <?php $__empty_1 = true; $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-        <tr class="hover:bg-gray-50 transition-colors">
+        <tr class="hover:bg-gray-50 transition-colors cursor-pointer">
             <td class="px-6 py-4">
                 <div class="flex items-center space-x-4">
                     <div class="w-16 h-16 bg-gray-100 rounded overflow-hidden flex-shrink-0">
@@ -49,7 +49,7 @@
                     </div>
                 </div>
             </td>
-            <td class="px-6 py-4 text-sm text-gray-700">
+            <td class="px-6 py-4 text-sm text-gray-700 hidden md:table-cell">
                 <?php echo e($product->category->name ?? 'N/A'); ?>
 
                 <?php if($product->subcategory): ?>
@@ -67,7 +67,7 @@
                     <?php echo e($product->stock); ?> unités
                 </span>
             </td>
-            <td class="px-6 py-4">
+            <td class="px-6 py-4 hidden md:table-cell">
                 <div class="flex flex-wrap gap-1">
                     <?php if($product->is_new): ?>
                         <span class="px-2 py-0.5 bg-green-100 text-green-800 rounded-full text-xs font-medium">NEW</span>
@@ -86,7 +86,7 @@
 
                 </span>
             </td>
-            <td class="px-6 py-4 text-sm">
+            <td class="px-6 py-4 text-sm hidden md:table-cell">
                 <div class="flex items-center space-x-2">
                     <button onclick="quickView(<?php echo e($product->id); ?>)" class="text-blue-600 hover:text-blue-800" title="Aperçu">
                         <i class="fas fa-eye"></i>

@@ -167,7 +167,7 @@ unset($__errorArgs, $__bag); ?>
         <div class="section-card">
             <div class="section-header">
                 <i class="fas fa-align-left"></i> 
-                <span>Texte du Footer</span>
+                <span>Configuration du Footer & Réseaux Sociaux</span>
             </div>
             <div class="section-body">
                 <form action="<?php echo e(route('admin.settings.update-footer')); ?>" method="POST">
@@ -183,6 +183,70 @@ unset($__errorArgs, $__bag); ?>
                                   required><?php echo e(old('footer_description', $settings['footer_description'])); ?></textarea>
                         <p class="help-text">Texte affiché dans le footer du site</p>
                         <?php $__errorArgs = ['footer_description'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <p class="text-red-500 text-xs mt-1"><?php echo e($message); ?></p>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fab fa-facebook mr-2 text-blue-600"></i> Facebook URL
+                        </label>
+                        <input type="text" 
+                               name="social_facebook" 
+                               class="form-input" 
+                               value="<?php echo e(old('social_facebook', $settings['social_facebook'])); ?>"
+                               placeholder="https://www.facebook.com/votrepage">
+                        <?php $__errorArgs = ['social_facebook'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <p class="text-red-500 text-xs mt-1"><?php echo e($message); ?></p>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fab fa-instagram mr-2 text-pink-600"></i> Instagram URL
+                        </label>
+                        <input type="text" 
+                               name="social_instagram" 
+                               class="form-input" 
+                               value="<?php echo e(old('social_instagram', $settings['social_instagram'])); ?>"
+                               placeholder="https://www.instagram.com/votrecompte">
+                        <?php $__errorArgs = ['social_instagram'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <p class="text-red-500 text-xs mt-1"><?php echo e($message); ?></p>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fab fa-whatsapp mr-2 text-green-600"></i> WhatsApp URL / Lien
+                        </label>
+                        <input type="text" 
+                               name="social_whatsapp" 
+                               class="form-input" 
+                               value="<?php echo e(old('social_whatsapp', $settings['social_whatsapp'])); ?>"
+                               placeholder="https://wa.me/2126XXXXXXXX">
+                        <p class="help-text">Exemple: https://wa.me/212626911209</p>
+                        <?php $__errorArgs = ['social_whatsapp'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }

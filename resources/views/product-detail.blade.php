@@ -253,9 +253,9 @@
             </a>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 related-products-scroll">
             <!-- Product Card 1 -->
-            <div class="group relative bg-ticket rounded-[2rem] p-4 shadow-ticket hover:shadow-2xl transition duration-500 hover:-translate-y-2">
+            <div class="group relative bg-ticket rounded-[2rem] p-4 shadow-ticket hover:shadow-2xl transition duration-500 hover:-translate-y-2 related-product-card">
                 <div class="aspect-square rounded-[1.5rem] overflow-hidden mb-4 relative">
                     <img src="{{ asset('images/products/dog-bed-1.png') }}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
                     <button class="absolute top-3 right-3 w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition translate-y-2 group-hover:translate-y-0">
@@ -273,7 +273,7 @@
             </div>
 
             <!-- Product Card 2 -->
-            <div class="group relative bg-ticket rounded-[2rem] p-4 shadow-ticket hover:shadow-2xl transition duration-500 hover:-translate-y-2">
+            <div class="group relative bg-ticket rounded-[2rem] p-4 shadow-ticket hover:shadow-2xl transition duration-500 hover:-translate-y-2 related-product-card">
                 <div class="aspect-square rounded-[1.5rem] overflow-hidden mb-4 relative">
                     <img src="{{ asset('images/products/cat-bowl-1.png') }}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
                 </div>
@@ -289,6 +289,8 @@
             
             <!-- Repeat or more cards -->
         </div>
+        <!-- Indicateurs (dots) pour les produits similaires en mobile -->
+        <div class="related-products-indicators"></div>
     </div>
 </div>
 

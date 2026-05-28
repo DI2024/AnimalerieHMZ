@@ -107,18 +107,54 @@
                 </div>
                 <div class="accordion-content open">
                     <div class="space-y-4">
-                        <!-- Category -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Catégorie <span class="text-red-500">*</span>
-                            </label>
-                            <select name="category_id" required
-                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-                                <option value="">Sélectionner une catégorie</option>
-                                <option value="1">Chiens</option>
-                                <option value="2">Chats</option>
-                                <option value="3">Oiseaux</option>
-                            </select>
+                        <!-- Category & Subcategory -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Catégorie <span class="text-red-500">*</span>
+                                </label>
+                                <select name="category_id" id="category_id" required
+                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                                    <option value="">Sélectionner une catégorie</option>
+                                    <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($category->id); ?>" <?php echo e(old('category_id') == $category->id ? 'selected' : ''); ?>>
+                                            <?php echo e($category->name); ?>
+
+                                        </option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </select>
+                                <?php $__errorArgs = ['category_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <p class="text-red-500 text-sm mt-1"><?php echo e($message); ?></p>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Sous-catégorie
+                                </label>
+                                <select name="subcategory_id" id="subcategory_id"
+                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                                    <option value="">Aucune</option>
+                                    <!-- Loader dynamically via JS -->
+                                </select>
+                                <?php $__errorArgs = ['subcategory_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <p class="text-red-500 text-sm mt-1"><?php echo e($message); ?></p>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                            </div>
                         </div>
 
                         <!-- Short Description -->
@@ -629,6 +665,36 @@
     // Initialize
     document.addEventListener('DOMContentLoaded', function() {
         updateStockStatus();
+
+        // Load subcategories dynamically
+        const categorySelect = document.getElementById('category_id');
+        const subcategorySelect = document.getElementById('subcategory_id');
+        
+        if (categorySelect && subcategorySelect) {
+            categorySelect.addEventListener('change', function() {
+                const categoryId = this.value;
+                subcategorySelect.innerHTML = '<option value="">Aucune</option>';
+                
+                if (categoryId) {
+                    fetch(`/admin/products/subcategories/${categoryId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.forEach(sub => {
+                                const option = document.createElement('option');
+                                option.value = sub.id;
+                                option.textContent = sub.name;
+                                subcategorySelect.appendChild(option);
+                            });
+                        })
+                        .catch(error => console.error('Error fetching subcategories:', error));
+                }
+            });
+            
+            // Trigger change event if there is an old value
+            if (categorySelect.value) {
+                categorySelect.dispatchEvent(new Event('change'));
+            }
+        }
     });
 </script>
 <?php $__env->stopPush(); ?>

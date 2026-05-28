@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Offer;
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -12,7 +13,7 @@ class OfferController extends Controller
 {
     public function index()
     {
-        $offers = Offer::orderBy('created_at', 'desc')->get();
+        $offers = Offer::with('products')->orderBy('created_at', 'desc')->get();
         
         // Calculate statistics
         $stats = [
@@ -28,10 +29,18 @@ class OfferController extends Controller
     public function create()
     {
         $products = Product::where('is_active', true)
+            ->with(['category', 'subcategory'])
             ->orderBy('name')
             ->get();
             
-        return view('admin.offers.create', compact('products'));
+        $categories = Category::where('is_active', true)
+            ->with(['subcategories' => function($query) {
+                $query->where('is_active', true)->orderBy('name');
+            }])
+            ->orderBy('name')
+            ->get();
+            
+        return view('admin.offers.create', compact('products', 'categories'));
     }
 
     public function store(Request $request)
@@ -43,6 +52,10 @@ class OfferController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'bg_color' => 'nullable|string|max:50',
             'is_active' => 'boolean',
+            'type' => 'required|string|in:offer,pack,percentage',
+            'pack_price' => 'required_if:type,pack|nullable|numeric|min:0',
+            'product_ids' => 'required_if:type,pack|array',
+            'product_ids.*' => 'exists:products,id',
         ]);
 
         // Handle checkbox - convert to boolean
@@ -54,20 +67,38 @@ class OfferController extends Controller
             $validated['image'] = $path;
         }
 
-        Offer::create($validated);
+        if ($validated['type'] !== 'pack') {
+            $validated['pack_price'] = null;
+        }
+
+        $offer = Offer::create($validated);
+
+        if ($validated['type'] === 'pack') {
+            $offer->products()->sync($request->input('product_ids', []));
+        } else {
+            $offer->products()->sync([]);
+        }
 
         return redirect()->route('admin.offers.index')
-            ->with('success', 'Offre créée avec succès!');
+            ->with('success', $validated['type'] === 'pack' ? 'Pack créé avec succès!' : 'Offre créée avec succès!');
     }
 
     public function edit($id)
     {
-        $offer = Offer::findOrFail($id);
+        $offer = Offer::with('products')->findOrFail($id);
         $products = Product::where('is_active', true)
+            ->with(['category', 'subcategory'])
             ->orderBy('name')
             ->get();
             
-        return view('admin.offers.edit', compact('offer', 'products'));
+        $categories = Category::where('is_active', true)
+            ->with(['subcategories' => function($query) {
+                $query->where('is_active', true)->orderBy('name');
+            }])
+            ->orderBy('name')
+            ->get();
+            
+        return view('admin.offers.edit', compact('offer', 'products', 'categories'));
     }
 
     public function update(Request $request, $id)
@@ -81,6 +112,10 @@ class OfferController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'bg_color' => 'nullable|string|max:50',
             'is_active' => 'boolean',
+            'type' => 'required|string|in:offer,pack,percentage',
+            'pack_price' => 'required_if:type,pack|nullable|numeric|min:0',
+            'product_ids' => 'required_if:type,pack|array',
+            'product_ids.*' => 'exists:products,id',
         ]);
 
         // Handle checkbox - convert to boolean
@@ -97,10 +132,20 @@ class OfferController extends Controller
             $validated['image'] = $path;
         }
 
+        if ($validated['type'] !== 'pack') {
+            $validated['pack_price'] = null;
+        }
+
         $offer->update($validated);
 
+        if ($validated['type'] === 'pack') {
+            $offer->products()->sync($request->input('product_ids', []));
+        } else {
+            $offer->products()->sync([]);
+        }
+
         return redirect()->route('admin.offers.index')
-            ->with('success', 'Offre mise à jour avec succès!');
+            ->with('success', $validated['type'] === 'pack' ? 'Pack mis à jour avec succès!' : 'Offre mise à jour avec succès!');
     }
 
     public function destroy($id)

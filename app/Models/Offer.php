@@ -17,9 +17,28 @@ class Offer extends Model
         'link',
         'bg_color',
         'is_active',
+        'type',
+        'pack_price',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'pack_price' => 'decimal:2',
     ];
+
+    /**
+     * Products associated with this offer/pack
+     */
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'offer_product');
+    }
+
+    /**
+     * Get the total original price of the products in this pack
+     */
+    public function getTotalOriginalPriceAttribute()
+    {
+        return $this->products->sum('price');
+    }
 }

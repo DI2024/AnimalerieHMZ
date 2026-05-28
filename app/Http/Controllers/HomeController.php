@@ -19,11 +19,13 @@ class HomeController extends Controller
                       ->withCount('products')
                       ->orderBy('name');
             }])
+            ->orderBy('order')
             ->orderBy('name')
             ->get();
 
         // Get active offers
         $offers = Offer::where('is_active', true)
+            ->with('products')
             ->orderBy('created_at', 'desc')
             ->take(3)
             ->get();

@@ -47,6 +47,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('home'); // Redirect clients to homepage
+        return redirect()->intended(route('home')); // Redirect clients to homepage or intended destination
     }
 }

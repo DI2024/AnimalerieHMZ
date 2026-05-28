@@ -57,6 +57,32 @@
         max-height: 2000px;
         padding: 16px;
     }
+    
+    @media (max-width: 1024px) {
+        .split-screen {
+            grid-template-columns: 1fr;
+        }
+        .preview-panel {
+            position: static;
+            max-height: none;
+        }
+    }
+    
+    @media (max-width: 640px) {
+        .bg-white.rounded-lg.shadow.p-4.mb-6 > .flex.items-center.justify-between {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 16px;
+        }
+        .bg-white.rounded-lg.shadow.p-4.mb-6 .flex.items-center.space-x-3 {
+            justify-content: flex-end;
+            width: 100%;
+        }
+        .bg-white.rounded-lg.shadow.p-4.mb-6 .flex.items-center.space-x-3 > * {
+            flex: 1;
+            text-align: center;
+        }
+    }
 </style>
 @endpush
 
@@ -109,18 +135,39 @@
                 </div>
                 <div class="accordion-content open">
                     <div class="space-y-4">
-                        <!-- Category -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Catégorie <span class="text-red-500">*</span>
-                            </label>
-                            <select name="category_id" required
-                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-                                <option value="">Sélectionner une catégorie</option>
-                                <option value="1">Chiens</option>
-                                <option value="2">Chats</option>
-                                <option value="3">Oiseaux</option>
-                            </select>
+                        <!-- Category & Subcategory -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Catégorie <span class="text-red-500">*</span>
+                                </label>
+                                <select name="category_id" id="category_id" required
+                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                                    <option value="">Sélectionner une catégorie</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('category_id')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Sous-catégorie
+                                </label>
+                                <select name="subcategory_id" id="subcategory_id"
+                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                                    <option value="">Aucune</option>
+                                    <!-- Loader dynamically via JS -->
+                                </select>
+                                @error('subcategory_id')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
                         </div>
 
                         <!-- Short Description -->
@@ -627,6 +674,36 @@
     // Initialize
     document.addEventListener('DOMContentLoaded', function() {
         updateStockStatus();
+
+        // Load subcategories dynamically
+        const categorySelect = document.getElementById('category_id');
+        const subcategorySelect = document.getElementById('subcategory_id');
+        
+        if (categorySelect && subcategorySelect) {
+            categorySelect.addEventListener('change', function() {
+                const categoryId = this.value;
+                subcategorySelect.innerHTML = '<option value="">Aucune</option>';
+                
+                if (categoryId) {
+                    fetch(`/admin/products/subcategories/${categoryId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.forEach(sub => {
+                                const option = document.createElement('option');
+                                option.value = sub.id;
+                                option.textContent = sub.name;
+                                subcategorySelect.appendChild(option);
+                            });
+                        })
+                        .catch(error => console.error('Error fetching subcategories:', error));
+                }
+            });
+            
+            // Trigger change event if there is an old value
+            if (categorySelect.value) {
+                categorySelect.dispatchEvent(new Event('change'));
+            }
+        }
     });
 </script>
 @endpush

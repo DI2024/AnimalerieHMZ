@@ -1,9 +1,7 @@
-@extends('layouts.admin')
+<?php $__env->startSection('title', 'Modifier Catégorie'); ?>
+<?php $__env->startSection('page-title', 'Modifier la Catégorie'); ?>
 
-@section('title', 'Modifier Catégorie')
-@section('page-title', 'Modifier la Catégorie')
-
-@push('styles')
+<?php $__env->startPush('styles'); ?>
 <style>
     /* Two-column layout */
     .form-container {
@@ -122,12 +120,12 @@
         border-bottom: 2px solid #f3f4f6;
     }
 </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
-<form action="{{ route('admin.categories.update', $category) }}" method="POST" enctype="multipart/form-data" id="categoryForm">
-    @csrf
-    @method('PUT')
+<?php $__env->startSection('content'); ?>
+<form action="<?php echo e(route('admin.categories.update', $category)); ?>" method="POST" enctype="multipart/form-data" id="categoryForm">
+    <?php echo csrf_field(); ?>
+    <?php echo method_field('PUT'); ?>
     
     <div class="form-container">
         <!-- Left Column: Form Fields -->
@@ -145,13 +143,20 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">
                         Nom de la catégorie *
                     </label>
-                    <input type="text" name="name" id="categoryName" value="{{ old('name', $category->name) }}" required
+                    <input type="text" name="name" id="categoryName" value="<?php echo e(old('name', $category->name)); ?>" required
                            oninput="updateSlug(); updatePreview(); countChars('categoryName', 100)"
                            class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#003e87] text-lg">
                     <div class="char-counter" id="nameCounter">0/100</div>
-                    @error('name')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
+                    <?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <p class="text-red-500 text-xs mt-1"><?php echo e($message); ?></p>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
                 
                 <!-- Slug (Editable) -->
@@ -164,7 +169,7 @@
                         <span class="px-3 py-3 bg-gray-100 border border-r-0 rounded-l-lg text-sm text-gray-600">
                             /categories/
                         </span>
-                        <input type="text" name="slug" id="categorySlug" value="{{ old('slug', $category->slug) }}"
+                        <input type="text" name="slug" id="categorySlug" value="<?php echo e(old('slug', $category->slug)); ?>"
                                oninput="updateSlugPreview()"
                                class="flex-1 px-4 py-3 border rounded-r-lg focus:outline-none focus:ring-2 focus:ring-[#003e87] font-mono text-sm">
                     </div>
@@ -172,9 +177,16 @@
                         <i class="fas fa-info-circle mr-1"></i>
                         Modifiable manuellement si nécessaire
                     </p>
-                    @error('slug')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
+                    <?php $__errorArgs = ['slug'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <p class="text-red-500 text-xs mt-1"><?php echo e($message); ?></p>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
                 
                 <!-- Description -->
@@ -185,11 +197,18 @@
                     </label>
                     <textarea name="description" id="categoryDescription" rows="4"
                               oninput="updatePreview(); countChars('categoryDescription', 500)"
-                              class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#003e87]">{{ old('description', $category->description) }}</textarea>
+                              class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#003e87]"><?php echo e(old('description', $category->description)); ?></textarea>
                     <div class="char-counter" id="descriptionCounter">0/500</div>
-                    @error('description')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
+                    <?php $__errorArgs = ['description'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <p class="text-red-500 text-xs mt-1"><?php echo e($message); ?></p>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
             </div>
             
@@ -202,22 +221,22 @@
                 
                 <!-- Image Upload Zone -->
                 <div class="image-upload-zone" id="imageUploadZone" onclick="document.getElementById('imageInput').click()">
-                    @if($category->image)
-                        @if(filter_var($category->image, FILTER_VALIDATE_URL))
-                            <img id="imagePreview" src="{{ $category->image }}" alt="{{ $category->name }}">
-                        @else
-                            <img id="imagePreview" src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}">
-                        @endif
-                    @else
+                    <?php if($category->image): ?>
+                        <?php if(filter_var($category->image, FILTER_VALIDATE_URL)): ?>
+                            <img id="imagePreview" src="<?php echo e($category->image); ?>" alt="<?php echo e($category->name); ?>">
+                        <?php else: ?>
+                            <img id="imagePreview" src="<?php echo e(asset('storage/' . $category->image)); ?>" alt="<?php echo e($category->name); ?>">
+                        <?php endif; ?>
+                    <?php else: ?>
                         <img id="imagePreview" src="" alt="" class="hidden">
-                    @endif
-                    <div class="image-upload-placeholder {{ $category->image ? 'hidden' : '' }}" id="imagePlaceholder">
+                    <?php endif; ?>
+                    <div class="image-upload-placeholder <?php echo e($category->image ? 'hidden' : ''); ?>" id="imagePlaceholder">
                         <i class="fas fa-cloud-upload-alt text-6xl mb-3 text-gray-300"></i>
                         <p class="text-base font-medium mb-1">Cliquez ou glissez-déposez une image</p>
                         <p class="text-sm text-gray-400">JPG, PNG, WEBP (Max 2MB)</p>
                         <p class="text-xs text-gray-400 mt-2">Recommandé: 1200x675px (16:9)</p>
                     </div>
-                    <button type="button" id="removeImageBtn" class="remove-image-btn {{ $category->image ? '' : 'hidden' }}" onclick="event.stopPropagation(); removeImage()">
+                    <button type="button" id="removeImageBtn" class="remove-image-btn <?php echo e($category->image ? '' : 'hidden'); ?>" onclick="event.stopPropagation(); removeImage()">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
@@ -233,9 +252,16 @@
                     </div>
                 </div>
                 
-                @error('image')
-                    <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
-                @enderror
+                <?php $__errorArgs = ['image'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <p class="text-red-500 text-xs mt-2"><?php echo e($message); ?></p>
+                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
             </div>
             
             <!-- Settings Section -->
@@ -249,7 +275,8 @@
                     <!-- Status -->
                     <label class="flex items-center space-x-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
                         <input type="hidden" name="is_active" value="0">
-                        <input type="checkbox" name="is_active" value="1" {{ old('is_active', $category->is_active) ? 'checked' : '' }}
+                        <input type="checkbox" name="is_active" value="1" <?php echo e(old('is_active', $category->is_active) ? 'checked' : ''); ?>
+
                                class="rounded text-primary focus:ring-primary w-5 h-5">
                         <div class="flex-1">
                             <span class="text-sm font-medium text-gray-900">Catégorie active</span>
@@ -262,21 +289,28 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             Ordre d'affichage
                         </label>
-                        <input type="number" name="order" value="{{ old('order', $category->order) }}" min="0" required
+                        <input type="number" name="order" value="<?php echo e(old('order', $category->order)); ?>" min="0" required
                                class="w-full px-4 py-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#003e87] text-sm">
                         <p class="text-xs text-gray-500 mt-1">
                             Contrôle la position d'affichage de la catégorie (les valeurs plus petites apparaissent en premier).
                         </p>
-                        @error('order')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                        <?php $__errorArgs = ['order'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <p class="text-red-500 text-xs mt-1"><?php echo e($message); ?></p>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
             </div>
             
             <!-- Actions -->
             <div class="flex justify-between items-center bg-white rounded-lg shadow p-6">
-                <a href="{{ route('admin.categories.index') }}" 
+                <a href="<?php echo e(route('admin.categories.index')); ?>" 
                    class="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
                     <i class="fas fa-arrow-left mr-2"></i>Annuler
                 </a>
@@ -299,32 +333,33 @@
                 </div>
                 
                 <div class="preview-card-image" id="previewImage">
-                    @if($category->image)
-                        @if(filter_var($category->image, FILTER_VALIDATE_URL))
-                            <img src="{{ $category->image }}" alt="{{ $category->name }}">
-                        @else
-                            <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}">
-                        @endif
-                    @else
+                    <?php if($category->image): ?>
+                        <?php if(filter_var($category->image, FILTER_VALIDATE_URL)): ?>
+                            <img src="<?php echo e($category->image); ?>" alt="<?php echo e($category->name); ?>">
+                        <?php else: ?>
+                            <img src="<?php echo e(asset('storage/' . $category->image)); ?>" alt="<?php echo e($category->name); ?>">
+                        <?php endif; ?>
+                    <?php else: ?>
                         <div class="text-center">
                             <i class="fas fa-image text-6xl mb-2"></i>
                             <p class="text-sm">Aucune image</p>
                         </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
                 
                 <div class="p-6">
-                    <h4 class="text-xl font-bold text-gray-900 mb-2" id="previewName">{{ $category->name }}</h4>
-                    <p class="text-sm text-gray-600 mb-4" id="previewDescription">{{ $category->description ?? 'Aucune description' }}</p>
+                    <h4 class="text-xl font-bold text-gray-900 mb-2" id="previewName"><?php echo e($category->name); ?></h4>
+                    <p class="text-sm text-gray-600 mb-4" id="previewDescription"><?php echo e($category->description ?? 'Aucune description'); ?></p>
                     
                     <div class="flex items-center justify-between pt-4 border-t">
                         <div class="text-sm text-gray-500">
                             <i class="fas fa-box mr-1"></i>
-                            <span>{{ $category->products_count ?? 0 }} produits</span>
+                            <span><?php echo e($category->products_count ?? 0); ?> produits</span>
                         </div>
                         <div class="text-sm">
-                            <span class="px-3 py-1 {{ $category->is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }} rounded-full text-xs font-medium">
-                                {{ $category->is_active ? 'Actif' : 'Inactif' }}
+                            <span class="px-3 py-1 <?php echo e($category->is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'); ?> rounded-full text-xs font-medium">
+                                <?php echo e($category->is_active ? 'Actif' : 'Inactif'); ?>
+
                             </span>
                         </div>
                     </div>
@@ -346,9 +381,9 @@
         </div>
     </div>
 </form>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
     // Slug generation
     function updateSlug() {
@@ -514,4 +549,6 @@
         countChars('categoryDescription', 500);
     });
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\User\Desktop\animx\AnimalerieHMZ\resources\views/admin/categories/edit.blade.php ENDPATH**/ ?>

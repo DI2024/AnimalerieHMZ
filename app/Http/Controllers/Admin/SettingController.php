@@ -17,6 +17,9 @@ class SettingController extends Controller
             'contact_email' => Setting::get('contact_email', 'contact@animaleriehmz.ma'),
             'contact_phone' => Setting::get('contact_phone', '+212 626-911209'),
             'footer_description' => Setting::get('footer_description', 'Animalerie HMZ - Votre boutique en ligne pour tous vos animaux de compagnie au Maroc.'),
+            'social_facebook' => Setting::get('social_facebook', 'https://www.facebook.com'),
+            'social_instagram' => Setting::get('social_instagram', 'https://www.instagram.com'),
+            'social_whatsapp' => Setting::get('social_whatsapp', 'https://wa.me/212626911209'),
         ];
 
         return view('admin.settings.index', compact('settings'));
@@ -40,12 +43,18 @@ class SettingController extends Controller
     {
         $validated = $request->validate([
             'footer_description' => 'required|string|max:500',
+            'social_facebook' => 'nullable|string|max:255',
+            'social_instagram' => 'nullable|string|max:255',
+            'social_whatsapp' => 'nullable|string|max:255',
         ]);
 
         Setting::set('footer_description', $validated['footer_description']);
+        Setting::set('social_facebook', $validated['social_facebook']);
+        Setting::set('social_instagram', $validated['social_instagram']);
+        Setting::set('social_whatsapp', $validated['social_whatsapp']);
         
         return redirect()->route('admin.settings.index')
-            ->with('success', 'Texte du footer mis à jour avec succès!');
+            ->with('success', 'Texte et réseaux sociaux du footer mis à jour avec succès!');
     }
 
     public function updatePassword(Request $request)

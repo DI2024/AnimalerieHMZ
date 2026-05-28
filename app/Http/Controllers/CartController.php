@@ -170,4 +170,52 @@ class CartController extends Controller
             'message' => 'Panier vidé',
         ]);
     }
+
+    /**
+     * Add pack products to cart
+     */
+    public function addPack(Request $request)
+    {
+        $request->validate([
+            'offer_id' => 'required|exists:offers,id',
+        ]);
+
+        $offer = \App\Models\Offer::with('products')->find($request->offer_id);
+        if (!$offer || $offer->type !== 'pack' || !$offer->is_active) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pack non trouvé ou inactif',
+            ], 404);
+        }
+
+        $cart = session()->get('cart', []);
+        $addedCount = 0;
+
+        foreach ($offer->products as $product) {
+            if ($product->is_active && $product->stock > 0) {
+                $productId = $product->id;
+                if (isset($cart[$productId])) {
+                    $cart[$productId] += 1;
+                } else {
+                    $cart[$productId] = 1;
+                }
+                $addedCount++;
+            }
+        }
+
+        if ($addedCount === 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Aucun produit du pack n\'est disponible en stock',
+            ], 400);
+        }
+
+        session()->put('cart', $cart);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Pack ajouté au panier',
+            'cart_count' => count($cart),
+        ]);
+    }
 }

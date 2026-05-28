@@ -106,24 +106,9 @@
         <div class="mb-3">
             <div class="flex items-center justify-between text-sm">
                 <span class="text-gray-600">Stock:</span>
-                <span class="font-medium px-2 py-1 rounded" 
-                      <?php if($product->stock == 0): ?>
-                          class="text-red-600"
-                      <?php elseif($product->stock <= 10): ?>
-                          class="text-orange-600"
-                      <?php else: ?>
-                          class="text-green-600"
-                      <?php endif; ?>>
+                <span class="font-medium px-2 py-1 rounded <?php echo e($product->stock == 0 ? 'text-red-600' : ($product->stock <= 10 ? 'text-orange-600' : 'text-green-600')); ?>">
                     <?php echo e($product->stock); ?> unités
                 </span>
-            </div>
-            <!-- Stock Progress Bar -->
-            <?php
-                $stockPercentage = min(($product->stock / 100) * 100, 100);
-                $stockColor = $product->stock == 0 ? 'bg-red-500' : ($product->stock <= 10 ? 'bg-orange-500' : 'bg-green-500');
-            ?>
-            <div class="stock-progress mt-2">
-                <div class="stock-progress-bar <?php echo e($stockColor); ?>" style="width: <?php echo e($stockPercentage); ?>%"></div>
             </div>
         </div>
 

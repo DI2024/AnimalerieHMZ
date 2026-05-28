@@ -6,12 +6,81 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\SubCategory;
+use App\Models\Offer;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     public function index(Request $request)
     {
+        // Load categories with their subcategories and product counts
+        $categories = Category::where('is_active', true)
+            ->withCount('products')
+            ->with(['subcategories' => function($query) {
+                $query->where('is_active', true)
+                      ->withCount('products')
+                      ->orderBy('name');
+            }])
+            ->orderBy('order')
+            ->orderBy('name')
+            ->get();
+
+        if ($request->filled('is_pack')) {
+            $packQuery = Offer::where('type', 'pack')
+                ->where('is_active', true)
+                ->with('products');
+
+            if ($request->filled('search')) {
+                $search = $request->search;
+                $packQuery->where(function($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                      ->orWhere('subtitle', 'like', "%{$search}%");
+                });
+            }
+
+            if ($request->filled('min_price')) {
+                $packQuery->where('pack_price', '>=', $request->min_price);
+            }
+            if ($request->filled('max_price')) {
+                $packQuery->where('pack_price', '<=', $request->max_price);
+            }
+
+            $packs = $packQuery->paginate(12)->withQueryString();
+
+            // Transform each pack to mimic a Product object so the Blade template displays it correctly
+            $products = $packs->through(function ($pack) {
+                $virtualProduct = new Product();
+                $virtualProduct->id = $pack->id;
+                $virtualProduct->name = $pack->title;
+                $virtualProduct->slug = null; // No slug for packs, we handle it in blade
+                $virtualProduct->description = $pack->subtitle;
+                $virtualProduct->price = $pack->pack_price;
+                $virtualProduct->old_price = $pack->total_original_price;
+                
+                // Process image path
+                $imageUrl = $pack->image 
+                    ? (filter_var($pack->image, FILTER_VALIDATE_URL) ? $pack->image : 'storage/' . $pack->image)
+                    : 'images/placeholder.svg';
+                $virtualProduct->image = $imageUrl;
+                
+                $virtualProduct->is_active = $pack->is_active;
+                $virtualProduct->is_new = false;
+                $virtualProduct->is_bestseller = false;
+                $virtualProduct->rating = 5.0; // Packs get a virtual 5-star rating
+                $virtualProduct->is_pack = true; // Flag for blade
+                $virtualProduct->link = $pack->link ?: route('home'); // Redirection link
+                
+                // Set virtual category
+                $categoryObj = new Category();
+                $categoryObj->name = 'Pack Spécial';
+                $virtualProduct->setRelation('category', $categoryObj);
+
+                return $virtualProduct;
+            });
+
+            return view('client.products.index', compact('products', 'categories'));
+        }
+
         $query = Product::where('is_active', true)->with(['category', 'subcategory']);
 
         // Filter by category
@@ -58,7 +127,6 @@ class ProductController extends Controller
 
         // Sorting
         $sortBy = $request->get('sort', 'created_at');
-        $sortOrder = $request->get('order', 'desc');
         
         // Si aucun filtre de catégorie/sous-catégorie et tri par défaut, afficher aléatoirement
         if (!$request->filled('category') && !$request->filled('subcategory') && $sortBy == 'created_at') {
@@ -84,17 +152,6 @@ class ProductController extends Controller
         }
 
         $products = $query->paginate(12)->withQueryString();
-
-        // Load categories with their subcategories and product counts
-        $categories = Category::where('is_active', true)
-            ->withCount('products')
-            ->with(['subcategories' => function($query) {
-                $query->where('is_active', true)
-                      ->withCount('products')
-                      ->orderBy('name');
-            }])
-            ->orderBy('name')
-            ->get();
 
         return view('client.products.index', compact('products', 'categories'));
     }
@@ -127,6 +184,48 @@ class ProductController extends Controller
     // API endpoint for AJAX requests
     public function apiIndex(Request $request)
     {
+        if ($request->filled('is_pack')) {
+            $packQuery = Offer::where('type', 'pack')
+                ->where('is_active', true)
+                ->with('products');
+
+            if ($request->filled('search')) {
+                $search = $request->search;
+                $packQuery->where(function($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                      ->orWhere('subtitle', 'like', "%{$search}%");
+                });
+            }
+
+            $packs = $packQuery->get();
+
+            $products = $packs->map(function ($pack) {
+                $imageUrl = $pack->image 
+                    ? (filter_var($pack->image, FILTER_VALIDATE_URL) ? $pack->image : 'storage/' . $pack->image)
+                    : 'images/placeholder.svg';
+                return [
+                    'id' => $pack->id,
+                    'name' => $pack->title,
+                    'slug' => null,
+                    'price' => (float)$pack->pack_price,
+                    'old_price' => (float)$pack->total_original_price,
+                    'image' => $imageUrl,
+                    'is_pack' => true,
+                    'link' => $pack->link ?: route('home'),
+                    'category' => ['name' => 'Pack Spécial'],
+                    'rating' => 5.0,
+                    'is_new' => false,
+                    'is_bestseller' => false
+                ];
+            });
+
+            return response()->json([
+                'success' => true,
+                'products' => $products,
+                'count' => $products->count(),
+            ]);
+        }
+
         $query = Product::where('is_active', true)->with(['category', 'subcategory']);
 
         // Filter by category slug
@@ -209,8 +308,11 @@ class ProductController extends Controller
         $categories = Category::where('is_active', true)
             ->withCount('products')
             ->with(['subcategories' => function($query) {
-                $query->where('is_active', true);
+                $query->where('is_active', true)
+                      ->orderBy('name');
             }])
+            ->orderBy('order')
+            ->orderBy('name')
             ->get();
 
         return response()->json([

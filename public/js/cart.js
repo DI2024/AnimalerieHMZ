@@ -40,6 +40,16 @@ class CartManager {
                 this.addToCart(productId, 1, productAddBtn);
                 return;
             }
+
+            // Quick add pack buttons (pack cards)
+            const packAddBtn = e.target.closest('.pack-add-btn');
+            if (packAddBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                const packId = packAddBtn.dataset.packId;
+                this.addPackToCart(packId, packAddBtn);
+                return;
+            }
         });
     }
 
@@ -105,6 +115,86 @@ class CartManager {
 
         } catch (error) {
             console.error('Error adding to cart:', error);
+            if (window.showToast) {
+                showToast({
+                    type: 'error',
+                    title: 'Erreur',
+                    message: 'Une erreur est survenue. Veuillez réessayer.',
+                    duration: 4000
+                });
+            }
+        } finally {
+            // Re-enable button
+            if (button) {
+                setTimeout(() => {
+                    this.resetButton(button);
+                    button.disabled = false;
+                }, 1000);
+            }
+        }
+    }
+
+    async addPackToCart(packId, button = null) {
+        if (!packId) {
+            console.error('Pack ID is required');
+            return;
+        }
+
+        // Disable button and show loading
+        if (button) {
+            button.disabled = true;
+            this.showButtonLoading(button);
+        }
+
+        try {
+            const response = await fetch('/api/cart/add-pack', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+                },
+                body: JSON.stringify({
+                    offer_id: packId
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Success animation and notification
+                this.onAddSuccess(button, data);
+                
+                // Update cart count
+                this.updateCartCount(data.cart_count);
+                
+                // Show toast notification
+                if (window.showToast) {
+                    showToast({
+                        type: 'success',
+                        title: 'Pack ajouté !',
+                        message: 'Le pack a été ajouté à votre panier',
+                        icon: 'shopping_cart',
+                        duration: 3000
+                    });
+                }
+                
+                // Animate cart icon
+                this.animateCartIcon();
+                
+            } else {
+                // Error notification
+                if (window.showToast) {
+                    showToast({
+                        type: 'error',
+                        title: 'Erreur',
+                        message: data.message || 'Impossible d\'ajouter le pack',
+                        duration: 4000
+                    });
+                }
+            }
+
+        } catch (error) {
+            console.error('Error adding pack to cart:', error);
             if (window.showToast) {
                 showToast({
                     type: 'error',
