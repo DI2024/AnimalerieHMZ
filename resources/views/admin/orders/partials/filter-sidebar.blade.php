@@ -4,9 +4,14 @@
             <i class="fas fa-filter mr-2 text-[#003e87]"></i>
             Filtres
         </h3>
-        <button type="button" onclick="clearAllFilters()" class="text-sm text-gray-500 hover:text-[#003e87]">
-            Réinitialiser
-        </button>
+        <div class="flex items-center gap-3">
+            <button type="button" onclick="clearAllFilters()" class="text-sm text-gray-500 hover:text-[#003e87]">
+                Réinitialiser
+            </button>
+            <button type="button" onclick="toggleFilterSidebar()" class="text-gray-400 hover:text-gray-600 transition-colors lg:hidden" title="Fermer">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+        </div>
     </div>
     
     <form id="filterForm" method="GET" action="{{ route('admin.orders.index') }}">
@@ -138,11 +143,13 @@
 </div>
 
 <style>
-    .filter-sidebar {
-        position: sticky;
-        top: 24px;
-        max-height: calc(100vh - 120px);
-        overflow-y: auto;
+    @media (min-width: 1025px) {
+        .filter-sidebar {
+            position: sticky;
+            top: 24px;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
     }
     
     .filter-section-header {

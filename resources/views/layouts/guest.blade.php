@@ -12,6 +12,25 @@
 
         <!-- Material Symbols -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+        
+        <!-- Prevent FOUT for Material Symbols -->
+        <script>
+            (function() {
+                var timeout = setTimeout(function() {
+                    document.documentElement.classList.add('icons-loaded');
+                }, 1000); // 1s fallback
+
+                if (document.fonts && document.fonts.load) {
+                    document.fonts.load('1em "Material Symbols Outlined"').then(function() {
+                        clearTimeout(timeout);
+                        document.documentElement.classList.add('icons-loaded');
+                    });
+                } else {
+                    document.documentElement.classList.add('icons-loaded');
+                }
+            })();
+        </script>
+
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

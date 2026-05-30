@@ -54,6 +54,15 @@ Détails Commande #{{ $order->order_number }}
             opacity: 1;
         }
     }
+
+    /* Mobile responsive header text size */
+    @media (max-width: 767px) {
+        .main-content header h1 {
+            font-size: 1.25rem !important;
+            white-space: normal !important;
+            line-height: 1.4 !important;
+        }
+    }
 </style>
 @endpush
 
@@ -157,7 +166,7 @@ Détails Commande #{{ $order->order_number }}
         </div>
         <div class="overflow-x-auto">
             <table class="w-full">
-                <thead class="bg-gray-50">
+                <thead class="bg-gray-50 hidden md:table-header-group">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Produit</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Prix unitaire</th>
@@ -168,7 +177,8 @@ Détails Commande #{{ $order->order_number }}
                 </thead>
                 <tbody class="divide-y divide-gray-200">
                     @forelse($order->items as $item)
-                    <tr>
+                    <!-- Desktop Row -->
+                    <tr class="hidden md:table-row">
                         <td class="px-6 py-4">
                             <div class="flex items-center">
                                 @if($item->product_image)
@@ -209,6 +219,64 @@ Détails Commande #{{ $order->order_number }}
                         </td>
                         <td class="px-6 py-4 text-sm font-medium">{{ number_format($item->price * $item->quantity, 2) }} DH</td>
                     </tr>
+
+                    <!-- Mobile Card Row -->
+                    <tr class="block md:hidden">
+                        <td colspan="5" class="block p-0">
+                            <div class="p-4 border-b border-gray-100 last:border-b-0 space-y-3">
+                                <div class="flex items-center gap-3">
+                                    @if($item->product_image)
+                                        @if(filter_var($item->product_image, FILTER_VALIDATE_URL))
+                                            <img src="{{ $item->product_image }}" class="w-16 h-16 object-cover rounded-lg" alt="{{ $item->product_name }}">
+                                        @else
+                                            <img src="{{ asset('storage/' . $item->product_image) }}" class="w-16 h-16 object-cover rounded-lg" alt="{{ $item->product_name }}">
+                                        @endif
+                                    @else
+                                        <div class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-image text-gray-400 text-lg"></i>
+                                        </div>
+                                    @endif
+                                    <div class="flex-1 min-w-0">
+                                        <p class="font-semibold text-gray-900 text-sm truncate">{{ $item->product_name }}</p>
+                                        @if($item->product_sku)
+                                            <p class="text-xs text-gray-500">SKU: {{ $item->product_sku }}</p>
+                                        @endif
+                                        <div class="mt-1">
+                                            @if($item->product)
+                                                @php
+                                                    $stock = $item->product->stock;
+                                                    $stockClass = $stock <= 0 ? 'text-red-600 bg-red-50' : ($stock < 10 ? 'text-amber-600 bg-amber-50' : 'text-green-600 bg-green-50');
+                                                    $stockLabel = $stock <= 0 ? 'Rupture' : ($stock < 10 ? "$stock restants" : "$stock en stock");
+                                                @endphp
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xxs font-medium {{ $stockClass }}">
+                                                    {{ $stockLabel }}
+                                                </span>
+                                            @else
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xxs font-medium text-gray-500 bg-gray-50">
+                                                    Supprimé
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-3 gap-2 pt-2 text-xs border-t border-gray-50 text-gray-600">
+                                    <div>
+                                        <span class="block text-gray-400 text-xxs uppercase">Prix Unit.</span>
+                                        <span class="font-medium text-gray-900">{{ number_format($item->price, 2) }} DH</span>
+                                    </div>
+                                    <div class="text-center">
+                                        <span class="block text-gray-400 text-xxs uppercase">Quantité</span>
+                                        <span class="font-bold text-gray-900">x{{ $item->quantity }}</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="block text-gray-400 text-xxs uppercase">Sous-total</span>
+                                        <span class="font-bold text-[#003e87]">{{ number_format($item->price * $item->quantity, 2) }} DH</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
                     @empty
                     <tr>
                         <td colspan="5" class="px-6 py-4 text-center text-gray-500">
@@ -217,7 +285,7 @@ Détails Commande #{{ $order->order_number }}
                     </tr>
                     @endforelse
                 </tbody>
-                <tfoot class="bg-gray-50">
+                <tfoot class="bg-gray-50 hidden md:table-footer-group">
                     <tr>
                         <td colspan="4" class="px-6 py-4 text-right font-medium">Sous-total</td>
                         <td class="px-6 py-4 font-medium">{{ number_format($order->subtotal, 2) }} DH</td>
@@ -234,6 +302,24 @@ Détails Commande #{{ $order->order_number }}
                     </tr>
                 </tfoot>
             </table>
+
+            <!-- Mobile Summary Box -->
+            <div class="block md:hidden bg-gray-50 p-4 border-t border-gray-100 space-y-2">
+                <div class="flex justify-between text-sm text-gray-600">
+                    <span>Sous-total</span>
+                    <span class="font-medium text-gray-900">{{ number_format($order->subtotal, 2) }} DH</span>
+                </div>
+                @if($order->discount > 0)
+                <div class="flex justify-between text-sm text-red-600">
+                    <span>Réduction</span>
+                    <span class="font-medium">-{{ number_format($order->discount, 2) }} DH</span>
+                </div>
+                @endif
+                <div class="flex justify-between text-base font-bold text-gray-900 pt-2 border-t border-gray-200">
+                    <span>Total</span>
+                    <span class="text-[#003e87] font-extrabold">{{ number_format($order->total, 2) }} DH</span>
+                </div>
+            </div>
         </div>
     </div>
     

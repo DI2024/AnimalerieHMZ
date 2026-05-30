@@ -6,19 +6,11 @@
     <!-- Hero Section avec Grid - Largeur limitée et centrée -->
     <section class="bg-white py-8">
         <div class="max-w-[1280px] mx-auto px-6">
-            <div class="grid grid-rows-[92px_1fr] gap-4">
-                <!-- Bande du haut - Marques de produits -->
-                <!-- Desktop: Image complète -->
-                <!-- Mobile: Scroll horizontal pour voir toutes les marques -->
-                <div class="relative overflow-hidden rounded-2xl">
-                    <!-- Desktop: Image complète -->
-                    <div class="hidden md:flex items-center">
+            <div class="grid grid-cols-1 md:grid-rows-[92px_1fr] gap-4">
+                <!-- Bande du haut - Marques de produits (Desktop uniquement) -->
+                <div class="hidden md:block relative overflow-hidden rounded-2xl">
+                    <div class="flex items-center">
                         <img src="{{ asset('images/img brand product.png') }}" alt="Marques de produits" class="w-full h-full object-cover">
-                    </div>
-                    
-                    <!-- Mobile: Scroll horizontal sur l'image complète -->
-                    <div class="md:hidden brands-mobile-scroll-container overflow-x-auto h-[92px]">
-                        <img src="{{ asset('images/img brand product.png') }}" alt="Marques de produits" class="h-full object-cover min-w-[300%]">
                     </div>
                 </div>
 
@@ -28,8 +20,8 @@
                     <!-- Colonne gauche - Hero Slides -->
                     <div class="hero-slides-container">
                         <div class="hero-slides-scroll">
-                            @forelse($heroSlides as $slide)
-                                <div class="hero-slide relative rounded-2xl h-[460px] overflow-hidden">
+                            @forelse($heroSlides as $index => $slide)
+                                <div class="hero-slide relative rounded-2xl h-[460px] overflow-hidden {{ $index > 0 ? 'hidden md:block' : '' }}">
                                     <!-- Image de fond -->
                                     @php
                                         $slideImageUrl = filter_var($slide->image, FILTER_VALIDATE_URL) 
@@ -134,30 +126,17 @@
                     @endphp
                     
                     @if($offer->type === 'pack')
-                        <!-- Pack Offer: Fond blanc, bordure violette -->
-                        <a href="{{ $offerLink }}" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-white border-2 border-purple-500/20 text-purple-700 group transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:border-purple-600 cursor-pointer">
+                        <!-- Pack Offer: Fond blanc, bordure violette (ou couleur personnalisée) -->
+                        <a href="{{ $offerLink }}" 
+                           class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] border-2 border-purple-500/20 group transition-all duration-500 md:hover:scale-105 md:hover:shadow-2xl md:hover:border-purple-600 cursor-pointer {{ $offer->bg_color ? 'text-white' : 'bg-white text-purple-700' }}"
+                           style="{{ $offer->bg_color ? 'background-color: ' . $offer->bg_color . ';' : '' }}">
                             <div class="flex-1 pr-4 z-10">
-                                @if($offer->badge)
-                                    <span class="inline-block bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-md">
-                                        {{ $offer->badge }}
-                                    </span>
-                                @endif
-                                <h3 class="font-headline text-lg font-bold leading-tight mb-2 text-purple-950">{{ $offer->title }}</h3>
-                                @if($offer->subtitle)
-                                    <p class="text-purple-700/90 text-sm font-medium mb-1">{{ $offer->subtitle }}</p>
-                                @endif
-                                
-                                @if($offer->products->count() > 0)
-                                    <p class="text-xs text-purple-600/80 mt-2">
-                                        <span class="font-semibold text-purple-800">Inclus :</span> 
-                                        {{ $offer->products->pluck('name')->implode(', ') }}
-                                    </p>
-                                @endif
+                                <h3 class="font-headline text-sm md:text-lg font-bold leading-tight mb-2 {{ $offer->bg_color ? 'text-white' : 'text-purple-950' }}">{{ $offer->title }}</h3>
 
-                                <div class="mt-4 flex items-baseline gap-2">
-                                    <span class="text-2xl font-bold text-purple-600">{{ number_format($offer->pack_price, 2, ',', ' ') }} DH</span>
+                                <div class="mt-2 md:mt-4 flex items-baseline gap-1.5 md:gap-2 whitespace-nowrap">
+                                    <span class="text-base md:text-2xl font-bold {{ $offer->bg_color ? 'text-white' : 'text-purple-600' }}">{{ number_format($offer->pack_price, 2, ',', ' ') }} MAD</span>
                                     @if($offer->total_original_price > 0 && $offer->total_original_price > $offer->pack_price)
-                                        <span class="text-sm text-gray-400 line-through">{{ number_format($offer->total_original_price, 2, ',', ' ') }} DH</span>
+                                        <span class="text-xs md:text-sm line-through {{ $offer->bg_color ? 'text-white/70' : 'text-gray-400' }}">{{ number_format($offer->total_original_price, 2, ',', ' ') }} MAD</span>
                                     @endif
                                 </div>
                             </div>
@@ -166,11 +145,13 @@
                             </div>
                         </a>
                     @elseif($offer->type === 'percentage')
-                        <!-- Percentage Offer: bg-gradient-to-br from-tertiary to-blue-600 text-white -->
-                        <a href="{{ $offerLink }}" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-gradient-to-br from-tertiary to-blue-600 text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
+                        <!-- Percentage Offer: bg-gradient-to-br from-tertiary to-blue-600 text-white (ou couleur personnalisée) -->
+                        <a href="{{ $offerLink }}" 
+                           class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] text-white group transition-all duration-500 md:hover:scale-105 md:hover:shadow-2xl cursor-pointer {{ $offer->bg_color ? '' : 'bg-gradient-to-br from-tertiary to-blue-600' }}"
+                           style="{{ $offer->bg_color ? 'background-color: ' . $offer->bg_color . ';' : '' }}">
                             <div class="flex-1 pr-4 z-10">
                                 @if($offer->badge)
-                                    <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">
+                                    <span class="hidden md:inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">
                                         {{ $offer->badge }}
                                     </span>
                                 @endif
@@ -184,11 +165,13 @@
                             </div>
                         </a>
                     @else
-                        <!-- Standard Offer: bg-gradient-to-br from-primary-container to-primary text-white -->
-                        <a href="{{ $offerLink }}" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-gradient-to-br from-primary-container to-primary text-white group transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
+                        <!-- Standard Offer: bg-gradient-to-br from-primary-container to-primary text-white (ou couleur personnalisée) -->
+                        <a href="{{ $offerLink }}" 
+                           class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] text-white group transition-all duration-500 md:hover:scale-105 md:hover:shadow-2xl cursor-pointer {{ $offer->bg_color ? '' : 'bg-gradient-to-br from-primary-container to-primary' }}"
+                           style="{{ $offer->bg_color ? 'background-color: ' . $offer->bg_color . ';' : '' }}">
                             <div class="flex-1 pr-4 z-10">
                                 @if($offer->badge)
-                                    <span class="inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">
+                                    <span class="hidden md:inline-block bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg">
                                         {{ $offer->badge }}
                                     </span>
                                 @endif
@@ -228,12 +211,7 @@
                     <!-- Fallback 3 (Pack) -->
                     <a href="{{ route('products.index') }}" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-white border-2 border-purple-500/20 text-purple-700 group transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:border-purple-600 cursor-pointer">
                         <div class="flex-1 pr-4">
-                            <span class="inline-block bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-md">🎁 Nouveauté</span>
                             <h3 class="font-headline text-lg font-bold leading-tight mb-2 text-purple-950">Pack Bienvenue</h3>
-                            <p class="text-purple-700/90 text-sm font-medium">Mélange de graines + Accessoires offerts</p>
-                            <p class="text-xs text-purple-600/80 mt-2">
-                                <span class="font-semibold text-purple-800">Inclus :</span> Graines Pigeon, Abreuvoir, Mangeoire
-                            </p>
                             <div class="mt-4 flex items-baseline gap-2">
                                 <span class="text-2xl font-bold text-purple-600">89,00 DH</span>
                                 <span class="text-sm text-gray-400 line-through">120,00 DH</span>
@@ -411,11 +389,11 @@
                 </a>
                 <a href="{{ route('products.index', ['subcategory' => 'graines-nutrition-pigeons']) }}" class="bg-gradient-to-br from-emerald-100 to-emerald-200 hover:from-emerald-200 hover:to-emerald-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
                     <span class="font-bold text-gray-900 text-lg">Graines & Nutrition</span>
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQXx6hiUnOCX6DzOYQFjw2OrpfOIMoRhffQpWaGCqdsUlortBdVqSqAR_xd6Fn6gCZZUFji4VdfAmXhX5s9pzWEhG5UH0lcp21npAq9fuGnRxAzrecick6_ERfAUEza0zCesRzz7kF6nnzRK2ioGzio6gLFkdV9n4QIJMRSH5Rb4rk8a7uyW_yBHJxsVn-H1Qv975itGYfYFVHtLTgQnig4KiM5eMzekLdU-8CzNjmglwOOp0ov466FOPQqMVrFSAg8dhT_-nR4Ko" alt="Graines" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                    <img src="{{ asset('images/products/img_product_peigon/grit-20kg-beyers-plus-003622-beyers-plus-un-melange-de-mineraux-compose-de-grit-de-coquillage-de-grit-de-coquille-dhuitre-de-gra-_1.webp') }}" alt="Graines" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 </a>
                 <a href="{{ route('products.index', ['subcategory' => 'accessoires-pigeons']) }}" class="bg-gradient-to-br from-amber-100 to-amber-200 hover:from-amber-200 hover:to-amber-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
                     <span class="font-bold text-gray-900 text-lg">Accessoires</span>
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4n77pofZu0M7VUhuXGR57lrTtl_tb-uNTk86gHkIkGqm1VFQc7Ht2jLvyEZKkW0AIbNxsAawhHLmTYSyIluEMqF1ZTczZNvtpUpaEaABo4njvV99IleGHi4r6DK88eCwSmUKJI6JGjFSXwyIX_a05sHUoItu8TmjYM6jQ4Qa4yXFWe19SAQJdSHxcvN0O8vOKKeF-cOkmKKYTsKwPH218RptL2fIyj5VYNURR36Np6h6wrZFTBawkN2X8PygsVeVd_OzbAr9Lpp8" alt="Accessoires" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                    <img src="{{ asset('images/products/img_product_peigon/bagues-elastiques-e-z-par-50-pieces-taille-8-mm-couleur-jaune-650-eur-880err08-yellow-rings-4-wings-voila-une-nouvelle-conceptio.jpg') }}" alt="Accessoires" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 </a>
             </div>
         </div>
@@ -440,15 +418,15 @@
             <div class="subcategories-mobile-scroll grid grid-cols-1 sm:grid-cols-3 gap-6 mb-16">
                 <a href="{{ route('products.index', ['subcategory' => 'cage-transport']) }}" class="bg-gradient-to-br from-purple-100 to-purple-200 hover:from-purple-200 hover:to-purple-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
                     <span class="font-bold text-gray-900 text-lg">Cage de transport</span>
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIgvNYgMNUX5dDqy9Ji_Xgxifl2RujROG1NGbtl-Mih2srLRpvr-ALYegp6tS66MyQnjGxpl4olvyw9hCamdiCkFivkf896OtEa385MGru_6Q019kTiqpbFtKgGowNvA-C_TqIx5l22H157bz1Kcvgw2kJCLW2ErRaYX-3bMGsSF7HTL6rLtQi-kLHDBGF2tudqZjjiCzdZKJopX7DanJL1aNaI1FjSwc8AKJscFoxJWMwFwX9dD2EIjNlqIw5XwkaHGF8gSSmNmY" alt="Cage" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                    <img src="{{ asset('images/products/img_product_chat/jlsb.jpg') }}" alt="Cage" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 </a>
                 <a href="{{ route('products.index', ['subcategory' => 'croquettes-chat']) }}" class="bg-gradient-to-br from-blue-100 to-blue-200 hover:from-blue-200 hover:to-blue-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
                     <span class="font-bold text-gray-900 text-lg">Croquettes pour chat</span>
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDT4uP4tjFYK2FyqRUBsgeX_3U1Sa0cnbKyWDNkkOIJ2qiF_tZzDvPMGr8qy-CJN0FYgWdskAw7NgJXfBKXvkBg4qCXvtdGBmGnFGFQ7Cl6ILs9iRxZROeBNnJ2Xbz6aSDyNjwv1U3ScEX2ApndJiQL7YxbpeV8_6sl0Zbo1DBMpmaVDHdsRAJXLUFCxqAN71D1h41oWGvXOhQOYWuN5u2bYKehj_7IV0ipdrG4TfMOEnhmA7iCCfOBb_h_SvgahbCPaN9BSaNpX9k" alt="Croquettes" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                    <img src="{{ asset('images/products/img_product_chat/rc_vet_dry_caturinarysomc_mv_eretailkit_de_de_7.jpg') }}" alt="Croquettes" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 </a>
                 <a href="{{ route('products.index', ['subcategory' => 'accessoires-chat']) }}" class="bg-gradient-to-br from-green-100 to-green-200 hover:from-green-200 hover:to-green-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
                     <span class="font-bold text-gray-900 text-lg">Accessoires</span>
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCf13j3hn9fIiDpqfSIlA9_FGHwtCP_eI4a3XaBc8PRii4W1Xpek9f00xWvJE9IUbjlRXdu8-LuGY5LKKcih9AXo-YkFHi7qYjMJd47ArOAqqoOoWn9leyXVBBQuw1n3PCI2GBC55QG4gMu1HBDQkpsFbkZS_WJ0_q_vf2YXJFxlB0HrVo3E1bjSgW_uyEks74dsBVn7FKDLKCduZjyu-6-aJScVW_a1dPEPCDq1rgNwr8q4NCWWeiWomcEutvwHdKGXHPcFYJEMAw" alt="Arbre à chat" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                    <img src="{{ asset('images/products/img_product_chat/527097_pla_tiaki_scratching_stairs_puzzle_fg_6858_3.jpg') }}" alt="Arbre à chat" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 </a>
             </div>
         </div>
@@ -476,11 +454,11 @@
                 </a>
                 <a href="{{ route('products.index', ['subcategory' => 'graines-nutrition']) }}" class="bg-gradient-to-br from-green-100 to-green-200 hover:from-green-200 hover:to-green-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
                     <span class="font-bold text-gray-900 text-lg">Graines & Nutrition</span>
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQXx6hiUnOCX6DzOYQFjw2OrpfOIMoRhffQpWaGCqdsUlortBdVqSqAR_xd6Fn6gCZZUFji4VdfAmXhX5s9pzWEhG5UH0lcp21npAq9fuGnRxAzrecick6_ERfAUEza0zCesRzz7kF6nnzRK2ioGzio6gLFkdV9n4QIJMRSH5Rb4rk8a7uyW_yBHJxsVn-H1Qv975itGYfYFVHtLTgQnig4KiM5eMzekLdU-8CzNjmglwOOp0ov466FOPQqMVrFSAg8dhT_-nR4Ko" alt="Graines" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                    <img src="{{ asset('images/products/img_product_oiseau/Melange-pour-calopsitte-e1714228585714-510x510-1.webp') }}" alt="Graines" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 </a>
                 <a href="{{ route('products.index', ['subcategory' => 'accessoires-oiseaux']) }}" class="bg-gradient-to-br from-purple-100 to-purple-200 hover:from-purple-200 hover:to-purple-300 transition-all duration-300 p-8 rounded-2xl flex justify-between items-center group shadow-md hover:shadow-xl">
                     <span class="font-bold text-gray-900 text-lg">Accessoires</span>
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4n77pofZu0M7VUhuXGR57lrTtl_tb-uNTk86gHkIkGqm1VFQc7Ht2jLvyEZKkW0AIbNxsAawhHLmTYSyIluEMqF1ZTczZNvtpUpaEaABo4njvV99IleGHi4r6DK88eCwSmUKJI6JGjFSXwyIX_a05sHUoItu8TmjYM6jQ4Qa4yXFWe19SAQJdSHxcvN0O8vOKKeF-cOkmKKYTsKwPH218RptL2fIyj5VYNURR36Np6h6wrZFTBawkN2X8PygsVeVd_OzbAr9Lpp8" alt="Jouets" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                    <img src="{{ asset('images/products/img_product_oiseau/61i5pYks9dL._AC_UF1000,1000_QL80_.jpg') }}" alt="Jouets" class="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 </a>
             </div>
         </div>

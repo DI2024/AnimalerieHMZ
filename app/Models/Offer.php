@@ -17,12 +17,14 @@ class Offer extends Model
         'link',
         'bg_color',
         'is_active',
+        'order',
         'type',
         'pack_price',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'order' => 'integer',
         'pack_price' => 'decimal:2',
     ];
 

@@ -7,7 +7,7 @@
 <div class="space-y-6">
     
     <!-- Header -->
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
             <h1 class="text-3xl font-bold text-gray-900">📄 Homepage Sections</h1>
             <p class="text-gray-600 mt-1">Manage your homepage sections content.</p>
@@ -16,7 +16,7 @@
     
     <!-- Info Banner -->
     <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 shadow-sm">
-        <div class="flex items-start justify-between">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div class="flex items-start">
                 <div class="flex-shrink-0">
                     <i class="fas fa-info-circle text-blue-600 text-xl"></i>
@@ -29,7 +29,7 @@
             </div>
             
             <!-- Quick Stats -->
-            <div class="flex items-center space-x-6 ml-6">
+            <div class="flex items-center space-x-6 sm:ml-6 justify-around sm:justify-start w-full sm:w-auto border-t sm:border-t-0 border-blue-100 pt-3 sm:pt-0">
                 <div class="text-center">
                     <p class="text-2xl font-bold text-blue-900">{{ $heroSlides->count() }}</p>
                     <p class="text-xs text-blue-700">Hero Slides</p>
@@ -47,8 +47,8 @@
         <!-- Hero Section -->
         <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden border border-gray-200">
             <div class="p-6">
-                <div class="flex items-center justify-between mb-3">
-                    <div class="flex items-center space-x-3 flex-1">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div class="flex items-center space-x-3">
                         <div class="flex-shrink-0">
                             <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-[#003e87]/20 to-[#003e87]/10 flex items-center justify-center">
                                 <i class="fas fa-images text-[#003e87] text-xl"></i>
@@ -59,7 +59,7 @@
                             <p class="text-sm text-gray-500">{{ $heroSlides->where('is_active', true)->count() }} active slides</p>
                         </div>
                     </div>
-                    <a href="{{ route('admin.sections.hero.index') }}" class="inline-flex items-center px-4 py-2 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] transition-colors text-sm font-medium shadow-sm">
+                    <a href="{{ route('admin.sections.hero.index') }}" class="inline-flex items-center justify-center px-4 py-2.5 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] transition-colors text-sm font-medium shadow-sm w-full sm:w-auto">
                         <i class="fas fa-edit mr-2"></i> Manage Slides
                     </a>
                 </div>
@@ -69,8 +69,8 @@
         <!-- Testimonials Section -->
         <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden border border-gray-200">
             <div class="p-6">
-                <div class="flex items-center justify-between mb-3">
-                    <div class="flex items-center space-x-3 flex-1">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div class="flex items-center space-x-3">
                         <div class="flex-shrink-0">
                             <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-[#003e87]/20 to-[#003e87]/10 flex items-center justify-center">
                                 <i class="fas fa-star text-[#003e87] text-xl"></i>
@@ -81,7 +81,7 @@
                             <p class="text-sm text-gray-500">{{ $testimonials->where('is_active', true)->count() }} active reviews</p>
                         </div>
                     </div>
-                    <a href="{{ route('admin.sections.testimonials.index') }}" class="inline-flex items-center px-4 py-2 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] transition-colors text-sm font-medium shadow-sm">
+                    <a href="{{ route('admin.sections.testimonials.index') }}" class="inline-flex items-center justify-center px-4 py-2.5 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] transition-colors text-sm font-medium shadow-sm w-full sm:w-auto">
                         <i class="fas fa-edit mr-2"></i> Manage Reviews
                     </a>
                 </div>

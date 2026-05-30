@@ -7,20 +7,20 @@
 <div class="space-y-6">
     
     <!-- Header -->
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <h1 class="text-3xl font-bold text-gray-900">🖼️ Hero Slides</h1>
-            <p class="text-gray-600 mt-1">Manage the hero images at the top of your homepage (Max 3 slides).</p>
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-900">🖼️ Hero Slides</h1>
+            <p class="text-gray-600 mt-1 text-sm md:text-base">Manage the hero images at the top of your homepage (Max 3 slides).</p>
         </div>
-        <div class="flex items-center space-x-3">
-            <a href="{{ route('admin.sections.index') }}" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+            <a href="{{ route('admin.sections.index') }}" class="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium">
                 <i class="fas fa-arrow-left mr-2"></i>
-                Back to Sections
+                Back
             </a>
             @if($slides->count() < 3)
-                <a href="{{ route('admin.sections.hero.create') }}" class="inline-flex items-center px-4 py-2 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] transition-colors shadow-sm">
+                <a href="{{ route('admin.sections.hero.create') }}" class="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] transition-colors shadow-sm text-sm font-medium whitespace-nowrap">
                     <i class="fas fa-plus mr-2"></i>
-                    Add New Slide
+                    Add Slide
                 </a>
             @endif
         </div>
@@ -63,9 +63,9 @@
         <div class="grid grid-cols-1 gap-4">
             @foreach($slides as $slide)
                 <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden border border-gray-200">
-                    <div class="flex items-center p-6">
+                    <div class="flex flex-col md:flex-row md:items-center p-4 md:p-6">
                         <!-- Image Preview -->
-                        <div class="flex-shrink-0 w-32 h-32 rounded-lg overflow-hidden bg-gray-100 mr-6">
+                        <div class="w-full md:w-32 h-48 md:h-32 rounded-lg overflow-hidden bg-gray-100 mb-4 md:mb-0 md:mr-6 flex-shrink-0">
                             @if($slide->image)
                                 @php
                                     // Handle both URL and local path
@@ -88,36 +88,38 @@
                         </div>
                         
                         <!-- Slide Info -->
-                        <div class="flex-1">
-                            <div class="flex items-center gap-3 mb-2">
-                                <h3 class="text-lg font-semibold text-gray-900">
+                        <div class="flex-1 min-w-0 mb-4 md:mb-0">
+                            <div class="flex flex-wrap items-center gap-2 mb-2">
+                                <h3 class="text-lg font-semibold text-gray-900 break-words">
                                     {{ $slide->title ?: 'Untitled Slide' }}
                                 </h3>
-                                <span class="px-3 py-1 rounded-full text-xs font-semibold {{ $slide->is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
-                                    {{ $slide->is_active ? 'Active' : 'Inactive' }}
-                                </span>
-                                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
-                                    Order: {{ $slide->order }}
-                                </span>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold {{ $slide->is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
+                                        {{ $slide->is_active ? 'Active' : 'Inactive' }}
+                                    </span>
+                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
+                                        Order: {{ $slide->order }}
+                                    </span>
+                                </div>
                             </div>
                             @if($slide->subtitle)
-                                <p class="text-gray-600 text-sm mb-2">{{ $slide->subtitle }}</p>
+                                <p class="text-gray-600 text-sm mb-2 break-words">{{ $slide->subtitle }}</p>
                             @endif
                             @if($slide->button_text)
                                 <div class="flex items-center gap-2 text-sm text-gray-500">
-                                    <i class="fas fa-mouse-pointer"></i>
+                                    <i class="fas fa-mouse-pointer text-xs"></i>
                                     <span>Button: "{{ $slide->button_text }}"</span>
                                 </div>
                             @endif
                         </div>
                         
                         <!-- Actions -->
-                        <div class="flex items-center space-x-2">
-                            <a href="{{ route('admin.sections.hero.edit', $slide) }}" class="inline-flex items-center px-4 py-2 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] transition-colors text-sm">
+                        <div class="flex items-center space-x-2 w-full md:w-auto justify-end border-t md:border-t-0 pt-3 md:pt-0 border-gray-100">
+                            <a href="{{ route('admin.sections.hero.edit', $slide) }}" class="flex-1 md:flex-none inline-flex items-center justify-center px-4 py-2 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] transition-colors text-sm font-medium">
                                 <i class="fas fa-edit mr-2"></i>
                                 Edit
                             </a>
-                            <button onclick="confirmDelete({{ $slide->id }})" class="inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm">
+                            <button onclick="confirmDelete({{ $slide->id }})" class="flex-1 md:flex-none inline-flex items-center justify-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-medium">
                                 <i class="fas fa-trash mr-2"></i>
                                 Delete
                             </button>

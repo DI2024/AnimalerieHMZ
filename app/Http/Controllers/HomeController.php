@@ -26,6 +26,7 @@ class HomeController extends Controller
         // Get active offers
         $offers = Offer::where('is_active', true)
             ->with('products')
+            ->orderBy('order', 'asc')
             ->orderBy('created_at', 'desc')
             ->take(3)
             ->get();

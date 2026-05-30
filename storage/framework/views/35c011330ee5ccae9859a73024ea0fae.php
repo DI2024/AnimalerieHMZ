@@ -342,27 +342,6 @@
         .orders-table {
             min-width: 100%;
         }
-        /* Desactivation des régles de bloc */
-        /*
-        .orders-table thead {
-            display: none;
-        }
-        .orders-table tbody tr {
-            display: block;
-            margin-bottom: 16px;
-            border: 1px solid #E5E7EB;
-            border-radius: 12px;
-            padding: 16px;
-            background: white;
-        }
-        .orders-table td {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid #F3F4F6;
-        }
-        */
     }
     
     .orders-table thead {
@@ -371,20 +350,32 @@
     
     .orders-table th {
         text-align: left;
-        padding: 16px;
-        font-size: 12px;
+        padding: 12px 8px;
+        font-size: 11px;
         font-weight: 700;
         color: #6B7280;
         text-transform: uppercase;
         letter-spacing: 0.5px;
         border-bottom: 2px solid #E5E7EB;
     }
+    @media (min-width: 768px) {
+        .orders-table th {
+            padding: 16px;
+            font-size: 12px;
+        }
+    }
     
     .orders-table td {
-        padding: 16px;
+        padding: 12px 8px;
         border-bottom: 1px solid #F3F4F6;
-        font-size: 14px;
+        font-size: 13px;
         color: #374151;
+    }
+    @media (min-width: 768px) {
+        .orders-table td {
+            padding: 16px;
+            font-size: 14px;
+        }
     }
     
     .orders-table tbody tr {
@@ -401,8 +392,14 @@
     
     .order-number {
         font-weight: 700;
-        color: #111827;
-        font-family: 'Courier New', monospace;
+        color: #003e87;
+        font-family: inherit;
+        font-size: 13px;
+    }
+    @media (min-width: 768px) {
+        .order-number {
+            font-size: 14px;
+        }
     }
     
     .order-customer {
@@ -412,25 +409,44 @@
     
     .order-total {
         font-weight: 700;
-        color: #059669;
+        color: #111827;
         white-space: nowrap;
+        font-size: 13px;
+    }
+    @media (min-width: 768px) {
+        .order-total {
+            font-size: 15px;
+        }
     }
     
     .order-time {
         color: #9CA3AF;
-        font-size: 13px;
+        font-size: 10px;
         white-space: nowrap;
+    }
+    @media (min-width: 768px) {
+        .order-time {
+            font-size: 13px;
+        }
     }
     
     .order-status {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        padding: 4px 12px;
+        gap: 4px;
+        padding: 4px 8px;
         border-radius: 20px;
-        font-size: 12px;
+        font-size: 10px;
         font-weight: 700;
         text-transform: uppercase;
+        white-space: nowrap;
+    }
+    @media (min-width: 768px) {
+        .order-status {
+            gap: 6px;
+            padding: 6px 12px;
+            font-size: 12px;
+        }
     }
     
     .status-pending { background: #FEF3C7; color: #92400E; }
@@ -663,9 +679,20 @@
                     <tbody>
                         <?php $__empty_1 = true; $__currentLoopData = $recentOrders; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $order): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                         <tr class="hover:bg-gray-50 clickable-row cursor-pointer" data-href="<?php echo e(route('admin.orders.show', $order)); ?>">
-                            <td data-label="N° Commande"><span class="text-[#003e87] font-semibold"><?php echo e($order->order_number); ?></span></td>
+                            <td data-label="N° Commande">
+                                <div class="flex items-center gap-1 md:gap-2">
+                                    <i class="fas fa-hashtag text-gray-400 text-[10px] md:text-xs"></i>
+                                    <span class="text-[#003e87] font-semibold hidden md:inline"><?php echo e($order->order_number); ?></span>
+                                    <span class="text-[#003e87] font-semibold text-xs md:text-sm md:hidden">...<?php echo e(substr($order->order_number, -3)); ?></span>
+                                </div>
+                                <p class="text-[10px] md:text-xs text-gray-500 mt-1 md:hidden">
+                                    <i class="far fa-clock mr-1 text-[10px] md:text-xs"></i> 
+                                    <?php echo e($order->created_at->diffForHumans()); ?>
+
+                                </p>
+                            </td>
                             <td class="hidden md:table-cell" data-label="Client"><span class="order-customer"><?php echo e($order->shipping_name); ?></span></td>
-                            <td data-label="Total"><span class="order-total"><?php echo e(number_format($order->total, 2)); ?> DH</span></td>
+                            <td data-label="Total"><span class="order-total text-sm md:text-lg font-bold text-gray-900"><?php echo e(number_format($order->total, 2)); ?> DH</span></td>
                             <td data-label="Statut">
                                 <?php
                                     $statusClasses = [
@@ -694,8 +721,7 @@
                                     ];
                                 ?>
                                 <span class="order-status <?php echo e($statusClasses[$order->status] ?? 'status-pending'); ?>">
-                                    <i class="fas <?php echo e($statusIcons[$order->status] ?? 'fa-clock'); ?>"></i> <?php echo e($statusLabels[$order->status] ?? 'En attente'); ?>
-
+                                    <i class="fas <?php echo e($statusIcons[$order->status] ?? 'fa-clock'); ?>"></i> <span><?php echo e($statusLabels[$order->status] ?? 'En attente'); ?></span>
                                 </span>
                             </td>
                             <td class="hidden md:table-cell" data-label="Date">
@@ -871,22 +897,33 @@
 
         let html = '';
         orders.forEach(order => {
+            const shortNum = order.order_number.length > 3 ? order.order_number.substring(order.order_number.length - 3) : order.order_number;
             html += `
-                <tr>
-                    <td><span class="order-number">#${order.order_number}</span></td>
-                    <td><span class="order-customer">${order.shipping_name}</span></td>
-                    <td><span class="order-total">${order.total} DH</span></td>
-                    <td>
+                <tr class="hover:bg-gray-50 clickable-row cursor-pointer" data-href="${order.url}">
+                    <td data-label="N° Commande">
+                        <div class="flex items-center gap-1 md:gap-2">
+                            <i class="fas fa-hashtag text-gray-400 text-[10px] md:text-xs"></i>
+                            <span class="text-[#003e87] font-semibold hidden md:inline">${order.order_number}</span>
+                            <span class="text-[#003e87] font-semibold text-xs md:text-sm md:hidden">...${shortNum}</span>
+                        </div>
+                        <p class="text-[10px] md:text-xs text-gray-500 mt-1 md:hidden">
+                            <i class="far fa-clock mr-1 text-[10px] md:text-xs"></i> 
+                            ${order.created_at}
+                        </p>
+                    </td>
+                    <td class="hidden md:table-cell" data-label="Client"><span class="order-customer">${order.shipping_name}</span></td>
+                    <td data-label="Total"><span class="order-total text-sm md:text-lg font-bold text-gray-900">${order.total} DH</span></td>
+                    <td data-label="Statut">
                         <span class="order-status ${statusClasses[order.status] || 'status-pending'}">
-                            <i class="fas ${statusIcons[order.status] || 'fa-clock'}"></i> ${order.status_label}
+                            <i class="fas ${statusIcons[order.status] || 'fa-clock'}"></i> <span>${order.status_label}</span>
                         </span>
                     </td>
-                    <td>
+                    <td class="hidden md:table-cell" data-label="Date">
                         <span class="order-time">
                             <i class="far fa-clock mr-1"></i> ${order.created_at}
                         </span>
                     </td>
-                    <td style="text-align: center;">
+                    <td class="hidden md:table-cell" style="text-align: center;">
                         <a href="${order.url}" class="order-action-btn" title="Voir détails">
                             <i class="fas fa-eye"></i>
                         </a>

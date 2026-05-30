@@ -7,19 +7,19 @@
 <div class="space-y-6">
     
     <!-- Header -->
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <h1 class="text-3xl font-bold text-gray-900">⭐ Testimonials (Avis)</h1>
-            <p class="text-gray-600 mt-1">Manage customer reviews displayed on your homepage.</p>
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-900">⭐ Testimonials (Avis)</h1>
+            <p class="text-gray-600 mt-1 text-sm md:text-base">Manage customer reviews displayed on your homepage.</p>
         </div>
-        <div class="flex items-center space-x-3">
-            <a href="{{ route('admin.sections.index') }}" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+            <a href="{{ route('admin.sections.index') }}" class="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium">
                 <i class="fas fa-arrow-left mr-2"></i>
-                Back to Sections
+                Back
             </a>
-            <a href="{{ route('admin.sections.testimonials.create') }}" class="inline-flex items-center px-4 py-2 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] transition-colors shadow-sm">
+            <a href="{{ route('admin.sections.testimonials.create') }}" class="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] transition-colors shadow-sm text-sm font-medium whitespace-nowrap">
                 <i class="fas fa-plus mr-2"></i>
-                Add New Review
+                Add Review
             </a>
         </div>
     </div>

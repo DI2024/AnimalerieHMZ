@@ -12,6 +12,25 @@
     <!-- Material Symbols -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     
+    <!-- Prevent FOUT for Material Symbols -->
+    <script>
+        (function() {
+            var timeout = setTimeout(function() {
+                document.documentElement.classList.add('icons-loaded');
+            }, 1000); // 1s fallback
+
+            if (document.fonts && document.fonts.load) {
+                document.fonts.load('1em "Material Symbols Outlined"').then(function() {
+                    clearTimeout(timeout);
+                    document.documentElement.classList.add('icons-loaded');
+                });
+            } else {
+                document.documentElement.classList.add('icons-loaded');
+            }
+        })();
+    </script>
+
+    
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,6 +43,20 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
+        /* Google Fonts Icon Flash (FOUT) Protection */
+        .material-symbols-outlined {
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        .icons-loaded .material-symbols-outlined {
+            opacity: 1;
+        }
+
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: #F9FAFB;
@@ -300,12 +333,9 @@
             </div>
             
             <!-- Déconnexion (Droite) -->
-            <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
-                @csrf
-                <button type="submit" class="logout-btn" title="Déconnexion">
-                    <i class="fas fa-sign-out-alt text-lg"></i>
-                </button>
-            </form>
+            <button type="button" onclick="showLogoutModal()" class="logout-btn" title="Déconnexion">
+                <i class="fas fa-sign-out-alt text-lg"></i>
+            </button>
         </div>
     </nav>
     
@@ -386,7 +416,7 @@
                         <div class="text-sm font-bold text-gray-900">Administrateur</div>
                         <div class="text-xs font-medium text-green-500">En ligne</div>
                     </div>
-                    <div class="w-12 h-12 rounded-xl bg-[#003e87] flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                    <div onclick="showLogoutModal()" class="w-12 h-12 rounded-xl bg-[#003e87] flex items-center justify-center text-white font-bold text-lg shadow-lg cursor-pointer hover:bg-[#0855b1] transition-all hover:scale-105" title="Déconnexion">
                         A
                     </div>
                 </div>
@@ -420,6 +450,31 @@
         </div>
     </div>
 
+    <!-- Desktop Logout Confirmation Modal -->
+    <div id="logoutConfirmationModal" class="hidden fixed inset-0 bg-black bg-opacity-60 z-[110] flex items-center justify-center p-4 backdrop-blur-sm transition-all duration-300">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden transform transition-all scale-95 duration-200">
+            <div class="p-6 text-center">
+                <div class="w-16 h-16 bg-red-50 text-red-600 rounded-full flex items-center justify-center text-2xl mx-auto mb-4">
+                    <i class="fas fa-sign-out-alt"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Confirmation</h3>
+                <p class="text-gray-500 text-sm mb-6">Êtes-vous sûr de vouloir vous déconnecter de votre espace d'administration ?</p>
+                
+                <div class="flex gap-3 justify-center">
+                    <button onclick="closeLogoutModal()" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg text-sm transition-colors">
+                        Annuler
+                    </button>
+                    <form id="desktopLogoutForm" method="POST" action="{{ route('logout') }}" class="m-0">
+                        @csrf
+                        <button type="submit" class="px-4 py-2 bg-[#003e87] hover:bg-[#0855b1] text-white font-semibold rounded-lg text-sm transition-colors shadow-lg">
+                            Déconnexion
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById('adminSidebar');
@@ -446,11 +501,45 @@
                     }
                 });
             });
+
+            // Close logout modal on backdrop click
+            const logoutModal = document.getElementById('logoutConfirmationModal');
+            if (logoutModal) {
+                logoutModal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeLogoutModal();
+                    }
+                });
+            }
         });
 
         // Global Table Row Click Listener for Mobile Details Modal
         function closeMobileRowDetailsModal() {
             const modal = document.getElementById('mobileRowDetailsModal');
+            if (modal) {
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Desktop Logout Confirmation Modal Functions
+        function showLogoutModal() {
+            const modal = document.getElementById('logoutConfirmationModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        // Close logout modal on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLogoutModal();
+            }
+        });
+
+        function closeLogoutModal() {
+            const modal = document.getElementById('logoutConfirmationModal');
             if (modal) {
                 modal.classList.add('hidden');
                 document.body.style.overflow = '';

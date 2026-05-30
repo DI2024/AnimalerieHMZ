@@ -627,7 +627,7 @@
         <div class="stat-card">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm text-gray-600 mb-1">Total Offres</p>
+                    <p class="text-sm text-gray-600 mb-1">Total Offres/Packs</p>
                     <p class="text-3xl font-bold text-gray-900">{{ $stats['total'] }}</p>
                 </div>
                 <div class="stat-icon" style="background: linear-gradient(135deg, #003e87 0%, #0855b1 100%);">
@@ -639,7 +639,7 @@
         <div class="stat-card">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm text-gray-600 mb-1">Offres Actives</p>
+                    <p class="text-sm text-gray-600 mb-1">Offres/Packs Actifs</p>
                     <p class="text-3xl font-bold text-green-600">{{ $stats['active'] }}</p>
                 </div>
                 <div class="stat-icon bg-green-100 text-green-600">
@@ -651,7 +651,7 @@
         <div class="stat-card">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm text-gray-600 mb-1">Offres Inactives</p>
+                    <p class="text-sm text-gray-600 mb-1">Offres/Packs Inactifs</p>
                     <p class="text-3xl font-bold text-gray-600">{{ $stats['total'] - $stats['active'] }}</p>
                 </div>
                 <div class="stat-icon bg-gray-100 text-gray-600">
@@ -722,10 +722,10 @@
                 <table class="w-full">
                     <thead class="bg-gray-50 border-b border-gray-200">
                         <tr>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            <th class="px-3 md:px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 Image
                             </th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            <th class="px-3 md:px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 Titre
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden md:table-cell">
@@ -734,7 +734,10 @@
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden md:table-cell">
                                 Date Création
                             </th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden md:table-cell">
+                                Ordre
+                            </th>
+                            <th class="px-3 md:px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 Statut
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden md:table-cell">
@@ -745,23 +748,23 @@
                     <tbody class="divide-y divide-gray-200">
                         @forelse($offers as $offer)
                         <tr class="hover:bg-gray-50 transition-colors cursor-pointer" data-offer-type="{{ $offer->type }}" data-offer-id="{{ $offer->id }}">
-                            <td class="px-6 py-4">
+                            <td class="px-3 md:px-6 py-4">
                                 @if($offer->image)
                                     @if(filter_var($offer->image, FILTER_VALIDATE_URL))
-                                        <img src="{{ $offer->image }}" class="w-16 h-16 rounded-lg object-cover" alt="{{ $offer->title }}">
+                                        <img src="{{ $offer->image }}" class="w-12 h-12 md:w-16 md:h-16 rounded-lg object-cover" alt="{{ $offer->title }}">
                                     @else
-                                        <img src="{{ asset('storage/' . $offer->image) }}" class="w-16 h-16 rounded-lg object-cover" alt="{{ $offer->title }}">
+                                        <img src="{{ asset('storage/' . $offer->image) }}" class="w-12 h-12 md:w-16 md:h-16 rounded-lg object-cover" alt="{{ $offer->title }}">
                                     @endif
                                 @else
-                                    <div class="w-16 h-16 rounded-lg flex items-center justify-center text-white" style="background: linear-gradient(135deg, #003e87 0%, #0855b1 100%);">
-                                        <i class="fas fa-tag text-xl"></i>
+                                    <div class="w-12 h-12 md:w-16 md:h-16 rounded-lg flex items-center justify-center text-white" style="background: linear-gradient(135deg, #003e87 0%, #0855b1 100%);">
+                                        <i class="fas fa-tag text-lg md:text-xl"></i>
                                     </div>
                                 @endif
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-3 md:px-6 py-4">
                                 <div>
-                                    <div class="flex items-center gap-2">
-                                        <p class="font-semibold text-gray-900">{{ $offer->title }}</p>
+                                    <div class="flex flex-wrap items-center gap-1.5 md:gap-2">
+                                        <p class="font-semibold text-gray-900 text-sm md:text-base break-words">{{ $offer->title }}</p>
                                         @if($offer->type === 'pack')
                                             <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-purple-100 text-purple-800">
                                                 Pack ({{ number_format($offer->pack_price, 2, ',', ' ') }} DH)
@@ -777,13 +780,7 @@
                                         @endif
                                     </div>
                                     @if($offer->subtitle)
-                                        <p class="text-sm text-gray-500 mt-1">{{ $offer->subtitle }}</p>
-                                    @endif
-                                    @if($offer->type === 'pack' && $offer->products->count() > 0)
-                                        <p class="text-xs text-purple-600/80 mt-1.5">
-                                            <span class="font-semibold">Produits inclus :</span> 
-                                            {{ $offer->products->pluck('name')->implode(', ') }}
-                                        </p>
+                                        <p class="text-xs md:text-sm text-gray-500 mt-1 hidden md:block break-words">{{ $offer->subtitle }}</p>
                                     @endif
                                 </div>
                             </td>
@@ -801,7 +798,12 @@
                                     {{ $offer->created_at->format('d/m/Y') }}
                                 </div>
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-4 hidden md:table-cell">
+                                <span class="inline-flex items-center px-2 py-1 rounded text-xs font-semibold bg-gray-100 text-gray-700">
+                                    {{ $offer->order }}
+                                </span>
+                            </td>
+                            <td class="px-3 md:px-6 py-4">
                                 <form action="{{ route('admin.offers.toggle-status', $offer) }}" method="POST" class="inline">
                                     @csrf
                                     <label class="relative inline-flex items-center cursor-pointer">
@@ -986,19 +988,35 @@
         const tableBtn = document.getElementById('tableViewBtn');
         const gridBtn = document.getElementById('gridViewBtn');
         
-        if (view === 'table') {
-            tableView.classList.remove('hidden');
-            gridView.classList.add('hidden');
-            tableBtn.classList.add('active');
-            gridBtn.classList.remove('active');
-            localStorage.setItem('offersView', 'table');
-        } else {
-            tableView.classList.add('hidden');
-            gridView.classList.remove('hidden');
-            tableBtn.classList.remove('active');
-            gridBtn.classList.add('active');
-            localStorage.setItem('offersView', 'grid');
+        if (tableView) {
+            if (view === 'table') {
+                tableView.classList.remove('hidden');
+            } else {
+                if (gridView) tableView.classList.add('hidden');
+            }
         }
+        if (gridView) {
+            if (view === 'grid') {
+                gridView.classList.remove('hidden');
+            } else {
+                gridView.classList.add('hidden');
+            }
+        }
+        if (tableBtn) {
+            if (view === 'table') {
+                tableBtn.classList.add('active');
+            } else {
+                tableBtn.classList.remove('active');
+            }
+        }
+        if (gridBtn) {
+            if (view === 'grid') {
+                gridBtn.classList.add('active');
+            } else {
+                gridBtn.classList.remove('active');
+            }
+        }
+        localStorage.setItem('offersView', view);
     }
     
     // Load saved view preference
@@ -1042,7 +1060,7 @@
         const tableRows = document.querySelectorAll('#tableView tbody tr[data-offer-type]');
         tableRows.forEach(row => {
             const rowType = row.dataset.offerType;
-            if (type === 'all' || rowType === type) {
+            if (type === 'all' || (type === 'pack' && rowType === 'pack') || (type === 'offer' && rowType !== 'pack')) {
                 row.style.display = '';
             } else {
                 row.style.display = 'none';
@@ -1053,7 +1071,7 @@
         const gridCards = document.querySelectorAll('#gridView .offer-card[data-offer-type]');
         gridCards.forEach(card => {
             const cardType = card.dataset.offerType;
-            if (type === 'all' || cardType === type) {
+            if (type === 'all' || (type === 'pack' && cardType === 'pack') || (type === 'offer' && cardType !== 'pack')) {
                 card.style.display = '';
             } else {
                 card.style.display = 'none';
@@ -1071,7 +1089,7 @@
     function updateTypeCounts() {
         const allItems = document.querySelectorAll('[data-offer-type]');
         const packs = document.querySelectorAll('[data-offer-type="pack"]');
-        const offers = document.querySelectorAll('[data-offer-type="offer"]');
+        const offers = document.querySelectorAll('[data-offer-type]:not([data-offer-type="pack"])');
         
         // Count unique items (avoid counting both table and grid)
         const uniqueIds = new Set();

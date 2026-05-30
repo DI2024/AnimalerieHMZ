@@ -612,3 +612,20 @@ html {
     box-shadow: none !important;
   }
 }
+
+/* ============================================
+   GOOGLE FONTS ICON FLASH (FOUT) PROTECTION
+   ============================================ */
+.material-symbols-outlined {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.icons-loaded .material-symbols-outlined {
+  opacity: 1;
+}
+

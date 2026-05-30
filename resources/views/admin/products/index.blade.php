@@ -47,54 +47,59 @@
     }
     
     /* Mobile Filter Bottom Sheet */
-    @media (max-width: 1024px) {
+    @media (max-width: 1023px) {
         /* Wrapper overlay */
         .filter-sidebar-wrapper {
-            position: fixed;
-            inset: 0;
-            z-index: 1000;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            display: block;
+            position: fixed !important;
+            inset: 0 !important;
+            z-index: 1000 !important;
+            pointer-events: none !important;
+            opacity: 0 !important;
+            transition: opacity 0.3s ease !important;
+            display: block !important;
+            width: 100% !important;
+            height: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
         }
         
         .filter-sidebar-wrapper:not(.hidden) {
-            pointer-events: all;
-            opacity: 1;
+            pointer-events: all !important;
+            opacity: 1 !important;
         }
         
         .filter-sidebar-wrapper::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            content: '' !important;
+            position: absolute !important;
+            inset: 0 !important;
+            background: rgba(0, 0, 0, 0.5) !important;
+            opacity: 0 !important;
+            transition: opacity 0.3s ease !important;
         }
         
         .filter-sidebar-wrapper:not(.hidden)::before {
-            opacity: 1;
+            opacity: 1 !important;
         }
         
         .filter-sidebar {
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            top: auto;
-            height: auto;
-            max-height: 85vh;
-            width: 100%;
-            box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.15);
-            border-radius: 24px 24px 0 0;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-            overflow-y: auto;
+            position: absolute !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            top: auto !important;
+            height: auto !important;
+            max-height: 85vh !important;
+            width: 100% !important;
+            box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.15) !important;
+            border-radius: 24px 24px 0 0 !important;
+            transform: translateY(100%) !important;
+            transition: transform 0.3s ease !important;
+            overflow-y: auto !important;
+            z-index: 1010 !important;
         }
         
         .filter-sidebar-wrapper:not(.hidden) .filter-sidebar {
-            transform: translateY(0);
+            transform: translateY(0) !important;
         }
     }
 
@@ -259,7 +264,7 @@
         <div class="bg-white rounded-lg shadow p-4 sticky top-0 z-30">
             <!-- Primary Actions Row -->
             <div class="flex flex-col md:flex-row md:items-center gap-3 mb-3">
-                <form method="GET" action="{{ route('admin.products.index') }}" class="flex items-center gap-3 flex-1">
+                <form id="search-form" method="GET" action="{{ route('admin.products.index') }}" class="flex items-center gap-3 flex-1">
                     <!-- Large Search Input -->
                     <div class="relative flex-1 min-w-[200px] max-w-[600px]">
                         <input type="text" id="quick-search" name="search" value="{{ request('search') }}" placeholder="Rechercher des produits..." 
@@ -267,25 +272,40 @@
                         <i class="fas fa-search absolute left-3 top-3.5 text-gray-400"></i>
                     </div>
 
-                    <!-- Primary Action Buttons -->
+                    <!-- Primary Action Buttons (Desktop) -->
                     <button type="submit" 
-                            class="px-4 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm font-medium whitespace-nowrap transition-colors">
+                            class="hidden md:inline-flex px-4 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm font-medium whitespace-nowrap transition-colors">
                         <i class="fas fa-sync-alt mr-2"></i>Actualiser
+                    </button>
+
+                    <!-- Button "Entrer" (Mobile only) -->
+                    <button type="submit" 
+                            class="md:hidden px-4 py-2.5 bg-[#003e87] text-white border-2 border-[#003e87] rounded-lg hover:bg-white hover:text-[#003e87] text-sm font-bold whitespace-nowrap transition-all shadow-md">
+                        Entrer
                     </button>
                 </form>
 
-                <a href="{{ route('admin.products.create') }}" 
-                   class="px-4 py-2.5 bg-[#003e87] text-white border-2 border-[#003e87] rounded-lg hover:bg-white hover:text-[#003e87] text-sm font-bold whitespace-nowrap transition-all shadow-md hover:shadow-lg">
-                    <i class="fas fa-plus mr-2"></i>Nouveau Produit
-                </a>
+                <!-- Row 2 for Mobile: Nouveau Produit (50%) & Actualiser (50%) -->
+                <div class="flex items-center gap-3 w-full md:w-auto">
+                    <a href="{{ route('admin.products.create') }}" 
+                       class="flex-1 md:flex-none text-center px-4 py-2.5 bg-[#003e87] text-white border-2 border-[#003e87] rounded-lg hover:bg-white hover:text-[#003e87] text-sm font-bold whitespace-nowrap transition-all shadow-md hover:shadow-lg">
+                        <i class="fas fa-plus mr-2"></i>Nouveau Produit
+                    </a>
+
+                    <!-- Button "Actualiser" (Mobile only, placed side-by-side with Nouveau Produit) -->
+                    <button type="submit" form="search-form"
+                            class="md:hidden flex-1 px-4 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm font-medium whitespace-nowrap transition-colors flex items-center justify-center">
+                        <i class="fas fa-sync-alt mr-2"></i>Actualiser
+                    </button>
+                </div>
             </div>
 
             <!-- Secondary Controls Row -->
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-3 w-full md:w-auto">
                     <!-- Sort Dropdown -->
                     <select onchange="sortProducts(this.value)" 
-                            class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary text-sm">
+                            class="flex-1 md:flex-none px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary text-sm">
                         <option value="">Trier par...</option>
                         <option value="name_asc">Nom (A-Z)</option>
                         <option value="name_desc">Nom (Z-A)</option>
@@ -295,6 +315,12 @@
                         <option value="stock_desc">Stock (décroissant)</option>
                         <option value="created_desc">Plus récent</option>
                     </select>
+
+                    <!-- Filter Button (Mobile only) -->
+                    <button type="button" id="filter-toggle-btn" onclick="toggleFilters()"
+                            class="md:hidden flex-1 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 text-sm font-medium text-gray-700 flex items-center justify-center gap-2">
+                        <i class="fas fa-filter text-gray-500"></i> Filtrer
+                    </button>
 
                     <!-- Bulk Actions (shown when products selected) -->
                     <div id="bulk-actions" class="hidden items-center gap-2 px-3 py-2 bg-blue-50 rounded-lg border border-blue-200">

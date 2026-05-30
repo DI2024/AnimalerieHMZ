@@ -7,12 +7,12 @@
 <div class="space-y-6">
     
     <!-- Header -->
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <h1 class="text-3xl font-bold text-gray-900">➕ Add New Testimonial</h1>
-            <p class="text-gray-600 mt-1">Create a new customer review for your homepage.</p>
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-900">➕ Add New Testimonial</h1>
+            <p class="text-gray-600 mt-1 text-sm md:text-base">Create a new customer review for your homepage.</p>
         </div>
-        <a href="{{ route('admin.sections.testimonials.index') }}" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+        <a href="{{ route('admin.sections.testimonials.index') }}" class="inline-flex items-center justify-center px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium w-full sm:w-auto">
             <i class="fas fa-arrow-left mr-2"></i>
             Back to Reviews
         </a>

@@ -12,6 +12,25 @@
     <!-- Material Symbols -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     
+    <!-- Prevent FOUT for Material Symbols -->
+    <script>
+        (function() {
+            var timeout = setTimeout(function() {
+                document.documentElement.classList.add('icons-loaded');
+            }, 1000); // 1s fallback
+
+            if (document.fonts && document.fonts.load) {
+                document.fonts.load('1em "Material Symbols Outlined"').then(function() {
+                    clearTimeout(timeout);
+                    document.documentElement.classList.add('icons-loaded');
+                });
+            } else {
+                document.documentElement.classList.add('icons-loaded');
+            }
+        })();
+    </script>
+
+    
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800,900&display=swap" rel="stylesheet" />
@@ -265,6 +284,34 @@
                         <span class="material-symbols-outlined">contact_mail</span>
                         Contact
                     </a>
+                    
+                    @auth
+                        <hr class="my-4 border-gray-200">
+                        <div class="px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                            {{ Auth::user()->name }}
+                        </div>
+                        <a href="{{ Auth::user()->role === 'admin' ? route('admin.dashboard') : route('dashboard') }}" class="mobile-menu-link">
+                            <span class="material-symbols-outlined">dashboard</span>
+                            Mon Espace
+                        </a>
+                        <form method="POST" action="{{ route('logout') }}" class="w-full">
+                            @csrf
+                            <button type="submit" class="mobile-menu-link text-red-600 hover:bg-red-50 hover:text-red-700 w-full text-left">
+                                <span class="material-symbols-outlined">logout</span>
+                                Déconnexion
+                            </button>
+                        </form>
+                    @else
+                        <hr class="my-4 border-gray-200">
+                        <a href="{{ route('login') }}" class="mobile-menu-link text-primary hover:bg-primary/5">
+                            <span class="material-symbols-outlined">login</span>
+                            Connexion
+                        </a>
+                        <a href="{{ route('register') }}" class="mobile-menu-link text-primary hover:bg-primary/5">
+                            <span class="material-symbols-outlined">person_add</span>
+                            Inscription
+                        </a>
+                    @endauth
                 </nav>
             </div>
         </div>

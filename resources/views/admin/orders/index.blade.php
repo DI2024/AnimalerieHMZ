@@ -31,11 +31,18 @@
     .status-badge {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        padding: 6px 12px;
+        gap: 4px;
+        padding: 4px 8px;
         border-radius: 20px;
-        font-size: 12px;
+        font-size: 10px;
         font-weight: 600;
+    }
+    @media (min-width: 768px) {
+        .status-badge {
+            gap: 6px;
+            padding: 6px 12px;
+            font-size: 12px;
+        }
     }
     .status-pending { background: #FEF3C7; color: #92400E; }
     .status-confirmed { background: #DBEAFE; color: #1E40AF; }
@@ -106,15 +113,74 @@
         transform: scale(1.05);
     }
     
-    /* Filter Sidebar Toggle */
-    .filter-sidebar-wrapper {
-        transition: all 0.3s ease;
-        overflow: hidden;
+    /* Filter Sidebar Wrapper - desktop behavior */
+    @media (min-width: 1024px) {
+        .filter-sidebar-wrapper {
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        .filter-sidebar-wrapper.hidden {
+            width: 0 !important;
+            margin: 0 !important;
+            opacity: 0;
+        }
     }
-    .filter-sidebar-wrapper.hidden {
-        width: 0 !important;
-        margin: 0 !important;
-        opacity: 0;
+    
+    /* Mobile Filter Bottom Sheet */
+    @media (max-width: 1023px) {
+        /* Wrapper overlay */
+        .filter-sidebar-wrapper {
+            position: fixed !important;
+            inset: 0 !important;
+            z-index: 1000 !important;
+            pointer-events: none !important;
+            opacity: 0 !important;
+            transition: opacity 0.3s ease !important;
+            display: block !important;
+            width: 100% !important;
+            height: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+        }
+        
+        .filter-sidebar-wrapper:not(.hidden) {
+            pointer-events: all !important;
+            opacity: 1 !important;
+        }
+        
+        .filter-sidebar-wrapper::before {
+            content: '' !important;
+            position: absolute !important;
+            inset: 0 !important;
+            background: rgba(0, 0, 0, 0.5) !important;
+            opacity: 0 !important;
+            transition: opacity 0.3s ease !important;
+        }
+        
+        .filter-sidebar-wrapper:not(.hidden)::before {
+            opacity: 1 !important;
+        }
+        
+        .filter-sidebar {
+            position: absolute !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            top: auto !important;
+            height: auto !important;
+            max-height: 85vh !important;
+            width: 100% !important;
+            box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.15) !important;
+            border-radius: 24px 24px 0 0 !important;
+            transform: translateY(100%) !important;
+            transition: transform 0.3s ease !important;
+            overflow-y: auto !important;
+            z-index: 1010 !important;
+        }
+        
+        .filter-sidebar-wrapper:not(.hidden) .filter-sidebar {
+            transform: translateY(0) !important;
+        }
     }
     
     .filter-toggle-btn {
@@ -159,6 +225,11 @@
     
     .orders-content {
         transition: all 0.3s ease;
+    }
+    
+    /* Hide mobile-specific truncated elements inside mobile row details modal */
+    #mobileRowDetailsContent [class*="md:hidden"] {
+        display: none !important;
     }
 </style>
 @endpush
@@ -323,22 +394,6 @@
                 </form>
             </div>
 
-            <!-- 2. Today and Calendar (Middle part) -->
-            <div class="flex gap-2 w-full">
-                <a href="{{ route('admin.orders.index', ['date_from' => date('Y-m-d'), 'date_to' => date('Y-m-d')]) }}" 
-                   class="flex-1 px-4 py-2.5 text-center text-sm bg-gray-100 hover:bg-[#003e87] hover:text-white rounded-lg transition-colors flex items-center justify-center gap-2">
-                    <i class="fas fa-calendar-day"></i>
-                    Aujourd'hui
-                </a>
-                <div class="relative flex-1">
-                    <input type="date" onchange="applyCalendarFilter(this.value)" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10">
-                    <button type="button" class="w-full px-4 py-2.5 text-center text-sm bg-gray-100 hover:bg-[#003e87] hover:text-white rounded-lg transition-colors flex items-center justify-center gap-2">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>Calendrier</span>
-                    </button>
-                </div>
-            </div>
-
             <!-- 3. Filter Toggle Button and Search Button side-by-side (Bottom part) -->
             <div class="flex gap-2 w-full">
                 <button type="button" onclick="toggleFilterSidebar()" 
@@ -441,13 +496,13 @@
     
     <!-- Orders Table -->
     <div class="bg-white rounded-lg shadow overflow-x-auto">
-        <table class="w-full min-w-[800px]">
+        <table class="w-full md:min-w-[800px]">
             <thead class="bg-gray-50 border-b border-gray-200">
                 <tr>
-                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    <th class="px-2 md:px-6 py-3 md:py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                         N° Commande
                     </th>
-                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden md:table-cell">
                         Client
                     </th>
                     <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden md:table-cell">
@@ -456,10 +511,10 @@
                     <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden md:table-cell">
                         Articles
                     </th>
-                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    <th class="px-2 md:px-6 py-3 md:py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                         Total
                     </th>
-                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    <th class="px-2 md:px-6 py-3 md:py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                         Statut
                     </th>
                 </tr>
@@ -467,17 +522,18 @@
             <tbody class="divide-y divide-gray-200">
                 @forelse($orders as $order)
                 <tr class="hover:bg-gray-50 cursor-pointer clickable-row" data-href="{{ route('admin.orders.show', $order->id) }}">
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center gap-2">
-                            <i class="fas fa-hashtag text-gray-400 text-xs"></i>
-                            <span class="text-[#003e87] font-semibold">{{ $order->order_number }}</span>
+                    <td class="px-2 md:px-6 py-3 md:py-4 whitespace-nowrap">
+                        <div class="flex items-center gap-1 md:gap-2">
+                            <i class="fas fa-hashtag text-gray-400 text-[10px] md:text-xs"></i>
+                            <span class="text-[#003e87] font-semibold hidden md:inline">{{ $order->order_number }}</span>
+                            <span class="text-[#003e87] font-semibold text-xs md:text-sm md:hidden">...{{ substr($order->order_number, -3) }}</span>
                         </div>
-                        <p class="text-xs text-gray-500 mt-1">
-                            <i class="far fa-clock mr-1"></i> 
+                        <p class="text-[10px] md:text-xs text-gray-500 mt-1">
+                            <i class="far fa-clock mr-1 text-[10px] md:text-xs"></i> 
                             {{ $order->created_at->diffForHumans() }}
                         </p>
                     </td>
-                    <td class="px-6 py-4">
+                    <td class="px-6 py-4 hidden md:table-cell">
                         <div class="flex items-center gap-3">
                             <div class="customer-avatar hidden md:flex">
                                 {{ strtoupper(substr($order->shipping_first_name ?? 'U', 0, 1)) }}{{ strtoupper(substr($order->shipping_last_name ?? 'N', 0, 1)) }}
@@ -510,10 +566,10 @@
                             <span class="text-xs text-gray-500">article(s)</span>
                         </div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <p class="text-lg font-bold text-gray-900">{{ number_format($order->total, 2) }} DH</p>
+                    <td class="px-2 md:px-6 py-3 md:py-4 whitespace-nowrap">
+                        <p class="text-sm md:text-lg font-bold text-gray-900">{{ number_format($order->total, 2) }} DH</p>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="px-2 md:px-6 py-3 md:py-4 whitespace-nowrap">
                         @php
                             $statusClasses = [
                                 'pending' => 'status-pending',
@@ -583,19 +639,29 @@
     // Toggle Filter Sidebar
     function toggleFilterSidebar() {
         const wrapper = document.getElementById('filterSidebarWrapper');
-        const btn = document.getElementById('filterToggleBtn');
         const btnText = document.getElementById('filterToggleText');
         const isHidden = wrapper.classList.contains('hidden');
         
         if (isHidden) {
             // Show sidebar
             wrapper.classList.remove('hidden');
-            btnText.textContent = 'Masquer les filtres';
+            if (btnText) btnText.textContent = 'Masquer les filtres';
             localStorage.setItem('orderFilterSidebarVisible', 'true');
+            
+            // Close on overlay click (mobile only)
+            if (window.innerWidth < 1024) {
+                const clickHandler = function(e) {
+                    if (e.target === wrapper) {
+                        toggleFilterSidebar();
+                        wrapper.removeEventListener('click', clickHandler);
+                    }
+                };
+                wrapper.addEventListener('click', clickHandler);
+            }
         } else {
             // Hide sidebar
             wrapper.classList.add('hidden');
-            btnText.textContent = 'Afficher les filtres';
+            if (btnText) btnText.textContent = 'Afficher les filtres';
             localStorage.setItem('orderFilterSidebarVisible', 'false');
         }
     }

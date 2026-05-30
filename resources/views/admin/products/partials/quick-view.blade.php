@@ -1,21 +1,43 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <!-- Left: Images -->
     <div>
-        <img src="{{ asset('storage/' . $product->image) }}" 
-             alt="{{ $product->name }}" 
-             class="w-full rounded-lg mb-4"
-             onerror="this.src='{{ asset('images/placeholder-product.svg') }}'; this.onerror=null;">
-        
+        @php
+            if ($product->image) {
+                if (filter_var($product->image, FILTER_VALIDATE_URL)) {
+                    $imageUrl = $product->image;
+                } elseif (str_starts_with($product->image, 'products/')) {
+                    $imageUrl = asset('storage/' . $product->image);
+                } elseif (str_starts_with($product->image, 'storage/')) {
+                    $imageUrl = asset($product->image);
+                } elseif (str_starts_with($product->image, 'images/')) {
+                    $imageUrl = asset($product->image);
+                } else {
+                    $imageUrl = asset('storage/' . $product->image);
+                }
+            } else {
+                $imageUrl = null;
+            }
+        @endphp
 
+        @if($imageUrl)
+            <img src="{{ $imageUrl }}" 
+                 alt="{{ $product->name }}" 
+                 class="w-full rounded-lg mb-4 object-contain max-h-[300px] bg-gray-50"
+                 onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22%3E%3Crect fill=%22%23f3f4f6%22 width=%22400%22 height=%22400%22/%3E%3Ctext fill=%22%239ca3af%22 font-family=%22sans-serif%22 font-size=%2224%22 dy=%2210.5%22 font-weight=%22bold%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22%3EImage non disponible%3C/text%3E%3C/svg%3E';">
+        @else
+            <div class="w-full aspect-square rounded-lg mb-4 flex items-center justify-center bg-gray-100 border border-gray-200">
+                <i class="fas fa-image text-gray-400 text-5xl"></i>
+            </div>
+        @endif
     </div>
 
     <!-- Right: Info -->
     <div class="space-y-4">
         <div>
-            <span class="text-sm text-gray-500">{{ $product->category->name ?? 'N/A' }}</span>
-            <h2 class="text-2xl font-bold text-gray-900 mt-1">{{ $product->name }}</h2>
+            <span class="text-xs md:text-sm text-gray-500">{{ $product->category->name ?? 'N/A' }}</span>
+            <h2 class="text-lg md:text-2xl font-bold text-gray-900 mt-1">{{ $product->name }}</h2>
             @if($product->sku)
-                <p class="text-sm text-gray-500 mt-1">SKU: {{ $product->sku }}</p>
+                <p class="text-xs md:text-sm text-gray-500 mt-1">SKU: {{ $product->sku }}</p>
             @endif
         </div>
 
@@ -23,24 +45,24 @@
         @if($product->is_new || $product->is_bestseller || $product->is_featured)
             <div class="flex space-x-2">
                 @if($product->is_new)
-                    <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">Nouveau</span>
+                    <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs md:text-sm font-medium">Nouveau</span>
                 @endif
                 @if($product->is_bestseller)
-                    <span class="px-3 py-1 bg-[#003e87] text-white rounded-full text-sm font-medium">Bestseller</span>
+                    <span class="px-2 py-1 bg-[#003e87] text-white rounded-full text-xs md:text-sm font-medium">Bestseller</span>
                 @endif
                 @if($product->is_featured)
-                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">Featured</span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs md:text-sm font-medium">Featured</span>
                 @endif
             </div>
         @endif
 
         <!-- Price -->
         <div>
-            <div class="flex items-baseline space-x-3">
-                <span class="text-3xl font-bold text-[#003e87]">{{ number_format($product->price, 2) }} DH</span>
+            <div class="flex items-baseline space-x-2 md:space-x-3">
+                <span class="text-xl md:text-3xl font-bold text-[#003e87]">{{ number_format($product->price, 2) }} DH</span>
                 @if($product->price_old && $product->price_old > $product->price)
-                    <span class="text-xl text-gray-400 line-through">{{ number_format($product->price_old, 2) }} DH</span>
-                    <span class="px-2 py-1 bg-red-100 text-red-800 rounded text-sm font-medium">
+                    <span class="text-sm md:text-xl text-gray-400 line-through">{{ number_format($product->price_old, 2) }} DH</span>
+                    <span class="px-1.5 py-0.5 bg-red-100 text-red-800 rounded text-xs md:text-sm font-medium">
                         -{{ $product->discount_percentage }}%
                     </span>
                 @endif
@@ -50,25 +72,25 @@
         <!-- Description -->
         @if($product->short_description || $product->description)
             <div>
-                <h3 class="font-semibold text-gray-900 mb-2">Description</h3>
-                <p class="text-gray-600 text-sm">{{ $product->short_description ?? Str::limit($product->description, 200) }}</p>
+                <h3 class="text-sm md:text-base font-semibold text-gray-900 mb-1">Description</h3>
+                <p class="text-gray-600 text-xs md:text-sm">{{ $product->short_description ?? Str::limit($product->description, 200) }}</p>
             </div>
         @endif
 
         <!-- Stock -->
         <div>
-            <h3 class="font-semibold text-gray-900 mb-2">Stock</h3>
+            <h3 class="text-sm md:text-base font-semibold text-gray-900 mb-1">Stock</h3>
             <div class="flex items-center space-x-3">
                 @if($product->stock == 0)
-                    <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-medium">
+                    <span class="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs md:text-sm font-medium">
                         <i class="fas fa-times-circle mr-1"></i>Rupture de stock
                     </span>
                 @elseif($product->stock < 10)
-                    <span class="px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-sm font-medium">
+                    <span class="px-2 py-1 bg-orange-100 text-orange-800 rounded-full text-xs md:text-sm font-medium">
                         <i class="fas fa-exclamation-triangle mr-1"></i>Stock faible: {{ $product->stock }} unités
                     </span>
                 @else
-                    <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+                    <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs md:text-sm font-medium">
                         <i class="fas fa-check-circle mr-1"></i>En stock: {{ $product->stock }} unités
                     </span>
                 @endif
@@ -80,10 +102,10 @@
             $totalSales = $product->orderItems()->sum('quantity') ?? 0;
         @endphp
         @if($totalSales > 0)
-            <div class="grid grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg">
+            <div class="grid grid-cols-2 gap-4 p-3 bg-gray-50 rounded-lg">
                 <div class="text-center">
-                    <div class="text-2xl font-bold text-gray-900">{{ $totalSales }}</div>
-                    <div class="text-xs text-gray-600">Ventes totales</div>
+                    <div class="text-lg md:text-2xl font-bold text-gray-900">{{ $totalSales }}</div>
+                    <div class="text-[10px] md:text-xs text-gray-600">Ventes totales</div>
                 </div>
                 <div class="text-center">
                     @php
@@ -91,24 +113,24 @@
                             return $item->quantity * $item->price;
                         });
                     @endphp
-                    <div class="text-2xl font-bold text-green-600">{{ number_format($revenue, 0) }} DH</div>
-                    <div class="text-xs text-gray-600">Revenu généré</div>
+                    <div class="text-lg md:text-2xl font-bold text-green-600">{{ number_format($revenue, 0) }} DH</div>
+                    <div class="text-[10px] md:text-xs text-gray-600">Revenu généré</div>
                 </div>
             </div>
         @endif
 
         <!-- Status -->
-        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-            <span class="text-sm font-medium text-gray-700">Statut du produit</span>
-            <span class="px-3 py-1 rounded-full text-sm font-medium {{ $product->is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
+        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <span class="text-xs md:text-sm font-medium text-gray-700">Statut du produit</span>
+            <span class="px-2 py-1 rounded-full text-xs md:text-sm font-medium {{ $product->is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
                 {{ $product->is_active ? 'Actif' : 'Inactif' }}
             </span>
         </div>
 
         <!-- Actions -->
-        <div class="flex space-x-3 pt-4 border-t">
+        <div class="flex space-x-3 pt-3 border-t">
             <a href="{{ route('admin.products.edit', $product->id) }}" 
-               class="flex-1 px-4 py-2 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] text-center transition-colors">
+               class="flex-1 px-4 py-2 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] text-center text-xs md:text-sm font-medium transition-colors">
                 <i class="fas fa-edit mr-2"></i>Modifier le produit
             </a>
         </div>

@@ -2,6 +2,30 @@
 
 @php
     $isPack = $offer->type === 'pack';
+
+    $formattedProducts = $products->map(function($p) {
+        return [
+            'id' => $p->id,
+            'name' => $p->name,
+            'price' => (float)$p->price,
+            'category_id' => $p->category_id,
+            'subcategory_id' => $p->subcategory_id,
+            'category_name' => $p->category ? $p->category->name : '',
+        ];
+    });
+
+    $formattedCategories = $categories->map(function($c) {
+        return [
+            'id' => $c->id,
+            'name' => $c->name,
+            'subcategories' => $c->subcategories->map(function($s) {
+                return [
+                    'id' => $s->id,
+                    'name' => $s->name,
+                ];
+            })
+        ];
+    });
 @endphp
 
 @section('title', $isPack ? 'Modifier Pack' : 'Modifier Offre')
@@ -244,26 +268,65 @@
                     @enderror
                 </div>
 
-                @if(!$isPack)
                 <!-- Background Color -->
                 <div>
                     <label for="bg_color" class="block text-sm font-semibold text-gray-700 mb-2">
                         Couleur de fond
                     </label>
-                    <input type="text" 
-                           name="bg_color" 
-                           id="bg_color" 
-                           value="{{ old('bg_color', $offer->bg_color ?? '#003e87') }}"
-                           class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2" 
-                           style="border-color: #e5e7eb;"
-                           onfocus="this.style.borderColor='#003e87'; this.style.boxShadow='0 0 0 3px rgba(0,62,135,0.1)'"
-                           onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"
-                           placeholder="#003e87">
+                    <div class="flex items-center gap-3">
+                        @php
+                            $currentColor = old('bg_color', $offer->bg_color ?? ($isPack ? '#7c3aed' : '#003e87'));
+                        @endphp
+                        <!-- Custom Color Picker Trigger -->
+                        <div class="relative w-10 h-10 rounded-lg border border-gray-200 overflow-hidden hover:scale-105 transition-transform flex-shrink-0" title="Choisir une couleur">
+                            <input type="color" 
+                                   id="custom_color_picker" 
+                                   value="{{ $currentColor }}"
+                                   class="absolute inset-0 w-full h-full p-0 border-0 cursor-pointer"
+                                   style="transform: scale(2);"
+                                   oninput="updateColorFromPicker(this.value)">
+                            <div class="absolute inset-0 flex items-center justify-center pointer-events-none bg-black/5">
+                                <i class="fas fa-eye-dropper text-sm text-gray-700 drop-shadow-sm"></i>
+                            </div>
+                        </div>
+
+                        <!-- Editable text input -->
+                        <div class="flex-grow">
+                            <input type="text" 
+                                   name="bg_color" 
+                                   id="bg_color" 
+                                   value="{{ $currentColor }}"
+                                   class="w-full px-4 py-2 border rounded-lg font-mono text-sm text-gray-700 focus:outline-none focus:ring-2 {{ $isPack ? 'focus:ring-purple-500' : 'focus:ring-blue-500' }}"
+                                   style="border-color: #e5e7eb;"
+                                   oninput="updatePickerFromText(this.value)"
+                                   placeholder="{{ $isPack ? '#7c3aed' : '#003e87' }}">
+                        </div>
+                    </div>
                     @error('bg_color')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
-                @endif
+
+                <!-- Order -->
+                <div>
+                    <label for="order" class="block text-sm font-semibold text-gray-700 mb-2">
+                        Ordre d'affichage <span class="text-red-500">*</span>
+                    </label>
+                    <input type="number" 
+                           name="order" 
+                           id="order" 
+                           value="{{ old('order', $offer->order ?? 0) }}"
+                           required
+                           min="0"
+                           class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2" 
+                           style="border-color: #e5e7eb;"
+                           onfocus="this.style.borderColor='{{ $isPack ? '#7c3aed' : '#003e87' }}'; this.style.boxShadow='0 0 0 3px {{ $isPack ? 'rgba(124,58,237,0.1)' : 'rgba(0,62,135,0.1)' }}'"
+                           onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"
+                           placeholder="Ex: 0">
+                    @error('order')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
 
                 <!-- Active Status -->
                 <div>
@@ -302,6 +365,16 @@
 
 @push('scripts')
 <script>
+function updateColorFromPicker(hex) {
+    document.getElementById('bg_color').value = hex;
+}
+
+function updatePickerFromText(hex) {
+    if (/^#[0-9A-F]{6}$/i.test(hex) || /^#[0-9A-F]{3}$/i.test(hex)) {
+        document.getElementById('custom_color_picker').value = hex;
+    }
+}
+
 function previewImage(event) {
     const file = event.target.files[0];
     const preview = document.getElementById('imagePreview');
@@ -318,29 +391,9 @@ function previewImage(event) {
 @if($isPack)
 document.addEventListener('DOMContentLoaded', function () {
     // Data structures
-    const allProducts = @json($products->map(function($p) {
-        return [
-            'id' => $p->id,
-            'name' => $p->name,
-            'price' => (float)$p->price,
-            'category_id' => $p->category_id,
-            'subcategory_id' => $p->subcategory_id,
-            'category_name' => $p->category ? $p->category->name : '',
-        ];
-    }));
+    const allProducts = @json($formattedProducts);
 
-    const categories = @json($categories->map(function($c) {
-        return [
-            'id' => $c->id,
-            'name' => $c->name,
-            'subcategories' => $c->subcategories->map(function($s) {
-                return [
-                    'id' => $s->id,
-                    'name' => $s->name,
-                ];
-            })
-        ];
-    }));
+    const categories = @json($formattedCategories);
 
     // Dom elements
     const categorySelect = document.getElementById('categorySelect');

@@ -18,9 +18,19 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (!container || !indicatorsContainer) return;
 
-        // Compter le nombre de slides
-        const slides = container.querySelectorAll('.hero-slide');
+        // Compter le nombre de slides visibles
+        const slides = Array.from(container.querySelectorAll('.hero-slide')).filter(slide => {
+            return window.getComputedStyle(slide).display !== 'none';
+        });
         const count = slides.length;
+
+        // Masquer les indicateurs s'il y a 1 ou 0 slide visible
+        if (count <= 1) {
+            indicatorsContainer.style.display = 'none';
+            return;
+        } else {
+            indicatorsContainer.style.display = 'flex';
+        }
 
         // Créer les dots
         indicatorsContainer.innerHTML = '';

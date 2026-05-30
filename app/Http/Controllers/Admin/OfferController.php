@@ -13,7 +13,7 @@ class OfferController extends Controller
 {
     public function index()
     {
-        $offers = Offer::with('products')->orderBy('created_at', 'desc')->get();
+        $offers = Offer::with('products')->orderBy('order', 'asc')->orderBy('created_at', 'desc')->get();
         
         // Calculate statistics
         $stats = [
@@ -52,6 +52,7 @@ class OfferController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'bg_color' => 'nullable|string|max:50',
             'is_active' => 'boolean',
+            'order' => 'required|integer|min:0',
             'type' => 'required|string|in:offer,pack,percentage',
             'pack_price' => 'required_if:type,pack|nullable|numeric|min:0',
             'product_ids' => 'required_if:type,pack|array',
@@ -112,6 +113,7 @@ class OfferController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'bg_color' => 'nullable|string|max:50',
             'is_active' => 'boolean',
+            'order' => 'required|integer|min:0',
             'type' => 'required|string|in:offer,pack,percentage',
             'pack_price' => 'required_if:type,pack|nullable|numeric|min:0',
             'product_ids' => 'required_if:type,pack|array',
