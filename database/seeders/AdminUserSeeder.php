@@ -13,6 +13,7 @@ class AdminUserSeeder extends Seeder
             'name' => 'Admin HMZ',
             'email' => 'admin@hmz.com',
             'password' => \Illuminate\Support\Facades\Hash::make('password'),
+            'role' => 'admin',
             'email_verified_at' => now(),
         ]);
 
