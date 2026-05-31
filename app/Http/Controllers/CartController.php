@@ -46,7 +46,7 @@ class CartController extends Controller
             'success' => true,
             'cart' => $cartItems,
             'total' => $total,
-            'count' => count($cartItems),
+            'count' => array_sum($cart),
         ]);
     }
 
@@ -92,7 +92,7 @@ class CartController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Produit ajouté au panier',
-            'cart_count' => count($cart),
+            'cart_count' => array_sum($cart),
         ]);
     }
 
@@ -130,7 +130,7 @@ class CartController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Panier mis à jour',
-            'cart_count' => count($cart),
+            'cart_count' => array_sum($cart),
         ]);
     }
 
@@ -154,7 +154,7 @@ class CartController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Produit retiré du panier',
-            'cart_count' => count($cart),
+            'cart_count' => array_sum($cart),
         ]);
     }
 
@@ -215,7 +215,7 @@ class CartController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Pack ajouté au panier',
-            'cart_count' => count($cart),
+            'cart_count' => array_sum($cart),
         ]);
     }
 }

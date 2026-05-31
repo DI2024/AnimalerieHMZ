@@ -413,10 +413,17 @@ function formatPrice(price) {
 }
 
 function updateCartCount(count) {
-    const badge = document.getElementById('cartCount');
-    if (badge) {
-        badge.textContent = count;
-    }
+    ['cartCount', 'cartCountMobile'].forEach(id => {
+        const badge = document.getElementById(id);
+        if (badge) {
+            badge.textContent = count;
+            if (count > 0) {
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+    });
 }
 
 // Make functions globally accessible

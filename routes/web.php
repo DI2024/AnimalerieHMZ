@@ -56,6 +56,7 @@ Route::middleware(['auth', 'role:client'])->group(function () {
     // Orders
     Route::get('/my-orders', [App\Http\Controllers\Client\OrderController::class, 'index'])->name('orders.index');
     Route::get('/my-orders/{orderNumber}', [App\Http\Controllers\Client\OrderController::class, 'show'])->name('orders.show');
+    Route::post('/my-orders/{order}/products/{product}/review', [App\Http\Controllers\Client\ReviewController::class, 'store'])->name('orders.reviews.store');
     
     // Profile Management
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

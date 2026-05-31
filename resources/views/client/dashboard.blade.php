@@ -55,7 +55,19 @@
 
         <!-- Quick Actions -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-            <a href="{{ route('products.index') }}" class="bg-blue-600 hover:bg-blue-700 text-white rounded-xl p-6 shadow-sm hover:shadow-md transition">
+            <!-- Mobile Action: Modifier mes informations -->
+            <a href="{{ route('profile.edit') }}" class="block md:hidden bg-blue-600 hover:bg-blue-700 text-white rounded-xl p-6 shadow-sm hover:shadow-md transition">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="font-semibold text-xl mb-2">Modifier mes informations</h3>
+                        <p class="text-blue-100 text-sm">Mettre à jour mon profil</p>
+                    </div>
+                    <span class="material-symbols-outlined text-5xl opacity-50">settings</span>
+                </div>
+            </a>
+
+            <!-- Desktop Action: Continuer mes achats -->
+            <a href="{{ route('products.index') }}" class="hidden md:block bg-blue-600 hover:bg-blue-700 text-white rounded-xl p-6 shadow-sm hover:shadow-md transition">
                 <div class="flex items-center justify-between">
                     <div>
                         <h3 class="font-semibold text-xl mb-2">Continuer mes achats</h3>
@@ -77,7 +89,7 @@
         </div>
 
         <!-- Recent Orders -->
-        <div class="bg-white rounded-xl p-8 border border-gray-200 shadow-sm">
+        <div class="bg-white rounded-xl p-4 md:p-8 border border-gray-200 shadow-sm">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-2xl font-bold text-gray-900">Commandes récentes</h2>
                 <a href="{{ route('orders.index') }}" class="text-blue-600 hover:text-blue-700 hover:underline font-semibold text-sm flex items-center gap-1">
@@ -90,20 +102,20 @@
                 <div class="space-y-4">
                     @foreach($recentOrders as $order)
                         <div class="border border-gray-200 rounded-lg p-4 hover:shadow-sm transition">
-                            <div class="flex items-center justify-between mb-3">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
                                 <div>
-                                    <a href="{{ route('orders.show', $order->order_number) }}" class="font-semibold text-blue-600 hover:text-blue-700 hover:underline">
+                                    <a href="{{ route('orders.show', $order->order_number) }}" class="font-semibold text-blue-600 hover:text-blue-700 hover:underline text-sm md:text-base break-all">
                                         {{ $order->order_number }}
                                     </a>
-                                    <p class="text-sm text-gray-500">
+                                    <p class="text-xs md:text-sm text-gray-500">
                                         {{ $order->created_at->format('d/m/Y à H:i') }}
                                     </p>
                                 </div>
-                                <div class="text-right">
+                                <div class="text-left sm:text-right">
                                     <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-{{ $order->status_color }}/10 text-{{ $order->status_color }}">
                                         {{ $order->status_label }}
                                     </span>
-                                    <p class="text-lg font-bold text-gray-900 mt-1">{{ number_format($order->total, 2, ',', ' ') }} MAD</p>
+                                    <p class="text-base md:text-lg font-bold text-gray-900 mt-1">{{ number_format($order->total, 2, ',', ' ') }} MAD</p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-2 text-sm text-gray-500">

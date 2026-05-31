@@ -5,7 +5,7 @@
 
 <!-- Toast Template -->
 <template id="toastTemplate">
-    <div class="toast pointer-events-auto bg-white dark:bg-[#1a1d2e] rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 p-4 min-w-[320px] max-w-[400px] transform translate-x-[500px] opacity-0 transition-all duration-500">
+    <div class="toast pointer-events-auto bg-[#111827] border border-gray-800 rounded-2xl shadow-2xl p-4 min-w-[320px] max-w-[400px] transform translate-x-[500px] opacity-0 transition-all duration-500 text-white">
         <div class="flex items-start gap-3">
             <!-- Icon -->
             <div class="toast-icon flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center">
@@ -14,18 +14,18 @@
             
             <!-- Content -->
             <div class="flex-1 min-w-0">
-                <h4 class="toast-title font-bold text-sm text-on-surface dark:text-white mb-1"></h4>
-                <p class="toast-message text-xs text-on-surface-variant dark:text-gray-400"></p>
+                <h4 class="toast-title font-bold text-sm text-white mb-1"></h4>
+                <p class="toast-message text-xs text-gray-300"></p>
             </div>
             
             <!-- Close Button -->
-            <button class="toast-close flex-shrink-0 w-6 h-6 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center justify-center text-on-surface-variant dark:text-gray-400 transition">
+            <button class="toast-close flex-shrink-0 w-6 h-6 rounded-full hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-white transition">
                 <span class="material-symbols-outlined text-sm">close</span>
             </button>
         </div>
         
         <!-- Progress Bar -->
-        <div class="toast-progress mt-3 h-1 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+        <div class="toast-progress mt-3 h-1 bg-white/10 rounded-full overflow-hidden">
             <div class="toast-progress-bar h-full rounded-full transition-all duration-[5000ms] ease-linear" style="width: 100%"></div>
         </div>
     </div>

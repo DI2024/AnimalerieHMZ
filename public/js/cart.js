@@ -289,23 +289,25 @@ class CartManager {
     }
 
     updateCartBadge(count) {
-        const badge = document.getElementById('cartCount');
-        if (badge) {
-            badge.textContent = count;
-            
-            // Animate badge
-            badge.classList.add('scale-125');
-            setTimeout(() => {
-                badge.classList.remove('scale-125');
-            }, 300);
-            
-            // Show/hide badge
-            if (count > 0) {
-                badge.classList.remove('hidden');
-            } else {
-                badge.classList.add('hidden');
+        ['cartCount', 'cartCountMobile'].forEach(id => {
+            const badge = document.getElementById(id);
+            if (badge) {
+                badge.textContent = count;
+                
+                // Animate badge
+                badge.classList.add('scale-125');
+                setTimeout(() => {
+                    badge.classList.remove('scale-125');
+                }, 300);
+                
+                // Show/hide badge
+                if (count > 0) {
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
             }
-        }
+        });
     }
 
     animateCartIcon() {

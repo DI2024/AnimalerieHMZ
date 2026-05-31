@@ -1,3 +1,7 @@
+<?php
+    $cart = session()->get('cart', []);
+    $cartCount = array_sum($cart);
+?>
 <!DOCTYPE html>
 <html lang="<?php echo e(str_replace('_', '-', app()->getLocale())); ?>" class="scroll-smooth">
 <head>
@@ -153,7 +157,7 @@
                     <!-- Cart Icon -->
                     <a href="<?php echo e(route('cart.show')); ?>" class="relative p-2 hover:bg-surface-container-low rounded-lg transition-colors">
                         <span class="material-symbols-outlined text-on-surface">shopping_cart</span>
-                        <span class="absolute -top-1 -right-1 bg-primary text-on-primary text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center" id="cartCount">0</span>
+                        <span class="absolute -top-1 -right-1 bg-primary text-on-primary text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center <?php echo e($cartCount > 0 ? '' : 'hidden'); ?>" id="cartCount"><?php echo e($cartCount); ?></span>
                     </a>
 
                     <?php if(auth()->guard()->check()): ?>
@@ -224,7 +228,7 @@
                     <!-- Cart Icon -->
                     <a href="<?php echo e(route('cart.show')); ?>" class="relative p-2 hover:bg-surface-container-low rounded-lg transition-colors">
                         <span class="material-symbols-outlined text-on-surface">shopping_cart</span>
-                        <span class="absolute -top-1 -right-1 bg-primary text-on-primary text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center" id="cartCountMobile">0</span>
+                        <span class="absolute -top-1 -right-1 bg-primary text-on-primary text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center <?php echo e($cartCount > 0 ? '' : 'hidden'); ?>" id="cartCountMobile"><?php echo e($cartCount); ?></span>
                     </a>
                     
                     <?php if(auth()->guard()->check()): ?>

@@ -160,7 +160,9 @@ class ProductController extends Controller
     {
         $product = Product::where('slug', $slug)
             ->where('is_active', true)
-            ->with(['category', 'subcategory'])
+            ->with(['category', 'subcategory', 'reviews' => function($query) {
+                $query->where('is_approved', true)->with('user')->latest();
+            }])
             ->firstOrFail();
 
         // Get related products (same category, different product)

@@ -5,17 +5,17 @@
     <div class="max-w-[1280px] mx-auto px-6">
         
         <!-- Header -->
-        <div class="flex items-center justify-between mb-8">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
             <div>
-                <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+                <h1 class="text-2xl md:text-4xl font-bold text-gray-900 mb-2">
                     Mes Commandes
                 </h1>
-                <p class="text-gray-600">
+                <p class="text-gray-600 text-sm">
                     {{ $orders->total() }} commande{{ $orders->total() > 1 ? 's' : '' }}
                 </p>
             </div>
-            <a href="{{ route('home') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition flex items-center gap-2">
-                <span class="material-symbols-outlined">arrow_back</span>
+            <a href="{{ route('home') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-lg transition flex items-center justify-center gap-2 self-start sm:self-auto w-full sm:w-auto">
+                <span class="material-symbols-outlined text-lg">arrow_back</span>
                 Retour
             </a>
         </div>
@@ -23,22 +23,22 @@
         @if($orders->count() > 0)
             <div class="space-y-6">
                 @foreach($orders as $order)
-                    <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition">
+                    <div class="bg-white rounded-xl p-4 md:p-6 border border-gray-200 shadow-sm hover:shadow-md transition">
                         <!-- Order Header -->
                         <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 pb-6 border-b border-gray-200">
                             <div>
-                                <a href="{{ route('orders.show', $order->order_number) }}" class="text-2xl font-bold text-blue-600 hover:text-blue-700 hover:underline">
+                                <a href="{{ route('orders.show', $order->order_number) }}" class="text-lg md:text-2xl font-bold text-blue-600 hover:text-blue-700 hover:underline break-all">
                                     {{ $order->order_number }}
                                 </a>
-                                <p class="text-sm text-gray-500 mt-1">
+                                <p class="text-xs md:text-sm text-gray-500 mt-1">
                                     Commandé le {{ $order->created_at->format('d/m/Y à H:i') }}
                                 </p>
                             </div>
-                            <div class="flex items-center gap-4 mt-4 md:mt-0">
-                                <span class="inline-block px-4 py-2 rounded-full text-sm font-semibold bg-{{ $order->status_color }}/10 text-{{ $order->status_color }}">
+                            <div class="flex flex-wrap items-center gap-3 mt-4 md:mt-0">
+                                <span class="inline-block px-3.5 py-1.5 rounded-full text-xs md:text-sm font-semibold bg-{{ $order->status_color }}/10 text-{{ $order->status_color }}">
                                     {{ $order->status_label }}
                                 </span>
-                                <span class="text-2xl font-bold text-gray-900">{{ number_format($order->total, 2, ',', ' ') }} MAD</span>
+                                <span class="text-xl md:text-2xl font-bold text-gray-900">{{ number_format($order->total, 2, ',', ' ') }} MAD</span>
                             </div>
                         </div>
 

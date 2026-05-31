@@ -89,15 +89,7 @@
                                    required>
                         </div>
 
-                        <div class="space-y-2">
-                            <label for="shipping_country" class="text-sm font-bold text-on-surface-variant ml-1">Pays *</label>
-                            <input type="text" 
-                                   name="shipping_country" 
-                                   id="shipping_country" 
-                                   value="France" 
-                                   class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition" 
-                                   required>
-                        </div>
+                        <input type="hidden" name="shipping_country" id="shipping_country" value="Maroc">
 
                         <div class="space-y-2">
                             <label for="customer_notes" class="text-sm font-bold text-on-surface-variant ml-1">Notes (optionnel)</label>

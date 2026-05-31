@@ -9,7 +9,8 @@
             <span class="mx-2 text-gray-400">/</span>
             <a href="#" class="hover:text-primary transition">Chats</a>
             <span class="mx-2 text-gray-400">/</span>
-            <span class="text-on-surface">Arbre à chat HMZ Premium Luxe</span>
+            <span class="hidden md:inline text-on-surface">Arbre à chat HMZ Premium Luxe</span>
+            <span class="inline md:hidden text-on-surface">Arbre à chat...</span>
         </nav>
     </div>
 
@@ -60,9 +61,9 @@
 
             <div class="flex items-center gap-6">
                 <div class="space-y-1">
-                    <span class="text-4xl font-black text-primary">189,00 MAD</span>
+                    <span class="text-2xl md:text-4xl font-black text-primary whitespace-nowrap">189,00 MAD</span>
                     <div class="flex items-center gap-2">
-                        <span class="text-lg text-on-surface-variant/50 line-through">249,00 MAD</span>
+                        <span class="text-sm md:text-lg text-on-surface-variant/50 line-through whitespace-nowrap">249,00 MAD</span>
                         <span class="bg-error/10 text-error px-2 py-0.5 rounded-md text-xs font-bold">-24%</span>
                     </div>
                 </div>
@@ -117,7 +118,7 @@
             </button>
 
             <button class="tab-btn pb-4 text-lg font-bold text-on-surface-variant border-b-2 border-transparent hover:text-primary transition relative group" onclick="switchTab('reviews', this)">
-                Avis Clients
+                Avis Clients ({{ $product->reviews->count() }})
                 <div class="absolute bottom-0 left-0 right-0 h-1 bg-primary rounded-full scale-0 group-hover:scale-50 transition"></div>
             </button>
         </div>
@@ -166,75 +167,82 @@
             
 
 
-            <div id="reviews" class="tab-pane hidden">
+            <div id="reviews" class="tab-pane hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
+                @php
+                    $approvedReviews = $product->reviews;
+                    $totalReviewsCount = $approvedReviews->count();
+                    
+                    $starsCount = [
+                        5 => 0,
+                        4 => 0,
+                        3 => 0,
+                        2 => 0,
+                        1 => 0
+                    ];
+                    
+                    foreach ($approvedReviews as $rev) {
+                        $starsCount[$rev->rating] = ($starsCount[$rev->rating] ?? 0) + 1;
+                    }
+                @endphp
                 <div class="flex flex-col gap-8">
                     <div class="bg-surface-container-low p-8 rounded-3xl flex flex-col md:flex-row items-center gap-10 shadow-sm border border-gray-100">
                         <div class="text-center">
-                            <div class="text-6xl font-black text-primary">4.8</div>
-                            <div class="flex text-amber-400 mt-2">
-                                <span class="material-symbols-outlined fill-1">star</span>
-                                <span class="material-symbols-outlined fill-1">star</span>
-                                <span class="material-symbols-outlined fill-1">star</span>
-                                <span class="material-symbols-outlined fill-1">star</span>
-                                <span class="material-symbols-outlined fill-1">star</span>
+                            <div class="text-6xl font-black text-primary">{{ number_format($product->rating ?? 5.0, 1) }}</div>
+                            <div class="flex text-amber-400 mt-2 justify-center">
+                                @for($i = 1; $i <= 5; $i++)
+                                    <span class="material-symbols-outlined {{ $i <= ($product->rating ?? 5) ? 'fill-1' : '' }}">star</span>
+                                @endfor
                             </div>
-                            <div class="text-sm font-bold text-on-surface-variant/60 mt-2">Basé sur 128 avis</div>
+                            <div class="text-sm font-bold text-on-surface-variant/60 mt-2">
+                                Basé sur {{ $totalReviewsCount }} {{ $totalReviewsCount > 1 ? 'avis' : 'avis' }}
+                            </div>
                         </div>
+                        
                         <div class="flex-1 space-y-3 w-full">
-                            <div class="flex items-center gap-4">
-                                <span class="w-4 text-xs font-bold">5</span>
-                                <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-                                    <div class="h-full bg-primary w-[85%] rounded-full"></div>
+                            @for($star = 5; $star >= 1; $star--)
+                                @php
+                                    $count = $starsCount[$star];
+                                    $pct = $totalReviewsCount > 0 ? ($count / $totalReviewsCount) * 100 : 0;
+                                @endphp
+                                <div class="flex items-center gap-4">
+                                    <span class="w-4 text-xs font-bold text-gray-700">{{ $star }}</span>
+                                    <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div class="h-full bg-primary rounded-full" style="width: {{ $pct }}%"></div>
+                                    </div>
+                                    <span class="w-8 text-xs text-right text-on-surface-variant/60 font-bold">{{ $count }}</span>
                                 </div>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <span class="w-4 text-xs font-bold">4</span>
-                                <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-                                    <div class="h-full bg-primary w-[10%] rounded-full"></div>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <span class="w-4 text-xs font-bold">3</span>
-                                <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-                                    <div class="h-full bg-primary w-[3%] rounded-full"></div>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-4 text-on-surface-variant/30">
-                                <span class="w-4 text-xs font-bold">2</span>
-                                <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-                                    <div class="h-full bg-primary w-[2%] rounded-full"></div>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-4 text-on-surface-variant/30">
-                                <span class="w-4 text-xs font-bold">1</span>
-                                <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-                                    <div class="h-full bg-primary w-[0%] rounded-full"></div>
-                                </div>
-                            </div>
+                            @endfor
                         </div>
                     </div>
 
-                    <!-- Individual Review -->
-                    <div class="space-y-8">
-                        <div class="p-6 rounded-2xl border border-gray-100 hover:shadow-md transition">
-                            <div class="flex justify-between items-start mb-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-full bg-secondary-light/20 flex items-center justify-center font-bold text-secondary">JD</div>
-                                    <div>
-                                        <div class="font-bold">Jean Dupont</div>
-                                        <div class="text-xs text-on-surface-variant/60">Acheteur vérifié</div>
+                    <!-- Individual Reviews List -->
+                    <div class="space-y-6">
+                        @forelse($approvedReviews as $review)
+                            <div class="p-6 rounded-2xl border border-gray-100 hover:shadow-md transition bg-white">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-full bg-[#003e87]/10 flex items-center justify-center font-bold text-[#003e87]">
+                                            {{ strtoupper(substr($review->user->name, 0, 2)) }}
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-gray-900">{{ $review->user->name }}</div>
+                                            <div class="text-xs text-on-surface-variant/60">Acheteur vérifié • {{ $review->created_at->diffForHumans() }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex text-amber-400">
+                                        @for($i = 1; $i <= 5; $i++)
+                                            <span class="material-symbols-outlined text-sm {{ $i <= $review->rating ? 'fill-1' : '' }}">star</span>
+                                        @endfor
                                     </div>
                                 </div>
-                                <div class="flex text-amber-400">
-                                    <span class="material-symbols-outlined text-sm fill-1">star</span>
-                                    <span class="material-symbols-outlined text-sm fill-1">star</span>
-                                    <span class="material-symbols-outlined text-sm fill-1">star</span>
-                                    <span class="material-symbols-outlined text-sm fill-1">star</span>
-                                    <span class="material-symbols-outlined text-sm fill-1">star</span>
-                                </div>
+                                <p class="text-gray-700 text-sm whitespace-pre-line leading-relaxed">{{ $review->comment }}</p>
                             </div>
-                            <p class="text-on-surface-variant">Mes chats l'adorent ! La qualité est au rendez-vous, il ne bouge pas d'un poil même quand ils sautent dessus comme des fous.</p>
-                        </div>
+                        @empty
+                            <div class="text-center py-12 text-on-surface-variant/60 bg-surface-container-low rounded-2xl border border-dashed border-gray-200">
+                                <span class="material-symbols-outlined text-4xl mb-2 text-gray-400">rate_review</span>
+                                <p class="text-sm font-medium">Aucun avis pour le moment. Soyez le premier à donner votre avis après votre achat !</p>
+                            </div>
+                        @endforelse
                     </div>
                 </div>
             </div>
