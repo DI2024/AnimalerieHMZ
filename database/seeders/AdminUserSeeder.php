@@ -22,6 +22,7 @@ class AdminUserSeeder extends Seeder
             'name' => 'Client Test',
             'email' => 'client@test.com',
             'password' => \Illuminate\Support\Facades\Hash::make('password'),
+            'role' => 'client',
             'email_verified_at' => now(),
         ]);
     }

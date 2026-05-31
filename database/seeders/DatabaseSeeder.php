@@ -13,9 +13,12 @@ class DatabaseSeeder extends Seeder
             AdminUserSeeder::class,
             CategorySeeder::class,
             SubCategorySeeder::class,
-            OfferSeeder::class,
             ProductSeeder::class,
+            OfferSeeder::class,
             OrderSeeder::class,
+            HeroSlideSeeder::class,
+            TestimonialSeeder::class,
+            SettingSeeder::class,
         ]);
     }
 }
