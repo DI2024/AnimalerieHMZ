@@ -329,9 +329,9 @@
     <!-- Footer -->
     <footer id="contact" class="bg-primary text-on-primary py-16">
         <div class="max-w-[1280px] mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-12 mb-12">
                 <!-- About -->
-                <div class="md:col-span-1 text-center md:text-left">
+                <div class="col-span-2 md:col-span-1 text-center md:text-left">
                     <div class="flex items-center gap-3 mb-6 justify-center md:justify-start">
                         <img src="{{ asset('images/logo animalerie.png') }}" alt="Animalerie HMZ" class="h-12 w-auto brightness-0 invert">
                     </div>
@@ -339,33 +339,30 @@
                     <p class="text-primary-light text-sm leading-relaxed">{{ $siteSettings['footer_description'] }}</p>
                 </div>
 
-                <!-- Quick Links & Categories - 2 colonnes en mobile, 1 colonne chacune en desktop -->
-                <div class="grid grid-cols-2 md:grid-cols-1 gap-8 md:gap-0 md:col-span-1">
-                    <!-- Quick Links -->
-                    <div class="text-center md:text-left">
-                        <h3 class="font-bold text-lg mb-4">Liens Rapides</h3>
-                        <ul class="space-y-3">
-                            <li><a href="{{ route('home') }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2 justify-center md:justify-start"><span class="material-symbols-outlined text-sm">chevron_right</span> Accueil</a></li>
-                            <li><a href="{{ route('products.index') }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2 justify-center md:justify-start"><span class="material-symbols-outlined text-sm">chevron_right</span> Produits</a></li>
-                            <li><a href="{{ route('home') }}#offres" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2 justify-center md:justify-start"><span class="material-symbols-outlined text-sm">chevron_right</span> Offres</a></li>
-                            <li><a href="#contact" onclick="scrollToContact(event)" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2 justify-center md:justify-start"><span class="material-symbols-outlined text-sm">chevron_right</span> Contact</a></li>
-                        </ul>
-                    </div>
+                <!-- Quick Links -->
+                <div class="col-span-1 md:col-span-1 text-center md:text-left">
+                    <h3 class="font-bold text-lg mb-4">Liens Rapides</h3>
+                    <ul class="space-y-3">
+                        <li><a href="{{ route('home') }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2 justify-center md:justify-start"><span class="material-symbols-outlined text-sm">chevron_right</span> Accueil</a></li>
+                        <li><a href="{{ route('products.index') }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2 justify-center md:justify-start"><span class="material-symbols-outlined text-sm">chevron_right</span> Produits</a></li>
+                        <li><a href="{{ route('home') }}#offres" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2 justify-center md:justify-start"><span class="material-symbols-outlined text-sm">chevron_right</span> Offres</a></li>
+                        <li><a href="#contact" onclick="scrollToContact(event)" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2 justify-center md:justify-start"><span class="material-symbols-outlined text-sm">chevron_right</span> Contact</a></li>
+                    </ul>
+                </div>
 
-                    <!-- Categories -->
-                    <div class="text-center md:text-left">
-                        <h3 class="font-bold text-lg mb-4">Catégories</h3>
-                        <ul class="space-y-3">
-                            <li><a href="{{ route('products.index', ['category' => 'chiens']) }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2 justify-center md:justify-start"><span class="material-symbols-outlined text-sm">chevron_right</span> Chiens</a></li>
-                            <li><a href="{{ route('products.index', ['category' => 'chats']) }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2 justify-center md:justify-start"><span class="material-symbols-outlined text-sm">chevron_right</span> Chats</a></li>
-                            <li><a href="{{ route('products.index', ['category' => 'oiseaux']) }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2 justify-center md:justify-start"><span class="material-symbols-outlined text-sm">chevron_right</span> Oiseaux</a></li>
-                            <li><a href="{{ route('products.index', ['category' => 'pigeons']) }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2 justify-center md:justify-start"><span class="material-symbols-outlined text-sm">chevron_right</span> Pigeons</a></li>
-                        </ul>
-                    </div>
+                <!-- Categories -->
+                <div class="col-span-1 md:col-span-1 text-center md:text-left">
+                    <h3 class="font-bold text-lg mb-4">Catégories</h3>
+                    <ul class="space-y-3">
+                        <li><a href="{{ route('products.index', ['category' => 'chiens']) }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2 justify-center md:justify-start"><span class="material-symbols-outlined text-sm">chevron_right</span> Chiens</a></li>
+                        <li><a href="{{ route('products.index', ['category' => 'chats']) }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2 justify-center md:justify-start"><span class="material-symbols-outlined text-sm">chevron_right</span> Chats</a></li>
+                        <li><a href="{{ route('products.index', ['category' => 'oiseaux']) }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2 justify-center md:justify-start"><span class="material-symbols-outlined text-sm">chevron_right</span> Oiseaux</a></li>
+                        <li><a href="{{ route('products.index', ['category' => 'pigeons']) }}" class="text-primary-light hover:text-white transition-colors text-sm flex items-center gap-2 justify-center md:justify-start"><span class="material-symbols-outlined text-sm">chevron_right</span> Pigeons</a></li>
+                    </ul>
                 </div>
 
                 <!-- Contact -->
-                <div class="text-center md:text-left">
+                <div class="col-span-2 md:col-span-1 text-center md:text-left">
                     <h3 class="font-bold text-lg mb-4">Contact</h3>
                     <ul class="space-y-3">
                         <li class="flex items-start gap-3 text-primary-light text-sm justify-center md:justify-start">

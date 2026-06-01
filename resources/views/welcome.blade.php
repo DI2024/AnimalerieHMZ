@@ -131,9 +131,9 @@
                            class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] border-2 border-purple-500/20 group transition-all duration-500 md:hover:scale-105 md:hover:shadow-2xl md:hover:border-purple-600 cursor-pointer {{ $offer->bg_color ? 'text-white' : 'bg-white text-purple-700' }}"
                            style="{{ $offer->bg_color ? 'background-color: ' . $offer->bg_color . ';' : '' }}">
                             <div class="flex-1 pr-4 z-10">
-                                <h3 class="font-headline text-sm md:text-lg font-bold leading-tight mb-2 {{ $offer->bg_color ? 'text-white' : 'text-purple-950' }}">{{ $offer->title }}</h3>
+                                <h3 class="font-headline text-lg font-bold leading-tight mb-2 {{ $offer->bg_color ? 'text-white' : 'text-purple-950' }}">{{ $offer->title }}</h3>
 
-                                <div class="mt-2 md:mt-4 flex items-baseline gap-1.5 md:gap-2 whitespace-nowrap">
+                                <div class="mt-2 md:mt-4 flex flex-col items-start gap-1">
                                     <span class="text-base md:text-2xl font-bold {{ $offer->bg_color ? 'text-white' : 'text-purple-600' }}">{{ number_format($offer->pack_price, 2, ',', ' ') }} MAD</span>
                                     @if($offer->total_original_price > 0 && $offer->total_original_price > $offer->pack_price)
                                         <span class="text-xs md:text-sm line-through {{ $offer->bg_color ? 'text-white/70' : 'text-gray-400' }}">{{ number_format($offer->total_original_price, 2, ',', ' ') }} MAD</span>
@@ -212,7 +212,7 @@
                     <a href="{{ route('products.index') }}" class="relative flex items-center justify-between p-8 rounded-3xl overflow-hidden min-h-[200px] bg-white border-2 border-purple-500/20 text-purple-700 group transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:border-purple-600 cursor-pointer">
                         <div class="flex-1 pr-4">
                             <h3 class="font-headline text-lg font-bold leading-tight mb-2 text-purple-950">Pack Bienvenue</h3>
-                            <div class="mt-4 flex items-baseline gap-2">
+                            <div class="mt-4 flex flex-col items-start gap-1">
                                 <span class="text-2xl font-bold text-purple-600">89,00 DH</span>
                                 <span class="text-sm text-gray-400 line-through">120,00 DH</span>
                             </div>
