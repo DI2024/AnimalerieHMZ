@@ -10,16 +10,16 @@ class DatabaseSeeder extends Seeder
     {
         // Run all seeders in order
         $this->call([
-            // AdminUserSeeder::class,
-            // CategorySeeder::class,
-            // SubCategorySeeder::class,
+            AdminUserSeeder::class,
+            CategorySeeder::class,
+            SubCategorySeeder::class,
             // ProductSeeder::class,
-            // OfferSeeder::class,
+            OfferSeeder::class,
             // OrderSeeder::class,
             NewProductsSeeder::class,
-            // HeroSlideSeeder::class,
-            // TestimonialSeeder::class,
-            // SettingSeeder::class,
+            HeroSlideSeeder::class,
+            TestimonialSeeder::class,
+            SettingSeeder::class,
         ]);
     }
 }

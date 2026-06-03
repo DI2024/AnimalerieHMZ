@@ -130,12 +130,7 @@ unset($__errorArgs, $__bag); ?>
             </div>
         </div>
 
-        <!-- Admin Info (for demo) -->
-        <div class="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-200">
-            <p class="text-xs text-blue-600 text-center">
-                <strong>Admin:</strong> admin@hmz.com / password
-            </p>
-        </div>
+
     </div>
 </div>
 <?php $__env->stopSection(); ?>

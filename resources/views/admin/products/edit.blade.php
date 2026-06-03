@@ -37,19 +37,19 @@
     
     <!-- Top Bar -->
     <div class="bg-white rounded-lg shadow p-4 mb-6">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-4">
-                <a href="{{ route('admin.products.index') }}" class="text-gray-600 hover:text-gray-900">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="flex items-center space-x-4 min-w-0">
+                <a href="{{ route('admin.products.index') }}" class="text-gray-600 hover:text-gray-900 flex-shrink-0">
                     <i class="fas fa-arrow-left text-xl"></i>
                 </a>
-                <h2 class="text-2xl font-bold">Modifier: {{ $product->name }}</h2>
+                <h2 class="text-xl sm:text-2xl font-bold truncate">Modifier: {{ $product->name }}</h2>
             </div>
             
-            <div class="flex items-center space-x-3">
-                <a href="{{ route('admin.products.index') }}" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+            <div class="flex items-center space-x-3 w-full sm:w-auto justify-end">
+                <a href="{{ route('admin.products.index') }}" class="flex-1 sm:flex-initial text-center px-4 sm:px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm sm:text-base">
                     <i class="fas fa-times mr-2"></i>Annuler
                 </a>
-                <button type="submit" class="px-6 py-2 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] transition-colors">
+                <button type="submit" class="flex-1 sm:flex-initial px-4 sm:px-6 py-2 bg-[#003e87] text-white rounded-lg hover:bg-[#0855b1] transition-colors text-sm sm:text-base">
                     <i class="fas fa-check mr-2"></i>Sauvegarder
                 </button>
             </div>
@@ -61,7 +61,7 @@
         <div class="lg:col-span-2 space-y-6">
             
             <!-- Basic Information -->
-            <div class="bg-white rounded-lg shadow p-6">
+            <div class="bg-white rounded-lg shadow p-4 sm:p-6">
                 <h3 class="text-lg font-semibold mb-4 flex items-center">
                     <i class="fas fa-info-circle text-[#003e87] mr-2"></i>
                     Informations de base
@@ -82,12 +82,12 @@
                     </div>
 
                     <!-- Category & Subcategory -->
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">
                                 Catégorie <span class="text-red-500">*</span>
                             </label>
-                            <select name="category_id" required
+                            <select name="category_id" id="category_id" required
                                     class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#003e87] focus:border-[#003e87]">
                                 <option value="">Sélectionner...</option>
                                 @foreach($categories as $category)
@@ -105,14 +105,9 @@
                             <label class="block text-sm font-medium text-gray-700 mb-2">
                                 Sous-catégorie
                             </label>
-                            <select name="subcategory_id"
+                            <select name="subcategory_id" id="subcategory_id"
                                     class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#003e87] focus:border-[#003e87]">
                                 <option value="">Aucune</option>
-                                @foreach($subcategories as $subcategory)
-                                    <option value="{{ $subcategory->id }}" {{ old('subcategory_id', $product->subcategory_id) == $subcategory->id ? 'selected' : '' }}>
-                                        {{ $subcategory->name }}
-                                    </option>
-                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -153,13 +148,13 @@
             </div>
 
             <!-- Pricing -->
-            <div class="bg-white rounded-lg shadow p-6">
+            <div class="bg-white rounded-lg shadow p-4 sm:p-6">
                 <h3 class="text-lg font-semibold mb-4 flex items-center">
                     <i class="fas fa-dollar-sign text-[#003e87] mr-2"></i>
                     Prix
                 </h3>
                 
-                <div class="grid grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             Prix actuel (DH) <span class="text-red-500">*</span>
@@ -200,7 +195,7 @@
             </div>
 
             <!-- Inventory -->
-            <div class="bg-white rounded-lg shadow p-6">
+            <div class="bg-white rounded-lg shadow p-4 sm:p-6">
                 <h3 class="text-lg font-semibold mb-4 flex items-center">
                     <i class="fas fa-box text-[#003e87] mr-2"></i>
                     Stock
@@ -221,7 +216,7 @@
             </div>
 
             <!-- Image -->
-            <div class="bg-white rounded-lg shadow p-6">
+            <div class="bg-white rounded-lg shadow p-4 sm:p-6">
                 <h3 class="text-lg font-semibold mb-4 flex items-center">
                     <i class="fas fa-image text-[#003e87] mr-2"></i>
                     Image du produit
@@ -230,17 +225,23 @@
                 @if($product->image)
                     <div class="mb-4">
                         <p class="text-sm text-gray-600 mb-2">Image actuelle:</p>
-                        @if(filter_var($product->image, FILTER_VALIDATE_URL))
-                            <img src="{{ $product->image }}" 
-                                 alt="{{ $product->name }}" 
-                                 class="w-32 h-32 object-cover rounded-lg border"
-                                 onerror="this.src='{{ asset('images/placeholder-product.svg') }}'; this.onerror=null;">
-                        @else
-                            <img src="{{ asset('storage/' . $product->image) }}" 
-                                 alt="{{ $product->name }}" 
-                                 class="w-32 h-32 object-cover rounded-lg border"
-                                 onerror="this.src='{{ asset('images/placeholder-product.svg') }}'; this.onerror=null;">
-                        @endif
+                        @php
+                            if (filter_var($product->image, FILTER_VALIDATE_URL)) {
+                                $imageUrl = $product->image;
+                            } elseif (str_starts_with($product->image, 'products/')) {
+                                $imageUrl = asset('storage/' . $product->image);
+                            } elseif (str_starts_with($product->image, 'storage/')) {
+                                $imageUrl = asset($product->image);
+                            } elseif (str_starts_with($product->image, 'images/')) {
+                                $imageUrl = asset($product->image);
+                            } else {
+                                $imageUrl = asset('storage/' . $product->image);
+                            }
+                        @endphp
+                        <img src="{{ $imageUrl }}" 
+                             alt="{{ $product->name }}" 
+                             class="w-32 h-32 object-cover rounded-lg border"
+                             onerror="this.src='{{ asset('images/placeholder-product.svg') }}'; this.onerror=null;">
                     </div>
                 @endif
                 
@@ -263,7 +264,7 @@
         <div class="space-y-6">
             
             <!-- Status & Visibility -->
-            <div class="bg-white rounded-lg shadow p-6">
+            <div class="bg-white rounded-lg shadow p-4 sm:p-6">
                 <h3 class="text-lg font-semibold mb-4">Statut</h3>
                 
                 <div class="space-y-4">
@@ -282,7 +283,7 @@
             </div>
 
             <!-- Badges -->
-            <div class="bg-white rounded-lg shadow p-6">
+            <div class="bg-white rounded-lg shadow p-4 sm:p-6">
                 <h3 class="text-lg font-semibold mb-4">Badges</h3>
                 
                 <div class="space-y-3">
@@ -313,7 +314,7 @@
             </div>
 
             <!-- Product Info -->
-            <div class="bg-white rounded-lg shadow p-6">
+            <div class="bg-white rounded-lg shadow p-4 sm:p-6">
                 <h3 class="text-lg font-semibold mb-4">Informations</h3>
                 
                 <div class="space-y-3 text-sm">
@@ -351,9 +352,46 @@ function calculateDiscount() {
     }
 }
 
-// Calculate on page load
+// Load subcategories dynamically based on selected category
+const categorySelect = document.getElementById('category_id');
+const subcategorySelect = document.getElementById('subcategory_id');
+const initialSubcategoryId = "{{ old('subcategory_id', $product->subcategory_id) }}";
+
+function loadSubcategories(categoryId, selectedId = null) {
+    subcategorySelect.innerHTML = '<option value="">Aucune</option>';
+    
+    if (categoryId) {
+        fetch(`/admin/products/subcategories/${categoryId}`)
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(sub => {
+                    const option = document.createElement('option');
+                    option.value = sub.id;
+                    option.textContent = sub.name;
+                    if (selectedId && sub.id == selectedId) {
+                        option.selected = true;
+                    }
+                    subcategorySelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching subcategories:', error));
+    }
+}
+
+// Calculate and load subcategories on page load
 document.addEventListener('DOMContentLoaded', function() {
     calculateDiscount();
+    
+    if (categorySelect && subcategorySelect) {
+        categorySelect.addEventListener('change', function() {
+            loadSubcategories(this.value);
+        });
+        
+        // Initial load for existing product subcategory
+        if (categorySelect.value) {
+            loadSubcategories(categorySelect.value, initialSubcategoryId);
+        }
+    }
 });
 </script>
 @endsection

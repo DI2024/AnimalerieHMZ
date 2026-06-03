@@ -2,9 +2,7 @@
 
 @section('content')
 @php
-    $imageUrl = $product->image && str_starts_with($product->image, 'http') 
-        ? $product->image 
-        : asset($product->image);
+    $imageUrl = $product->image_url;
     $discount = $product->discount_percentage ?? 0;
 @endphp
 

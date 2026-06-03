@@ -11,6 +11,7 @@ class CategorySeeder extends Seeder
     {
         $categories = [
             [
+                'id' => 1,
                 'name' => 'Chiens',
                 'slug' => 'chiens',
                 'icon' => 'pets',
@@ -18,6 +19,7 @@ class CategorySeeder extends Seeder
                 'is_active' => true,
             ],
             [
+                'id' => 2,
                 'name' => 'Chats',
                 'slug' => 'chats',
                 'icon' => 'pets',
@@ -25,6 +27,7 @@ class CategorySeeder extends Seeder
                 'is_active' => true,
             ],
             [
+                'id' => 3,
                 'name' => 'Oiseaux',
                 'slug' => 'oiseaux',
                 'icon' => 'flutter',
@@ -32,6 +35,7 @@ class CategorySeeder extends Seeder
                 'is_active' => true,
             ],
             [
+                'id' => 4,
                 'name' => 'Poissons',
                 'slug' => 'poissons',
                 'icon' => 'water_drop',
@@ -39,6 +43,7 @@ class CategorySeeder extends Seeder
                 'is_active' => true,
             ],
             [
+                'id' => 5,
                 'name' => 'Pigeons',
                 'slug' => 'pigeons',
                 'icon' => 'flutter',
@@ -48,7 +53,7 @@ class CategorySeeder extends Seeder
         ];
 
         foreach ($categories as $category) {
-            \App\Models\Category::create($category);
+            \App\Models\Category::updateOrCreate(['id' => $category['id']], $category);
         }
     }
 }

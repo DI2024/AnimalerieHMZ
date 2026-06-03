@@ -110,7 +110,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/BREAK-RESERVE-15LT-ACQUA-NORDIC-SKY-04206-300x300.jpg',
             ],
             [
-                'category_id' => 1, 'subcategory_id' => 3,
+                'category_id' => 1, 'subcategory_id' => 2,
                 'name' => 'Jouet Interactif pour Chien',
                 'slug' => 'jouet-interactif-chien',
                 'description' => 'Jouet interactif stimulant pour chien. Favorise l\\\'activité mentale et physique.',
@@ -163,7 +163,7 @@ class NewProductsSeeder extends Seeder
 
             // --- Cage de transport (subcategory_id: 4) ---
             [
-                'category_id' => 2, 'subcategory_id' => 4,
+                'category_id' => 2, 'subcategory_id' => 8,
                 'name' => 'Cage de Transport Premium',
                 'slug' => 'cage-transport-premium-chat',
                 'description' => 'Cage de transport robuste et confortable. Ventilation optimale et sécurité renforcée.',
@@ -175,7 +175,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/IMG_20250311_151750-removebg-preview-150x150.webp',
             ],
             [
-                'category_id' => 2, 'subcategory_id' => 4,
+                'category_id' => 2, 'subcategory_id' => 8,
                 'name' => 'Sac de Transport Souple',
                 'slug' => 'sac-transport-souple-chat',
                 'description' => 'Sac de transport souple et confortable. Idéal pour les déplacements courts.',
@@ -530,7 +530,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/Proline Cat Litter Lavande babybowder.webp',
             ],
             [
-                'category_id' => 2, 'subcategory_id' => 6,
+                'category_id' => 2, 'subcategory_id' => 7,
                 'name' => 'Tiaki Scratching Stairs Puzzle',
                 'slug' => 'tiaki-scratching-stairs-puzzle',
                 'description' => 'Escalier griffoir puzzle Tiaki - combinaison intelligente de griffoir et jeu d\'éveil. Structure en carton résistant.',
@@ -542,7 +542,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/527097_pla_tiaki_scratching_stairs_puzzle_fg_6858_3.jpg',
             ],
             [
-                'category_id' => 2, 'subcategory_id' => 6,
+                'category_id' => 2, 'subcategory_id' => 7,
                 'name' => 'Arbre à Chat Cat Flower',
                 'slug' => 'arbre-a-chat-cat-flower',
                 'description' => 'Arbre à chat design fleur avec griffoirs, tunnels et plateformes. Structure ultra-stable en peluche douce.',
@@ -554,7 +554,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/63085_PLA_Kratzbaum_Cat_Flower_1_6.jpg',
             ],
             [
-                'category_id' => 2, 'subcategory_id' => 6,
+                'category_id' => 2, 'subcategory_id' => 7,
                 'name' => 'Foldable Tower Chat',
                 'slug' => 'foldable-tower-chat',
                 'description' => 'Tour pliable pour chat avec différents niveaux de jeu. Facile à ranger et à transporter. Idéal pour les petits espaces.',
@@ -565,7 +565,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/75300_foldable_tower_fg_3805_7.jpg',
             ],
             [
-                'category_id' => 2, 'subcategory_id' => 6,
+                'category_id' => 2, 'subcategory_id' => 8,
                 'name' => 'Fontaine à Eau pour Chat',
                 'slug' => 'fontaine-eau-chat',
                 'description' => 'Fontaine à eau automatique. Encourage l\\\'hydratation de votre chat.',
@@ -577,7 +577,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/28e1c5be-fbda-4056-bb29-2cb5fe00f7ee-700x700.webp',
             ],
             [
-                'category_id' => 2, 'subcategory_id' => 6,
+                'category_id' => 2, 'subcategory_id' => 8,
                 'name' => 'Jouet Interactif Petiz',
                 'slug' => 'jouet-interactif-petiz',
                 'description' => 'Jouet interactif électronique pour chat. Stimule l\\\'instinct de chasse.',
@@ -615,9 +615,9 @@ class NewProductsSeeder extends Seeder
             // OISEAUX (category_id: 3)
             // =============================================
 
-            // --- Cages & Volières (subcategory_id: 7) ---
+            // --- Cages & Volières (subcategory_id: 9) ---
             [
-                'category_id' => 3, 'subcategory_id' => 7,
+                'category_id' => 3, 'subcategory_id' => 9,
                 'name' => 'Cage Elevage Zolux Primo Cati 671',
                 'slug' => 'cage-elevage-zolux-primo-cati-671',
                 'description' => 'Cage d\'élevage Zolux Primo Cati pour oiseaux. Grande ouverture, mangeoires et abreuvoirs inclus. Facile à nettoyer.',
@@ -628,7 +628,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/Cage-delevage-Zolux-Primo-cati-671-300x300 (1).jpg',
             ],
             [
-                'category_id' => 3, 'subcategory_id' => 7,
+                'category_id' => 3, 'subcategory_id' => 9,
                 'name' => 'Cage Perroquet VL422174',
                 'slug' => 'cage-perroquet-vl422174',
                 'description' => 'Grande cage pour perroquets avec barreaux robustes et espacés. Multiples portes d\'accès et équipements inclus.',
@@ -640,9 +640,9 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/VL422174-e1737985565383-700x779.webp',
             ],
 
-            // --- Graines & Nutrition (subcategory_id: 8) ---
+            // --- Graines & Nutrition (subcategory_id: 10) ---
             [
-                'category_id' => 3, 'subcategory_id' => 8,
+                'category_id' => 3, 'subcategory_id' => 10,
                 'name' => 'Mélange pour Calopsitte',
                 'slug' => 'melange-pour-calopsitte',
                 'description' => 'Mélange de graines spécialement formulé pour les calopsittes. Riche en millet, avoine et graines de tournesol.',
@@ -653,7 +653,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/Melange-pour-calopsitte-e1714228585714-510x510-1.webp',
             ],
             [
-                'category_id' => 3, 'subcategory_id' => 8,
+                'category_id' => 3, 'subcategory_id' => 10,
                 'name' => 'Mélange pour Canaries avec Alpiste',
                 'slug' => 'melange-pour-canaries-avec-alpiste',
                 'description' => 'Mélange riche en alpiste pour canaries chanteurs. Composition équilibrée pour maintenir la forme vocale et physique.',
@@ -665,7 +665,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/Melange-pour-canaries-avec-alpiste-e1714147138859-510x510-1.webp',
             ],
             [
-                'category_id' => 3, 'subcategory_id' => 8,
+                'category_id' => 3, 'subcategory_id' => 10,
                 'name' => 'Aliment pour Perroquet',
                 'slug' => 'aliment-pour-perroquet',
                 'description' => 'Mélange premium de fruits secs, graines et granulés pour perroquets. Formule complète enrichie en vitamines A, D3 et E.',
@@ -676,10 +676,10 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/Aliment-pour-perroquet-510x510-1.webp',
             ],
             [
-                'category_id' => 3, 'subcategory_id' => 8,
+                'category_id' => 3, 'subcategory_id' => 10,
                 'name' => 'Graines Premium Mix',
                 'slug' => 'graines-premium-mix-oiseaux',
-                'description' => 'Mélange premium de graines variées. Pour tous types d\\\'oiseaux.',
+                'description' => 'Mélange premium de graines variées. Pour tous types d\'oiseaux.',
                 'short_description' => 'Mix premium',
                 'price' => 55.00, 'price_old' => 68.00, 'stock' => 51,
                 'sku' => 'OISEAU-GRAIN-004', 'is_active' => true,
@@ -687,9 +687,9 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/575434__53870-700x700.webp',
             ],
 
-            // --- Accessoires (subcategory_id: 9) ---
+            // --- Accessoires (subcategory_id: 11) ---
             [
-                'category_id' => 3, 'subcategory_id' => 9,
+                'category_id' => 3, 'subcategory_id' => 11,
                 'name' => 'HidraPlus 1kg Avianvet - Électrolytes oiseaux',
                 'slug' => 'hidraplus-1kg-avianvet-electrolytes-oiseaux',
                 'description' => 'Complément à base d\'électrolytes à dissoudre dans l\'eau pour oiseaux. Prévient la déshydratation lors de stress ou de chaleur.',
@@ -701,7 +701,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/hidraplus-1kg-avianvet-1825-eur-26251-avianvet-hidraplus-avianvet-est-un-complement-a-base-delectrolytes-a-dissoudre-dans-leau-o.jpg',
             ],
             [
-                'category_id' => 3, 'subcategory_id' => 9,
+                'category_id' => 3, 'subcategory_id' => 11,
                 'name' => 'Abreuvoir oiseaux',
                 'slug' => 'abreuvoir-oiseaux',
                 'description' => 'Abreuvoir pratique pour oiseaux en cage. Facile à fixer et à nettoyer, capacité adaptée aux petits et moyens oiseaux.',
@@ -712,10 +712,10 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/Abreuvoir-oiseaux-510x510-1.webp',
             ],
             [
-                'category_id' => 3, 'subcategory_id' => 9,
+                'category_id' => 3, 'subcategory_id' => 11,
                 'name' => 'Perchoir Naturel',
                 'slug' => 'perchoir-naturel-oiseaux',
-                'description' => 'Perchoir en bois naturel. Favorise le bien-être et l\\\'exercice des pattes.',
+                'description' => 'Perchoir en bois naturel. Favorise le bien-être et l\'exercice des pattes.',
                 'short_description' => 'Perchoir bois',
                 'price' => 45.00, 'price_old' => 55.00, 'stock' => 82,
                 'sku' => 'OISEAU-ACC-003', 'is_active' => true,
@@ -723,7 +723,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/045671b0f8370fb4e7f6f50230430e5285a325d2_33b04a0f1aa325976f5c117aee20eb1053e3f3de.webp',
             ],
             [
-                'category_id' => 3, 'subcategory_id' => 9,
+                'category_id' => 3, 'subcategory_id' => 11,
                 'name' => 'Jouet Suspendu en Bois pour Oiseau',
                 'slug' => 'jouet-suspendu-en-bois-pour-oiseau',
                 'description' => 'Jouet suspendu en bois naturel pour oiseaux. Idéal pour stimuler l\'exercice, le jeu et le bien-être de votre oiseau en cage. Facile à suspendre avec son crochet métallique.',
@@ -739,9 +739,9 @@ class NewProductsSeeder extends Seeder
             // POISSONS (category_id: 4)
             // =============================================
 
-            // --- Aquariums (subcategory_id: 10) ---
+            // --- Aquariums (subcategory_id: 12) ---
             [
-                'category_id' => 4, 'subcategory_id' => 10,
+                'category_id' => 4, 'subcategory_id' => 12,
                 'name' => 'EHEIM Vivaline LED Aquarium',
                 'slug' => 'eheim-vivaline-led-aquarium',
                 'description' => 'Aquarium EHEIM Vivaline avec éclairage LED intégré. Design élégant avec filtre interne silencieux et couvercle. Kit complet.',
@@ -753,7 +753,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/EHEIM-vivalineLED-126--300x300.jpg',
             ],
             [
-                'category_id' => 4, 'subcategory_id' => 10,
+                'category_id' => 4, 'subcategory_id' => 12,
                 'name' => 'Aquarium Débutant Complet',
                 'slug' => 'aquarium-debutant-complet',
                 'description' => 'Kit aquarium complet pour débutants. Tout le nécessaire pour démarrer.',
@@ -765,7 +765,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/401438-300x300.jpg',
             ],
             [
-                'category_id' => 4, 'subcategory_id' => 10,
+                'category_id' => 4, 'subcategory_id' => 12,
                 'name' => 'Nano Aquarium Design',
                 'slug' => 'nano-aquarium-design',
                 'description' => 'Nano aquarium au design épuré. Parfait pour petits espaces.',
@@ -777,9 +777,9 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/789e13160e60e4f591114fc3149abb7e5259aac8_9f6d373777204c04c4b83b37e56d1eabc5aa59d1.webp',
             ],
 
-            // --- Nourriture poissons (subcategory_id: 11) ---
+            // --- Nourriture poissons (subcategory_id: 13) ---
             [
-                'category_id' => 4, 'subcategory_id' => 11,
+                'category_id' => 4, 'subcategory_id' => 13,
                 'name' => 'Basic Tropical Flakes Dajana',
                 'slug' => 'basic-tropical-flakes-dajana',
                 'description' => 'Flocons de base Dajana pour poissons tropicaux. Formule équilibrée enrichie en spiruline et vitamines pour des couleurs éclatantes.',
@@ -791,7 +791,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/basic-tropical-flakes-dajana1-300x300.jpg',
             ],
             [
-                'category_id' => 4, 'subcategory_id' => 11,
+                'category_id' => 4, 'subcategory_id' => 13,
                 'name' => 'Sera KOI Royal 5 Nourriture Koïs',
                 'slug' => 'sera-koi-royal-5-nourriture-kois',
                 'description' => 'Nourriture premium Sera KOI Royal pour carpes koïs. Granulés flottants enrichis en spiruline pour des couleurs vives.',
@@ -802,7 +802,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/sera-KOI-ROYAL-5-65-300x300.jpg',
             ],
             [
-                'category_id' => 4, 'subcategory_id' => 11,
+                'category_id' => 4, 'subcategory_id' => 13,
                 'name' => 'Granulés Poissons Tropicaux',
                 'slug' => 'granules-poissons-tropicaux',
                 'description' => 'Granulés nutritifs pour poissons tropicaux. Haute digestibilité.',
@@ -813,9 +813,9 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/178538_PHO_PRO_CLIP_8853-1.jpg',
             ],
 
-            // --- Accessoires aquarium (subcategory_id: 12) ---
+            // --- Accessoires aquarium (subcategory_id: 14) ---
             [
-                'category_id' => 4, 'subcategory_id' => 12,
+                'category_id' => 4, 'subcategory_id' => 14,
                 'name' => 'Éponge pour Aquarium Trixie',
                 'slug' => 'eponge-pour-aquarium-trixie',
                 'description' => 'Éponge de nettoyage Trixie pour aquarium. Nettoyage efficace des vitres sans rayures. Compatible avec tous les aquariums.',
@@ -826,7 +826,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/EPONGE-POUR-AQUARIUM-trixie-300x300.jpg',
             ],
             [
-                'category_id' => 4, 'subcategory_id' => 12,
+                'category_id' => 4, 'subcategory_id' => 14,
                 'name' => 'Perles de Verre Lapis Lazuli Aquarium',
                 'slug' => 'perles-de-verre-lapis-lazuli-aquarium',
                 'description' => 'Décoration aquarium en perles de verre colorées Lapis Lazuli. Couleur bleue intense naturelle, inoffensif pour les poissons.',
@@ -842,9 +842,9 @@ class NewProductsSeeder extends Seeder
             // PIGEONS (category_id: 5)
             // =============================================
 
-            // --- Cages & Volières (subcategory_id: 13) ---
+            // --- Cages & Volières (subcategory_id: 16) ---
             [
-                'category_id' => 5, 'subcategory_id' => 13,
+                'category_id' => 5, 'subcategory_id' => 16,
                 'name' => 'Cage Élevage Zolux Primo Cati 671 Pigeons',
                 'slug' => 'cage-elevage-zolux-primo-cati-671-pigeons',
                 'description' => 'Cage d\'élevage Zolux pour pigeons et tourterelles. Structure robuste avec barreaux espacés adaptés. Accessoires inclus.',
@@ -855,7 +855,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/Cage-delevage-Zolux-Primo-cati-671-300x300.jpg',
             ],
             [
-                'category_id' => 5, 'subcategory_id' => 13,
+                'category_id' => 5, 'subcategory_id' => 16,
                 'name' => 'Abreuvoir Mangeoire Pigeons 8L Bleu GAUN',
                 'slug' => 'abreuvoir-mangeoire-pigeons-8l-bleu-gaun',
                 'description' => 'Abreuvoir-mangeoire combiné GAUN pour pigeons. Grande capacité 8L pour un approvisionnement continu. Facile à entretenir.',
@@ -866,7 +866,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/abreuvoir-mangeoire-pour-pigeons-8-l-bleu-gaun-1295-eur-30102-gaun-abreuvoir-mangeoire-pour-pigeons-8-l-bleu-gaun.jpg',
             ],
             [
-                'category_id' => 5, 'subcategory_id' => 13,
+                'category_id' => 5, 'subcategory_id' => 16,
                 'name' => 'Mangeoire Pigeons Qubus 80cm Demster',
                 'slug' => 'mangeoire-pigeons-qubus-80cm-demster',
                 'description' => 'Mangeoire longue Qubus 80cm pour pigeons en volière. Accès facile pour plusieurs oiseaux simultanément.',
@@ -877,7 +877,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/mangeoire-pigeons-qubus-80-cm-demster.jpg',
             ],
             [
-                'category_id' => 5, 'subcategory_id' => 13,
+                'category_id' => 5, 'subcategory_id' => 16,
                 'name' => 'Panier Entraînement Aluminium MIRA 110x28x61cm',
                 'slug' => 'panier-entrainement-aluminium-mira-110x28x61cm',
                 'description' => 'Panier d\'entraînement en aluminium MIRA pour pigeons voyageurs. Robuste et léger, idéal pour les lâchers d\'entraînement.',
@@ -889,7 +889,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/panier-d-entrainement-en-aluminium-mira-110x28x61-cm-demster.jpg',
             ],
             [
-                'category_id' => 5, 'subcategory_id' => 13,
+                'category_id' => 5, 'subcategory_id' => 16,
                 'name' => 'Panier Entraînement Bois Limoges 89.90x26x46cm',
                 'slug' => 'panier-entrainement-bois-limoges-89x26x46cm',
                 'description' => 'Panier d\'entraînement en bois naturel pour pigeons voyageurs. Style traditionnel Limoges, solide et durable.',
@@ -900,7 +900,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/panier-d-entrainement-pour-pigeon-en-bois-limoges-89-90x26x46cm-demster.jpg',
             ],
             [
-                'category_id' => 5, 'subcategory_id' => 13,
+                'category_id' => 5, 'subcategory_id' => 16,
                 'name' => 'Panier Exposition Petit Natural',
                 'slug' => 'panier-exposition-petit-natural',
                 'description' => 'Panier d\'exposition compact pour pigeons de concours. Finition naturelle élégante, idéal pour les expositions et jugements.',
@@ -911,9 +911,9 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/panier-d-exposition-petit-natural-2.jpg',
             ],
 
-            // --- Graines & Nutrition (subcategory_id: 14) ---
+            // --- Graines & Nutrition (subcategory_id: 15) ---
             [
-                'category_id' => 5, 'subcategory_id' => 14,
+                'category_id' => 5, 'subcategory_id' => 15,
                 'name' => 'Enzymix 7.50 MS Mue Méthionine 20kg Beyers',
                 'slug' => 'enzymix-750-ms-mue-methionine-20kg-beyers',
                 'description' => 'Mélange de mue haute qualité Beyers pour pigeons. Enrichi en méthionine pour favoriser une mue rapide et un beau plumage.',
@@ -925,7 +925,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/enzymix-7-50-ms-mue-methionine-20kg-beyers-2270-eur-070050-beyers-enzymix-7-50-ms-mue-methionine-20-kg-melange-de-mue-haute-qual.jpg',
             ],
             [
-                'category_id' => 5, 'subcategory_id' => 14,
+                'category_id' => 5, 'subcategory_id' => 15,
                 'name' => 'Mélanges Premium Pigeons',
                 'slug' => 'melanges-premium-pigeons',
                 'description' => 'Mélange de céréales premium pour pigeons de sport et d\'élevage. Composition équilibrée pour maintenir les performances.',
@@ -937,7 +937,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/melanges-premium.jpg',
             ],
             [
-                'category_id' => 5, 'subcategory_id' => 14,
+                'category_id' => 5, 'subcategory_id' => 15,
                 'name' => 'Grit 20kg Beyers Plus - Minéraux pour Pigeons',
                 'slug' => 'grit-20kg-beyers-plus-mineraux-pigeons',
                 'description' => 'Mélange de minéraux Beyers Plus composé de grit, coquillages et huître. Essentiel pour la digestion et la solidité des œufs.',
@@ -948,9 +948,9 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/grit-20kg-beyers-plus-003622-beyers-plus-un-melange-de-mineraux-compose-de-grit-de-coquillage-de-grit-de-coquille-dhuitre-de-gra-_1.webp',
             ],
 
-            // --- Accessoires (subcategory_id: 15) ---
+            // --- Accessoires (subcategory_id: 17) ---
             [
-                'category_id' => 5, 'subcategory_id' => 15,
+                'category_id' => 5, 'subcategory_id' => 17,
                 'name' => 'Colombine Vita 4kg - Vitamines & Minéraux Pigeons',
                 'slug' => 'colombine-vita-4kg-vitamines-mineraux-pigeons',
                 'description' => 'Complément vitaminé en poudre Colombine Vita pour pigeons. Vitamines, oligo-éléments et minéraux essentiels à la reproduction.',
@@ -961,7 +961,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/colombine-vita-4kg-vitamines-oligo-elements-et-mineraux-en-poudre-1560-eur-412361-versele-laga-vitamines-oligoelements-et-minera.jpg',
             ],
             [
-                'category_id' => 5, 'subcategory_id' => 15,
+                'category_id' => 5, 'subcategory_id' => 16,
                 'name' => 'Bactair Spray Hygiène Pigeons',
                 'slug' => 'bactair-spray-hygiene-pigeons',
                 'description' => 'Spray désinfectant Bactair pour colombiers et cages. Élimine les bactéries et agents pathogènes. Application facile en spray.',
@@ -972,7 +972,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/bactair-spray.jpg',
             ],
             [
-                'category_id' => 5, 'subcategory_id' => 15,
+                'category_id' => 5, 'subcategory_id' => 17,
                 'name' => 'BetaChol 1L - Vitamine E & Sélénium Pigeons',
                 'slug' => 'betachol-1l-vitamine-e-selenium-pigeons',
                 'description' => 'Concentré en vitamine E et sélénium Rohnfried pour pigeons. Améliore la fertilité, la vitalité et les performances en vol.',
@@ -984,7 +984,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/betachol-1l.jpg',
             ],
             [
-                'category_id' => 5, 'subcategory_id' => 15,
+                'category_id' => 5, 'subcategory_id' => 17,
                 'name' => 'Taubenfit E50 Vitamine E Rohnfried 100ml',
                 'slug' => 'taubenfit-e50-vitamine-e-rohnfried-100ml',
                 'description' => 'Concentré Vitamine E Taubenfit pour pigeons d\'élevage et de vol. Améliore les résultats de reproduction et la résistance.',
@@ -995,7 +995,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/taubenfit-e-50-vit-e-konzentrat-vit-e-et-selenium-la-periode-d-elevage-et-de-vol-100ml-rohnfried.jpg',
             ],
             [
-                'category_id' => 5, 'subcategory_id' => 15,
+                'category_id' => 5, 'subcategory_id' => 16,
                 'name' => 'Bagues Élastiques E-Z par 50 pièces 8mm Jaune',
                 'slug' => 'bagues-elastiques-ez-50-pieces-8mm-jaune',
                 'description' => 'Bagues d\'identification colorées E-Z pour pigeons. Lot de 50 bagues élastiques de 8mm de couleur jaune, faciles à poser.',
@@ -1006,7 +1006,7 @@ class NewProductsSeeder extends Seeder
                 'image' => 'storage/products/bagues-elastiques-e-z-par-50-pieces-taille-8-mm-couleur-jaune-650-eur-880err08-yellow-rings-4-wings-voila-une-nouvelle-conceptio.jpg',
             ],
             [
-                'category_id' => 5, 'subcategory_id' => 15,
+                'category_id' => 5, 'subcategory_id' => 16,
                 'name' => 'Grattoir 16cm Manche Vert Ornibird',
                 'slug' => 'grattoir-16cm-manche-vert-ornibird',
                 'description' => 'Grattoir Ornibird 16cm avec manche vert en plastique. Outil pratique pour le nettoyage des fientes dans les cages et colombiers.',

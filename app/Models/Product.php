@@ -56,4 +56,42 @@ class Product extends Model
         $this->rating = $this->reviews()->where('is_approved', true)->avg('rating') ?: 5.0;
         $this->save();
     }
+
+    public function getImageUrlAttribute()
+    {
+        if (!$this->image) {
+            return asset('images/placeholder.svg');
+        }
+
+        if (str_starts_with($this->image, 'http://') || str_starts_with($this->image, 'https://')) {
+            return $this->image;
+        }
+
+        $filename = basename($this->image);
+
+        // List of directories inside public/
+        $directories = [
+            'images/products/img_product_chat/',
+            'images/products/img_product_chien/',
+            'images/products/img_product_oiseau/',
+            'images/products/img_product_peigon/',
+            'images/products/img_product_poisson/',
+            'images/products/',
+            'storage/products/',
+            'products/'
+        ];
+
+        foreach ($directories as $dir) {
+            if (file_exists(public_path($dir . $filename))) {
+                return asset($dir . $filename);
+            }
+        }
+
+        // Default fallbacks
+        if (str_starts_with($this->image, 'storage/') || str_starts_with($this->image, 'images/')) {
+            return asset($this->image);
+        }
+
+        return asset('storage/' . $this->image);
+    }
 }

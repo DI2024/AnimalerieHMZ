@@ -10,7 +10,7 @@
                 <!-- Bande du haut - Marques de produits (Desktop uniquement) -->
                 <div class="hidden md:block relative overflow-hidden rounded-2xl">
                     <div class="flex items-center">
-                        <img src="{{ asset('images/img brand product.png') }}" alt="Marques de produits" class="w-full h-full object-cover">
+                        <img src="{{ asset('images/img brand.png') }}" alt="Marques de produits" class="w-full h-full object-cover">
                     </div>
                 </div>
 
@@ -275,9 +275,7 @@
                     <div class="flex gap-6 pb-4">
                         @foreach($bestsellers as $product)
                             @php
-                                $imageUrl = $product->image && str_starts_with($product->image, 'http') 
-                                    ? $product->image 
-                                    : asset($product->image);
+                                $imageUrl = $product->image_url;
                             @endphp
                             <!-- Carte Produit -->
                             <div class="min-w-[230px] w-[230px] bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col group border border-gray-200 flex-shrink-0">
@@ -508,7 +506,7 @@
                 <div class="flex flex-col gap-3">
                     <!-- Image horizontale - Pigeon 1 -->
                     <div class="relative overflow-hidden rounded-xl h-[180px] group">
-                        <img src="{{ asset('images/gal peg1.jpg') }}" alt="Pigeon" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <img src="{{ asset('images/gal peg1.png') }}" alt="Pigeon" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                     </div>
                     <!-- Image verticale - Chat -->
                     <div class="relative overflow-hidden rounded-xl h-[280px] group">
