@@ -16,6 +16,8 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 // Product Routes (Public)
 Route::get('/products', [App\Http\Controllers\Client\ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{slug}', [App\Http\Controllers\Client\ProductController::class, 'show'])->name('products.show');
+Route::get('/packs/{id}', [App\Http\Controllers\Client\ProductController::class, 'showPack'])->name('packs.show');
+Route::get('/offers/{id}', [App\Http\Controllers\Client\ProductController::class, 'showOffer'])->name('offers.show');
 
 // Cart Page (Public)
 Route::get('/cart', [App\Http\Controllers\CartController::class, 'show'])->name('cart.show');

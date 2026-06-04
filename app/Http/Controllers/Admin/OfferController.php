@@ -55,7 +55,7 @@ class OfferController extends Controller
             'order' => 'required|integer|min:0',
             'type' => 'required|string|in:offer,pack,percentage',
             'pack_price' => 'required_if:type,pack|nullable|numeric|min:0',
-            'product_ids' => 'required_if:type,pack|array',
+            'product_ids' => 'required_if:type,pack|nullable|array',
             'product_ids.*' => 'exists:products,id',
         ]);
 
@@ -74,11 +74,7 @@ class OfferController extends Controller
 
         $offer = Offer::create($validated);
 
-        if ($validated['type'] === 'pack') {
-            $offer->products()->sync($request->input('product_ids', []));
-        } else {
-            $offer->products()->sync([]);
-        }
+        $offer->products()->sync($request->input('product_ids', []));
 
         return redirect()->route('admin.offers.index')
             ->with('success', $validated['type'] === 'pack' ? 'Pack créé avec succès!' : 'Offre créée avec succès!');
@@ -116,7 +112,7 @@ class OfferController extends Controller
             'order' => 'required|integer|min:0',
             'type' => 'required|string|in:offer,pack,percentage',
             'pack_price' => 'required_if:type,pack|nullable|numeric|min:0',
-            'product_ids' => 'required_if:type,pack|array',
+            'product_ids' => 'required_if:type,pack|nullable|array',
             'product_ids.*' => 'exists:products,id',
         ]);
 
@@ -140,11 +136,7 @@ class OfferController extends Controller
 
         $offer->update($validated);
 
-        if ($validated['type'] === 'pack') {
-            $offer->products()->sync($request->input('product_ids', []));
-        } else {
-            $offer->products()->sync([]);
-        }
+        $offer->products()->sync($request->input('product_ids', []));
 
         return redirect()->route('admin.offers.index')
             ->with('success', $validated['type'] === 'pack' ? 'Pack mis à jour avec succès!' : 'Offre mise à jour avec succès!');

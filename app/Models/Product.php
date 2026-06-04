@@ -21,6 +21,7 @@ class Product extends Model
         'stock',
         'sku',
         'image',
+        'gallery',
         'is_active',
         'is_new',
         'is_bestseller',
@@ -28,6 +29,14 @@ class Product extends Model
         'discount_percentage',
         'rating',
         'review_count',
+    ];
+
+    protected $casts = [
+        'gallery' => 'array',
+        'is_active' => 'boolean',
+        'is_new' => 'boolean',
+        'is_bestseller' => 'boolean',
+        'is_featured' => 'boolean',
     ];
 
     public function category()
@@ -38,6 +47,11 @@ class Product extends Model
     public function subcategory()
     {
         return $this->belongsTo(SubCategory::class, 'subcategory_id');
+    }
+
+    public function offers()
+    {
+        return $this->belongsToMany(Offer::class, 'offer_product');
     }
 
     public function orderItems()

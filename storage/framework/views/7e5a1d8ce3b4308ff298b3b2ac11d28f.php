@@ -1,7 +1,5 @@
-@extends('layouts.admin')
-
-@php
-    $isPack = $offer->type === 'pack';
+<?php
+    $isPack = request('type') === 'pack';
 
     $formattedProducts = $products->map(function($p) {
         return [
@@ -26,15 +24,15 @@
             })
         ];
     });
-@endphp
+?>
 
-@section('title', $isPack ? 'Modifier Pack' : 'Modifier Offre')
-@section('page-title', $isPack ? 'Modifier le Pack' : 'Modifier l\'Offre')
+<?php $__env->startSection('title', $isPack ? 'Nouveau Pack' : 'Nouvelle Offre'); ?>
+<?php $__env->startSection('page-title', $isPack ? 'Créer un Pack' : 'Créer une Offre'); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <!-- Back Button -->
 <div class="mb-6">
-    <a href="{{ route('admin.offers.index') }}" 
+    <a href="<?php echo e(route('admin.offers.index')); ?>" 
        class="inline-flex items-center text-gray-600 transition-colors" 
        style="color: #6b7280;"
        onmouseover="this.style.color='#003e87'" 
@@ -46,12 +44,11 @@
 
 <!-- Form Container -->
 <div class="bg-white rounded-lg shadow p-8">
-    <form action="{{ route('admin.offers.update', $offer) }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
+    <form action="<?php echo e(route('admin.offers.store')); ?>" method="POST" enctype="multipart/form-data">
+        <?php echo csrf_field(); ?>
         
         <!-- Hidden input for type -->
-        <input type="hidden" name="type" value="{{ $offer->type }}">
+        <input type="hidden" name="type" value="<?php echo e($isPack ? 'pack' : 'offer'); ?>">
         
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <!-- Left Column -->
@@ -59,24 +56,31 @@
                 <!-- Title / Pack Name -->
                 <div>
                     <label for="title" class="block text-sm font-semibold text-gray-700 mb-2">
-                        {{ $isPack ? 'Nom du pack' : 'Titre' }} <span class="text-red-500">*</span>
+                        <?php echo e($isPack ? 'Nom du pack' : 'Titre'); ?> <span class="text-red-500">*</span>
                     </label>
                     <input type="text" 
                            name="title" 
                            id="title" 
-                           value="{{ old('title', $offer->title) }}"
+                           value="<?php echo e(old('title')); ?>"
                            required
                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2" 
                            style="border-color: #e5e7eb;"
-                           onfocus="this.style.borderColor='{{ $isPack ? '#7c3aed' : '#003e87' }}'; this.style.boxShadow='0 0 0 3px {{ $isPack ? 'rgba(124,58,237,0.1)' : 'rgba(0,62,135,0.1)' }}'"
+                           onfocus="this.style.borderColor='<?php echo e($isPack ? '#7c3aed' : '#003e87'); ?>'; this.style.boxShadow='0 0 0 3px <?php echo e($isPack ? 'rgba(124,58,237,0.1)' : 'rgba(0,62,135,0.1)'); ?>'"
                            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"
-                           placeholder="{{ $isPack ? 'Ex: Pack Chiot Premium' : 'Ex: Jusqu\'à 25% de remise' }}">
-                    @error('title')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                           placeholder="<?php echo e($isPack ? 'Ex: Pack Chiot Premium' : 'Ex: Jusqu\'à 25% de remise'); ?>">
+                    <?php $__errorArgs = ['title'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <p class="mt-1 text-sm text-red-600"><?php echo e($message); ?></p>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
-                @if(!$isPack)
+                <?php if(!$isPack): ?>
                 <!-- Subtitle -->
                 <div>
                     <label for="subtitle" class="block text-sm font-semibold text-gray-700 mb-2">
@@ -85,15 +89,22 @@
                     <input type="text" 
                            name="subtitle" 
                            id="subtitle" 
-                           value="{{ old('subtitle', $offer->subtitle) }}"
+                           value="<?php echo e(old('subtitle')); ?>"
                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2" 
                            style="border-color: #e5e7eb;"
                            onfocus="this.style.borderColor='#003e87'; this.style.boxShadow='0 0 0 3px rgba(0,62,135,0.1)'"
                            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"
                            placeholder="Ex: Sur toute la gamme Chien">
-                    @error('subtitle')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <?php $__errorArgs = ['subtitle'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <p class="mt-1 text-sm text-red-600"><?php echo e($message); ?></p>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <!-- Badge -->
@@ -104,15 +115,22 @@
                     <input type="text" 
                            name="badge" 
                            id="badge" 
-                           value="{{ old('badge', $offer->badge) }}"
+                           value="<?php echo e(old('badge')); ?>"
                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2" 
                            style="border-color: #e5e7eb;"
                            onfocus="this.style.borderColor='#003e87'; this.style.boxShadow='0 0 0 3px rgba(0,62,135,0.1)'"
                            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"
                            placeholder="Ex: 🔥 Offre Spéciale">
-                    @error('badge')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <?php $__errorArgs = ['badge'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <p class="mt-1 text-sm text-red-600"><?php echo e($message); ?></p>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <!-- Link -->
@@ -123,17 +141,24 @@
                     <input type="text" 
                            name="link" 
                            id="link" 
-                           value="{{ old('link', $offer->link) }}"
+                           value="<?php echo e(old('link')); ?>"
                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2" 
                            style="border-color: #e5e7eb;"
                            onfocus="this.style.borderColor='#003e87'; this.style.boxShadow='0 0 0 3px rgba(0,62,135,0.1)'"
                            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"
                            placeholder="Ex: /categories/chiens">
-                    @error('link')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <?php $__errorArgs = ['link'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <p class="mt-1 text-sm text-red-600"><?php echo e($message); ?></p>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
-                @else
+                <?php else: ?>
                 <!-- Pack Price -->
                 <div>
                     <label for="pack_price" class="block text-sm font-semibold text-gray-700 mb-2">
@@ -142,7 +167,7 @@
                     <input type="number" 
                            name="pack_price" 
                            id="pack_price" 
-                           value="{{ old('pack_price', $offer->pack_price) }}"
+                           value="<?php echo e(old('pack_price')); ?>"
                            required
                            min="0"
                            step="0.01"
@@ -151,26 +176,33 @@
                            onfocus="this.style.borderColor='#7c3aed'; this.style.boxShadow='0 0 0 3px rgba(124,58,237,0.1)'"
                            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"
                            placeholder="Ex: 199.00">
-                    @error('pack_price')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <?php $__errorArgs = ['pack_price'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <p class="mt-1 text-sm text-red-600"><?php echo e($message); ?></p>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
-                @endif
+                <?php endif; ?>
 
                 <!-- Products Selection by Category / Subcategory -->
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
-                        {{ $isPack ? 'Sélectionner les produits du pack' : 'Sélectionner les produits associés à l\'offre' }} {!! $isPack ? '<span class="text-red-500">*</span>' : '' !!}
+                        <?php echo e($isPack ? 'Sélectionner les produits du pack' : 'Sélectionner les produits associés à l\'offre'); ?> <?php echo $isPack ? '<span class="text-red-500">*</span>' : ''; ?>
+
                     </label>
 
                     <!-- Hidden inputs container for form submission -->
                     <div id="hidden_inputs_container">
-                        @php
-                            $selectedProductIds = old('product_ids', $offer->products->pluck('id')->toArray());
-                        @endphp
-                        @foreach($selectedProductIds as $pId)
-                            <input type="hidden" name="product_ids[]" value="{{ $pId }}" id="hidden_input_{{ $pId }}">
-                        @endforeach
+                        <?php if(is_array(old('product_ids'))): ?>
+                            <?php $__currentLoopData = old('product_ids'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $pId): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <input type="hidden" name="product_ids[]" value="<?php echo e($pId); ?>" id="hidden_input_<?php echo e($pId); ?>">
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php endif; ?>
                     </div>
 
                     <!-- Category Selector -->
@@ -178,9 +210,9 @@
                         <label for="categorySelect" class="block text-xs font-semibold text-gray-500 mb-1">Catégorie :</label>
                         <select id="categorySelect" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" style="border-color: #e5e7eb;">
                             <option value="">Sélectionner une catégorie</option>
-                            @foreach($categories as $cat)
-                                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                            @endforeach
+                            <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($cat->id); ?>"><?php echo e($cat->name); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select>
                     </div>
 
@@ -199,16 +231,23 @@
 
                     <!-- Persistent Selected Products List -->
                     <div class="mb-4">
-                        <h4 class="text-sm font-semibold text-gray-700 mb-2">{{ $isPack ? 'Produits inclus dans le pack :' : 'Produits sélectionnés pour cette offre :' }}</h4>
+                        <h4 class="text-sm font-semibold text-gray-700 mb-2"><?php echo e($isPack ? 'Produits inclus dans le pack :' : 'Produits sélectionnés pour cette offre :'); ?></h4>
                         <div id="selectedProductsList" class="border rounded-lg p-4 bg-gray-50 min-h-16 space-y-2 max-h-60 overflow-y-auto" style="border-color: #e5e7eb;">
                             <p class="text-sm text-gray-500 text-center py-4 italic" id="emptySelectedMsg">Aucun produit sélectionné</p>
                         </div>
                     </div>
-                    @error('product_ids')
-                        <p class="mt-1 text-sm text-red-600 mb-4">{{ $message }}</p>
-                    @enderror
+                    <?php $__errorArgs = ['product_ids'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <p class="mt-1 text-sm text-red-600 mb-4"><?php echo e($message); ?></p>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
 
-                    @if($isPack)
+                    <?php if($isPack): ?>
                     <!-- Real-time Summary Card -->
                     <div class="mt-4 p-4 bg-purple-50 border border-purple-100 rounded-xl space-y-2">
                         <div class="flex justify-between text-sm text-purple-900">
@@ -225,30 +264,17 @@
                             <span><span id="savingsDisplay">0,00</span> DH (<span id="savingsPercentDisplay">0</span>%)</span>
                         </div>
                     </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
 
             <!-- Right Column -->
             <div class="space-y-6">
-                <!-- Current Image Display -->
-                @if($offer->image)
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">
-                        Image actuelle
-                    </label>
-                    <div class="border rounded-lg p-4 mb-4">
-                        <img src="{{ filter_var($offer->image, FILTER_VALIDATE_URL) ? $offer->image : asset('storage/' . $offer->image) }}" 
-                             alt="{{ $offer->title }}" 
-                             class="max-h-48 mx-auto rounded-lg">
-                    </div>
-                </div>
-                @endif
-
                 <!-- Image Upload -->
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
-                        {{ $offer->image ? 'Changer l\'image' : 'Image' }}
+                        <?php echo e($isPack ? 'Photo du pack' : 'Image'); ?>
+
                     </label>
                     <div class="border-2 border-dashed rounded-lg p-6 text-center" style="border-color: #d1d5db;">
                         <input type="file" 
@@ -265,9 +291,16 @@
                             <p class="text-xs text-gray-500 mt-1">PNG, JPG, GIF jusqu'à 2MB</p>
                         </label>
                     </div>
-                    @error('image')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <?php $__errorArgs = ['image'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <p class="mt-1 text-sm text-red-600"><?php echo e($message); ?></p>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <!-- Background Color -->
@@ -276,14 +309,14 @@
                         Couleur de fond
                     </label>
                     <div class="flex items-center gap-3">
-                        @php
-                            $currentColor = old('bg_color', $offer->bg_color ?? ($isPack ? '#7c3aed' : '#003e87'));
-                        @endphp
+                        <?php
+                            $currentColor = old('bg_color', $isPack ? '#7c3aed' : '#003e87');
+                        ?>
                         <!-- Custom Color Picker Trigger -->
                         <div class="relative w-10 h-10 rounded-lg border border-gray-200 overflow-hidden hover:scale-105 transition-transform flex-shrink-0" title="Choisir une couleur">
                             <input type="color" 
                                    id="custom_color_picker" 
-                                   value="{{ $currentColor }}"
+                                   value="<?php echo e($currentColor); ?>"
                                    class="absolute inset-0 w-full h-full p-0 border-0 cursor-pointer"
                                    style="transform: scale(2);"
                                    oninput="updateColorFromPicker(this.value)">
@@ -297,16 +330,23 @@
                             <input type="text" 
                                    name="bg_color" 
                                    id="bg_color" 
-                                   value="{{ $currentColor }}"
-                                   class="w-full px-4 py-2 border rounded-lg font-mono text-sm text-gray-700 focus:outline-none focus:ring-2 {{ $isPack ? 'focus:ring-purple-500' : 'focus:ring-blue-500' }}"
+                                   value="<?php echo e($currentColor); ?>"
+                                   class="w-full px-4 py-2 border rounded-lg font-mono text-sm text-gray-700 focus:outline-none focus:ring-2 <?php echo e($isPack ? 'focus:ring-purple-500' : 'focus:ring-blue-500'); ?>"
                                    style="border-color: #e5e7eb;"
                                    oninput="updatePickerFromText(this.value)"
-                                   placeholder="{{ $isPack ? '#7c3aed' : '#003e87' }}">
+                                   placeholder="<?php echo e($isPack ? '#7c3aed' : '#003e87'); ?>">
                         </div>
                     </div>
-                    @error('bg_color')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <?php $__errorArgs = ['bg_color'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <p class="mt-1 text-sm text-red-600"><?php echo e($message); ?></p>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <!-- Order -->
@@ -317,17 +357,24 @@
                     <input type="number" 
                            name="order" 
                            id="order" 
-                           value="{{ old('order', $offer->order ?? 0) }}"
+                           value="<?php echo e(old('order', 0)); ?>"
                            required
                            min="0"
                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2" 
                            style="border-color: #e5e7eb;"
-                           onfocus="this.style.borderColor='{{ $isPack ? '#7c3aed' : '#003e87' }}'; this.style.boxShadow='0 0 0 3px {{ $isPack ? 'rgba(124,58,237,0.1)' : 'rgba(0,62,135,0.1)' }}'"
+                           onfocus="this.style.borderColor='<?php echo e($isPack ? '#7c3aed' : '#003e87'); ?>'; this.style.boxShadow='0 0 0 3px <?php echo e($isPack ? 'rgba(124,58,237,0.1)' : 'rgba(0,62,135,0.1)'); ?>'"
                            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"
                            placeholder="Ex: 0">
-                    @error('order')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <?php $__errorArgs = ['order'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <p class="mt-1 text-sm text-red-600"><?php echo e($message); ?></p>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <!-- Active Status -->
@@ -337,10 +384,11 @@
                         <input type="checkbox" 
                                name="is_active" 
                                value="1" 
-                               {{ old('is_active', $offer->is_active) ? 'checked' : '' }}
+                               <?php echo e(old('is_active', true) ? 'checked' : ''); ?>
+
                                class="w-5 h-5 rounded" 
-                               style="color: {{ $isPack ? '#7c3aed' : '#003e87' }};">
-                        <span class="ml-3 text-sm font-semibold text-gray-700">{{ $isPack ? 'Pack actif' : 'Offre active' }}</span>
+                               style="color: <?php echo e($isPack ? '#7c3aed' : '#003e87'); ?>;">
+                        <span class="ml-3 text-sm font-semibold text-gray-700"><?php echo e($isPack ? 'Pack actif' : 'Offre active'); ?></span>
                     </label>
                 </div>
             </div>
@@ -350,12 +398,13 @@
         <div class="mt-8 flex items-center gap-4">
             <button type="submit" 
                     class="px-6 py-3 text-white rounded-lg font-semibold transition-colors" 
-                    style="background: {{ $isPack ? '#7c3aed' : '#003e87' }};"
-                    onmouseover="this.style.background='{{ $isPack ? '#6d28d9' : '#0855b1' }}'" 
-                    onmouseout="this.style.background='{{ $isPack ? '#7c3aed' : '#003e87' }}'">
-                <i class="fas fa-save mr-2"></i>{{ $isPack ? 'Enregistrer le pack' : 'Mettre à jour' }}
+                    style="background: <?php echo e($isPack ? '#7c3aed' : '#003e87'); ?>;"
+                    onmouseover="this.style.background='<?php echo e($isPack ? '#6d28d9' : '#0855b1'); ?>'" 
+                    onmouseout="this.style.background='<?php echo e($isPack ? '#7c3aed' : '#003e87'); ?>'">
+                <i class="fas fa-save mr-2"></i><?php echo e($isPack ? 'Créer le pack' : 'Créer l\'offre'); ?>
+
             </button>
-            <a href="{{ route('admin.offers.index') }}" 
+            <a href="<?php echo e(route('admin.offers.index')); ?>" 
                class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-colors">
                 Annuler
             </a>
@@ -363,9 +412,9 @@
     </form>
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
 function updateColorFromPicker(hex) {
     document.getElementById('bg_color').value = hex;
@@ -392,9 +441,11 @@ function previewImage(event) {
 
 document.addEventListener('DOMContentLoaded', function () {
     // Data structures
-    const allProducts = @json($formattedProducts);
-    const categories = @json($formattedCategories);
-    const isPack = @json($isPack);
+    const allProducts = <?php echo json_encode($formattedProducts, 15, 512) ?>;
+
+    const categories = <?php echo json_encode($formattedCategories, 15, 512) ?>;
+
+    const isPack = <?php echo json_encode($isPack, 15, 512) ?>;
 
     // Dom elements
     const categorySelect = document.getElementById('categorySelect');
@@ -412,8 +463,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Selected products map
     let selectedProductsMap = new Map();
 
-    // Initialize with existing values
-    const oldProductIds = @json(old('product_ids', $offer->products->pluck('id')->toArray()));
+    // Initialize with old values if present
+    const oldProductIds = <?php echo json_encode(old('product_ids', []), 512) ?>;
     oldProductIds.forEach(id => {
         const prod = allProducts.find(p => p.id == id);
         if (prod) {
@@ -625,4 +676,6 @@ document.addEventListener('DOMContentLoaded', function () {
     calculateTotals();
 });
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\User\Desktop\animx\AnimalerieHMZ\resources\views/admin/offers/create.blade.php ENDPATH**/ ?>

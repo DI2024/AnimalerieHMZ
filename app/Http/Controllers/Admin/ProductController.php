@@ -144,6 +144,8 @@ class ProductController extends Controller
             'stock' => 'required|integer|min:0',
             'sku' => 'nullable|string|unique:products,sku',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'images' => 'nullable|array|max:10',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'is_active' => 'boolean',
             'is_new' => 'boolean',
             'is_bestseller' => 'boolean',
@@ -166,6 +168,15 @@ class ProductController extends Controller
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('products', 'public');
             $validated['image'] = $path;
+        }
+
+        // Handle gallery images upload
+        if ($request->hasFile('images')) {
+            $gallery = [];
+            foreach ($request->file('images') as $file) {
+                $gallery[] = $file->store('products', 'public');
+            }
+            $validated['gallery'] = $gallery;
         }
 
         // Calculate discount percentage if not provided
@@ -203,6 +214,8 @@ class ProductController extends Controller
             'stock' => 'required|integer|min:0',
             'sku' => 'nullable|string|unique:products,sku,' . $id,
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'images' => 'nullable|array|max:10',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'discount_percentage' => 'nullable|integer|min:0|max:100',
         ]);
 
@@ -236,6 +249,32 @@ class ProductController extends Controller
             $validated['image'] = $path;
         }
 
+        // Handle gallery images
+        $gallery = $product->gallery ?? [];
+        
+        // Handle deleted gallery images
+        if ($request->has('delete_gallery_images')) {
+            $deletedImages = $request->input('delete_gallery_images');
+            foreach ($deletedImages as $img) {
+                if (($key = array_search($img, $gallery)) !== false) {
+                    if (Storage::disk('public')->exists($img)) {
+                        Storage::disk('public')->delete($img);
+                    }
+                    unset($gallery[$key]);
+                }
+            }
+            $gallery = array_values($gallery);
+        }
+
+        // Add new gallery images
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $gallery[] = $file->store('products', 'public');
+            }
+        }
+        
+        $validated['gallery'] = $gallery;
+
         // Calculate discount percentage if not provided
         if (!isset($validated['discount_percentage']) && isset($validated['price_old']) && $validated['price_old'] > 0) {
             $validated['discount_percentage'] = round((($validated['price_old'] - $validated['price']) / $validated['price_old']) * 100);
@@ -254,6 +293,15 @@ class ProductController extends Controller
         // Delete image if exists
         if ($product->image && Storage::disk('public')->exists($product->image)) {
             Storage::disk('public')->delete($product->image);
+        }
+
+        // Delete gallery images if exist
+        if ($product->gallery && is_array($product->gallery)) {
+            foreach ($product->gallery as $img) {
+                if (Storage::disk('public')->exists($img)) {
+                    Storage::disk('public')->delete($img);
+                }
+            }
         }
         
         $product->delete();

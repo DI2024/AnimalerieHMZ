@@ -193,7 +193,12 @@ Détails Commande #{{ $order->order_number }}
                                     </div>
                                 @endif
                                 <div>
-                                    <p class="font-medium">{{ $item->product_name }}</p>
+                                    <p class="font-medium text-gray-900">
+                                        {{ $item->product_name }}
+                                        @if($item->pack_id)
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-purple-100 text-purple-800 ml-2">PACK</span>
+                                        @endif
+                                    </p>
                                     @if($item->product_sku)
                                         <p class="text-sm text-gray-500">SKU: {{ $item->product_sku }}</p>
                                     @endif
@@ -205,7 +210,22 @@ Détails Commande #{{ $order->order_number }}
                             <span class="font-medium">{{ $item->quantity }}</span>
                         </td>
                         <td class="px-6 py-4 text-sm">
-                            @if($item->product)
+                            @if($item->pack_id)
+                                @if($item->pack && $item->pack->products->count() > 0)
+                                    <div class="text-xs space-y-1">
+                                        @foreach($item->pack->products as $subProduct)
+                                            <div class="text-gray-600 whitespace-nowrap">
+                                                - {{ $subProduct->name }} 
+                                                <span class="font-semibold {{ $subProduct->stock <= 0 ? 'text-red-600' : ($subProduct->stock < 10 ? 'text-yellow-600' : 'text-green-600') }}">
+                                                    ({{ $subProduct->stock }} en stock)
+                                                </span>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <span class="text-gray-400">Composants indisponibles</span>
+                                @endif
+                            @elseif($item->product)
                                 @php
                                     $stock = $item->product->stock;
                                     $stockClass = $stock <= 0 ? 'text-red-600' : ($stock < 10 ? 'text-yellow-600' : 'text-green-600');
@@ -237,12 +257,34 @@ Détails Commande #{{ $order->order_number }}
                                         </div>
                                     @endif
                                     <div class="flex-1 min-w-0">
-                                        <p class="font-semibold text-gray-900 text-sm truncate">{{ $item->product_name }}</p>
+                                        <p class="font-semibold text-gray-900 text-sm truncate">
+                                            {{ $item->product_name }}
+                                            @if($item->pack_id)
+                                                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-purple-100 text-purple-800 ml-1">PACK</span>
+                                            @endif
+                                        </p>
                                         @if($item->product_sku)
                                             <p class="text-xs text-gray-500">SKU: {{ $item->product_sku }}</p>
                                         @endif
                                         <div class="mt-1">
-                                            @if($item->product)
+                                            @if($item->pack_id)
+                                                @if($item->pack && $item->pack->products->count() > 0)
+                                                    <div class="text-[10px] text-gray-500 space-y-0.5 mt-1">
+                                                        @foreach($item->pack->products as $subProduct)
+                                                            <div>
+                                                                • {{ $subProduct->name }} 
+                                                                <span class="font-semibold {{ $subProduct->stock <= 0 ? 'text-red-600' : ($subProduct->stock < 10 ? 'text-yellow-600' : 'text-green-600') }}">
+                                                                    ({{ $subProduct->stock }})
+                                                                </span>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                @else
+                                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xxs font-medium text-gray-500 bg-gray-50">
+                                                        Composants indisponibles
+                                                    </span>
+                                                @endif
+                                            @elseif($item->product)
                                                 @php
                                                     $stock = $item->product->stock;
                                                     $stockClass = $stock <= 0 ? 'text-red-600 bg-red-50' : ($stock < 10 ? 'text-amber-600 bg-amber-50' : 'text-green-600 bg-green-50');

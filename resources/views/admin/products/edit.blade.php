@@ -258,6 +258,48 @@
                 </div>
             </div>
 
+            <!-- Galerie d'images -->
+            <div class="bg-white rounded-lg shadow p-4 sm:p-6 mt-6">
+                <h3 class="text-lg font-semibold mb-4 flex items-center">
+                    <i class="fas fa-images text-[#003e87] mr-2"></i>
+                    Galerie d'images
+                </h3>
+                
+                @if($product->gallery && count($product->gallery) > 0)
+                    <p class="text-sm text-gray-600 mb-2">Images de la galerie actuelles (cliquez sur la corbeille pour supprimer) :</p>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                        @foreach($product->gallery as $key => $galleryImage)
+                            @php
+                                if (filter_var($galleryImage, FILTER_VALIDATE_URL)) {
+                                    $galleryUrl = $galleryImage;
+                                } else {
+                                    $galleryUrl = asset('storage/' . $galleryImage);
+                                }
+                            @endphp
+                            <div class="relative group border rounded-lg p-1 transition-all duration-300" id="gallery-image-wrapper-{{ $key }}">
+                                <img src="{{ $galleryUrl }}" class="w-full aspect-square object-cover rounded-lg">
+                                <label class="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white rounded-full p-1.5 cursor-pointer shadow-md flex items-center justify-center transition-all duration-300" title="Supprimer">
+                                    <input type="checkbox" name="delete_gallery_images[]" value="{{ $galleryImage }}" class="hidden" onchange="toggleDeleteImage(this, 'gallery-image-wrapper-{{ $key }}')">
+                                    <i class="fas fa-trash-alt text-xs" id="icon-gallery-image-wrapper-{{ $key }}"></i>
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Ajouter des images à la galerie
+                    </label>
+                    <input type="file" name="images[]" accept="image/*" multiple
+                           class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#003e87] focus:border-[#003e87]">
+                    <p class="text-xs text-gray-500 mt-1">Vous pouvez sélectionner plusieurs images (Formats acceptés: JPG, PNG, GIF, WEBP)</p>
+                    @error('images')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+
         </div>
 
         <!-- Sidebar -->
@@ -393,5 +435,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
+function toggleDeleteImage(checkbox, elementId) {
+    const element = document.getElementById(elementId);
+    const icon = document.getElementById('icon-' + elementId);
+    if (checkbox.checked) {
+        element.style.opacity = '0.4';
+        element.style.borderColor = '#ef4444';
+        icon.className = 'fas fa-undo text-xs';
+        icon.parentElement.title = 'Restaurer';
+        icon.parentElement.style.backgroundColor = '#10b981';
+    } else {
+        element.style.opacity = '1';
+        element.style.borderColor = '';
+        icon.className = 'fas fa-trash-alt text-xs';
+        icon.parentElement.title = 'Supprimer';
+        icon.parentElement.style.backgroundColor = '';
+    }
+}
 </script>
 @endsection

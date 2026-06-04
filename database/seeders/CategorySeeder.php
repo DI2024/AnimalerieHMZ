@@ -15,7 +15,8 @@ class CategorySeeder extends Seeder
                 'name' => 'Chiens',
                 'slug' => 'chiens',
                 'icon' => 'pets',
-                'image' => 'images/cat_chien.jpg',
+                'image' => 'images/img_category/cat_chien.webp',
+                'order' => 4,
                 'is_active' => true,
             ],
             [
@@ -23,7 +24,8 @@ class CategorySeeder extends Seeder
                 'name' => 'Chats',
                 'slug' => 'chats',
                 'icon' => 'pets',
-                'image' => 'images/cat_chat.png',
+                'image' => 'images/img_category/cat_chat.webp',
+                'order' => 2,
                 'is_active' => true,
             ],
             [
@@ -31,7 +33,8 @@ class CategorySeeder extends Seeder
                 'name' => 'Oiseaux',
                 'slug' => 'oiseaux',
                 'icon' => 'flutter',
-                'image' => 'images/cat_oiseaux.png',
+                'image' => 'images/img_category/cat_oiseau.webp',
+                'order' => 3,
                 'is_active' => true,
             ],
             [
@@ -39,7 +42,8 @@ class CategorySeeder extends Seeder
                 'name' => 'Poissons',
                 'slug' => 'poissons',
                 'icon' => 'water_drop',
-                'image' => 'images/cat_poissons.png',
+                'image' => 'images/img_category/cat_poisson.png',
+                'order' => 5,
                 'is_active' => true,
             ],
             [
@@ -47,7 +51,8 @@ class CategorySeeder extends Seeder
                 'name' => 'Pigeons',
                 'slug' => 'pigeons',
                 'icon' => 'flutter',
-                'image' => 'images/cat_pigeons.png.png',
+                'image' => 'images/img_category/cat_pigeon.png',
+                'order' => 1,
                 'is_active' => true,
             ],
         ];

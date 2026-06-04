@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Offer;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -24,21 +25,55 @@ class CartController extends Controller
         $cartItems = [];
         $total = 0;
 
-        foreach ($cart as $productId => $quantity) {
-            $product = Product::with('category')->find($productId);
-            if ($product) {
-                $cartItems[] = [
-                    'id' => $product->id,
-                    'name' => $product->name,
-                    'slug' => $product->slug,
-                    'price' => $product->price,
-                    'image' => $product->image,
-                    'category' => $product->category ? $product->category->name : '',
-                    'quantity' => $quantity,
-                    'stock' => $product->stock,
-                    'subtotal' => $product->price * $quantity,
-                ];
-                $total += $product->price * $quantity;
+        foreach ($cart as $key => $quantity) {
+            if (strpos($key, 'pack_') === 0) {
+                // It's a pack
+                $packId = substr($key, 5);
+                $pack = Offer::with('products')->find($packId);
+                if ($pack) {
+                    $stockLimit = $this->getPackStockLimit($pack);
+                    $cartItems[] = [
+                        'id' => $key,
+                        'pack_id' => $pack->id,
+                        'name' => $pack->title,
+                        'slug' => null,
+                        'price' => (float)$pack->pack_price,
+                        'image' => $pack->image 
+                            ? (filter_var($pack->image, FILTER_VALIDATE_URL) ? $pack->image : 'storage/' . $pack->image)
+                            : 'images/placeholder.svg',
+                        'category' => 'Pack Spécial',
+                        'quantity' => $quantity,
+                        'stock' => $stockLimit,
+                        'subtotal' => (float)$pack->pack_price * $quantity,
+                        'is_pack' => true,
+                        'products' => $pack->products->map(function($p) {
+                            return [
+                                'id' => $p->id,
+                                'name' => $p->name,
+                                'price' => (float)$p->price,
+                            ];
+                        })->toArray(),
+                    ];
+                    $total += $pack->pack_price * $quantity;
+                }
+            } else {
+                // Normal product
+                $product = Product::with('category')->find($key);
+                if ($product) {
+                    $cartItems[] = [
+                        'id' => $product->id,
+                        'name' => $product->name,
+                        'slug' => $product->slug,
+                        'price' => (float)$product->price,
+                        'image' => $product->image_url,
+                        'category' => $product->category ? $product->category->name : '',
+                        'quantity' => $quantity,
+                        'stock' => $product->stock,
+                        'subtotal' => (float)$product->price * $quantity,
+                        'is_pack' => false,
+                    ];
+                    $total += $product->price * $quantity;
+                }
             }
         }
 
@@ -102,26 +137,53 @@ class CartController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            'product_id' => 'required|exists:products,id',
+            'product_id' => 'required|string',
             'quantity' => 'required|integer|min:0',
         ]);
 
-        $productId = $request->product_id;
+        $key = $request->product_id;
         $quantity = $request->quantity;
 
         $cart = session()->get('cart', []);
 
-        if ($quantity == 0) {
-            unset($cart[$productId]);
-        } else {
-            $product = Product::find($productId);
-            if ($product && $product->stock >= $quantity) {
-                $cart[$productId] = $quantity;
+        if (strpos($key, 'pack_') === 0) {
+            if ($quantity == 0) {
+                unset($cart[$key]);
             } else {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Stock insuffisant',
-                ], 400);
+                $packId = substr($key, 5);
+                $pack = Offer::with('products')->find($packId);
+                if (!$pack || $pack->type !== 'pack' || !$pack->is_active) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Pack non trouvé',
+                    ], 404);
+                }
+
+                // Check stock of components
+                foreach ($pack->products as $product) {
+                    if ($product->stock < $quantity) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => "Le stock pour le produit '{$product->name}' inclus dans ce pack est insuffisant.",
+                        ], 400);
+                    }
+                }
+                $cart[$key] = $quantity;
+            }
+        } else {
+            $productId = $key;
+            if ($quantity == 0) {
+                unset($cart[$productId]);
+            } else {
+                $product = Product::find($productId);
+                if ($product && $product->stock >= $quantity) {
+                    $cart[$productId] = $quantity;
+                } else {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Stock insuffisant',
+                    ], 400);
+                }
             }
         }
 
@@ -140,7 +202,7 @@ class CartController extends Controller
     public function remove(Request $request)
     {
         $request->validate([
-            'product_id' => 'required|exists:products,id',
+            'product_id' => 'required|string',
         ]);
 
         $productId = $request->product_id;
@@ -153,7 +215,7 @@ class CartController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Produit retiré du panier',
+            'message' => 'Article retiré du panier',
             'cart_count' => array_sum($cart),
         ]);
     }
@@ -178,9 +240,13 @@ class CartController extends Controller
     {
         $request->validate([
             'offer_id' => 'required|exists:offers,id',
+            'quantity' => 'integer|min:1',
         ]);
 
-        $offer = \App\Models\Offer::with('products')->find($request->offer_id);
+        $packId = $request->offer_id;
+        $quantity = $request->quantity ?? 1;
+
+        $offer = Offer::with('products')->find($packId);
         if (!$offer || $offer->type !== 'pack' || !$offer->is_active) {
             return response()->json([
                 'success' => false,
@@ -188,26 +254,38 @@ class CartController extends Controller
             ], 404);
         }
 
-        $cart = session()->get('cart', []);
-        $addedCount = 0;
-
+        // Check stock of components
         foreach ($offer->products as $product) {
-            if ($product->is_active && $product->stock > 0) {
-                $productId = $product->id;
-                if (isset($cart[$productId])) {
-                    $cart[$productId] += 1;
-                } else {
-                    $cart[$productId] = 1;
-                }
-                $addedCount++;
+            if (!$product->is_active) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Le produit '{$product->name}' inclus dans ce pack n'est plus actif.",
+                ], 400);
+            }
+            if ($product->stock < $quantity) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Stock insuffisant pour le produit '{$product->name}' inclus dans ce pack.",
+                ], 400);
             }
         }
 
-        if ($addedCount === 0) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Aucun produit du pack n\'est disponible en stock',
-            ], 400);
+        $cart = session()->get('cart', []);
+        $key = 'pack_' . $offer->id;
+
+        if (isset($cart[$key])) {
+            $newQuantity = $cart[$key] + $quantity;
+            foreach ($offer->products as $product) {
+                if ($product->stock < $newQuantity) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => "Le stock disponible est insuffisant pour commander {$newQuantity} fois ce pack.",
+                    ], 400);
+                }
+            }
+            $cart[$key] = $newQuantity;
+        } else {
+            $cart[$key] = $quantity;
         }
 
         session()->put('cart', $cart);
@@ -217,5 +295,16 @@ class CartController extends Controller
             'message' => 'Pack ajouté au panier',
             'cart_count' => array_sum($cart),
         ]);
+    }
+
+    /**
+     * Get the stock limit of a pack (minimum stock of its components)
+     */
+    private function getPackStockLimit($pack)
+    {
+        if ($pack->products->isEmpty()) {
+            return 0;
+        }
+        return $pack->products->min('stock');
     }
 }

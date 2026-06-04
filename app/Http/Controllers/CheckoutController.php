@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\Offer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -24,15 +25,37 @@ class CheckoutController extends Controller
         $cartItems = [];
         $subtotal = 0;
 
-        foreach ($cart as $productId => $quantity) {
-            $product = Product::with('category')->find($productId);
-            if ($product) {
-                $cartItems[] = [
-                    'product' => $product,
-                    'quantity' => $quantity,
-                    'subtotal' => $product->price * $quantity,
-                ];
-                $subtotal += $product->price * $quantity;
+        foreach ($cart as $key => $quantity) {
+            if (strpos($key, 'pack_') === 0) {
+                $packId = substr($key, 5);
+                $pack = Offer::with('products')->find($packId);
+                if ($pack) {
+                    $virtualProduct = new Product();
+                    $virtualProduct->id = $key;
+                    $virtualProduct->name = $pack->title;
+                    $virtualProduct->price = (float)$pack->pack_price;
+                    $virtualProduct->image = $pack->image;
+                    
+                    $cartItems[] = [
+                        'product' => $virtualProduct,
+                        'quantity' => $quantity,
+                        'subtotal' => (float)$pack->pack_price * $quantity,
+                        'is_pack' => true,
+                        'pack' => $pack,
+                    ];
+                    $subtotal += $pack->pack_price * $quantity;
+                }
+            } else {
+                $product = Product::with('category')->find($key);
+                if ($product) {
+                    $cartItems[] = [
+                        'product' => $product,
+                        'quantity' => $quantity,
+                        'subtotal' => (float)$product->price * $quantity,
+                        'is_pack' => false,
+                    ];
+                    $subtotal += $product->price * $quantity;
+                }
             }
         }
 
@@ -86,25 +109,52 @@ class CheckoutController extends Controller
             $subtotal = 0;
             $orderItems = [];
 
-            foreach ($cart as $productId => $quantity) {
-                $product = Product::find($productId);
-                if (!$product) {
-                    throw new \Exception("Produit non trouvé: {$productId}");
+            foreach ($cart as $key => $quantity) {
+                if (strpos($key, 'pack_') === 0) {
+                    $packId = substr($key, 5);
+                    $pack = Offer::with('products')->find($packId);
+                    if (!$pack || $pack->type !== 'pack' || !$pack->is_active) {
+                        throw new \Exception("Pack non trouvé ou inactif: {$key}");
+                    }
+
+                    // Check stock of each component
+                    foreach ($pack->products as $product) {
+                        if ($product->stock < $quantity) {
+                            throw new \Exception("Le stock pour le produit '{$product->name}' (inclus dans le pack '{$pack->title}') est insuffisant.");
+                        }
+                    }
+
+                    $itemSubtotal = $pack->pack_price * $quantity;
+                    $subtotal += $itemSubtotal;
+
+                    $orderItems[] = [
+                        'is_pack' => true,
+                        'pack' => $pack,
+                        'quantity' => $quantity,
+                        'price' => $pack->pack_price,
+                        'subtotal' => $itemSubtotal,
+                    ];
+                } else {
+                    $product = Product::find($key);
+                    if (!$product) {
+                        throw new \Exception("Produit non trouvé: {$key}");
+                    }
+
+                    if ($product->stock < $quantity) {
+                        throw new \Exception("Stock insuffisant pour: {$product->name}");
+                    }
+
+                    $itemSubtotal = $product->price * $quantity;
+                    $subtotal += $itemSubtotal;
+
+                    $orderItems[] = [
+                        'is_pack' => false,
+                        'product' => $product,
+                        'quantity' => $quantity,
+                        'price' => $product->price,
+                        'subtotal' => $itemSubtotal,
+                    ];
                 }
-
-                if ($product->stock < $quantity) {
-                    throw new \Exception("Stock insuffisant pour: {$product->name}");
-                }
-
-                $itemSubtotal = $product->price * $quantity;
-                $subtotal += $itemSubtotal;
-
-                $orderItems[] = [
-                    'product' => $product,
-                    'quantity' => $quantity,
-                    'price' => $product->price,
-                    'subtotal' => $itemSubtotal,
-                ];
             }
 
             $shippingCost = 0; // No shipping cost
@@ -154,19 +204,34 @@ class CheckoutController extends Controller
 
             // Create order items and update stock
             foreach ($orderItems as $item) {
-                OrderItem::create([
-                    'order_id' => $order->id,
-                    'product_id' => $item['product']->id,
-                    'product_name' => $item['product']->name,
-                    'product_sku' => $item['product']->sku,
-                    'product_image' => $item['product']->image,
-                    'price' => $item['price'],
-                    'quantity' => $item['quantity'],
-                    'subtotal' => $item['subtotal'],
-                ]);
+                if ($item['is_pack']) {
+                    OrderItem::create([
+                        'order_id' => $order->id,
+                        'product_id' => null,
+                        'pack_id' => $item['pack']->id,
+                        'product_name' => $item['pack']->title,
+                        'product_sku' => 'PACK-' . $item['pack']->id,
+                        'product_image' => $item['pack']->image,
+                        'price' => $item['price'],
+                        'quantity' => $item['quantity'],
+                        'subtotal' => $item['subtotal'],
+                    ]);
+                    // Stock for pack components is updated on Order confirmation (pending -> confirmed)
+                } else {
+                    OrderItem::create([
+                        'order_id' => $order->id,
+                        'product_id' => $item['product']->id,
+                        'product_name' => $item['product']->name,
+                        'product_sku' => $item['product']->sku,
+                        'product_image' => $item['product']->image,
+                        'price' => $item['price'],
+                        'quantity' => $item['quantity'],
+                        'subtotal' => $item['subtotal'],
+                    ]);
 
-                // Update product stock
-                $item['product']->decrement('stock', $item['quantity']);
+                    // Update product stock immediately for standard products
+                    $item['product']->decrement('stock', $item['quantity']);
+                }
             }
 
             DB::commit();

@@ -122,7 +122,9 @@
                             ? (filter_var($offer->image, FILTER_VALIDATE_URL) ? $offer->image : asset('storage/' . $offer->image)) 
                             : asset('images/placeholder.svg');
                             
-                        $offerLink = $offer->link ?: route('products.index');
+                        $offerLink = $offer->type === 'pack' 
+                            ? route('packs.show', $offer->id) 
+                            : route('products.index', ['is_offer' => 1, 'offer_id' => $offer->id]);
                     @endphp
                     
                     @if($offer->type === 'pack')

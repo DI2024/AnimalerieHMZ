@@ -154,11 +154,12 @@
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
+                @endif
 
                 <!-- Products Selection by Category / Subcategory -->
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
-                        Sélectionner les produits du pack <span class="text-red-500">*</span>
+                        {{ $isPack ? 'Sélectionner les produits du pack' : 'Sélectionner les produits associés à l\'offre' }} {!! $isPack ? '<span class="text-red-500">*</span>' : '' !!}
                     </label>
 
                     <!-- Hidden inputs container for form submission -->
@@ -196,7 +197,7 @@
 
                     <!-- Persistent Selected Products List -->
                     <div class="mb-4">
-                        <h4 class="text-sm font-semibold text-gray-700 mb-2">Produits inclus dans le pack :</h4>
+                        <h4 class="text-sm font-semibold text-gray-700 mb-2">{{ $isPack ? 'Produits inclus dans le pack :' : 'Produits sélectionnés pour cette offre :' }}</h4>
                         <div id="selectedProductsList" class="border rounded-lg p-4 bg-gray-50 min-h-16 space-y-2 max-h-60 overflow-y-auto" style="border-color: #e5e7eb;">
                             <p class="text-sm text-gray-500 text-center py-4 italic" id="emptySelectedMsg">Aucun produit sélectionné</p>
                         </div>
@@ -205,6 +206,7 @@
                         <p class="mt-1 text-sm text-red-600 mb-4">{{ $message }}</p>
                     @enderror
 
+                    @if($isPack)
                     <!-- Real-time Summary Card -->
                     <div class="mt-4 p-4 bg-purple-50 border border-purple-100 rounded-xl space-y-2">
                         <div class="flex justify-between text-sm text-purple-900">
@@ -221,8 +223,8 @@
                             <span><span id="savingsDisplay">0,00</span> DH (<span id="savingsPercentDisplay">0</span>%)</span>
                         </div>
                     </div>
+                    @endif
                 </div>
-                @endif
             </div>
 
             <!-- Right Column -->
@@ -372,12 +374,13 @@ function previewImage(event) {
     }
 }
 
-@if($isPack)
 document.addEventListener('DOMContentLoaded', function () {
     // Data structures
     const allProducts = @json($formattedProducts);
 
     const categories = @json($formattedCategories);
+
+    const isPack = @json($isPack);
 
     // Dom elements
     const categorySelect = document.getElementById('categorySelect');
@@ -405,34 +408,41 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Populate subcategories based on category
-    categorySelect.addEventListener('change', function () {
-        const catId = this.value;
-        
-        // Reset subcategory select
-        subcategorySelect.innerHTML = '<option value="">Toutes les sous-catégories</option>';
-        subcategorySelect.disabled = true;
-        
-        if (!catId) {
-            productsChecklistContainer.classList.add('hidden');
-            return;
-        }
+    if (categorySelect) {
+        categorySelect.addEventListener('change', function () {
+            const catId = this.value;
+            
+            // Reset subcategory select
+            subcategorySelect.innerHTML = '<option value="">Toutes les sous-catégories</option>';
+            subcategorySelect.disabled = true;
+            
+            if (!catId) {
+                productsChecklistContainer.classList.add('hidden');
+                return;
+            }
 
-        const cat = categories.find(c => c.id == catId);
-        if (cat && cat.subcategories.length > 0) {
-            cat.subcategories.forEach(sub => {
-                const opt = document.createElement('option');
-                opt.value = sub.id;
-                opt.textContent = sub.name;
-                subcategorySelect.appendChild(opt);
-            });
-            subcategorySelect.disabled = false;
-        }
+            const cat = categories.find(c => c.id == catId);
+            if (cat && cat.subcategories.length > 0) {
+                cat.subcategories.forEach(sub => {
+                    const opt = document.createElement('option');
+                    opt.value = sub.id;
+                    opt.textContent = sub.name;
+                    subcategorySelect.appendChild(opt);
+                });
+                subcategorySelect.disabled = false;
+            }
 
-        renderProductsList();
-    });
+            renderProductsList();
+        });
+    }
 
-    subcategorySelect.addEventListener('change', renderProductsList);
-    packPriceInput.addEventListener('input', calculateTotals);
+    if (subcategorySelect) {
+        subcategorySelect.addEventListener('change', renderProductsList);
+    }
+    
+    if (packPriceInput) {
+        packPriceInput.addEventListener('input', calculateTotals);
+    }
 
     function renderProductsList() {
         const catId = categorySelect.value;
@@ -519,8 +529,10 @@ document.addEventListener('DOMContentLoaded', function () {
         if (input) input.remove();
 
         // Uncheck if currently rendered in checklist
-        const chk = productsChecklistContainer.querySelector(`input[value="${id}"]`);
-        if (chk) chk.checked = false;
+        if (productsChecklistContainer) {
+            const chk = productsChecklistContainer.querySelector(`input[value="${id}"]`);
+            if (chk) chk.checked = false;
+        }
 
         renderSelectedProducts();
         calculateTotals();
@@ -565,6 +577,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function calculateTotals() {
+        if (!isPack) return;
+
         let totalOriginal = 0;
         selectedProductsMap.forEach(p => {
             totalOriginal += p.price;
@@ -574,15 +588,21 @@ document.addEventListener('DOMContentLoaded', function () {
         const savings = totalOriginal - packPrice;
         const savingsPercent = totalOriginal > 0 ? Math.round((savings / totalOriginal) * 100) : 0;
 
-        totalOriginalDisplay.textContent = totalOriginal.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        packPriceDisplay.textContent = packPrice.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        if (totalOriginalDisplay) {
+            totalOriginalDisplay.textContent = totalOriginal.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+        if (packPriceDisplay) {
+            packPriceDisplay.textContent = packPrice.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
 
-        if (savings > 0) {
-            savingsDisplay.textContent = savings.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            savingsPercentDisplay.textContent = savingsPercent;
-        } else {
-            savingsDisplay.textContent = '0,00';
-            savingsPercentDisplay.textContent = '0';
+        if (savingsDisplay && savingsPercentDisplay) {
+            if (savings > 0) {
+                savingsDisplay.textContent = savings.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                savingsPercentDisplay.textContent = savingsPercent;
+            } else {
+                savingsDisplay.textContent = '0,00';
+                savingsPercentDisplay.textContent = '0';
+            }
         }
     }
 
@@ -590,6 +610,5 @@ document.addEventListener('DOMContentLoaded', function () {
     renderSelectedProducts();
     calculateTotals();
 });
-@endif
 </script>
 @endpush

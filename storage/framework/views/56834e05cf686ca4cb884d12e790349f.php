@@ -1,4 +1,36 @@
 <?php $__env->startSection('content'); ?>
+<style>
+/* Scrollbar fin pour la sidebar des filtres */
+.filter-scroll::-webkit-scrollbar {
+    width: 4px;
+}
+.filter-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+.filter-scroll::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 99px;
+}
+.filter-scroll::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+/* Firefox */
+.filter-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db transparent;
+}
+</style>
+
+<?php
+    $selectedPack = null;
+    if (request('is_pack') && request('pack_id')) {
+        $selectedPack = $allPacks->firstWhere('id', request('pack_id'));
+    }
+    $selectedOffer = null;
+    if (request('is_offer') && request('offer_id')) {
+        $selectedOffer = $allOffers->firstWhere('id', request('offer_id'));
+    }
+?>
 <div class="min-h-screen bg-gradient-to-b from-surface-container-low to-white py-8">
     <div class="max-w-[1280px] mx-auto px-6">
         
@@ -17,10 +49,14 @@
             
             <!-- Sidebar Filters (Desktop uniquement) -->
             <aside class="lg:col-span-1 hidden lg:block">
-                <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-md sticky top-6">
-                    <h3 class="font-bold text-lg mb-4 text-primary">Filtres</h3>
+                <div class="bg-white rounded-2xl border border-gray-200 shadow-md sticky top-6 flex flex-col" style="max-height: calc(100vh - 3rem);">
+                    <div class="px-6 pt-6 pb-3 flex items-center justify-between flex-shrink-0 border-b border-gray-100">
+                        <h3 class="font-bold text-lg text-primary">Filtres</h3>
+                        <a href="<?php echo e(route('products.index')); ?>" class="text-xs text-gray-400 hover:text-primary transition font-medium">Réinitialiser</a>
+                    </div>
                     
-                    <form method="GET" action="<?php echo e(route('products.index')); ?>" class="space-y-6">
+                    <div class="overflow-y-auto flex-1 px-6 py-4 filter-scroll">
+                    <form method="GET" action="<?php echo e(route('products.index')); ?>" class="space-y-6" id="desktopFilterForm">
                         
                         <!-- Categories with Subcategories Accordion -->
                         <div>
@@ -115,7 +151,7 @@
                                 <h4 class="font-bold text-sm text-gray-900">Options</h4>
                                 <span class="material-symbols-outlined text-gray-500 transition-transform duration-300" id="optionsAccordionIcon">expand_more</span>
                             </button>
-                            <div id="optionsAccordion" class="space-y-2 pb-4 overflow-hidden transition-all duration-300">
+                            <div id="optionsAccordion" class="space-y-1 pb-4 overflow-hidden transition-all duration-300">
                                 <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition">
                                     <input type="checkbox" name="is_new" value="1" <?php echo e(request('is_new') ? 'checked' : ''); ?> class="rounded border-gray-300 text-primary focus:ring-primary">
                                     <span class="ml-2 text-sm text-gray-700">Nouveautés</span>
@@ -124,23 +160,105 @@
                                     <input type="checkbox" name="is_bestseller" value="1" <?php echo e(request('is_bestseller') ? 'checked' : ''); ?> class="rounded border-gray-300 text-primary focus:ring-primary">
                                     <span class="ml-2 text-gray-700">Best Sellers</span>
                                 </label>
-                                <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition">
-                                    <input type="checkbox" name="is_pack" value="1" <?php echo e(request('is_pack') ? 'checked' : ''); ?> class="rounded border-gray-300 text-primary focus:ring-primary">
-                                    <span class="ml-2 text-gray-700 font-bold text-purple-600">Packs 🔥</span>
-                                </label>
+
+                                <!-- Packs accordion item -->
+                                <div class="border-b border-gray-100 last:border-0">
+                                    <div class="flex items-center justify-between hover:bg-gray-50 rounded-lg transition">
+                                        <label class="flex items-center cursor-pointer p-2 flex-1">
+                                            <input type="checkbox" id="isPackCheckbox" name="is_pack" value="1"
+                                                   <?php echo e(request('is_pack') ? 'checked' : ''); ?>
+
+                                                   class="rounded border-gray-300 text-purple-600 focus:ring-purple-600"
+                                                   onchange="togglePackAccordion()">
+                                            <span class="ml-2 text-sm font-bold text-purple-600">Packs 🔥</span>
+                                        </label>
+                                        <?php if($allPacks->count() > 0): ?>
+                                        <button type="button" onclick="toggleCategoryAccordion('packsAccordion')" class="p-2 hover:bg-gray-100 rounded-lg transition">
+                                            <span class="material-symbols-outlined text-gray-500 text-sm transition-transform duration-300" id="packsAccordionIcon">expand_more</span>
+                                        </button>
+                                        <?php endif; ?>
+                                    </div>
+                                    <?php if($allPacks->count() > 0): ?>
+                                    <div id="packsAccordion"
+                                         class="ml-6 space-y-1 overflow-hidden transition-all duration-300"
+                                         style="max-height: <?php echo e(request('is_pack') ? '500px' : '0'); ?>; padding-bottom: <?php echo e(request('is_pack') ? '0.5rem' : '0'); ?>;">
+                                        <!-- "Tous" option -->
+                                        <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition">
+                                            <input type="radio" name="pack_id" value=""
+                                                   <?php echo e(request('is_pack') && !request('pack_id') ? 'checked' : ''); ?>
+
+                                                   class="rounded border-gray-300 text-purple-600 focus:ring-purple-600"
+                                                   onchange="selectPack(this.form, '')">
+                                            <span class="ml-2 text-xs text-gray-600">Tous les packs</span>
+                                        </label>
+                                        <?php $__currentLoopData = $allPacks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition">
+                                            <input type="radio" name="pack_id" value="<?php echo e($p->id); ?>"
+                                                   <?php echo e(request('pack_id') == $p->id ? 'checked' : ''); ?>
+
+                                                   class="rounded border-gray-300 text-purple-600 focus:ring-purple-600"
+                                                   onchange="selectPack(this.form, '<?php echo e($p->id); ?>')">
+                                            <span class="ml-2 text-xs text-gray-600"><?php echo e($p->title); ?></span>
+                                        </label>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </div>
+                                    <?php endif; ?>
+                                </div>
+
+                                <!-- Offres accordion item -->
+                                <div class="border-b border-gray-100 last:border-0">
+                                    <div class="flex items-center justify-between hover:bg-gray-50 rounded-lg transition">
+                                        <label class="flex items-center cursor-pointer p-2 flex-1">
+                                            <input type="checkbox" id="isOfferCheckbox" name="is_offer" value="1"
+                                                   <?php echo e(request('is_offer') ? 'checked' : ''); ?>
+
+                                                   class="rounded border-gray-300 text-blue-600 focus:ring-blue-600"
+                                                   onchange="toggleOfferAccordion()">
+                                            <span class="ml-2 text-sm font-bold text-blue-600">Offres 🏷️</span>
+                                        </label>
+                                        <?php if($allOffers->count() > 0): ?>
+                                        <button type="button" onclick="toggleCategoryAccordion('offersAccordion')" class="p-2 hover:bg-gray-100 rounded-lg transition">
+                                            <span class="material-symbols-outlined text-gray-500 text-sm transition-transform duration-300" id="offersAccordionIcon">expand_more</span>
+                                        </button>
+                                        <?php endif; ?>
+                                    </div>
+                                    <?php if($allOffers->count() > 0): ?>
+                                    <div id="offersAccordion"
+                                         class="ml-6 space-y-1 overflow-hidden transition-all duration-300"
+                                         style="max-height: <?php echo e(request('is_offer') ? '500px' : '0'); ?>; padding-bottom: <?php echo e(request('is_offer') ? '0.5rem' : '0'); ?>;">
+                                        <!-- "Toutes" option -->
+                                        <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition">
+                                            <input type="radio" name="offer_id" value=""
+                                                   <?php echo e(request('is_offer') && !request('offer_id') ? 'checked' : ''); ?>
+
+                                                   class="rounded border-gray-300 text-blue-600 focus:ring-blue-600"
+                                                   onchange="selectOffer(this.form, '')">
+                                            <span class="ml-2 text-xs text-gray-600">Toutes les offres</span>
+                                        </label>
+                                        <?php $__currentLoopData = $allOffers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $o): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition">
+                                            <input type="radio" name="offer_id" value="<?php echo e($o->id); ?>"
+                                                   <?php echo e(request('offer_id') == $o->id ? 'checked' : ''); ?>
+
+                                                   class="rounded border-gray-300 text-blue-600 focus:ring-blue-600"
+                                                   onchange="selectOffer(this.form, '<?php echo e($o->id); ?>')">
+                                            <span class="ml-2 text-xs text-gray-600"><?php echo e($o->title); ?></span>
+                                        </label>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </div>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Buttons -->
-                        <div class="space-y-2">
+                        <div class="space-y-2 pt-2">
                             <button type="submit" class="w-full bg-primary hover:bg-primary-container text-white font-bold py-3 px-4 rounded-xl transition shadow-md hover:shadow-lg">
                                 Appliquer les filtres
                             </button>
-                            <a href="<?php echo e(route('products.index')); ?>" class="block w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl transition">
-                                Réinitialiser
-                            </a>
                         </div>
                     </form>
+                    </div>
                 </div>
             </aside>
 
@@ -174,7 +292,7 @@
                     <!-- Bouton Filtres (Mobile uniquement) -->
                     <button id="openFiltersBtn" class="lg:hidden bg-primary text-white px-5 py-3.5 rounded-xl shadow-md hover:bg-primary-container transition-all flex items-center justify-center gap-2 relative">
                         <span class="material-symbols-outlined">tune</span>
-                        <?php if(request('category') || request('subcategory') || request('min_price') || request('max_price') || request('is_new') || request('is_bestseller')): ?>
+                        <?php if(request('category') || request('subcategory') || request('min_price') || request('max_price') || request('is_new') || request('is_bestseller') || request('is_pack') || request('is_offer')): ?>
                             <span class="absolute -top-1 -right-1 bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold">!</span>
                         <?php endif; ?>
                     </button>
@@ -200,23 +318,59 @@
                     </form>
                 </div>
 
+                <!-- Premium Header Banners -->
+                <?php if(isset($selectedPack) && $selectedPack): ?>
+                    <!-- Premium Pack Header Banner -->
+                    <div class="mb-6 p-6 rounded-2xl bg-gradient-to-r from-purple-600 to-purple-800 text-white shadow-md flex items-center justify-between gap-6">
+                        <div>
+                            <span class="bg-white/20 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Pack Sélectionné</span>
+                            <h2 class="text-xl md:text-2xl font-black mt-1"><?php echo e($selectedPack->title); ?></h2>
+                            <?php if($selectedPack->subtitle): ?>
+                                <p class="text-xs text-white/80 mt-1"><?php echo e($selectedPack->subtitle); ?></p>
+                            <?php endif; ?>
+                        </div>
+                        <a href="<?php echo e(route('packs.show', $selectedPack->id)); ?>" class="bg-white text-purple-700 hover:bg-purple-50 transition px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap shadow-sm">
+                            Voir le détail du pack
+                        </a>
+                    </div>
+                <?php endif; ?>
+
+                <?php if(isset($selectedOffer) && $selectedOffer): ?>
+                    <!-- Premium Offer Header Banner -->
+                    <div class="mb-6 p-6 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-850 text-white shadow-md flex items-center justify-between gap-6">
+                        <div>
+                            <span class="bg-white/20 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Offre Sélectionnée</span>
+                            <h2 class="text-xl md:text-2xl font-black mt-1"><?php echo e($selectedOffer->title); ?></h2>
+                            <?php if($selectedOffer->subtitle): ?>
+                                <p class="text-xs text-white/80 mt-1"><?php echo e($selectedOffer->subtitle); ?></p>
+                            <?php endif; ?>
+                        </div>
+                        <a href="<?php echo e(route('offers.show', $selectedOffer->id)); ?>" class="bg-white text-blue-700 hover:bg-blue-50 transition px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap shadow-sm">
+                            Voir le détail de l'offre
+                        </a>
+                    </div>
+                <?php endif; ?>
+
                 <!-- Products -->
                 <?php if($products->count() > 0): ?>
                     <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5 mb-8">
                         <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <?php
                                 $isPackItem = isset($product->is_pack) && $product->is_pack;
+                                $isOfferItem = isset($product->is_offer) && $product->is_offer;
                                 $imageUrl = $product->image_url;
                                 $discount = $isPackItem 
                                     ? ($product->old_price > $product->price ? round((($product->old_price - $product->price) / $product->old_price) * 100) : 0)
                                     : ($product->discount_percentage ?? 0);
                             ?>
                             
-                            <article class="bg-white border border-gray-200 rounded-xl p-3 flex flex-col h-full transition duration-300 hover:shadow-xl group <?php echo e($isPackItem ? 'border-purple-300 hover:border-purple-500' : ''); ?>">
-                                <a href="<?php echo e($isPackItem ? ($product->link ?: '#') : route('products.show', $product->slug)); ?>" class="block">
+                            <article class="bg-white border border-gray-200 rounded-xl p-3 flex flex-col h-full transition duration-300 hover:shadow-xl group <?php echo e($isPackItem ? 'border-purple-300 hover:border-purple-500' : ($isOfferItem ? 'border-blue-300 hover:border-blue-500' : '')); ?>">
+                                <a href="<?php echo e(($isPackItem || $isOfferItem) ? ($product->link ?: '#') : route('products.show', $product->slug)); ?>" class="block">
                                     <div class="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg overflow-hidden aspect-square flex items-center justify-center p-2 lg:p-3 mb-3">
                                         <?php if($isPackItem): ?>
                                             <span class="absolute top-1 left-1 lg:top-2 lg:left-2 bg-purple-600 text-white text-[10px] lg:text-xs font-bold px-1.5 py-0.5 lg:px-2 lg:py-1 rounded-full shadow-lg">PACK</span>
+                                        <?php elseif($isOfferItem): ?>
+                                            <span class="absolute top-1 left-1 lg:top-2 lg:left-2 bg-blue-600 text-white text-[10px] lg:text-xs font-bold px-1.5 py-0.5 lg:px-2 lg:py-1 rounded-full shadow-lg">OFFRE</span>
                                         <?php elseif($discount > 0): ?>
                                             <span class="absolute top-1 left-1 lg:top-2 lg:left-2 bg-primary text-white text-[10px] lg:text-xs font-bold px-1.5 py-0.5 lg:px-2 lg:py-1 rounded-full shadow-lg">-<?php echo e($discount); ?>%</span>
                                         <?php endif; ?>
@@ -230,7 +384,7 @@
                                              onerror="this.src='<?php echo e(asset('images/placeholder.svg')); ?>'">
                                     </div>
                                     <div class="flex-grow flex flex-col">
-                                        <span class="text-[10px] lg:text-xs font-bold uppercase tracking-wider <?php echo e($isPackItem ? 'text-purple-600' : 'text-primary'); ?> mb-1">
+                                        <span class="text-[10px] lg:text-xs font-bold uppercase tracking-wider <?php echo e($isPackItem ? 'text-purple-600' : ($isOfferItem ? 'text-blue-600' : 'text-primary')); ?> mb-1">
                                             <?php echo e($product->category->name ?? 'Produit'); ?>
 
                                         </span>
@@ -248,24 +402,34 @@
                                     </div>
                                 </a>
                                 <div class="flex justify-between items-center mt-auto pt-2 border-t border-gray-100">
-                                    <div class="flex flex-col">
-                                        <span class="font-headline text-sm lg:text-lg font-bold <?php echo e($isPackItem ? 'text-purple-600' : 'text-primary'); ?>"><?php echo e(number_format($product->price, 2, ',', ' ')); ?> MAD</span>
-                                        <?php if($product->old_price && $product->old_price > $product->price): ?>
-                                            <span class="text-[10px] lg:text-xs text-gray-400 line-through"><?php echo e(number_format($product->old_price, 2, ',', ' ')); ?> MAD</span>
-                                        <?php endif; ?>
-                                    </div>
-                                    <?php if($isPackItem): ?>
-                                    <button class="bg-purple-600 text-white p-2 rounded-lg flex items-center justify-center transition hover:bg-purple-700 hover:scale-110 shadow-md pack-add-btn animate-pulse" 
-                                            data-pack-id="<?php echo e($product->id); ?>" 
-                                            aria-label="Ajouter le pack au panier">
-                                        <span class="material-symbols-outlined text-sm lg:text-base">shopping_cart</span>
-                                    </button>
+                                    <?php if($isOfferItem): ?>
+                                        <div class="flex flex-col">
+                                            <span class="font-headline text-sm font-bold text-blue-600">Offre Spéciale</span>
+                                            <span class="text-[10px] text-gray-400">Voir les produits</span>
+                                        </div>
+                                        <a href="<?php echo e($product->link); ?>" class="bg-blue-600 text-white p-2 rounded-lg flex items-center justify-center transition hover:bg-blue-700 hover:scale-110 shadow-md" aria-label="Voir l'offre">
+                                            <span class="material-symbols-outlined text-sm lg:text-base">arrow_forward</span>
+                                        </a>
                                     <?php else: ?>
-                                    <button class="bg-primary text-white p-2 rounded-lg flex items-center justify-center transition hover:bg-primary-container hover:scale-110 shadow-md product-add-btn" 
-                                            data-product-id="<?php echo e($product->id); ?>" 
-                                            aria-label="Ajouter au panier">
-                                        <span class="material-symbols-outlined text-sm lg:text-base">shopping_cart</span>
-                                    </button>
+                                        <div class="flex flex-col">
+                                            <span class="font-headline text-sm lg:text-lg font-bold <?php echo e($isPackItem ? 'text-purple-600' : 'text-primary'); ?>"><?php echo e(number_format($product->price, 2, ',', ' ')); ?> MAD</span>
+                                            <?php if($product->old_price && $product->old_price > $product->price): ?>
+                                                <span class="text-[10px] lg:text-xs text-gray-400 line-through"><?php echo e(number_format($product->old_price, 2, ',', ' ')); ?> MAD</span>
+                                            <?php endif; ?>
+                                        </div>
+                                        <?php if($isPackItem): ?>
+                                        <button class="bg-purple-600 text-white p-2 rounded-lg flex items-center justify-center transition hover:bg-purple-700 hover:scale-110 shadow-md pack-add-btn animate-pulse" 
+                                                data-pack-id="<?php echo e($product->id); ?>" 
+                                                aria-label="Ajouter le pack au panier">
+                                            <span class="material-symbols-outlined text-sm lg:text-base">shopping_cart</span>
+                                        </button>
+                                        <?php else: ?>
+                                        <button class="bg-primary text-white p-2 rounded-lg flex items-center justify-center transition hover:bg-primary-container hover:scale-110 shadow-md product-add-btn" 
+                                                data-product-id="<?php echo e($product->id); ?>" 
+                                                aria-label="Ajouter au panier">
+                                            <span class="material-symbols-outlined text-sm lg:text-base">shopping_cart</span>
+                                        </button>
+                                        <?php endif; ?>
                                     <?php endif; ?>
                                 </div>
                             </article>
@@ -402,7 +566,7 @@
                         <h4 class="font-bold text-sm text-gray-900">Options</h4>
                         <span class="material-symbols-outlined text-gray-500 transition-transform duration-300" id="optionsAccordionMobileIcon">expand_more</span>
                     </button>
-                    <div id="optionsAccordionMobile" class="space-y-2 pb-4 overflow-hidden transition-all duration-300">
+                    <div id="optionsAccordionMobile" class="space-y-1 pb-4 overflow-hidden transition-all duration-300">
                         <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition">
                             <input type="checkbox" name="is_new" value="1" <?php echo e(request('is_new') ? 'checked' : ''); ?> class="rounded border-gray-300 text-primary focus:ring-primary">
                             <span class="ml-2 text-sm text-gray-700">Nouveautés</span>
@@ -411,10 +575,92 @@
                             <input type="checkbox" name="is_bestseller" value="1" <?php echo e(request('is_bestseller') ? 'checked' : ''); ?> class="rounded border-gray-300 text-primary focus:ring-primary">
                             <span class="ml-2 text-gray-700">Best Sellers</span>
                         </label>
-                        <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition">
-                            <input type="checkbox" name="is_pack" value="1" <?php echo e(request('is_pack') ? 'checked' : ''); ?> class="rounded border-gray-300 text-primary focus:ring-primary">
-                            <span class="ml-2 text-gray-700 font-bold text-purple-600">Packs 🔥</span>
-                        </label>
+
+                        <!-- Packs accordion item (Mobile) -->
+                        <div class="border-b border-gray-100 last:border-0">
+                            <div class="flex items-center justify-between hover:bg-gray-50 rounded-lg transition">
+                                <label class="flex items-center cursor-pointer p-2 flex-1">
+                                    <input type="checkbox" id="isPackCheckboxMobile" name="is_pack" value="1"
+                                           <?php echo e(request('is_pack') ? 'checked' : ''); ?>
+
+                                           class="rounded border-gray-300 text-purple-600 focus:ring-purple-600"
+                                           onchange="togglePackAccordionMobile()">
+                                    <span class="ml-2 text-sm font-bold text-purple-600">Packs 🔥</span>
+                                </label>
+                                <?php if($allPacks->count() > 0): ?>
+                                <button type="button" onclick="toggleCategoryAccordionMobile('packsAccordionMobile')" class="p-2 hover:bg-gray-100 rounded-lg transition">
+                                    <span class="material-symbols-outlined text-gray-500 text-sm transition-transform duration-300" id="packsAccordionMobileIcon">expand_more</span>
+                                </button>
+                                <?php endif; ?>
+                            </div>
+                            <?php if($allPacks->count() > 0): ?>
+                            <div id="packsAccordionMobile"
+                                 class="ml-6 space-y-1 overflow-hidden transition-all duration-300"
+                                 style="max-height: <?php echo e(request('is_pack') ? '500px' : '0'); ?>; padding-bottom: <?php echo e(request('is_pack') ? '0.5rem' : '0'); ?>;">
+                                <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition">
+                                    <input type="radio" name="pack_id" value=""
+                                           <?php echo e(request('is_pack') && !request('pack_id') ? 'checked' : ''); ?>
+
+                                           class="rounded border-gray-300 text-purple-600 focus:ring-purple-600"
+                                           onchange="selectPackMobile(this.form, '')">
+                                    <span class="ml-2 text-xs text-gray-600">Tous les packs</span>
+                                </label>
+                                <?php $__currentLoopData = $allPacks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition">
+                                    <input type="radio" name="pack_id" value="<?php echo e($p->id); ?>"
+                                           <?php echo e(request('pack_id') == $p->id ? 'checked' : ''); ?>
+
+                                           class="rounded border-gray-300 text-purple-600 focus:ring-purple-600"
+                                           onchange="selectPackMobile(this.form, '<?php echo e($p->id); ?>')">
+                                    <span class="ml-2 text-xs text-gray-600"><?php echo e($p->title); ?></span>
+                                </label>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </div>
+                            <?php endif; ?>
+                        </div>
+
+                        <!-- Offres accordion item (Mobile) -->
+                        <div class="border-b border-gray-100 last:border-0">
+                            <div class="flex items-center justify-between hover:bg-gray-50 rounded-lg transition">
+                                <label class="flex items-center cursor-pointer p-2 flex-1">
+                                    <input type="checkbox" id="isOfferCheckboxMobile" name="is_offer" value="1"
+                                           <?php echo e(request('is_offer') ? 'checked' : ''); ?>
+
+                                           class="rounded border-gray-300 text-blue-600 focus:ring-blue-600"
+                                           onchange="toggleOfferAccordionMobile()">
+                                    <span class="ml-2 text-sm font-bold text-blue-600">Offres 🏷️</span>
+                                </label>
+                                <?php if($allOffers->count() > 0): ?>
+                                <button type="button" onclick="toggleCategoryAccordionMobile('offersAccordionMobile')" class="p-2 hover:bg-gray-100 rounded-lg transition">
+                                    <span class="material-symbols-outlined text-gray-500 text-sm transition-transform duration-300" id="offersAccordionMobileIcon">expand_more</span>
+                                </button>
+                                <?php endif; ?>
+                            </div>
+                            <?php if($allOffers->count() > 0): ?>
+                            <div id="offersAccordionMobile"
+                                 class="ml-6 space-y-1 overflow-hidden transition-all duration-300"
+                                 style="max-height: <?php echo e(request('is_offer') ? '500px' : '0'); ?>; padding-bottom: <?php echo e(request('is_offer') ? '0.5rem' : '0'); ?>;">
+                                <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition">
+                                    <input type="radio" name="offer_id" value=""
+                                           <?php echo e(request('is_offer') && !request('offer_id') ? 'checked' : ''); ?>
+
+                                           class="rounded border-gray-300 text-blue-600 focus:ring-blue-600"
+                                           onchange="selectOfferMobile(this.form, '')">
+                                    <span class="ml-2 text-xs text-gray-600">Toutes les offres</span>
+                                </label>
+                                <?php $__currentLoopData = $allOffers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $o): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition">
+                                    <input type="radio" name="offer_id" value="<?php echo e($o->id); ?>"
+                                           <?php echo e(request('offer_id') == $o->id ? 'checked' : ''); ?>
+
+                                           class="rounded border-gray-300 text-blue-600 focus:ring-blue-600"
+                                           onchange="selectOfferMobile(this.form, '<?php echo e($o->id); ?>')">
+                                    <span class="ml-2 text-xs text-gray-600"><?php echo e($o->title); ?></span>
+                                </label>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </div>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
 
@@ -543,12 +789,25 @@ document.addEventListener('DOMContentLoaded', function() {
             const icon = document.getElementById(accordionId + 'Icon');
             parentAccordion.style.maxHeight = parentAccordion.scrollHeight + 'px';
             parentAccordion.style.paddingBottom = '0.5rem';
-            if (icon) {
-                icon.style.transform = 'rotate(180deg)';
-            }
+            if (icon) icon.style.transform = 'rotate(180deg)';
         }
     }
+
+    // Auto-rotate Pack accordion icon (Mobile) if is_pack active
+    const packCbMobile = document.getElementById('isPackCheckboxMobile');
+    if (packCbMobile && packCbMobile.checked) {
+        const icon = document.getElementById('packsAccordionMobileIcon');
+        if (icon) icon.style.transform = 'rotate(180deg)';
+    }
+
+    // Auto-rotate Offer accordion icon (Mobile) if is_offer active
+    const offerCbMobile = document.getElementById('isOfferCheckboxMobile');
+    if (offerCbMobile && offerCbMobile.checked) {
+        const icon = document.getElementById('offersAccordionMobileIcon');
+        if (icon) icon.style.transform = 'rotate(180deg)';
+    }
 });
+
 
 // ============================================
 // FONCTIONS FILTRES DESKTOP (EXISTANTES)
@@ -619,19 +878,128 @@ document.addEventListener('DOMContentLoaded', function() {
     // Auto-open category accordion if a subcategory is selected
     const selectedSubcategory = document.querySelector('input[name="filter_type"][value^="subcategory_"]:checked');
     if (selectedSubcategory) {
-        // Find the parent category accordion
         const parentAccordion = selectedSubcategory.closest('[id^="category"]');
         if (parentAccordion) {
             const accordionId = parentAccordion.id;
             const icon = document.getElementById(accordionId + 'Icon');
             parentAccordion.style.maxHeight = parentAccordion.scrollHeight + 'px';
             parentAccordion.style.paddingBottom = '0.5rem';
-            if (icon) {
-                icon.style.transform = 'rotate(180deg)';
-            }
+            if (icon) icon.style.transform = 'rotate(180deg)';
         }
     }
+
+    // Auto-rotate Pack accordion icon if is_pack is active
+    const packCheckbox = document.getElementById('isPackCheckbox');
+    if (packCheckbox && packCheckbox.checked) {
+        const icon = document.getElementById('packsAccordionIcon');
+        if (icon) icon.style.transform = 'rotate(180deg)';
+    }
+
+    // Auto-rotate Offer accordion icon if is_offer is active
+    const offerCheckbox = document.getElementById('isOfferCheckbox');
+    if (offerCheckbox && offerCheckbox.checked) {
+        const icon = document.getElementById('offersAccordionIcon');
+        if (icon) icon.style.transform = 'rotate(180deg)';
+    }
 });
+
+
+// ============================================
+// ACCORDION PACKS & OFFRES (DESKTOP)
+// ============================================
+function togglePackAccordion() {
+    const isPack = document.getElementById('isPackCheckbox').checked;
+    const accordion = document.getElementById('packsAccordion');
+    const icon = document.getElementById('packsAccordionIcon');
+    if (!accordion) return;
+    if (isPack) {
+        accordion.style.maxHeight = accordion.scrollHeight + 'px';
+        accordion.style.paddingBottom = '0.5rem';
+        if (icon) icon.style.transform = 'rotate(180deg)';
+    } else {
+        accordion.style.maxHeight = '0';
+        accordion.style.paddingBottom = '0';
+        if (icon) icon.style.transform = 'rotate(0deg)';
+    }
+}
+
+function toggleOfferAccordion() {
+    const isOffer = document.getElementById('isOfferCheckbox').checked;
+    const accordion = document.getElementById('offersAccordion');
+    const icon = document.getElementById('offersAccordionIcon');
+    if (!accordion) return;
+    if (isOffer) {
+        accordion.style.maxHeight = accordion.scrollHeight + 'px';
+        accordion.style.paddingBottom = '0.5rem';
+        if (icon) icon.style.transform = 'rotate(180deg)';
+    } else {
+        accordion.style.maxHeight = '0';
+        accordion.style.paddingBottom = '0';
+        if (icon) icon.style.transform = 'rotate(0deg)';
+    }
+}
+
+function selectPack(form, packId) {
+    // Ensure is_pack checkbox is checked
+    const cb = document.getElementById('isPackCheckbox');
+    if (cb) cb.checked = true;
+    form.submit();
+}
+
+function selectOffer(form, offerId) {
+    // Ensure is_offer checkbox is checked
+    const cb = document.getElementById('isOfferCheckbox');
+    if (cb) cb.checked = true;
+    form.submit();
+}
+
+// ============================================
+// ACCORDION PACKS & OFFRES (MOBILE)
+// ============================================
+function togglePackAccordionMobile() {
+    const isPack = document.getElementById('isPackCheckboxMobile').checked;
+    const accordion = document.getElementById('packsAccordionMobile');
+    const icon = document.getElementById('packsAccordionMobileIcon');
+    if (!accordion) return;
+    if (isPack) {
+        accordion.style.maxHeight = accordion.scrollHeight + 'px';
+        accordion.style.paddingBottom = '0.5rem';
+        if (icon) icon.style.transform = 'rotate(180deg)';
+    } else {
+        accordion.style.maxHeight = '0';
+        accordion.style.paddingBottom = '0';
+        if (icon) icon.style.transform = 'rotate(0deg)';
+    }
+}
+
+function toggleOfferAccordionMobile() {
+    const isOffer = document.getElementById('isOfferCheckboxMobile').checked;
+    const accordion = document.getElementById('offersAccordionMobile');
+    const icon = document.getElementById('offersAccordionMobileIcon');
+    if (!accordion) return;
+    if (isOffer) {
+        accordion.style.maxHeight = accordion.scrollHeight + 'px';
+        accordion.style.paddingBottom = '0.5rem';
+        if (icon) icon.style.transform = 'rotate(180deg)';
+    } else {
+        accordion.style.maxHeight = '0';
+        accordion.style.paddingBottom = '0';
+        if (icon) icon.style.transform = 'rotate(0deg)';
+    }
+}
+
+function selectPackMobile(form, packId) {
+    const cb = document.getElementById('isPackCheckboxMobile');
+    if (cb) cb.checked = true;
+    form.submit();
+}
+
+function selectOfferMobile(form, offerId) {
+    const cb = document.getElementById('isOfferCheckboxMobile');
+    if (cb) cb.checked = true;
+    form.submit();
+}
+
 </script>
 <?php $__env->stopSection(); ?>
 

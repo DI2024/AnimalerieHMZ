@@ -25,10 +25,18 @@ class ProductController extends Controller
             ->orderBy('name')
             ->get();
 
+        $allPacks = Offer::where('type', 'pack')->where('is_active', true)->orderBy('title')->get();
+        $allOffers = Offer::where('type', '!=', 'pack')->where('is_active', true)->orderBy('title')->get();
+
+        // 1. Filter by Pack
         if ($request->filled('is_pack')) {
             $packQuery = Offer::where('type', 'pack')
                 ->where('is_active', true)
                 ->with('products');
+
+            if ($request->filled('pack_id')) {
+                $packQuery->where('id', $request->pack_id);
+            }
 
             if ($request->filled('search')) {
                 $search = $request->search;
@@ -68,7 +76,7 @@ class ProductController extends Controller
                 $virtualProduct->is_bestseller = false;
                 $virtualProduct->rating = 5.0; // Packs get a virtual 5-star rating
                 $virtualProduct->is_pack = true; // Flag for blade
-                $virtualProduct->link = $pack->link ?: route('home'); // Redirection link
+                $virtualProduct->link = route('packs.show', $pack->id);
                 
                 // Set virtual category
                 $categoryObj = new Category();
@@ -78,9 +86,64 @@ class ProductController extends Controller
                 return $virtualProduct;
             });
 
-            return view('client.products.index', compact('products', 'categories'));
+            return view('client.products.index', compact('products', 'categories', 'allPacks', 'allOffers'));
         }
 
+        // 2. Filter by Offer (excluing packs)
+        if ($request->filled('is_offer')) {
+            $offerQuery = Offer::where('type', '!=', 'pack')
+                ->where('is_active', true)
+                ->with('products');
+
+            if ($request->filled('offer_id')) {
+                $offerQuery->where('id', $request->offer_id);
+            }
+
+            if ($request->filled('search')) {
+                $search = $request->search;
+                $offerQuery->where(function($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                      ->orWhere('subtitle', 'like', "%{$search}%");
+                });
+            }
+
+            $offers = $offerQuery->paginate(12)->withQueryString();
+
+            // Transform each offer to mimic a Product object so the Blade template displays it correctly
+            $products = $offers->through(function ($offer) {
+                $virtualProduct = new Product();
+                $virtualProduct->id = $offer->id;
+                $virtualProduct->name = $offer->title;
+                $virtualProduct->slug = null; // No slug for offers, we handle it in blade
+                $virtualProduct->description = $offer->subtitle;
+                $virtualProduct->price = 0.0; // Standard offers don't have a unique price, they group products
+                $virtualProduct->old_price = 0.0;
+                
+                // Process image path
+                $imageUrl = $offer->image 
+                    ? (filter_var($offer->image, FILTER_VALIDATE_URL) ? $offer->image : 'storage/' . $offer->image)
+                    : 'images/placeholder.svg';
+                $virtualProduct->image = $imageUrl;
+                
+                $virtualProduct->is_active = $offer->is_active;
+                $virtualProduct->is_new = false;
+                $virtualProduct->is_bestseller = false;
+                $virtualProduct->rating = 5.0;
+                $virtualProduct->is_offer = true; // Flag for blade
+                $virtualProduct->link = route('offers.show', $offer->id);
+                
+                // Set virtual category
+                $categoryObj = new Category();
+                $categoryObj->name = 'Offre Spéciale';
+                $virtualProduct->setRelation('category', $categoryObj);
+
+                return $virtualProduct;
+            });
+
+            return view('client.products.index', compact('products', 'categories', 'allPacks', 'allOffers'));
+        }
+
+        // 3. Filter by standard products
         $query = Product::where('is_active', true)->with(['category', 'subcategory']);
 
         // Filter by category
@@ -153,7 +216,7 @@ class ProductController extends Controller
 
         $products = $query->paginate(12)->withQueryString();
 
-        return view('client.products.index', compact('products', 'categories'));
+        return view('client.products.index', compact('products', 'categories', 'allPacks', 'allOffers'));
     }
 
     public function show($slug)
@@ -183,6 +246,38 @@ class ProductController extends Controller
         return view('client.products.show', compact('product', 'relatedProducts', 'breadcrumbs'));
     }
 
+    public function showPack($id)
+    {
+        $pack = Offer::where('type', 'pack')
+            ->where('is_active', true)
+            ->with('products')
+            ->findOrFail($id);
+
+        $breadcrumbs = [
+            ['name' => 'Accueil', 'url' => route('home')],
+            ['name' => 'Packs Spéciaux', 'url' => route('products.index', ['is_pack' => 1])],
+            ['name' => $pack->title, 'url' => null],
+        ];
+
+        return view('client.packs.show', compact('pack', 'breadcrumbs'));
+    }
+
+    public function showOffer($id)
+    {
+        $offer = Offer::where('type', '!=', 'pack')
+            ->where('is_active', true)
+            ->with('products')
+            ->findOrFail($id);
+
+        $breadcrumbs = [
+            ['name' => 'Accueil', 'url' => route('home')],
+            ['name' => 'Offres Spéciales', 'url' => route('products.index', ['is_offer' => 1])],
+            ['name' => $offer->title, 'url' => null],
+        ];
+
+        return view('client.offers.show', compact('offer', 'breadcrumbs'));
+    }
+
     // API endpoint for AJAX requests
     public function apiIndex(Request $request)
     {
@@ -190,6 +285,10 @@ class ProductController extends Controller
             $packQuery = Offer::where('type', 'pack')
                 ->where('is_active', true)
                 ->with('products');
+
+            if ($request->filled('pack_id')) {
+                $packQuery->where('id', $request->pack_id);
+            }
 
             if ($request->filled('search')) {
                 $search = $request->search;
@@ -213,8 +312,54 @@ class ProductController extends Controller
                     'old_price' => (float)$pack->total_original_price,
                     'image' => $imageUrl,
                     'is_pack' => true,
-                    'link' => $pack->link ?: route('home'),
+                    'link' => route('packs.show', $pack->id),
                     'category' => ['name' => 'Pack Spécial'],
+                    'rating' => 5.0,
+                    'is_new' => false,
+                    'is_bestseller' => false
+                ];
+            });
+
+            return response()->json([
+                'success' => true,
+                'products' => $products,
+                'count' => $products->count(),
+            ]);
+        }
+
+        if ($request->filled('is_offer')) {
+            $offerQuery = Offer::where('type', '!=', 'pack')
+                ->where('is_active', true)
+                ->with('products');
+
+            if ($request->filled('offer_id')) {
+                $offerQuery->where('id', $request->offer_id);
+            }
+
+            if ($request->filled('search')) {
+                $search = $request->search;
+                $offerQuery->where(function($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                      ->orWhere('subtitle', 'like', "%{$search}%");
+                });
+            }
+
+            $offers = $offerQuery->get();
+
+            $products = $offers->map(function ($offer) {
+                $imageUrl = $offer->image 
+                    ? (filter_var($offer->image, FILTER_VALIDATE_URL) ? $offer->image : 'storage/' . $offer->image)
+                    : 'images/placeholder.svg';
+                return [
+                    'id' => $offer->id,
+                    'name' => $offer->title,
+                    'slug' => null,
+                    'price' => 0.0,
+                    'old_price' => 0.0,
+                    'image' => $imageUrl,
+                    'is_offer' => true,
+                    'link' => route('offers.show', $offer->id),
+                    'category' => ['name' => 'Offre Spéciale'],
                     'rating' => 5.0,
                     'is_new' => false,
                     'is_bestseller' => false

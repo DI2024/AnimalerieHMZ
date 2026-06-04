@@ -1,9 +1,7 @@
-@extends('layouts.admin')
+<?php $__env->startSection('title', 'Nouveau Produit'); ?>
+<?php $__env->startSection('page-title', ''); ?>
 
-@section('title', 'Nouveau Produit')
-@section('page-title', '')
-
-@push('styles')
+<?php $__env->startPush('styles'); ?>
 <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
 <style>
     .split-screen {
@@ -84,21 +82,21 @@
         }
     }
 </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
-<form id="product-form" action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data" novalidate>
-    @csrf
+<?php $__env->startSection('content'); ?>
+<form id="product-form" action="<?php echo e(route('admin.products.store')); ?>" method="POST" enctype="multipart/form-data" novalidate>
+    <?php echo csrf_field(); ?>
     
     <!-- Top Bar -->
     <div class="bg-white rounded-lg shadow p-4 mb-6">
         <div class="flex items-center justify-between">
             <div class="flex items-center space-x-4">
-                <a href="{{ route('admin.products.index') }}" class="text-gray-600 hover:text-gray-900">
+                <a href="<?php echo e(route('admin.products.index')); ?>" class="text-gray-600 hover:text-gray-900">
                     <i class="fas fa-arrow-left text-xl"></i>
                 </a>
                 <div>
-                    <input type="text" name="name" id="product-name" value="{{ old('name') }}" 
+                    <input type="text" name="name" id="product-name" value="<?php echo e(old('name')); ?>" 
                            placeholder="Nom du produit" required
                            class="text-2xl font-bold border-0 focus:ring-0 p-0 w-full"
                            oninput="updatePreview()">
@@ -107,7 +105,7 @@
             </div>
             
             <div class="flex items-center space-x-3">
-                <a href="{{ route('admin.products.index') }}" 
+                <a href="<?php echo e(route('admin.products.index')); ?>" 
                    class="px-4 py-2 border rounded-lg hover:bg-gray-50">
                     <i class="fas fa-times mr-2"></i>Annuler
                 </a>
@@ -144,15 +142,23 @@
                                 <select name="category_id" id="category_id" required
                                         class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
                                     <option value="">Sélectionner une catégorie</option>
-                                    @foreach($categories as $category)
-                                        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                                            {{ $category->name }}
+                                    <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($category->id); ?>" <?php echo e(old('category_id') == $category->id ? 'selected' : ''); ?>>
+                                            <?php echo e($category->name); ?>
+
                                         </option>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
-                                @error('category_id')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
+                                <?php $__errorArgs = ['category_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <p class="text-red-500 text-sm mt-1"><?php echo e($message); ?></p>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
 
                             <div>
@@ -164,9 +170,16 @@
                                     <option value="">Aucune</option>
                                     <!-- Loader dynamically via JS -->
                                 </select>
-                                @error('subcategory_id')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
+                                <?php $__errorArgs = ['subcategory_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <p class="text-red-500 text-sm mt-1"><?php echo e($message); ?></p>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -178,7 +191,7 @@
                             <textarea name="short_description" rows="2" maxlength="500"
                                       placeholder="Résumé du produit en une phrase..."
                                       oninput="updatePreview()"
-                                      class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">{{ old('short_description') }}</textarea>
+                                      class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"><?php echo e(old('short_description')); ?></textarea>
                             <p class="text-xs text-gray-500 mt-1">Maximum 500 caractères</p>
                         </div>
 
@@ -189,14 +202,14 @@
                             </label>
                             <textarea name="description" rows="6" required
                                       placeholder="Description détaillée du produit..."
-                                      class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">{{ old('description') }}</textarea>
+                                      class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"><?php echo e(old('description')); ?></textarea>
                         </div>
 
                         <!-- Badges & Flags -->
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Badge</label>
-                                <input type="text" name="badge" value="{{ old('badge') }}" 
+                                <input type="text" name="badge" value="<?php echo e(old('badge')); ?>" 
                                        placeholder="Ex: NOUVEAU, PROMO..."
                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
                             </div>
@@ -215,25 +228,29 @@
                         <!-- Product Flags -->
                         <div class="grid grid-cols-2 gap-3">
                             <label class="flex items-center space-x-2 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                                <input type="checkbox" name="is_featured" value="1" {{ old('is_featured') ? 'checked' : '' }}
+                                <input type="checkbox" name="is_featured" value="1" <?php echo e(old('is_featured') ? 'checked' : ''); ?>
+
                                        class="rounded text-primary focus:ring-primary">
                                 <span class="text-sm">En vedette</span>
                             </label>
                             
                             <label class="flex items-center space-x-2 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                                <input type="checkbox" name="is_bestseller" value="1" {{ old('is_bestseller') ? 'checked' : '' }}
+                                <input type="checkbox" name="is_bestseller" value="1" <?php echo e(old('is_bestseller') ? 'checked' : ''); ?>
+
                                        class="rounded text-primary focus:ring-primary">
                                 <span class="text-sm">Bestseller</span>
                             </label>
                             
                             <label class="flex items-center space-x-2 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                                <input type="checkbox" name="is_new" value="1" {{ old('is_new') ? 'checked' : '' }}
+                                <input type="checkbox" name="is_new" value="1" <?php echo e(old('is_new') ? 'checked' : ''); ?>
+
                                        class="rounded text-primary focus:ring-primary">
                                 <span class="text-sm">Nouveau</span>
                             </label>
                             
                             <label class="flex items-center space-x-2 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                                <input type="checkbox" name="is_active" value="1" {{ old('is_active', true) ? 'checked' : '' }}
+                                <input type="checkbox" name="is_active" value="1" <?php echo e(old('is_active', true) ? 'checked' : ''); ?>
+
                                        class="rounded text-primary focus:ring-primary">
                                 <span class="text-sm">Actif</span>
                             </label>
@@ -487,7 +504,7 @@
                                 Prix (DH) <span class="text-red-500">*</span>
                             </label>
                             <input type="number" step="0.01" name="price" id="regular-price" 
-                                   value="{{ old('price') }}" required
+                                   value="<?php echo e(old('price')); ?>" required
                                    oninput="updatePreview(); calculateDiscount()"
                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
                             <p class="text-xs text-gray-500 mt-1">Prix de vente du produit</p>
@@ -500,7 +517,7 @@
                                 <span class="text-xs text-gray-500">(Optionnel - pour afficher une réduction)</span>
                             </label>
                             <input type="number" step="0.01" name="price_old" id="old-price"
-                                   value="{{ old('price_old') }}"
+                                   value="<?php echo e(old('price_old')); ?>"
                                    oninput="calculateDiscount()"
                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
                             <p class="text-xs text-gray-500 mt-1">Si renseigné, affichera une réduction sur le produit</p>
@@ -534,7 +551,7 @@
                                     Quantité en stock <span class="text-red-500">*</span>
                                 </label>
                                 <input type="number" name="stock" id="stock-quantity" 
-                                       value="{{ old('stock', 0) }}" required min="0"
+                                       value="<?php echo e(old('stock', 0)); ?>" required min="0"
                                        oninput="updateStockStatus()"
                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
                                 <p class="text-xs text-gray-500 mt-1">Nombre d'unités disponibles</p>
@@ -545,7 +562,7 @@
                                     Seuil d'alerte <span class="text-red-500">*</span>
                                 </label>
                                 <input type="number" name="stock_alert" id="stock-alert" 
-                                       value="{{ old('stock_alert', 5) }}" required min="0"
+                                       value="<?php echo e(old('stock_alert', 5)); ?>" required min="0"
                                        oninput="updateStockStatus()"
                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
                                 <p class="text-xs text-gray-500 mt-1">Alerte si stock ≤ ce seuil</p>
@@ -586,9 +603,9 @@
 
     </div>
 </form>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
     // Accordion Toggle
     function toggleAccordion(header) {
@@ -797,4 +814,6 @@
         }
     });
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\User\Desktop\animx\AnimalerieHMZ\resources\views/admin/products/create.blade.php ENDPATH**/ ?>

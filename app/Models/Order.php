@@ -68,7 +68,15 @@ class Order extends Model
             // If order is confirmed, reduce stock and increment sales
             if ($originalStatus !== 'confirmed' && $newStatus === 'confirmed') {
                 foreach ($order->items as $item) {
-                    if ($item->product) {
+                    if ($item->pack_id) {
+                        $pack = Offer::with('products')->find($item->pack_id);
+                        if ($pack) {
+                            foreach ($pack->products as $subProduct) {
+                                $subProduct->decrement('stock', $item->quantity);
+                                $subProduct->increment('total_sales', $item->quantity);
+                            }
+                        }
+                    } elseif ($item->product) {
                         $item->product->decrement('stock', $item->quantity);
                         $item->product->increment('total_sales', $item->quantity);
                     }
@@ -78,7 +86,15 @@ class Order extends Model
             // If order is cancelled, restore stock and decrement sales (only if it was previously confirmed)
             if ($originalStatus === 'confirmed' && $newStatus === 'cancelled') {
                 foreach ($order->items as $item) {
-                    if ($item->product) {
+                    if ($item->pack_id) {
+                        $pack = Offer::with('products')->find($item->pack_id);
+                        if ($pack) {
+                            foreach ($pack->products as $subProduct) {
+                                $subProduct->increment('stock', $item->quantity);
+                                $subProduct->decrement('total_sales', $item->quantity);
+                            }
+                        }
+                    } elseif ($item->product) {
                         $item->product->increment('stock', $item->quantity);
                         $item->product->decrement('total_sales', $item->quantity);
                     }
@@ -88,7 +104,15 @@ class Order extends Model
             // If order goes from cancelled back to confirmed, reduce stock and increment sales again
             if ($originalStatus === 'cancelled' && $newStatus === 'confirmed') {
                 foreach ($order->items as $item) {
-                    if ($item->product) {
+                    if ($item->pack_id) {
+                        $pack = Offer::with('products')->find($item->pack_id);
+                        if ($pack) {
+                            foreach ($pack->products as $subProduct) {
+                                $subProduct->decrement('stock', $item->quantity);
+                                $subProduct->increment('total_sales', $item->quantity);
+                            }
+                        }
+                    } elseif ($item->product) {
                         $item->product->decrement('stock', $item->quantity);
                         $item->product->increment('total_sales', $item->quantity);
                     }
@@ -100,7 +124,15 @@ class Order extends Model
         static::deleting(function ($order) {
             if ($order->status === 'confirmed') {
                 foreach ($order->items as $item) {
-                    if ($item->product) {
+                    if ($item->pack_id) {
+                        $pack = Offer::with('products')->find($item->pack_id);
+                        if ($pack) {
+                            foreach ($pack->products as $subProduct) {
+                                $subProduct->increment('stock', $item->quantity);
+                                $subProduct->decrement('total_sales', $item->quantity);
+                            }
+                        }
+                    } elseif ($item->product) {
                         $item->product->increment('stock', $item->quantity);
                         $item->product->decrement('total_sales', $item->quantity);
                     }
